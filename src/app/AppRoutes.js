@@ -26,6 +26,8 @@ const Register1 = lazy(() => import('./user-pages/Register'));
 
 const BlankPage = lazy(() => import('./user-pages/BlankPage'));
 
+const ListCategoty = lazy(() => import('./components/category/ListCategory'));
+
 
 class AppRoutes extends Component {
   render () {
@@ -41,6 +43,8 @@ class AppRoutes extends Component {
           <Route path="/form-Elements/basic-elements" component={ BasicElements } />
 
           <Route path="/tables/basic-table" component={ BasicTable } />
+
+          <Route path="/category/list-category" component={ ListCategoty } />
 
           <Route path="/icons/font-awesome" component={ FontAwesome } />
 

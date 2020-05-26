@@ -1,10 +1,13 @@
 import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
+import {Provider} from 'react-redux';
 import './App.scss';
 import AppRoutes from './AppRoutes';
 import Navbar from './shared/Navbar';
 import Sidebar from './shared/Sidebar';
 import Footer from './shared/Footer';
+
+import store from './store';
 
 class App extends Component {
   state = {}
@@ -16,18 +19,20 @@ class App extends Component {
     let sidebarComponent = !this.state.isFullPageLayout ? <Sidebar/> : '';
     let footerComponent = !this.state.isFullPageLayout ? <Footer/> : '';
     return (
-      <div className="container-scroller">
-        { navbarComponent }
-        <div className="container-fluid page-body-wrapper">
-          { sidebarComponent }
-          <div className="main-panel">
-            <div className="content-wrapper">
-              <AppRoutes/>
+      <Provider store={store}>
+        <div className="container-scroller">
+          { navbarComponent }
+          <div className="container-fluid page-body-wrapper">
+            { sidebarComponent }
+            <div className="main-panel">
+              <div className="content-wrapper">
+                <AppRoutes/>
+              </div>
+              { footerComponent }
             </div>
-            { footerComponent }
           </div>
         </div>
-      </div>
+      </Provider>
     );
   }
 
