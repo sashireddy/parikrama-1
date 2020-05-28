@@ -27,6 +27,7 @@ const Register1 = lazy(() => import('./user-pages/Register'));
 const BlankPage = lazy(() => import('./user-pages/BlankPage'));
 
 const ListCategoty = lazy(() => import('./components/category/ListCategory'));
+const ViewCategory = lazy(() => import('./components/category/ViewCategory'))
 
 
 class AppRoutes extends Component {
@@ -45,6 +46,7 @@ class AppRoutes extends Component {
           <Route path="/tables/basic-table" component={ BasicTable } />
 
           <Route path="/category/list-category" component={ ListCategoty } />
+          <Route path="/category/:id" component={ ViewCategory } />
 
           <Route path="/icons/font-awesome" component={ FontAwesome } />
 
