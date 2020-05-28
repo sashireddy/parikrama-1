@@ -27,7 +27,7 @@ const Register1 = lazy(() => import('./user-pages/Register'));
 const BlankPage = lazy(() => import('./user-pages/BlankPage'));
 
 const ListCategoty = lazy(() => import('./components/category/ListCategory'));
-
+const Reports = lazy(()=> import('./pages/reports/index'))
 
 class AppRoutes extends Component {
   render () {
@@ -59,7 +59,7 @@ class AppRoutes extends Component {
 
           <Route path="/user-pages/blank-page" component={ BlankPage } />
 
-
+          <Route path="/reports" component ={ Reports } />
           <Redirect to="/dashboard" />
         </Switch>
       </Suspense>
