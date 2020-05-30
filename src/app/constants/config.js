@@ -4,6 +4,10 @@ export default {
     },
     "API" : {
         "BASE_URL": "http://localhost:3000",
-        "GET_CTEGORIES": "/data/categories.json"
+        "CATEGORY": {
+            "GET_CTEGORIES": "/data/categories.json",
+            "CACHING": true,
+            "PAGE_LIMIT": 10
+        }
     }
 };

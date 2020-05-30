@@ -30,11 +30,7 @@ class Pagination extends Component {
 
     this.totalPages = Math.ceil(this.totalRecords / this.pageLimit);
 
-    this.state = { currentPage: 1 };
-  }
-
-  componentDidMount() {
-    this.gotoPage(this.props.currentPage);
+    this.state = { currentPage: this.props.currentPage };
   }
 
   gotoPage = page => {
@@ -114,11 +110,13 @@ class Pagination extends Component {
 
   render() {
     if (!this.totalRecords) return null;
-
     if (this.totalPages === 1) return null;
-
     const { currentPage } = this.state;
     const pages = this.fetchPageNumbers();
+    let startRec = (currentPage - 1) * this.pageLimit;
+    let endRec = startRec + this.pageLimit;
+    startRec = startRec+1;
+    endRec = this.totalRecords > endRec ? endRec : this.totalRecords;
 
     return (
       <Fragment>
@@ -172,16 +170,12 @@ class Pagination extends Component {
             })}
           </ul>
         </nav>
+        <div className="text-right">
+          <p>Showing {startRec} - {endRec} of {this.totalRecords}</p>
+        </div>
       </Fragment>
     );
   }
 }
-
-// Pagination.propTypes = {
-//   totalRecords: PropTypes.number.isRequired,
-//   pageLimit: PropTypes.number,
-//   pageNeighbours: PropTypes.number,
-//   onPageChanged: PropTypes.func
-// };
 
 export default Pagination;
