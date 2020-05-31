@@ -6,7 +6,7 @@ function ViewCategory(props) {
         <div className="pl-3 pr-3">
             <dl className="dl-horizontal">
               <dt>Category Id</dt>
-              <dd>{props.category.id}</dd>
+              <dd>{props.category._id}</dd>
               <dt>Category Name</dt>
               <dd>{props.category.name}</dd>
               <dt>Description</dt>

@@ -7,7 +7,7 @@ function ViewCategory(props) {
             <p>Are you sure you want to delete this Record?</p>
             <dl className="dl-horizontal">
               <dt>Category Id</dt>
-              <dd>{props.category.id}</dd>
+              <dd>{props.category._id}</dd>
               <dt>Category Name</dt>
               <dd>{props.category.name}</dd>
             </dl>

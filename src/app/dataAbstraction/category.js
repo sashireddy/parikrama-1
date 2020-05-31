@@ -46,7 +46,6 @@ export const getCategoriesData = params => {
         }
         if(categoryConf.CACHING){
             getCurrentStateData(params);
-            categories.totalRecords = cachedData.length;
         } else {
             // Need to resolve all params using the API respose e.g
             // categories.totalRecords = res.totalRecords;
@@ -62,8 +61,7 @@ export const getCategoriesData = params => {
 export const addCategoryData = data => {
     return new Promise(async (resolve, reject) => {
         if(categoryConf.CACHING){
-            let id = Math.max.apply(Math, cachedData.map(item => item.id));
-            data.id = ++id;
+            data._id = create_UUID();
             cachedData = [
                 ...cachedData,
                 data
@@ -98,7 +96,7 @@ export const updateCategoryData = data => {
     return new Promise(async (resolve, reject) => {
         if(categoryConf.CACHING){
             cachedData = cachedData.map(item => {
-                if(item.id === data.id) {
+                if(item._id === data._id) {
                     return {
                         ...item,
                         ...data
@@ -137,7 +135,7 @@ export const deleteCategoryData = data => {
     return new Promise(async (resolve, reject) => {
         if(categoryConf.CACHING){
             cachedData = cachedData.filter(item => {
-                if(item.id === data.id) {
+                if(item._id === data._id) {
                     return false;
                 }
                 return true;
@@ -171,18 +169,47 @@ export const deleteCategoryData = data => {
 const getCurrentStateData = params => {
     // Need to implement search and sort functionality here
     // After search total records may vary, reset pagination to 1st page.
-    let currentPage = validateCurrentPage(params);
+    let records = filterData(params);
+    let currentPage = validateCurrentPage(params, records);
+    categories.totalRecords = records.length;
     const offset = (currentPage - 1) * params.pageLimit;
-    categories.data = cachedData.slice(offset, offset + params.pageLimit);
+    categories.data = records.slice(offset, offset + params.pageLimit);
     categories.search = params.search;
     categories.sort = params.sort;
     categories.currentPage = currentPage;
 }
 
-const validateCurrentPage = params => {
+// Validate current page, Might change due to delete, search operation
+// This is only required for the cached data
+const validateCurrentPage = (params, records) => {
     const offset = (params.currentPage - 1) * params.pageLimit;
-    if(offset >= cachedData.length && params.currentPage > 1){
-        return params.currentPage - 1;
+    if(offset >= records.length && params.currentPage > 1){
+        // Set to last page.
+        return Math.ceil(records.length / params.pageLimit);
     }
     return params.currentPage;
 }
+
+// Need to filter and sort the data
+const filterData = params => {
+    // More complex search need to handle as needed
+    let searchText = params.search.name && params.search.name.toLowerCase();
+    if(searchText) {
+        return cachedData.filter(item => item.name.toLowerCase().includes(searchText));
+    }
+    return cachedData;
+}
+
+// Used locally for demonstration
+const create_UUID = () => {
+    let dt = new Date().getTime();
+    const uuid = "xxxxxxxxxxxx4xxxyxxx".replace(/[xy]/g, function(c) {
+        const r = (dt + Math.random()*16)%16 | 0;
+        dt = Math.floor(dt/16);
+        // eslint-disable-next-line
+        return (c==='x' ? r :(r&0x3|0x8)).toString(16);
+    });
+    return uuid;
+}
+
+console.log(create_UUID());

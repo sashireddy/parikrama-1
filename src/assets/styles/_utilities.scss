@@ -219,7 +219,7 @@ small {
   width: 3px;
 }
 @media (min-width: 992px) {
-  .modal-lg, 
+  .modal-lg,
   .modal-xl {
       max-width: 100%;
   }
@@ -242,5 +242,16 @@ small {
 
   &.away {
     border-color: theme-color(warning);
+  }
+}
+
+.table-responsive {
+  .form-inline {
+    .form-control {
+      height: 2rem;
+    }
+    .search-btn {
+      padding: .5rem 1rem;
+    }
   }
 }
