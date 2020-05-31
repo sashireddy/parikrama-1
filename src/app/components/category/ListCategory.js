@@ -75,7 +75,6 @@ class ListCategory extends Component {
     }
 
     handleChange = evt => {
-        console.log(evt.target.dataset.field, evt.target.value);
         this.setState({
             search: {
                 [evt.target.dataset.field]: evt.target.value

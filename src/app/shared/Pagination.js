@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from "react";
+import React, { PureComponent, Fragment } from "react";
 
 const LEFT_PAGE = "LEFT";
 const RIGHT_PAGE = "RIGHT";
@@ -15,7 +15,7 @@ const range = (from, to, step = 1) => {
   return range;
 };
 
-class Pagination extends Component {
+class Pagination extends PureComponent {
   constructor(props) {
     super(props);
     const { totalRecords = null, pageLimit = 30, pageNeighbours = 0 } = props;
