@@ -1,27 +1,35 @@
-import axios from 'axios';
 
-import {CATEGORY_LOADING, GET_CATEGORIES } from './types';
+
+import {CATEGORY_LOADING, GET_CATEGORIES, CATEGORY_PAGINATE, CATEGORY_LOAD_ERROR} from './types';
+import {getCategoriesData} from "../dataAbstraction/category";
 
 // Get categories
-export const getCategories = () => async dispatch => {
+export const getCategories = data => async dispatch => {
     dispatch(setCategoryLoading());
     try{
-        const res = await axios.get('/data/categories.json');
+        const categories = await getCategoriesData(data);
         dispatch({
             type: GET_CATEGORIES,
-            payload: res.data
+            payload: categories
         });
     } catch(err){
         dispatch({
-            type: GET_CATEGORIES,
+            type: CATEGORY_LOAD_ERROR,
             payload: {}
         });
     }
 }
 
-// Profile loading
+// Category loading
 export const setCategoryLoading = () => {
     return {
         type: CATEGORY_LOADING
+    }
+}
+
+export const paginate = params => {
+    return {
+        type: CATEGORY_PAGINATE,
+        payload: params
     }
 }

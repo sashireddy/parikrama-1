@@ -28,6 +28,8 @@ const BlankPage = lazy(() => import('./user-pages/BlankPage'));
 
 const ListCategoty = lazy(() => import('./components/category/ListCategory'));
 const Reports = lazy(()=> import('./pages/reports/index'))
+const ViewCategory = lazy(() => import('./components/category/ViewCategory'))
+const ListUsers = lazy(()=> import('./pages/ListUsers'))
 
 class AppRoutes extends Component {
   render () {
@@ -45,7 +47,8 @@ class AppRoutes extends Component {
           <Route path="/tables/basic-table" component={ BasicTable } />
 
           <Route path="/category/list-category" component={ ListCategoty } />
-
+          <Route path="/category/:id" component={ ViewCategory } />
+          <Route path="/users" component={ ListUsers } />
           <Route path="/icons/font-awesome" component={ FontAwesome } />
 
           <Route path="/charts/chart-js" component={ ChartJs } />

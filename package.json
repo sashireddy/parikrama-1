@@ -20,6 +20,7 @@
     "react-beautiful-dnd": "^11.0.5",
     "react-bootstrap": "^1.0.1",
     "react-bootstrap-editable": "^0.5.3",
+    "react-bootstrap-typeahead": "^5.0.0-rc.1",
     "react-chartjs-2": "^2.9.0",
     "react-collapse": "^5.0.1",
     "react-datepicker": "^2.16.0",

@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import {Form,Dropdown, Row, Col,Card,} from 'react-bootstrap'
+import { Typeahead } from 'react-bootstrap-typeahead'
 import { Doughnut } from 'react-chartjs-2';
 import DatePicker from 'react-datepicker'
 const branches = {
@@ -116,22 +117,30 @@ const dataToGraphData = (inventory=SummaryData) => {
     console.log(data)
     return data
 }
-const CustomDropDown = (props) =>{
-
+const CustomDropDown = props => {
     return (
-        <Dropdown>
-            <Dropdown.Toggle variant="btn btn-primary" id="dropdownMenuButton1">
-                Select {props.info.headerInfo}
-            </Dropdown.Toggle>
-            <Dropdown.Menu>
-                <Dropdown.Header>{props.info.headerInfo}</Dropdown.Header>
-                {props.info.options.map((branch)=> {
-                        return <Dropdown.Item>{branch}</Dropdown.Item>
-                })}
-            </Dropdown.Menu>
-        </Dropdown>
+        <Typeahead 
+            key='1'
+            options={props.info.options}
+            onChange={(...data)=>console.log(...data)}
+        />
     )
 }
+// const CustomDropDown = (props) =>{
+//     return (
+//         <Dropdown>
+//             <Dropdown.Toggle variant="btn btn-primary" id="dropdownMenuButton1">
+//                 Select {props.info.headerInfo}
+//             </Dropdown.Toggle>
+//             <Dropdown.Menu>
+//                 <Dropdown.Header>{props.info.headerInfo}</Dropdown.Header>
+//                 {props.info.options.map((branch)=> {
+//                         return <Dropdown.Item>{branch}</Dropdown.Item>
+//                 })}
+//             </Dropdown.Menu>
+//         </Dropdown>
+//     )
+// }
 const Reports = () => {
     const [view,setView] = useState(summary)
     const [transactionList , setTransactionList] = useState(transactions)
