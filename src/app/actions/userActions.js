@@ -1,6 +1,6 @@
 
 
-import { GET_USERS,USERS_LOADING,} from './types';
+import { GET_USERS,USERS_LOADING,FILTER_USERS} from './types';
 import {getUserData} from "../dataAbstraction/user";
 
 // Get categories
@@ -19,6 +19,19 @@ export const getUsers = data => async dispatch => {
         //     payload: {}
         // });
     }
+}
+
+export const filterUsers = (filter,users=[]) => async dispatch => {
+    const filteredUsers = users.filter(user=>{
+        return user.name.includes(filter)
+    })
+    console.log(filteredUsers)
+    console.log('action')
+    dispatch({
+        type: FILTER_USERS,
+        filter,
+        filteredUsers
+    })
 }
 
 // Category loading

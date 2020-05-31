@@ -1,16 +1,19 @@
 import config from "../constants/config";
-import {GET_USERS,USERS_LOADING} from "../actions/types";
+import {GET_USERS,FILTER_USERS} from "../actions/types";
 
 const initialState = {
+    filteredUsers : [],
     currentUsers:[],
     users: [],
     currentPage: 1,
     pageLimit: config.PAGINATION.PAGE_LIMIT,
     totalRecords: 0,
-    loading: true
+    loading: true,
+    nameFilter: ''
 }
 
 export default function(state = initialState, action){
+    console.log('reducer user')
     switch(action.type){
         case GET_USERS:
             console.log('here',action)
@@ -24,6 +27,14 @@ export default function(state = initialState, action){
             }
             console.log(returnState)
             return returnState
+        case FILTER_USERS:
+            return {
+                ...state,
+                nameFilter : action.filter,
+                filteredUsers : action.filteredUsers,
+                currentUsers:getCurrentCategories(action.filteredUsers,1,10),
+
+            }
         // case GET_CATEGORIES:
         //     let categories = action.payload;
         //     let totalRecords = categories.length;

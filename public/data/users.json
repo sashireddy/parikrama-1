@@ -1,7 +1,7 @@
 [
-    { "userId":"1", "user":"sashi-1" , "branch":"bellandur" , "mobileNumber": 9848022919, "email":"pvsashi123@gmail.com" },
-    { "userId":"2", "user":"sashi-2" , "branch":"bellandur" , "mobileNumber": 9848022919, "email":"pvsashi123@gmail.com" },
-    { "userId":"3", "user":"sashi-3" , "branch":"bellandur" , "mobileNumber": 9848022919, "email":"pvsashi123@gmail.com" },
-    { "userId":"4", "user":"sashi-4" , "branch":"bellandur" , "mobileNumber": 9848022919, "email":"pvsashi123@gmail.com" },
-    { "userId":"5", "user":"sashi-5" , "branch":"bellandur" , "mobileNumber": 9848022919, "email":"pvsashi123@gmail.com" }
+    { "userId":"1", "name":"sashi-1" , "branch":"bellandur" , "mobileNumber": 9848022919, "email":"pvsashi123@gmail.com" },
+    { "userId":"2", "name":"sashi-2" , "branch":"bellandur" , "mobileNumber": 9848022919, "email":"pvsashi123@gmail.com" },
+    { "userId":"3", "name":"sashi-3" , "branch":"bellandur" , "mobileNumber": 9848022919, "email":"pvsashi123@gmail.com" },
+    { "userId":"4", "name":"sashi-4" , "branch":"bellandur" , "mobileNumber": 9848022919, "email":"pvsashi123@gmail.com" },
+    { "userId":"5", "name":"sashi-5" , "branch":"bellandur" , "mobileNumber": 9848022919, "email":"pvsashi123@gmail.com" }
 ]

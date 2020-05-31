@@ -2,9 +2,10 @@ import React, { Component } from "react";
 import {connect} from "react-redux";
 import {Link} from "react-router-dom";
 // import {} from 'react-bootstrap-typeahead'
-import {getUsers} from "../../actions/userActions";
+import {getUsers,filterUsers} from "../../actions/userActions";
 import Spinner from "../../shared/Spinner";
 import Pagination from "../../shared/Pagination";
+import {Form} from 'react-bootstrap'
 
 const UserRowRender = props => {
     return (
@@ -65,6 +66,13 @@ class ListUsers extends Component {
               <div className="card-body">
                 <h4 className="card-title">Category Listing</h4>
                 <buton className="btn btn-primary">add user</buton>
+                <Form.Group className="row">
+                  <label htmlFor="exampleInputUsername2" className="col-sm-3 col-form-label">Email</label>
+                  <div className="col-sm-9">
+                    <Form.Control type="text" className="form-control" id="exampleInputUsername2" placeholder="Username"
+                     onChange={(e)=>this.props.filterUsers(e.target.value,this.props.users)} />
+                  </div>
+                </Form.Group>
                 {this.props.loading ? <Spinner /> :
                   <React.Fragment>
                     <div className="table-responsive">
@@ -77,9 +85,9 @@ class ListUsers extends Component {
                           </tr>
                         </thead>
                         <tbody>
-                            {this.props.users.map((user,idx)=>{
+                            {this.props.currentUsers.map((user,idx)=>{
                               return(<tr>
-                                <td>{user.user}</td>
+                                <td>{user.name}</td>
                                 <td>{user.branch}</td>
                                 <td>
                                   <nav className="text-center">
@@ -123,6 +131,8 @@ class ListUsers extends Component {
 }
 
 const mapStateToProps = state => ({
+    currentUsers: state.user.currentUsers,
+    filter : state.user.nameFilter,
     users: state.user.users || [],
     pageLimit: state.user.pageLimit,
     currentPage: state.user.currentPage || 1,
@@ -131,6 +141,7 @@ const mapStateToProps = state => ({
   })
   const mapActionToProps = {
     getUsers,
+    filterUsers
   };
 
 export default connect(mapStateToProps, mapActionToProps)(ListUsers);
