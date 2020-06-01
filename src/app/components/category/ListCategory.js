@@ -38,7 +38,10 @@ class ListCategory extends Component {
     }
 
     componentDidMount(){
-        this.loadData();
+        this.setState(
+            {currentPage: this.props.currentPage},
+            this.loadData
+        );
     }
 
     onPageChanged = data => {
@@ -79,7 +82,7 @@ class ListCategory extends Component {
             search: {
                 [evt.target.dataset.field]: evt.target.value
             }
-        });
+        }, this.loadData);
     }
 
     render() {
@@ -109,22 +112,24 @@ class ListCategory extends Component {
                     <div className="col-lg-12 grid-margin stretch-card">
                         <div className="card">
                             <div className="card-body">
+                                <div className="table-responsive">
+                                    <Form className="form-inline justify-content-end" onSubmit={this.onSearch}>
+                                        <Form.Group>
+                                            <div className="input-group">
+                                            <Form.Control type="text" name="search" data-field="name" onChange={this.handleChange} value={this.state.search.name} className="form-control" placeholder="Search Category" aria-label="Search Category"/>
+                                                <div className="input-group-append">
+                                                <button className="btn btn-sm btn-primary" type="submit">
+                                                    <i className="fa fa-search"></i>
+                                                </button>
+                                                </div>
+                                            </div>
+                                        </Form.Group>
+                                        <Button onClick={() => this.openActionMaodal(null, "add")} className="btn btn-primary ml-2 search-btn">Add Category</Button>
+                                    </Form>
+                                </div>
                                 {this.props.loading ? ( <Spinner />) : (
                                     <React.Fragment>
                                         <div className="table-responsive">
-                                            <Form className="form-inline justify-content-end" onSubmit={this.onSearch}>
-                                                <Form.Group>
-                                                    <div className="input-group">
-                                                    <Form.Control type="text" name="search" data-field="name" onChange={this.handleChange} value={this.state.search.name} className="form-control" placeholder="Search Category" aria-label="Search Category"/>
-                                                        <div className="input-group-append">
-                                                        <button className="btn btn-sm btn-primary" type="submit">
-                                                            <i className="fa fa-search"></i>
-                                                        </button>
-                                                        </div>
-                                                    </div>
-                                                </Form.Group>
-                                                <Button onClick={() => this.openActionMaodal(null, "add")} className="btn btn-primary ml-2 search-btn">Add Category</Button>
-                                            </Form>
                                             <table className="table table-striped table-hover">
                                                 <thead>
                                                 <tr>
