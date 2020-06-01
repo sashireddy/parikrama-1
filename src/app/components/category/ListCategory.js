@@ -39,7 +39,10 @@ class ListCategory extends Component {
 
     componentDidMount(){
         this.setState(
-            {currentPage: this.props.currentPage},
+            {
+                currentPage: this.props.currentPage,
+                search: this.props.search
+            },
             this.loadData
         );
     }
