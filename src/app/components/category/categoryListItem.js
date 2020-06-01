@@ -4,9 +4,11 @@ import {Button} from 'react-bootstrap';
 export default props => {
   return (
     <tr>
-        <td>{props.category.id}</td>
+        <td className="d-none d-sm-table-cell">{props.category._id}</td>
         <td>{props.category.name}</td>
-        <td className="d-none d-sm-table-cell">{props.category.description}</td>
+        <td className="d-none d-sm-table-cell">
+          <div className="text-truncate">{props.category.description}</div>
+        </td>
         <td>
           <nav className="text-center">
             <Button className="btn btn-primary" onClick={() => props.openActionMaodal(props.category, "view")}>

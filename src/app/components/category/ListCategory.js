@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import {connect} from "react-redux";
 import {Link} from "react-router-dom";
-import {Button} from "react-bootstrap";
+import {Button, Form} from "react-bootstrap";
 
 import * as categoryActions from "../../actions/categoryActions";
 import CategoryListItem from "./CategoryListItem";
@@ -18,28 +18,34 @@ class ListCategory extends Component {
     constructor(){
         super()
         this.state = {
-        showModal: false,
-        currentCategory: null,
-        actionType: null
+            showModal: false,
+            currentCategory: null,
+            actionType: null,
+            search: {
+                "name": ""
+            },
+            currentPage: 1
         }
     }
 
-    componentDidMount(){
+    loadData() {
         const params = {
-        "currentPage": this.props.currentPage,
-        "pageLimit": this.props.pageLimit,
-        "search": ""
+            "currentPage": this.state.currentPage,
+            "pageLimit": this.props.pageLimit,
+            "search": this.state.search
         };
         this.props.getData(params);
     }
 
+    componentDidMount(){
+        this.loadData();
+    }
+
     onPageChanged = data => {
-        const params = {
-        "currentPage": data.currentPage,
-        "pageLimit": this.props.pageLimit,
-        "search": ""
-        };
-        this.props.getData(params);
+        this.setState(
+            {currentPage: data.currentPage},
+            this.loadData
+        );
     }
 
     openActionMaodal = (currentCategory, actionType) => {
@@ -63,12 +69,25 @@ class ListCategory extends Component {
         this.closeModal();
     }
 
+    onSearch = evt => {
+        evt.preventDefault();
+        this.loadData();
+    }
+
+    handleChange = evt => {
+        this.setState({
+            search: {
+                [evt.target.dataset.field]: evt.target.value
+            }
+        });
+    }
+
     render() {
         let categorisContent = null;
         if(this.props.loading){
             categorisContent = <Spinner />
         } else {
-            categorisContent = this.props.data && this.props.data.map(category => <CategoryListItem category={category} key={category.id} openActionMaodal={this.openActionMaodal} />);
+            categorisContent = this.props.data && this.props.data.map(category => <CategoryListItem category={category} key={category._id} openActionMaodal={this.openActionMaodal} />);
         }
 
         return (
@@ -93,13 +112,23 @@ class ListCategory extends Component {
                                 {this.props.loading ? ( <Spinner />) : (
                                     <React.Fragment>
                                         <div className="table-responsive">
-                                            <div className="table-title">
-                                                <Button onClick={() => this.openActionMaodal(null, "add")} className="btn btn-primary ml-2">Add Category</Button>
-                                            </div>
+                                            <Form className="form-inline justify-content-end" onSubmit={this.onSearch}>
+                                                <Form.Group>
+                                                    <div className="input-group">
+                                                    <Form.Control type="text" name="search" data-field="name" onChange={this.handleChange} value={this.state.search.name} className="form-control" placeholder="Search Category" aria-label="Search Category"/>
+                                                        <div className="input-group-append">
+                                                        <button className="btn btn-sm btn-primary" type="submit">
+                                                            <i className="fa fa-search"></i>
+                                                        </button>
+                                                        </div>
+                                                    </div>
+                                                </Form.Group>
+                                                <Button onClick={() => this.openActionMaodal(null, "add")} className="btn btn-primary ml-2 search-btn">Add Category</Button>
+                                            </Form>
                                             <table className="table table-striped table-hover">
                                                 <thead>
                                                 <tr>
-                                                    <th> Category Id </th>
+                                                    <th className="d-none d-sm-table-cell"> Category Id </th>
                                                     <th> Category Name </th>
                                                     <th className="d-none d-sm-table-cell"> Description </th>
                                                     <th className="text-center"> Actions </th>
