@@ -7,6 +7,10 @@ const initialState = {
     pageLimit: config.PAGINATION.PAGE_LIMIT,
     totalRecords: 1,
     search: {},
+    sort: {
+        key: "name",
+        direction: "asc"
+    },
     loading: false,
     flashMessage: {}
 }

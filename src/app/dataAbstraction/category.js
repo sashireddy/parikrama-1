@@ -17,15 +17,20 @@ const categories = {
     totalRecords: 1,
     currentPage: 1,
     data: null,
-    search: "",
+    search: {},
     sort: {}
 };
+
+
+// Valid Sorting keys
+const sortableColumns = ["name"]
 
 // All the method will return promise, which will hold good for doing
 // async operations, we don't have to make changes for the cached vs live data
 // State params passed which will be used to pass to live api or
 // for static data to get proper data as per the params
 export const getCategoriesData = params => {
+    console.log(params);
     return new Promise(async (resolve, reject) => {
         if(cachedData === null){
             // Logic can be applied to generate URL using params
@@ -167,6 +172,7 @@ export const deleteCategoryData = data => {
 
 
 const getCurrentStateData = params => {
+    console.log(params);
     // Need to implement search and sort functionality here
     // After search total records may vary, reset pagination to 1st page.
     let records = filterData(params);
@@ -193,11 +199,15 @@ const validateCurrentPage = (params, records) => {
 // Need to filter and sort the data
 const filterData = params => {
     // More complex search need to handle as needed
+    let result = cachedData;
     let searchText = params.search.name && params.search.name.toLowerCase();
     if(searchText) {
-        return cachedData.filter(item => item.name.toLowerCase().includes(searchText));
+        result = cachedData.filter(item => item.name.toLowerCase().includes(searchText));
     }
-    return cachedData;
+    if(sortableColumns.includes(params.sort.key)) {
+        return result.sort(getSortFunction(params.sort));
+    }
+    return result;
 }
 
 // Used locally for demonstration
@@ -210,4 +220,28 @@ const create_UUID = () => {
         return (c==='x' ? r :(r&0x3|0x8)).toString(16);
     });
     return uuid;
+}
+
+// Function currying to return dynamic compare function
+const getSortFunction = sort => {
+    let sortOrder = sort.direction || "asc";
+    if(sortOrder === "asc"){
+        return (a, b) => {
+            if(a[sort.key] > b[sort.key]){
+                return 1;
+            } else if(a[sort.key] < b[sort.key]) {
+                return -1;
+            }
+            return 0;
+        }
+    } else {
+        return (a, b) => {
+            if(a[sort.key] > b[sort.key]){
+                return -1;
+            } else if(a[sort.key] < b[sort.key]) {
+                return 1;
+            }
+            return 0;
+        }
+    }
 }

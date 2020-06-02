@@ -21,6 +21,7 @@ class ListCategory extends Component {
             showModal: false,
             currentCategory: null,
             actionType: null,
+            sort: {},
             search: {
                 "name": ""
             },
@@ -32,7 +33,8 @@ class ListCategory extends Component {
         const params = {
             "currentPage": this.state.currentPage,
             "pageLimit": this.props.pageLimit,
-            "search": this.state.search
+            "search": this.state.search,
+            "sort": this.state.sort
         };
         this.props.getData(params);
     }
@@ -41,7 +43,8 @@ class ListCategory extends Component {
         this.setState(
             {
                 currentPage: this.props.currentPage,
-                search: this.props.search
+                search: this.props.search,
+                sort: this.props.sort
             },
             this.loadData
         );
@@ -88,6 +91,15 @@ class ListCategory extends Component {
         }, this.loadData);
     }
 
+    applySort = column => {
+        this.setState({
+            sort: {
+                key: column,
+                direction: "asc" === this.state.sort.direction ? "desc" : "asc"
+            }
+        }, this.loadData);
+    }
+
     render() {
         let categorisContent = null;
         if(this.props.loading){
@@ -119,7 +131,7 @@ class ListCategory extends Component {
                                     <Form className="form-inline justify-content-end" onSubmit={this.onSearch}>
                                         <Form.Group>
                                             <div className="input-group">
-                                            <Form.Control type="text" name="search" data-field="name" onChange={this.handleChange} value={this.state.search.name} className="form-control" placeholder="Search Category" aria-label="Search Category"/>
+                                            <Form.Control type="text" name="search" data-field="name" onChange={this.handleChange} value={this.state.search.name || ""} className="form-control" placeholder="Search Category" aria-label="Search Category"/>
                                                 <div className="input-group-append">
                                                 <button className="btn btn-sm btn-primary" type="submit">
                                                     <i className="fa fa-search"></i>
@@ -137,7 +149,7 @@ class ListCategory extends Component {
                                                 <thead>
                                                 <tr>
                                                     <th className="d-none d-sm-table-cell"> Category Id </th>
-                                                    <th> Category Name </th>
+                                                    <th className={"sortable " + this.state.sort.direction} onClick={() => this.applySort("name")}> Category Name </th>
                                                     <th className="d-none d-sm-table-cell"> Description </th>
                                                     <th className="text-center"> Actions </th>
                                                 </tr>
