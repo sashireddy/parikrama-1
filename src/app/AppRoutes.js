@@ -30,7 +30,7 @@ const ListCategoty = lazy(() => import('./components/category/ListCategory'));
 const Reports = lazy(()=> import('./pages/reports/index'))
 const ViewCategory = lazy(() => import('./components/category/ViewCategory'))
 const ListUsers = lazy(()=> import('./pages/ListUsers'))
-
+const Skeleton = lazy(()=> import('./pages/CrudSkeleton/Category'))
 class AppRoutes extends Component {
   render () {
     return (
@@ -48,7 +48,7 @@ class AppRoutes extends Component {
 
           <Route path="/category/list-category" component={ ListCategoty } />
           <Route path="/category/:id" component={ ViewCategory } />
-          <Route path="/users" component={ ListUsers } />
+          <Route path="/users" component={ Skeleton } />
           <Route path="/icons/font-awesome" component={ FontAwesome } />
 
           <Route path="/charts/chart-js" component={ ChartJs } />

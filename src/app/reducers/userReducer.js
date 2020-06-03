@@ -13,10 +13,8 @@ const initialState = {
 }
 
 export default function(state = initialState, action){
-    console.log('reducer user')
     switch(action.type){
         case GET_USERS:
-            console.log('here',action)
             const userData = action.payload;
             const returnState = {
                 ...state,
@@ -25,7 +23,6 @@ export default function(state = initialState, action){
                 totalRecords: userData.length,
                 loading :false
             }
-            console.log(returnState)
             return returnState
         case FILTER_USERS:
             return {

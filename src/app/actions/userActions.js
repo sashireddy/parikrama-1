@@ -8,7 +8,6 @@ export const getUsers = data => async dispatch => {
     // dispatch(setUserLoadingAction());
     try{
         const users = await getUserData(data);
-        // console.log('userData',users)
         dispatch({
             type: GET_USERS,
             payload:users 
@@ -25,8 +24,6 @@ export const filterUsers = (filter,users=[]) => async dispatch => {
     const filteredUsers = users.filter(user=>{
         return user.name.includes(filter)
     })
-    console.log(filteredUsers)
-    console.log('action')
     dispatch({
         type: FILTER_USERS,
         filter,

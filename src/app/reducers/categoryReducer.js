@@ -14,23 +14,47 @@ const initialState = {
     loading: false,
     flashMessage: {}
 }
-
-export default function(state = initialState, action){
-    switch(action.type){
-        case CATEGORY_LOADING:
-            return {
-                ...state,
-                loading: true
-            }
-
-        case GET_CATEGORIES:
-            return {
-                ...state,
-                ...action.payload,
-                loading: false
-            }
-
-        default:
-            return state;
+const reducer = (pageId) => {
+    const getData = 'GET_'+pageId
+    // const loadError = pageId+'_LOAD_ERROR'
+    const loading = pageId+'_LOADING'
+    return function(state = initialState, action){
+        switch(action.type){
+            case loading:
+                return {
+                    ...state,
+                    loading: true
+                }
+    
+            case getData:
+                return {
+                    ...state,
+                    ...action.payload,
+                    loading: false
+                }
+    
+            default:
+                return state;
+        }
     }
 }
+// export default function(state = initialState, action){
+//     switch(action.type){
+//         case CATEGORY_LOADING:
+//             return {
+//                 ...state,
+//                 loading: true
+//             }
+
+//         case GET_CATEGORIES:
+//             return {
+//                 ...state,
+//                 ...action.payload,
+//                 loading: false
+//             }
+
+//         default:
+//             return state;
+//     }
+// }
+export default reducer
