@@ -21,9 +21,17 @@ class CategoryForm extends React.Component {
         });
     }
 
-    onSubmit = evt => {
-        evt.preventDefault();
-        this.props.onSubmit({...this.state});
+    onSubmit = event => {
+        const form = event.currentTarget;
+        if (form.checkValidity() === false) {
+            event.preventDefault();
+            event.stopPropagation();
+        }else {
+            event.preventDefault();
+            this.props.onSubmit({...this.state});
+        }
+
+        
     }
 
     render() {
@@ -32,11 +40,13 @@ class CategoryForm extends React.Component {
                 <div className="pl-3 pr-3">
                     <Form.Group>
                         <label htmlFor="exampleInputEmail1">Category Name</label>
-                        <Form.Control type="text" className="form-control" id="categoryName" name="name" placeholder="Category Name" value={this.state.name} onChange={this.handleChange} />
+                        <Form.Control required type="text" className="form-control" id="categoryName" name="name" placeholder="Category Name" value={this.state.name} onChange={this.handleChange} />
+                        <Form.Control.Feedback type="invalid">Please choose a category name</Form.Control.Feedback>
                     </Form.Group>
                     <Form.Group>
                         <label htmlFor="exampleInputEmail1">Category Description</label>
                         <Form.Control type="text" className="form-control" id="categoryDesc" name="description" placeholder="Category Description" value={this.state.description} onChange={this.handleChange} />
+                        <Form.Control.Feedback type="invalid">Provide description of the category</Form.Control.Feedback>
                     </Form.Group>
                 </div>
                 <hr className="modal-footer-ruler" />

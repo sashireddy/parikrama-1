@@ -8,6 +8,16 @@ import AddCategory from "../../components/category/AddCategory";
 import DeleteCategory from "../../components/category/DeleteCategory";
 import {connect} from "react-redux";
 
+const mapStateToProps = state => ({
+    ...state['category']
+});
+
+const categoryActions=actions('CATEGORY')
+const mapActionToProps = {
+    ...categoryActions
+};
+const CategorySkeleton = connect(mapStateToProps, mapActionToProps)(Skeleton)
+
 export default class Category extends React.Component {
     
     render(){
@@ -44,17 +54,9 @@ export default class Category extends React.Component {
                     key : 'actions'
                 }
             ]
-            const mapStateToProps = state => ({
-                ...state['category']
-            });
-
-            const categoryActions=actions('CATEGORY')
-            const mapActionToProps = {
-                ...categoryActions
-            };
-            const Category = connect(mapStateToProps, mapActionToProps)(Skeleton)
+            
         return(
-            <Category content={{pageTitle:'Category'}} AddModal={AddCategory}
+            <CategorySkeleton key="CategoryView124" content={{pageTitle:'Category'}} AddModal={AddCategory}
              EditModal={EditCategory} ViewModal={ViewCategory} DeleteModal={DeleteCategory}
              tableRowRenderFunc ={CategoryListItem}
              headerArr = {headerArr} TableEntries getTitle={getTitle}/>
