@@ -26,16 +26,19 @@ const Register1 = lazy(() => import('./user-pages/Register'));
 
 const BlankPage = lazy(() => import('./user-pages/BlankPage'));
 
-const ListCategoty = lazy(() => import('./components/category/ListCategory'));
-const Reports = lazy(()=> import('./pages/reports/index'))
-const ViewCategory = lazy(() => import('./components/category/ViewCategory'))
-const ListUsers = lazy(()=> import('./pages/ListUsers'))
-const Skeleton = lazy(()=> import('./pages/CrudSkeleton/Category'))
+// const ListCategoty = lazy(() => import('./components/category/ListCategory'));
+const Reports = lazy(()=> import('./pages/reports'))
+// const ViewCategory = lazy(() => import('./components/category/ViewCategory'))
+// const ListUsers = lazy(()=> import('./pages/ListUsers'))
+// const Skeleton = lazy(()=> import('./pages/CrudSkeleton/Category'))
+const Category = lazy(()=> import('./pages/Category'))
+const Move = lazy(()=> import ('./pages/Move'))
 class AppRoutes extends Component {
   render () {
     return (
       <Suspense fallback={<Spinner/>}>
         <Switch>
+
           <Route exact path="/dashboard" component={ Dashboard } />
 
           <Route path="/basic-ui/buttons" component={ Buttons } />
@@ -45,10 +48,13 @@ class AppRoutes extends Component {
           <Route path="/form-Elements/basic-elements" component={ BasicElements } />
 
           <Route path="/tables/basic-table" component={ BasicTable } />
-
-          <Route path="/category/list-category" component={ ListCategoty } />
-          <Route path="/category/:id" component={ ViewCategory } />
-          <Route path="/users" component={ Skeleton } />
+        {/* {user.perm[cate] === true && */}
+        {/* <> */}
+          <Route path="/category/list-category" component={ Category } />
+          {/* <Route path="/category/:id" component={ ViewCategory } />  */}
+        {/* </> */}
+        {/* } */}
+          {/* <Route path="/users" component={ Skeleton } /> */}
           <Route path="/icons/font-awesome" component={ FontAwesome } />
 
           <Route path="/charts/chart-js" component={ ChartJs } />
@@ -64,6 +70,7 @@ class AppRoutes extends Component {
 
           <Route path="/reports" component ={ Reports } />
           <Redirect to="/dashboard" />
+          <Route path="/inventory/move" component={Move} />
         </Switch>
       </Suspense>
     );

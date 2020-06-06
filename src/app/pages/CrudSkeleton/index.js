@@ -15,11 +15,8 @@ class ListCategory extends Component {
             currentCategory: null,
             actionType: null,
             sort:{
-                assending:true,
-                attr : 'name'
             },
             search: {
-                "name": ""
             },
             currentPage: 1
         }
@@ -71,9 +68,6 @@ class ListCategory extends Component {
         evt.preventDefault();
         this.loadData();
     }
-    handleSortClick = attr => {
-
-    }
 
     handleChange = evt => {
         this.setState({
@@ -86,7 +80,7 @@ class ListCategory extends Component {
         this.setState({
             sort: {
                 key: column,
-                direction: (column === this.state.sort.key )? !this.state.sort.direction : "asc"
+                direction: "asc" === this.state.sort.direction ? "desc" : "asc"
             }
         }, this.loadData);
     }
@@ -97,6 +91,7 @@ class ListCategory extends Component {
     }
 
     render() {
+        // console.log(this.props)
         // console.log(this.state)
         const AddModal = this.props.AddModal
         const EditModal = this.props.EditModal
@@ -150,20 +145,15 @@ class ListCategory extends Component {
                                             <table className="table table-striped table-hover">
                                                 <thead>
                                                     <tr>
-                                                    {/* <th className="d-none d-sm-table-cell" onClick={()=>this.handleSortClick('_id')}> Category Id {this.getSortIcon('_id')} </th> */}
-                                                    {/* <th onClick={()=>this.handleSortClick('name')}> Category Name {this.getSortIcon('name')}</th> */}
                                                         {this.props.headerArr.map((entry,idx)=>{
-                                                            if(entry.sortable ){
+                                                            if(entry.sortable){
+                                                                const className = entry.key === this.state.sort.key ? "sortable " + this.state.sort.direction : "sortable"
                                                                 return (
-                                                                    <th onClick={()=>this.handleSortClick(entry.key)}>{entry.value}</th>
+                                                                    <th className = {className} onClick={()=>this.handleSortClick(entry.key)}>{entry.value}</th>
                                                                 )
                                                             }
                                                             return<th>{entry.value}</th>
                                                         })}
-                                                    {/* <th className="d-none d-sm-table-cell"> Category Id </th>
-                                                    <th> Category Name </th>
-                                                    <th className="d-none d-sm-table-cell"> Description </th>
-                                                    <th className="text-center"> Actions </th> */}
                                                     </tr>
                                                 </thead>
                                                 {this.props.loading && <Spinner />}

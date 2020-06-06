@@ -1,8 +1,10 @@
 import React, { useState } from 'react'
-import {Form,Dropdown, Row, Col,Card,} from 'react-bootstrap'
+import {Form, Row, Col,Card} from 'react-bootstrap'
+import {Link} from 'react-router-dom'
 import { Typeahead } from 'react-bootstrap-typeahead'
-import { Doughnut } from 'react-chartjs-2';
+// import { Doughnut } from 'react-chartjs-2';
 import DatePicker from 'react-datepicker'
+
 const branches = {
     headerInfo : 'Branch',
     options : ['Kormangala','Belanduru','Kharkhana']
@@ -56,67 +58,62 @@ const transactions = [
 const SummaryData = [
     createRandomSummaryRow(),createRandomSummaryRow(),createRandomSummaryRow(),createRandomSummaryRow(),createRandomSummaryRow(),createRandomSummaryRow()
 ]
-const sortBY = (list=[],getVal,type='number') => {
-    return list.sort((a,b) => {
-        return getVal(a) > getVal(b)
-    })
-}
-const usersDoughnutChartOptions = {
-    cutoutPercentage: 70,
-    animationEasing: "easeOutBounce",
-    animateRotate: true,
-    animateScale: false,
-    responsive: false,
-    maintainAspectRatio: true,
-    showScale: true,
-    legend: {
-      position : 'right',
-      display: true
-    },
-    layout: {
-      padding: {
-        left: 0,
-        right: 0,
-        top: 0,
-        bottom: 0
-      }
-    }
-  };
-const usersDoughnutChartData = {
-    datasets: [{
-      data: [80, 34, 100],
-      backgroundColor: [
-        "#19d895",
-        "#2196f3",
-        "#dde4eb"
-      ],
-      borderColor: [
-        "#19d895",
-        "#2196f3",
-        "#dde4eb"
-      ],
-    }],
-    labels: [
-      'Request',
-      'Email',
-    ]
-};
-const dataToGraphData = (inventory=SummaryData) => {
-    let data = {
-        datasets:[{
-            data : [],
-            backgroundColor:[],
-        }],
-        labels:[]
-    }
-    inventory.forEach((summary,idx) => {
-        data.datasets[0].data.push(idx)
-        data.datasets[0].backgroundColor.push('#'+Math.floor(Math.random()*16777215).toString(16))
-        data.labels.push(summary.Product)
-    })
-    console.log(data)
-    return data
-}
+// const usersDoughnutChartOptions = {
+//     cutoutPercentage: 70,
+//     animationEasing: "easeOutBounce",
+//     animateRotate: true,
+//     animateScale: false,
+//     responsive: false,
+//     maintainAspectRatio: true,
+//     showScale: true,
+//     legend: {
+//       position : 'right',
+//       display: true
+//     },
+//     layout: {
+//       padding: {
+//         left: 0,
+//         right: 0,
+//         top: 0,
+//         bottom: 0
+//       }
+//     }
+//   };
+// const usersDoughnutChartData = {
+//     datasets: [{
+//       data: [80, 34, 100],
+//       backgroundColor: [
+//         "#19d895",
+//         "#2196f3",
+//         "#dde4eb"
+//       ],
+//       borderColor: [
+//         "#19d895",
+//         "#2196f3",
+//         "#dde4eb"
+//       ],
+//     }],
+//     labels: [
+//       'Request',
+//       'Email',
+//     ]
+// };
+// const dataToGraphData = (inventory=SummaryData) => {
+//     let data = {
+//         datasets:[{
+//             data : [],
+//             backgroundColor:[],
+//         }],
+//         labels:[]
+//     }
+//     inventory.forEach((summary,idx) => {
+//         data.datasets[0].data.push(idx)
+//         data.datasets[0].backgroundColor.push('#'+Math.floor(Math.random()*16777215).toString(16))
+//         data.labels.push(summary.Product)
+//     })
+//     console.log(data)
+//     return data
+// }
 const CustomDropDown = props => {
     return (
         <Typeahead 
@@ -143,15 +140,36 @@ const CustomDropDown = props => {
 // }
 const Reports = () => {
     const [view,setView] = useState(summary)
-    const [transactionList , setTransactionList] = useState(transactions)
+    // const [transactionList , setTransactionList] = useState(transactions)
     console.log(view)
     return(
     <div>
+        <div className="page-header">
+                    <h3 className="page-title"> {'Reports'} </h3>
+                    <nav aria-label="breadcrumb">
+                        <ol className="breadcrumb">
+                            <li className="breadcrumb-item">
+                                <Link to="/">Dashboard</Link>
+                            </li>
+                            <li className="breadcrumb-item active" aria-current="page">
+                                {'Reports'}
+                            </li>
+                        </ol>
+                </nav>
+                </div>
         <Row>
         <Col className="col-12 grid-margin stretch-card">
             <div className="card card-statistics">
               <div className="card-body">
               <form className="forms-sample">
+                  <Row>
+                    <Col></Col>
+                    <Col></Col>
+                    <Col>
+                        <button className="btn btn-light">Reset Fliters</button>
+                    </Col>
+                  
+                  </Row>
                   <Row>
                     <Col>
                         <Form.Group>
@@ -174,18 +192,29 @@ const Reports = () => {
                 </Row>
                 <Row>
                     <Col>
-                        <Form.Group>
+                        <Form.Group className="flexColumn">
                             <label>Start Date</label>
-                            <DatePicker />
-                        </Form.Group>
-                        <Form.Group>
-                            <label>End Date</label>
-                            <DatePicker />
+                            <DatePicker 
+                             selected={new Date()}
+                             onChange={(...data)=>{
+                                console.log(...data)}}
+                             />
                         </Form.Group>
                     </Col>
+                    <Col>
+                        <Form.Group className="flexColumn">
+                            <label>End Date</label>
+                            <DatePicker 
+                             selected={new Date()}
+                             onChange={(...data)=>{console.log(...data)}}
+                            />
+                        </Form.Group>
+                    </Col>
+                    <Col>
+                        <button type="submit" className="btn btn-primary mr-2">Submit</button>
+                    </Col>
                   </Row>
-                  <button type="submit" className="btn btn-primary mr-2">Submit</button>
-                  <button className="btn btn-light">Cancel</button>
+                  
                 </form>
                </div>
             </div>
@@ -194,16 +223,17 @@ const Reports = () => {
         <Row>
             {view === summary && (
                 <>
-                <Card style={{}}>
+                {/* <Card style={{}}>
                     <Card.Body>
                         <Doughnut data={dataToGraphData(SummaryData)} options={usersDoughnutChartOptions}/>
                     </Card.Body>
-                </Card>
+                </Card> */}
                 <Card style={{width:'100%'}}>
-                <Card.Header>
+                {/* <Card.Header>
                     <h4>inventory summary report: {new Date().toLocaleDateString()} to {new Date().toLocaleDateString()}</h4>
-                    </Card.Header>
+                </Card.Header> */}
                 <Card.Body>
+                <h4>inventory summary report: {new Date().toLocaleDateString()} to {new Date().toLocaleDateString()}</h4>
                 <table className="table table-hover">
                     <thead>
                         <tr>
@@ -250,7 +280,7 @@ const Reports = () => {
                                 </tr>
                             </thead>
                             <tbody>
-                                {transactionList.map((transaction)=>{
+                                {transactions.map((transaction)=>{
                                     return <tr>
                                         <td>{transaction.date}</td>
                                         <td>{transaction.Category}</td>

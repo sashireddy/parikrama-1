@@ -22,8 +22,6 @@ const categories = {
 };
 
 
-// Valid Sorting keys
-const sortableColumns = ["name"]
 
 // All the method will return promise, which will hold good for doing
 // async operations, we don't have to make changes for the cached vs live data
@@ -204,7 +202,7 @@ const filterData = params => {
     if(searchText) {
         result = cachedData.filter(item => item.name.toLowerCase().includes(searchText));
     }
-    if(sortableColumns.includes(params.sort.key)) {
+    if(params.sort.key) {
         return result.sort(getSortFunction(params.sort));
     }
     return result;

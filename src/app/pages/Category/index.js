@@ -1,24 +1,24 @@
 import React from 'react'
-import Skeleton from './index'
-import CategoryListItem from "../../components/category/CategoryListItem";
-import {actions} from "../../actions/categoryActions";
-import ViewCategory from "../../components/category/ViewCategory";
-import EditCategory from "../../components/category/EditCategory";
-import AddCategory from "../../components/category/AddCategory";
-import DeleteCategory from "../../components/category/DeleteCategory";
+import Skeleton from '../CrudSkeleton/index'
+import CategoryListItem from "./CategoryListItem";
+import categoryActions from "../../actions/categoryActions";
+import ViewCategory from "./ViewCategory";
+import EditCategory from "./EditCategory";
+import AddCategory from "./AddCategory";
+import DeleteCategory from "./DeleteCategory";
 import {connect} from "react-redux";
 
 const mapStateToProps = state => ({
-    ...state['category']
+    ...state['CATEGORY']
 });
 
-const categoryActions=actions('CATEGORY')
+
 const mapActionToProps = {
     ...categoryActions
 };
 const CategorySkeleton = connect(mapStateToProps, mapActionToProps)(Skeleton)
 
-export default class Category extends React.Component {
+class Category extends React.Component {
     
     render(){
         const getTitle = (actionType) => {
@@ -56,10 +56,11 @@ export default class Category extends React.Component {
             ]
             
         return(
-            <CategorySkeleton key="CategoryView124" content={{pageTitle:'Category'}} AddModal={AddCategory}
+            <CategorySkeleton key="Category" content={{pageTitle:'Category'}} AddModal={AddCategory}
              EditModal={EditCategory} ViewModal={ViewCategory} DeleteModal={DeleteCategory}
              tableRowRenderFunc ={CategoryListItem}
-             headerArr = {headerArr} TableEntries getTitle={getTitle}/>
+             headerArr = {headerArr} getTitle={getTitle}/>
         )
     }
 }
+export default Category
