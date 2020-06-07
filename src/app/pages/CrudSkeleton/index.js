@@ -6,13 +6,13 @@ import Spinner from "../../shared/Spinner";
 import Pagination from "../../shared/Pagination";
 import Modal from "../../shared/Modal";
 
-class ListCategory extends Component {
+class CrudSkeleton extends Component {
 
     constructor(){
         super()
         this.state = {
             showModal: false,
-            currentCategory: null,
+            currentData: null,
             actionType: null,
             sort:{
             },
@@ -43,8 +43,8 @@ class ListCategory extends Component {
         );
     }
 
-    openActionMaodal = (currentCategory, actionType) => {
-        this.setState({currentCategory, showModal: true, actionType});
+    openActionMaodal = (currentData, actionType) => {
+        this.setState({currentData, showModal: true, actionType});
     }
 
     closeModal = () => {
@@ -60,7 +60,7 @@ class ListCategory extends Component {
     }
 
     deleteData = () => {
-        this.props.deleteData(this.state.currentCategory);
+        this.props.deleteData(this.state.currentData);
         this.closeModal();
     }
 
@@ -91,7 +91,7 @@ class ListCategory extends Component {
     }
 
     render() {
-        // console.log(this.props)
+        console.log(this.props)
         // console.log(this.state)
         const AddModal = this.props.AddModal
         const EditModal = this.props.EditModal
@@ -113,29 +113,33 @@ class ListCategory extends Component {
                         </ol>
                 </nav>
                 </div>
+                {this.props.children}
                 <div className="row">
                     <div className="col-lg-12 grid-margin stretch-card">
+
                         <div className="card">
                             <div className="card-body">
                                 {this.props.loading ? ( <Spinner />) : (
-                                    <React.Fragment>
+                                    <div>
                                         <div className="table-responsive">
                                             <Form className="form-inline justify-content-end" onSubmit={this.onSearch}>
                                                 <Form.Group>
                                                     <div className="input-group">
                                                 {this.props.headerArr.map((entry,idx)=>{
-                                                    if(!entry.searchable) return <></>
                                                     return(
-                                                        <>
-                                                        <Form.Control key={'Search'+entry.value} type="text" name="search" data-field="name"
-                                                         onChange={this.handleChange}
-                                                         className="form-control" placeholder={'Search'+entry.value} value={this.state.search[entry.value]} aria-label={'Search'+entry.value}/>
-                                                        <div className="input-group-append">
-                                                            <button className="btn btn-sm btn-primary" type="submit">
-                                                                <i className="fa fa-search"></i>
-                                                            </button>
+                                                        <div key={idx}>
+                                                            {entry.searchable && (
+                                                                <>
+                                                                <Form.Control key={'Search'+entry.value+'1'} type="text" name="search" data-field="name"
+                                                            onChange={this.handleChange}
+                                                            className="form-control" placeholder={'Search'+entry.value} value={this.state.search[entry.value]} aria-label={'Search'+entry.value}/>
+                                                            <div key={'Search'+entry.value+'2'} className="input-group-append">
+                                                                <button className="btn btn-sm btn-primary" type="submit">
+                                                                    <i className="fa fa-search"></i>
+                                                                </button>
+                                                            </div>
+                                                            </>)}
                                                         </div>
-                                                        </>
                                                     )
                                                 })}
                                                     </div>
@@ -149,21 +153,21 @@ class ListCategory extends Component {
                                                             if(entry.sortable){
                                                                 const className = entry.key === this.state.sort.key ? "sortable " + this.state.sort.direction : "sortable"
                                                                 return (
-                                                                    <th className = {className} onClick={()=>this.handleSortClick(entry.key)}>{entry.value}</th>
+                                                                    <th key={idx} className = {className} onClick={()=>this.handleSortClick(entry.key)}>{entry.value}</th>
                                                                 )
                                                             }
-                                                            return<th>{entry.value}</th>
+                                                            return<th key={idx}>{entry.value}</th>
                                                         })}
                                                     </tr>
                                                 </thead>
                                                 {this.props.loading && <Spinner />}
-                                                <tbody>{this.props.data && this.props.data.map((category)=>{
-                                                    return <TableRowFunc category={category} key={category._id} openActionMaodal={this.openActionMaodal} {...this.props}/>
+                                                <tbody>{this.props.data && this.props.data.map((row,idx)=>{
+                                                    return <TableRowFunc key={idx} data={row} openActionMaodal={this.openActionMaodal}/>
                                                 })}</tbody>
                                             </table>
                                         </div>
                                         {this.props.data.length && (
-                                            <div className="mt-4">
+                                            <div className="mt-4" key="7893628472">
                                                 <Pagination
                                                 totalRecords={this.props.totalRecords}
                                                 currentPage={this.props.currentPage}
@@ -173,7 +177,7 @@ class ListCategory extends Component {
                                                 />
                                             </div>
                                         )}
-                                    </React.Fragment>
+                                    </div>
                                 )}
                             </div>
                         </div>
@@ -191,13 +195,13 @@ class ListCategory extends Component {
                             )}
                             {this.state.actionType === "view" && (
                                 <ViewModal
-                                category={this.state.currentCategory}
+                                data={this.state.currentData}
                                 closeModal={this.closeModal}
                                 />
                             )}
                             {this.state.actionType === "edit" && (
                                 <EditModal
-                                category={this.state.currentCategory}
+                                data={this.state.currentData}
                                 closeModal={this.closeModal}
                                 updateData={this.updateData}
                                 /> 
@@ -205,7 +209,7 @@ class ListCategory extends Component {
                             {this.state.actionType === "del" && (
                                 
                                  <DeleteModal
-                                category={this.state.currentCategory}
+                                data={this.state.currentData}
                                 closeModal={this.closeModal}
                                 deleteData={this.deleteData}
                                 /> 
@@ -218,4 +222,4 @@ class ListCategory extends Component {
     }
 }
 
-export default ListCategory
+export default CrudSkeleton

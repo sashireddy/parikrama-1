@@ -14,7 +14,7 @@ class EditCategory extends React.Component {
     render() {
         return (
             <CategoryForm
-                category={this.props.category}
+                category={this.props.data}
                 label='Update'
                 onSubmit={this.onSubmit}
                 closeModal={this.props.closeModal}
