@@ -1,16 +1,20 @@
 import React from "react";
 
-function ViewCategory(props) {
+function ViewRole(props) {
     return (
       <React.Fragment>
         <div className="pl-3 pr-3">
             <dl className="dl-horizontal">
-              <dt>Category Id</dt>
+              <dt>Role Id</dt>
               <dd>{props.record._id}</dd>
-              <dt>Category Name</dt>
+              <dt>Role Name</dt>
               <dd>{props.record.name}</dd>
               <dt>Description</dt>
               <dd>{props.record.description}</dd>
+              <dt>Permissions</dt>
+              <dd><ul>{props.record.permissions.map((permission, idx) =>{
+                  return (<li key={permission}>{permission}</li>)
+                })}</ul></dd>
             </dl>
         </div>
         <hr className="modal-footer-ruler" />
@@ -21,4 +25,4 @@ function ViewCategory(props) {
     );
 }
 
-export default ViewCategory;
+export default ViewRole;

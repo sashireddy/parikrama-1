@@ -12,14 +12,13 @@ const mapStateToProps = state => ({
     ...state['CATEGORY']
 });
 
-
 const mapActionToProps = {
     ...categoryActions
 };
 const CategorySkeleton = connect(mapStateToProps, mapActionToProps)(Skeleton)
 
 class Category extends React.Component {
-    
+
     render(){
         const getTitle = (actionType) => {
             switch (actionType) {
@@ -38,9 +37,7 @@ class Category extends React.Component {
         const headerArr = [
                 {
                     value : 'id',
-                    key : '_id',
-                    sortable : true,
-                    searchable:true
+                    key : '_id'
                 },{
                     value : 'name',
                     key : 'name',
@@ -54,9 +51,9 @@ class Category extends React.Component {
                     key : 'actions'
                 }
             ]
-            
-        return(
-            <CategorySkeleton key="Category" content={{pageTitle:'Category'}} AddModal={AddCategory}
+
+        return (
+            <CategorySkeleton content={{pageTitle:'Category'}} AddModal={AddCategory}
              EditModal={EditCategory} ViewModal={ViewCategory} DeleteModal={DeleteCategory}
              tableRowRenderFunc ={CategoryListItem}
              headerArr = {headerArr} getTitle={getTitle}/>

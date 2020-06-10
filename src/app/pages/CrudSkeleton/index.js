@@ -6,13 +6,13 @@ import Spinner from "../../shared/Spinner";
 import Pagination from "../../shared/Pagination";
 import Modal from "../../shared/Modal";
 
-class ListCategory extends Component {
+class CrudSkeleton extends Component {
 
     constructor(){
         super()
         this.state = {
             showModal: false,
-            currentCategory: null,
+            currentRecord: null,
             actionType: null,
             sort:{
             },
@@ -27,7 +27,7 @@ class ListCategory extends Component {
             "currentPage": this.state.currentPage,
             "pageLimit": this.props.pageLimit,
             "search": this.state.search,
-            sort:this.state.sort
+            "sort":this.state.sort
         };
         this.props.getData(params);
     }
@@ -43,8 +43,8 @@ class ListCategory extends Component {
         );
     }
 
-    openActionMaodal = (currentCategory, actionType) => {
-        this.setState({currentCategory, showModal: true, actionType});
+    openActionMaodal = (currentRecord, actionType) => {
+        this.setState({currentRecord, showModal: true, actionType});
     }
 
     closeModal = () => {
@@ -60,7 +60,7 @@ class ListCategory extends Component {
     }
 
     deleteData = () => {
-        this.props.deleteData(this.state.currentCategory);
+        this.props.deleteData(this.state.currentRecord);
         this.closeModal();
     }
 
@@ -117,48 +117,50 @@ class ListCategory extends Component {
                     <div className="col-lg-12 grid-margin stretch-card">
                         <div className="card">
                             <div className="card-body">
+                                <div className="table-responsive">
+                                    <Form className="form-inline justify-content-end" onSubmit={this.onSearch}>
+                                        <Form.Group>
+                                            <div className="input-group">
+                                                {this.props.headerArr.map((entry,idx)=>{
+                                                    if(!entry.searchable) return <></>
+                                                        return(
+                                                            <>
+                                                            <Form.Control key={'Search'+entry.value} type="text" name="search" data-field="name"
+                                                            onChange={this.handleChange}
+                                                            className="form-control" placeholder={'Search'+entry.value} value={this.state.search[entry.value] || ""} aria-label={'Search'+entry.value}/>
+                                                                <div className="input-group-append">
+                                                                    <button className="btn btn-sm btn-primary" type="submit">
+                                                                        <i className="fa fa-search"></i>
+                                                                    </button>
+                                                                </div>
+                                                            </>
+                                                        )
+                                                })}
+                                            </div>
+                                        </Form.Group>
+                                        <Button onClick={() => this.openActionMaodal(null, "add")} className="btn btn-primary ml-2 search-btn">Add Record</Button>
+                                    </Form>
+                                </div>
                                 {this.props.loading ? ( <Spinner />) : (
                                     <React.Fragment>
                                         <div className="table-responsive">
-                                            <Form className="form-inline justify-content-end" onSubmit={this.onSearch}>
-                                                <Form.Group>
-                                                    <div className="input-group">
-                                                {this.props.headerArr.map((entry,idx)=>{
-                                                    if(!entry.searchable) return <></>
-                                                    return(
-                                                        <>
-                                                        <Form.Control key={'Search'+entry.value} type="text" name="search" data-field="name"
-                                                         onChange={this.handleChange}
-                                                         className="form-control" placeholder={'Search'+entry.value} value={this.state.search[entry.value]} aria-label={'Search'+entry.value}/>
-                                                        <div className="input-group-append">
-                                                            <button className="btn btn-sm btn-primary" type="submit">
-                                                                <i className="fa fa-search"></i>
-                                                            </button>
-                                                        </div>
-                                                        </>
-                                                    )
-                                                })}
-                                                    </div>
-                                                </Form.Group>
-                                                <Button onClick={() => this.openActionMaodal(null, "add")} className="btn btn-primary ml-2 search-btn">Add Category</Button>
-                                            </Form>
                                             <table className="table table-striped table-hover">
                                                 <thead>
                                                     <tr>
-                                                        {this.props.headerArr.map((entry,idx)=>{
+                                                        {this.props.headerArr.map((entry, idx)=>{
                                                             if(entry.sortable){
                                                                 const className = entry.key === this.state.sort.key ? "sortable " + this.state.sort.direction : "sortable"
                                                                 return (
-                                                                    <th className = {className} onClick={()=>this.handleSortClick(entry.key)}>{entry.value}</th>
+                                                                    <th key={idx} className={className} onClick={()=>this.handleSortClick(entry.key)}>{entry.value}</th>
                                                                 )
                                                             }
-                                                            return<th>{entry.value}</th>
+                                                            return <th key={idx}>{entry.value}</th>
                                                         })}
                                                     </tr>
                                                 </thead>
                                                 {this.props.loading && <Spinner />}
-                                                <tbody>{this.props.data && this.props.data.map((category)=>{
-                                                    return <TableRowFunc category={category} key={category._id} openActionMaodal={this.openActionMaodal} {...this.props}/>
+                                                <tbody>{this.props.data.length && this.props.data.map((record)=>{
+                                                    return <TableRowFunc category={record} key={record._id} openActionMaodal={this.openActionMaodal} {...this.props}/>
                                                 })}</tbody>
                                             </table>
                                         </div>
@@ -191,24 +193,24 @@ class ListCategory extends Component {
                             )}
                             {this.state.actionType === "view" && (
                                 <ViewModal
-                                category={this.state.currentCategory}
+                                record={this.state.currentRecord}
                                 closeModal={this.closeModal}
                                 />
                             )}
                             {this.state.actionType === "edit" && (
                                 <EditModal
-                                category={this.state.currentCategory}
+                                record={this.state.currentRecord}
                                 closeModal={this.closeModal}
                                 updateData={this.updateData}
-                                /> 
+                                />
                             )}
                             {this.state.actionType === "del" && (
-                                
+
                                  <DeleteModal
-                                category={this.state.currentCategory}
+                                 record={this.state.currentRecord}
                                 closeModal={this.closeModal}
                                 deleteData={this.deleteData}
-                                /> 
+                                />
                             )}
                         </Modal>
                     </div>
@@ -218,4 +220,4 @@ class ListCategory extends Component {
     }
 }
 
-export default ListCategory
+export default CrudSkeleton;

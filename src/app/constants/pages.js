@@ -1,6 +1,7 @@
 export default {
     pages : {
         user : 'USER',
-        category : 'CATEGORY'
+        category : 'CATEGORY',
+        role: 'ROLE'
     }
 }

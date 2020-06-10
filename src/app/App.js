@@ -8,6 +8,14 @@ import Sidebar from './shared/Sidebar';
 import Footer from './shared/Footer';
 
 import store from './store';
+import categoryActions from './actions/categoryActions';
+import roleActions from './actions/roleActions';
+import permissionActions from './actions/permissionActions';
+
+console.log(roleActions, permissionActions);
+store.dispatch(categoryActions.getAllCategories());
+store.dispatch(roleActions.getAllRoles());
+store.dispatch(permissionActions.getAllPermissions());
 
 class App extends Component {
   state = {}

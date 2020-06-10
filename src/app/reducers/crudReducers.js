@@ -13,21 +13,21 @@ const initialState = {
 const reducer = (pageId) => {
     const getData = 'GET_'+pageId
     const loading = pageId+'_LOADING'
-    return function(state, action){
+    return function(state = initialState, action){
         switch(action.type){
             case loading:
                 return {
                     ...state,
                     loading: true
                 }
-    
+
             case getData:
                 return {
                     ...state,
                     ...action.payload,
                     loading: false
                 }
-    
+
             default:
                 return state;
         }

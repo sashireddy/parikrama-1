@@ -1,14 +1,22 @@
-// import { CATEGORY_LOADING, GET_CATEGORIES, CATEGORY_LOAD_ERROR } from './types'
-import { getCategoriesData, updateCategoryData, addCategoryData, deleteCategoryData } from '../dataAbstraction/category'
+import { GET_ALL_CATEGORIES } from './types';
+import { getCategoriesData, updateCategoryData, addCategoryData, deleteCategoryData, loadInitialData } from '../dataAbstraction/category'
 import skeletonActions from './crudActions'
 import pageConstants from '../constants/pages'
 
 const actions = (()=>{
   const defaultSkeletonActions = skeletonActions(pageConstants.pages.category,
     getCategoriesData,updateCategoryData,addCategoryData,deleteCategoryData)
+    const getAllCategories = () =>  async (dispatch) => {
+      const allData = await loadInitialData();
+      dispatch({
+        type: GET_ALL_CATEGORIES,
+        payload: allData,
+      });
+    }
   return {
     ...defaultSkeletonActions,
-    //other actions apart from the crud operations go here 
+    getAllCategories
+    //other actions apart from the crud operations go here
   }
 
 })()

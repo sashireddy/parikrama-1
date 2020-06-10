@@ -1,0 +1,33 @@
+[
+    {
+        "_id": "5ed32360509737cf2e8675fb",
+        "name": "Admin",
+        "description": "Master Admin of the system.",
+        "permissions": [
+            "uuid_1",
+            "uuid_2",
+            "uuid_3",
+            "uuid_4",
+            "uuid_5",
+            "uuid_6",
+            "uuid_7",
+            "uuid_8",
+            "uuid_9",
+            "uuid_10",
+            "uuid_11"
+        ]
+    },
+    {
+        "_id": "5ed3236099bbcf6e01d5edc4",
+        "name": "System",
+        "description": "System user at branch level.",
+        "permissions": [
+            "uuid_6",
+            "uuid_7",
+            "uuid_8",
+            "uuid_9",
+            "uuid_10",
+            "uuid_11"
+        ]
+    }
+]

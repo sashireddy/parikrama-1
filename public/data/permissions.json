@@ -1,0 +1,62 @@
+[
+    {
+        "_id": "uuid_1",
+        "label": "Manage Category",
+        "description": "Add Edit View Delete Categories"
+    },
+    {
+        "_id": "uuid_2",
+        "label": "Manage Branched",
+        "description": "Add Edit View Delete Branches"
+    },
+    {
+        "_id": "uuid_3",
+        "label": "Manage User",
+        "description": "Add Edit View Delete User"
+    },
+    {
+        "_id": "uuid_4",
+        "label": "Manage Product",
+        "description": "Add Edit View Delete Product"
+    },
+    {
+        "_id": "uuid_5",
+        "label": "Generate Branch Report",
+        "description": "Generate Branch Level Report"
+    },
+    {
+        "_id": "uuid_6",
+        "label": "Generate All Branch Report",
+        "description": "Generate All Branch Level Report"
+    },
+    {
+        "_id": "uuid_6",
+        "label": "View Branch Inventory",
+        "description": "View branch level inventory"
+    },
+    {
+        "_id": "uuid_7",
+        "label": "View All Branch Inventory",
+        "description": "View all branch level inventory"
+    },
+    {
+        "_id": "uuid_8",
+        "label": "Edit Inventory",
+        "description": "Edit Brnach level Inventory"
+    },
+    {
+        "_id": "uuid_9",
+        "label": "Edit Inventory",
+        "description": "Edit Branch level Inventory"
+    },
+    {
+        "_id": "uuid_10",
+        "label": "View Inventory",
+        "description": "View Branch level Inventory"
+    },
+    {
+        "_id": "uuid_11",
+        "label": "Accept Request",
+        "description": "Accept Inventory Request"
+    }
+]
