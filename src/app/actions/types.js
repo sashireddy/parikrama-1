@@ -11,3 +11,7 @@ export const GET_USERS = "GET_USERS";
 export const USERS_LOADING = "USERS_LOADING"
 export const FILTER_USERS = "FILTER_USERS"
 // export const 
+
+
+//login 
+export const USER_LOGIN = 'USER_LOGIN'

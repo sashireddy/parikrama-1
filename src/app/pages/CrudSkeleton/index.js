@@ -91,8 +91,8 @@ class CrudSkeleton extends Component {
     }
 
     render() {
-        console.log(this.props)
-        // console.log(this.state)
+        // console.log(this.props)
+        console.log(this.state)
         const AddModal = this.props.AddModal
         const EditModal = this.props.EditModal
         const ViewModal = this.props.ViewModal
@@ -144,7 +144,7 @@ class CrudSkeleton extends Component {
                                                 })}
                                                     </div>
                                                 </Form.Group>
-                                                <Button onClick={() => this.openActionMaodal(null, "add")} className="btn btn-primary ml-2 search-btn">Add Category</Button>
+                                            <Button onClick={() => this.openActionMaodal(null, "add")} className="btn btn-primary ml-2 search-btn">{this.props.getTitle('add')}</Button>
                                             </Form>
                                             <table className="table table-striped table-hover">
                                                 <thead>
@@ -191,12 +191,14 @@ class CrudSkeleton extends Component {
                                 <AddModal
                                 closeModal={this.closeModal}
                                 addData={this.addData}
+                                state = {this.props.state}
                                 />
                             )}
                             {this.state.actionType === "view" && (
                                 <ViewModal
                                 data={this.state.currentData}
                                 closeModal={this.closeModal}
+                                state = {this.props.state}
                                 />
                             )}
                             {this.state.actionType === "edit" && (
@@ -204,6 +206,7 @@ class CrudSkeleton extends Component {
                                 data={this.state.currentData}
                                 closeModal={this.closeModal}
                                 updateData={this.updateData}
+                                state = {this.props.state}
                                 /> 
                             )}
                             {this.state.actionType === "del" && (
@@ -212,6 +215,7 @@ class CrudSkeleton extends Component {
                                 data={this.state.currentData}
                                 closeModal={this.closeModal}
                                 deleteData={this.deleteData}
+                                state = {this.props.state}
                                 /> 
                             )}
                         </Modal>

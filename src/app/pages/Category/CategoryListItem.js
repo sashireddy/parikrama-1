@@ -2,7 +2,6 @@ import React from 'react';
 import {Button} from 'react-bootstrap';
 
 export default props => {
-  console.log(props)
   const category = props.data
   return (
     <tr key={props.id}>

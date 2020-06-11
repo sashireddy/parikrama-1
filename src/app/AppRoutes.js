@@ -31,6 +31,7 @@ const Reports = lazy(()=> import('./pages/reports'))
 // const ViewCategory = lazy(() => import('./components/category/ViewCategory'))
 // const ListUsers = lazy(()=> import('./pages/ListUsers'))
 // const Skeleton = lazy(()=> import('./pages/CrudSkeleton/Category'))
+const Inventory = lazy(()=>import('./pages/inventory'))
 const Category = lazy(()=> import('./pages/Category'))
 const Move = lazy(()=> import ('./pages/Move'))
 class AppRoutes extends Component {
@@ -68,9 +69,11 @@ class AppRoutes extends Component {
 
           <Route path="/user-pages/blank-page" component={ BlankPage } />
 
+          <Route path="/inventory/move" component={Move} />
+          <Route path="/inventory" component={Inventory} />
           <Route path="/reports" component ={ Reports } />
           <Redirect to="/dashboard" />
-          <Route path="/inventory/move" component={Move} />
+          
         </Switch>
       </Suspense>
     );

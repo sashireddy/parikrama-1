@@ -1,6 +1,8 @@
 export default {
     pages : {
         user : 'USER',
-        category : 'CATEGORY'
+        category : 'CATEGORY',
+        inventory : 'INVENTORY',
+        branches : 'BRANCHES'
     }
 }

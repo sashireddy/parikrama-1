@@ -9,6 +9,12 @@ export default {
             "GET_CTEGORIES": "/data/categories.json",
             "CACHING": true,
             "PAGE_LIMIT": 10
+        },
+        "INVENTORY": {
+            "GET_CTEGORIES": "/data/inventory.json",
+            "CACHING": true,
+            "PAGE_LIMIT": 10
         }
+
     }
 };

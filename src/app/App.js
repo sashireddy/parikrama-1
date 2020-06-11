@@ -1,25 +1,46 @@
 import React, { Component } from 'react';
-import { withRouter } from 'react-router-dom';
-import {Provider} from 'react-redux';
+import { withRouter,Redirect} from 'react-router-dom';
+
 import './App.scss';
 import AppRoutes from './AppRoutes';
 import Navbar from './shared/Navbar';
 import Sidebar from './shared/Sidebar';
 import Footer from './shared/Footer';
-
 import store from './store';
-
+import {FirebaseContext,withFirebase} from './Firebase'
 class App extends Component {
-  state = {}
+
+  constructor(props) {
+    super(props)
+    this.state={
+      user : undefined
+    }
+  }
   componentDidMount() {
+    // console.log('Loggin')
     this.onRouteChanged();
+    // this.listener = this.props.firebase.onAuthUserListener(
+    //   authUser => {
+    //     if (!!authUser) {
+    //       this.props.history.push('/user-pages/login-1');
+    //     }
+    //   },
+    //   () => this.props.history.push('/user-pages/login-1'),
+    // );
+  }
+  componentWillUnmount() {
+    // this.listener()
   }
   render () {
+    // if(!this.user) {
+    //   console.log('redirect')
+    //   // Redirect('/user-pages/login-1')
+    // }
     let navbarComponent = !this.state.isFullPageLayout ? <Navbar/> : '';
     let sidebarComponent = !this.state.isFullPageLayout ? <Sidebar/> : '';
     let footerComponent = !this.state.isFullPageLayout ? <Footer/> : '';
     return (
-      <Provider store={store}>
+      
         <div className="container-scroller">
           { navbarComponent }
           <div className="container-fluid page-body-wrapper">
@@ -32,7 +53,6 @@ class App extends Component {
             </div>
           </div>
         </div>
-      </Provider>
     );
   }
 
@@ -64,4 +84,4 @@ class App extends Component {
 
 }
 
-export default withRouter(App);
+export default withRouter(withFirebase(App));

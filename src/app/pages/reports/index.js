@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import {Form, Row, Col,Card} from 'react-bootstrap'
 import {Link} from 'react-router-dom'
 import { Typeahead } from 'react-bootstrap-typeahead'
@@ -58,6 +58,183 @@ const transactions = [
 const SummaryData = [
     createRandomSummaryRow(),createRandomSummaryRow(),createRandomSummaryRow(),createRandomSummaryRow(),createRandomSummaryRow(),createRandomSummaryRow()
 ]
+const CustomDropDown = props => {
+    return (
+        <Typeahead 
+            key='1'
+            options={props.info.options}
+            onChange={(...data)=>console.log(...data)}
+        />
+    )
+}
+class Reports extends React.Component {
+    constructor(props){
+        super(props)
+        this.state = {
+            view : summary
+        }
+    }
+
+    render(){
+        return (
+            <div>
+            <div className="page-header">
+                        <h3 className="page-title"> {'Reports'} </h3>
+                        <nav aria-label="breadcrumb">
+                            <ol className="breadcrumb">
+                                <li className="breadcrumb-item">
+                                    <Link to="/">Dashboard</Link>
+                                </li>
+                                <li className="breadcrumb-item active" aria-current="page">
+                                    {'Reports'}
+                                </li>
+                            </ol>
+                    </nav>
+                    </div>
+            <Row>
+            <Col className="col-12 grid-margin stretch-card">
+                <div className="card card-statistics">
+                  <div className="card-body">
+                  <form className="forms-sample">
+                      <Row>
+                        <Col></Col>
+                        <Col></Col>
+                        <Col>
+                            <button className="btn btn-light">Reset Fliters</button>
+                        </Col>
+                      
+                      </Row>
+                      <Row>
+                        <Col>
+                            <Form.Group>
+                                <label>branches</label>
+                                <CustomDropDown info={branches}/>
+                            </Form.Group>
+                        </Col>
+                        <Col>
+                            <Form.Group>
+                                <label>inventory</label>
+                                <CustomDropDown info={inventory} />
+                            </Form.Group>
+                        </Col>
+                        <Col>
+                            <Form.Group>
+                                <label>user</label>
+                                <CustomDropDown info={users} />
+                            </Form.Group>
+                        </Col>
+                    </Row>
+                    <Row>
+                        <Col>
+                            <Form.Group className="flexColumn">
+                                <label>Start Date</label>
+                                <DatePicker 
+                                 selected={new Date()}
+                                 onChange={(...data)=>{
+                                    console.log(...data)}}
+                                 />
+                            </Form.Group>
+                        </Col>
+                        <Col>
+                            <Form.Group className="flexColumn">
+                                <label>End Date</label>
+                                <DatePicker 
+                                 selected={new Date()}
+                                 onChange={(...data)=>{console.log(...data)}}
+                                />
+                            </Form.Group>
+                        </Col>
+                        <Col>
+                            <button type="submit" className="btn btn-primary mr-2">Submit</button>
+                        </Col>
+                      </Row>
+                      
+                    </form>
+                   </div>
+                </div>
+            </Col>
+            </Row>
+            <Row>
+                {this.state.view === summary && (
+                    <>
+                    {/* <Card style={{}}>
+                        <Card.Body>
+                            <Doughnut data={dataToGraphData(SummaryData)} options={usersDoughnutChartOptions}/>
+                        </Card.Body>
+                    </Card> */}
+                    <Card style={{width:'100%'}}>
+                    <Card.Body>
+                    <h4>inventory summary report: {new Date().toLocaleDateString()} to {new Date().toLocaleDateString()}</h4>
+                    <table className="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>Category</th>
+                                <th>Product</th>
+                                <th>Starting Count</th>
+                                <th>Ending Count</th>
+                                <th>Items Consumed</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {SummaryData.map((transaction,idx)=>{
+                                return(<tr key={idx} onClick={()=>{this.setState({view :transactionConst})}}>
+                                    <td>{transaction.Category}</td>
+                                    <td>{transaction.Product}</td>
+                                    <td>{transaction.Start}</td>
+                                    <td>{transaction.End}</td>
+                                    <td>{transaction.consumer}</td>
+                                </tr>)
+                            })}
+                        </tbody>
+                    </table>
+                    </Card.Body>
+                    </Card>
+                    </>
+                )}
+                { this.state.view === transactionConst && (
+                    <Card style={{width:'100%'}}>
+                        <Card.Header>
+                            <button style={{ border: 'none',backgroundColor: 'transparent'}} onClick={()=>this.setState({view :summary})}>back to summary view </button>
+                             <h4>inventory Transaction report: {new Date().toLocaleDateString()} to {new Date().toLocaleDateString()}</h4>
+                        </Card.Header>
+                        <Card.Body>
+                            <table className="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Date</th>
+                                        <th>Category</th>
+                                        <th>Product</th>
+                                        <th>Quantity</th>
+                                        <th>Source</th>
+                                        <th>Dest</th>
+                                        <th>Raised By</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {transactions.map((transaction)=>{
+                                        return <tr>
+                                            <td>{transaction.date}</td>
+                                            <td>{transaction.Category}</td>
+                                            <td>{transaction.Product}</td>
+                                            <td>{transaction.quantity}</td>
+                                            <td>{transaction.source}</td>
+                                            <td>{transaction.dest}</td>
+                                            <td>{transaction.user}</td>
+                                        </tr>
+                                    })}
+                                </tbody>
+                            </table>
+                        </Card.Body>
+                    </Card>
+                )}
+            </Row>
+            
+        </div>
+        )
+    }
+}
+
+
 // const usersDoughnutChartOptions = {
 //     cutoutPercentage: 70,
 //     animationEasing: "easeOutBounce",
@@ -114,191 +291,5 @@ const SummaryData = [
 //     console.log(data)
 //     return data
 // }
-const CustomDropDown = props => {
-    return (
-        <Typeahead 
-            key='1'
-            options={props.info.options}
-            onChange={(...data)=>console.log(...data)}
-        />
-    )
-}
-// const CustomDropDown = (props) =>{
-//     return (
-//         <Dropdown>
-//             <Dropdown.Toggle variant="btn btn-primary" id="dropdownMenuButton1">
-//                 Select {props.info.headerInfo}
-//             </Dropdown.Toggle>
-//             <Dropdown.Menu>
-//                 <Dropdown.Header>{props.info.headerInfo}</Dropdown.Header>
-//                 {props.info.options.map((branch)=> {
-//                         return <Dropdown.Item>{branch}</Dropdown.Item>
-//                 })}
-//             </Dropdown.Menu>
-//         </Dropdown>
-//     )
-// }
-const Reports = () => {
-    const [view,setView] = useState(summary)
-    // const [transactionList , setTransactionList] = useState(transactions)
-    console.log(view)
-    return(
-    <div>
-        <div className="page-header">
-                    <h3 className="page-title"> {'Reports'} </h3>
-                    <nav aria-label="breadcrumb">
-                        <ol className="breadcrumb">
-                            <li className="breadcrumb-item">
-                                <Link to="/">Dashboard</Link>
-                            </li>
-                            <li className="breadcrumb-item active" aria-current="page">
-                                {'Reports'}
-                            </li>
-                        </ol>
-                </nav>
-                </div>
-        <Row>
-        <Col className="col-12 grid-margin stretch-card">
-            <div className="card card-statistics">
-              <div className="card-body">
-              <form className="forms-sample">
-                  <Row>
-                    <Col></Col>
-                    <Col></Col>
-                    <Col>
-                        <button className="btn btn-light">Reset Fliters</button>
-                    </Col>
-                  
-                  </Row>
-                  <Row>
-                    <Col>
-                        <Form.Group>
-                            <label>branches</label>
-                            <CustomDropDown info={branches}/>
-                        </Form.Group>
-                    </Col>
-                    <Col>
-                        <Form.Group>
-                            <label>inventory</label>
-                            <CustomDropDown info={inventory} />
-                        </Form.Group>
-                    </Col>
-                    <Col>
-                        <Form.Group>
-                            <label>user</label>
-                            <CustomDropDown info={users} />
-                        </Form.Group>
-                    </Col>
-                </Row>
-                <Row>
-                    <Col>
-                        <Form.Group className="flexColumn">
-                            <label>Start Date</label>
-                            <DatePicker 
-                             selected={new Date()}
-                             onChange={(...data)=>{
-                                console.log(...data)}}
-                             />
-                        </Form.Group>
-                    </Col>
-                    <Col>
-                        <Form.Group className="flexColumn">
-                            <label>End Date</label>
-                            <DatePicker 
-                             selected={new Date()}
-                             onChange={(...data)=>{console.log(...data)}}
-                            />
-                        </Form.Group>
-                    </Col>
-                    <Col>
-                        <button type="submit" className="btn btn-primary mr-2">Submit</button>
-                    </Col>
-                  </Row>
-                  
-                </form>
-               </div>
-            </div>
-        </Col>
-        </Row>
-        <Row>
-            {view === summary && (
-                <>
-                {/* <Card style={{}}>
-                    <Card.Body>
-                        <Doughnut data={dataToGraphData(SummaryData)} options={usersDoughnutChartOptions}/>
-                    </Card.Body>
-                </Card> */}
-                <Card style={{width:'100%'}}>
-                {/* <Card.Header>
-                    <h4>inventory summary report: {new Date().toLocaleDateString()} to {new Date().toLocaleDateString()}</h4>
-                </Card.Header> */}
-                <Card.Body>
-                <h4>inventory summary report: {new Date().toLocaleDateString()} to {new Date().toLocaleDateString()}</h4>
-                <table className="table table-hover">
-                    <thead>
-                        <tr>
-                            <th>Category</th>
-                            <th>Product</th>
-                            <th>Starting Count</th>
-                            <th>Ending Count</th>
-                            <th>Items Consumed</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {SummaryData.map((transaction,idx)=>{
-                            return(<tr key={idx} onClick={()=>{setView(transactionConst)}}>
-                                <td>{transaction.Category}</td>
-                                <td>{transaction.Product}</td>
-                                <td>{transaction.Start}</td>
-                                <td>{transaction.End}</td>
-                                <td>{transaction.consumer}</td>
-                            </tr>)
-                        })}
-                    </tbody>
-                </table>
-                </Card.Body>
-                </Card>
-                </>
-            )}
-            { view === transactionConst && (
-                <Card style={{width:'100%'}}>
-                    <Card.Header>
-                        <button style={{ border: 'none',backgroundColor: 'transparent'}} onClick={()=>setView(summary)}>back to summary view </button>
-                         <h4>inventory Transaction report: {new Date().toLocaleDateString()} to {new Date().toLocaleDateString()}</h4>
-                    </Card.Header>
-                    <Card.Body>
-                        <table className="table table-hover">
-                            <thead>
-                                <tr>
-                                    <th>Date</th>
-                                    <th>Category</th>
-                                    <th>Product</th>
-                                    <th>Quantity</th>
-                                    <th>Source</th>
-                                    <th>Dest</th>
-                                    <th>Raised By</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {transactions.map((transaction)=>{
-                                    return <tr>
-                                        <td>{transaction.date}</td>
-                                        <td>{transaction.Category}</td>
-                                        <td>{transaction.Product}</td>
-                                        <td>{transaction.quantity}</td>
-                                        <td>{transaction.source}</td>
-                                        <td>{transaction.dest}</td>
-                                        <td>{transaction.user}</td>
-                                    </tr>
-                                })}
-                            </tbody>
-                        </table>
-                    </Card.Body>
-                </Card>
-            )}
-        </Row>
-        
-    </div>
-    )
-}
+
 export default Reports
