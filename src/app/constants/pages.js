@@ -3,6 +3,7 @@ export default {
         user : 'USER',
         category : 'CATEGORY',
         inventory : 'INVENTORY',
-        branches : 'BRANCHES'
+        branches : 'BRANCHES',
+        role: 'ROLE'
     }
 }

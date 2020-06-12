@@ -11,7 +11,7 @@ class CategoryForm extends React.Component {
     }
 
     componentDidMount(){
-        this.setState({...this.props.record});
+        this.setState({...this.props.category});
     }
 
     handleChange = evt => {
@@ -30,6 +30,8 @@ class CategoryForm extends React.Component {
             event.preventDefault();
             this.props.onSubmit({...this.state});
         }
+
+        
     }
 
     render() {

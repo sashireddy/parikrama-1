@@ -23,14 +23,10 @@ class AddCategory extends React.Component {
     }
 
     handleChange = evt => {
-        // if(parseInt(evt.target.value)){
-            const inputAmount = evt.target.value
-            // if(inputAmount > )
-            this.setState({
-                ...this.state,
-                inputQuantity: evt.target.value
-            });
-        // }
+        this.setState({
+            ...this.state,
+            inputQuantity: evt.target.value
+        });
     }
 
     handleDropDown = (evt,dropDown) => {
@@ -67,15 +63,6 @@ class AddCategory extends React.Component {
         return (
             <form className="forms-sample" onSubmit={this.onSubmit} >
                 <div className="pl-3 pr-3">
-                    {/* <Form.Group>
-                        <label htmlFor="exampleInputEmail1">From Branches</label>
-                        <Typeahead 
-                            id="FROMBranches"
-                            key='1'
-                            options={this.props.state.BRANCHES.allData}
-                            onChange={(...data)=>console.log(...data)}
-                        />
-                    </Form.Group> */}
                     <Form.Group>
                         <label htmlFor="exampleInputEmail1">To Branches</label>
                         <Typeahead 

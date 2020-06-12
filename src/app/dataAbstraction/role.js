@@ -1,7 +1,8 @@
-import config from "../constants/config";
 import axios from 'axios';
+import config from "../constants/config";
+import {filterData, validateCurrentPage, create_UUID} from "./util";
 
-const apiConfig = config.API.CATEGORY;
+const apiConfig = config.API.ROLE;
 
 // Null indicates we need to fetch the data from the source
 // Incase of caching ON, need to fetch the data for first time
@@ -12,7 +13,7 @@ let cachedData = null;
 // can be used to map from any API response to below object
 // to avoid making changes in reducer structure
 // For API page limit can be passed while making call
-const apiResponse = {
+const apiResponse = { // pMapping => Parameter Mapping
     pageLimit: apiConfig.PAGE_LIMIT,
     totalRecords: 1,
     currentPage: 1,
@@ -24,7 +25,7 @@ const apiResponse = {
 // Function to load all the data as part for the initial load
 export const loadInitialData = () => {
     return new Promise(async (resolve, reject) => {
-        const url = `${config.API.BASE_URL}${apiConfig.GET_CTEGORIES}`;
+        const url = `${config.API.BASE_URL}${apiConfig.GET_ROLES}`;
         const res = await axios.get(url);
         if(apiConfig.CACHING){
             cachedData = res.data;
@@ -38,12 +39,12 @@ export const loadInitialData = () => {
 // async operations, we don't have to make changes for the cached vs live data
 // State params passed which will be used to pass to live api or
 // for static data to get proper data as per the params
-export const getCategoriesData = params => {
+export const getData = params => {
     console.log(params);
     return new Promise(async (resolve, reject) => {
         if(cachedData === null){
             // Logic can be applied to generate URL using params
-            const url = `${config.API.BASE_URL}${apiConfig.GET_CTEGORIES}`;
+            const url = `${config.API.BASE_URL}${apiConfig.GET_ROLES}`;
             console.log("API calling...", url);
             try {
                 const res = await axios.get(url);
@@ -72,7 +73,7 @@ export const getCategoriesData = params => {
 }
 
 // Add category implementaion
-export const addCategoryData = data => {
+export const addData = data => {
     return new Promise(async (resolve, reject) => {
         if(apiConfig.CACHING){
             data._id = create_UUID();
@@ -89,10 +90,10 @@ export const addCategoryData = data => {
             // Need to Add the actual data to the source
             // Get the data back from source for the above params
             try {
-                const res = await getCategoriesData(params);
+                const res = await getData(params);
                 res.flashMessage = {
                     "type": "success",
-                    "message": "Category Added Successfully!"
+                    "message": "Role Added Successfully!"
                 };
                 resolve(res);
             } catch(err) {
@@ -106,7 +107,7 @@ export const addCategoryData = data => {
 }
 
 // Update category implementation
-export const updateCategoryData = data => {
+export const updateData = data => {
     return new Promise(async (resolve, reject) => {
         if(apiConfig.CACHING){
             cachedData = cachedData.map(item => {
@@ -127,10 +128,10 @@ export const updateCategoryData = data => {
             // Need to Update the actual data to the source
             // Get the data back from source for the above params
             try {
-                const res = await getCategoriesData(params);
+                const res = await getData(params);
                 res.flashMessage = {
                     "type": "success",
-                    "message": "Category Updated Successfully!"
+                    "message": "Role Updated Successfully!"
                 };
                 resolve(res);
             } catch(err) {
@@ -145,7 +146,7 @@ export const updateCategoryData = data => {
 
 
 // Delete category implementation
-export const deleteCategoryData = data => {
+export const deleteData = data => {
     return new Promise(async (resolve, reject) => {
         if(apiConfig.CACHING){
             cachedData = cachedData.filter(item => {
@@ -163,10 +164,10 @@ export const deleteCategoryData = data => {
             // Need to delete the actual data to the source
             // Get the data back from source for the above params
             try {
-                const res = await getCategoriesData(params);
+                const res = await getData(params);
                 res.flashMessage = {
                     "type": "success",
-                    "message": "Category Deleted Successfully!"
+                    "message": "Role Deleted Successfully!"
                 };
                 resolve(res);
             } catch(err) {
@@ -184,7 +185,7 @@ const getCurrentStateData = params => {
     console.log(params);
     // Need to implement search and sort functionality here
     // After search total records may vary, reset pagination to 1st page.
-    let records = filterData(params);
+    let records = filterData(params, cachedData);
     let currentPage = validateCurrentPage(params, records);
     apiResponse.totalRecords = records.length;
     const offset = (currentPage - 1) * params.pageLimit;
@@ -192,66 +193,4 @@ const getCurrentStateData = params => {
     apiResponse.search = params.search;
     apiResponse.sort = params.sort;
     apiResponse.currentPage = currentPage;
-}
-
-// Validate current page, Might change due to delete, search operation
-// This is only required for the cached data
-const validateCurrentPage = (params, records) => {
-    const offset = (params.currentPage - 1) * params.pageLimit;
-    if(offset >= records.length && params.currentPage > 1){
-        // Set to last page.
-        return Math.ceil(records.length / params.pageLimit);
-    }
-    return params.currentPage;
-}
-
-// Need to filter and sort the data
-const filterData = params => {
-    console.trace(params);
-    // More complex search need to handle as needed
-    let result = cachedData;
-    let searchText = params.search.name && params.search.name.toLowerCase();
-    if(searchText) {
-        result = cachedData.filter(item => item.name.toLowerCase().includes(searchText));
-    }
-    if(params.sort.key) {
-        return result.sort(getSortFunction(params.sort));
-    }
-    return result;
-}
-
-// Used locally for demonstration
-const create_UUID = () => {
-    let dt = new Date().getTime();
-    const uuid = "xxxxxxxxxxxx4xxxyxxx".replace(/[xy]/g, function(c) {
-        const r = (dt + Math.random()*16)%16 | 0;
-        dt = Math.floor(dt/16);
-        // eslint-disable-next-line
-        return (c==='x' ? r :(r&0x3|0x8)).toString(16);
-    });
-    return uuid;
-}
-
-// Function currying to return dynamic compare function
-const getSortFunction = sort => {
-    let sortOrder = sort.direction || "asc";
-    if(sortOrder === "asc"){
-        return (a, b) => {
-            if(a[sort.key] > b[sort.key]){
-                return 1;
-            } else if(a[sort.key] < b[sort.key]) {
-                return -1;
-            }
-            return 0;
-        }
-    } else {
-        return (a, b) => {
-            if(a[sort.key] > b[sort.key]){
-                return -1;
-            } else if(a[sort.key] < b[sort.key]) {
-                return 1;
-            }
-            return 0;
-        }
-    }
 }

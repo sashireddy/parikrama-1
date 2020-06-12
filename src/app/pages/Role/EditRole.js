@@ -1,10 +1,10 @@
 import React from "react";
-import CategoryForm from "./CategoryForm";
+import CategoryForm from "./RoleForm";
 
 class EditCategory extends React.Component {
     onSubmit = data => {
         const category = {
-            ...this.props.record,
+            ...this.props.category,
             ...data
         };
         this.props.updateData(category);
@@ -14,7 +14,7 @@ class EditCategory extends React.Component {
     render() {
         return (
             <CategoryForm
-                record={this.props.record}
+                category={this.props.record}
                 label='Update'
                 onSubmit={this.onSubmit}
                 closeModal={this.props.closeModal}

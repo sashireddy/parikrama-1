@@ -12,7 +12,7 @@ class CrudSkeleton extends Component {
         super()
         this.state = {
             showModal: false,
-            currentData: null,
+            currentRecord: null,
             actionType: null,
             sort:{
             },
@@ -27,7 +27,7 @@ class CrudSkeleton extends Component {
             "currentPage": this.state.currentPage,
             "pageLimit": this.props.pageLimit,
             "search": this.state.search,
-            sort:this.state.sort
+            "sort":this.state.sort
         };
         this.props.getData(params);
     }
@@ -43,8 +43,8 @@ class CrudSkeleton extends Component {
         );
     }
 
-    openActionMaodal = (currentData, actionType) => {
-        this.setState({currentData, showModal: true, actionType});
+    openActionMaodal = (currentRecord, actionType) => {
+        this.setState({currentRecord, showModal: true, actionType});
     }
 
     closeModal = () => {
@@ -60,7 +60,7 @@ class CrudSkeleton extends Component {
     }
 
     deleteData = () => {
-        this.props.deleteData(this.state.currentData);
+        this.props.deleteData(this.state.currentRecord);
         this.closeModal();
     }
 
@@ -119,50 +119,50 @@ class CrudSkeleton extends Component {
 
                         <div className="card">
                             <div className="card-body">
-                                {this.props.loading ? ( <Spinner />) : (
-                                    <div>
-                                        <div className="table-responsive">
-                                            <Form className="form-inline justify-content-end" onSubmit={this.onSearch}>
-                                                <Form.Group>
-                                                    <div className="input-group">
+                                <div className="table-responsive">
+                                    <Form className="form-inline justify-content-end" onSubmit={this.onSearch}>
+                                        <Form.Group>
+                                            <div className="input-group">
                                                 {this.props.headerArr.map((entry,idx)=>{
-                                                    return(
-                                                        <div key={idx}>
-                                                            {entry.searchable && (
-                                                                <>
-                                                                <Form.Control key={'Search'+entry.value+'1'} type="text" name="search" data-field="name"
+                                                    if(!entry.searchable) return <></>
+                                                        return(
+                                                            <>
+                                                            <Form.Control key={'Search'+entry.value} type="text" name="search" data-field="name"
                                                             onChange={this.handleChange}
-                                                            className="form-control" placeholder={'Search'+entry.value} value={this.state.search[entry.value]} aria-label={'Search'+entry.value}/>
-                                                            <div key={'Search'+entry.value+'2'} className="input-group-append">
-                                                                <button className="btn btn-sm btn-primary" type="submit">
-                                                                    <i className="fa fa-search"></i>
-                                                                </button>
-                                                            </div>
-                                                            </>)}
-                                                        </div>
-                                                    )
+                                                            className="form-control" placeholder={'Search'+entry.value} value={this.state.search[entry.value] || ""} aria-label={'Search'+entry.value}/>
+                                                                <div className="input-group-append">
+                                                                    <button className="btn btn-sm btn-primary" type="submit">
+                                                                        <i className="fa fa-search"></i>
+                                                                    </button>
+                                                                </div>
+                                                            </>
+                                                        )
                                                 })}
-                                                    </div>
-                                                </Form.Group>
-                                            <Button onClick={() => this.openActionMaodal(null, "add")} className="btn btn-primary ml-2 search-btn">{this.props.getTitle('add')}</Button>
-                                            </Form>
+                                            </div>
+                                        </Form.Group>
+                                        <Button onClick={() => this.openActionMaodal(null, "add")} className="btn btn-primary ml-2 search-btn">Add Record</Button>
+                                    </Form>
+                                </div>
+                                {this.props.loading ? ( <Spinner />) : (
+                                    <React.Fragment>
+                                        <div className="table-responsive">
                                             <table className="table table-striped table-hover">
                                                 <thead>
                                                     <tr>
-                                                        {this.props.headerArr.map((entry,idx)=>{
+                                                        {this.props.headerArr.map((entry, idx)=>{
                                                             if(entry.sortable){
                                                                 const className = entry.key === this.state.sort.key ? "sortable " + this.state.sort.direction : "sortable"
                                                                 return (
-                                                                    <th key={idx} className = {className} onClick={()=>this.handleSortClick(entry.key)}>{entry.value}</th>
+                                                                    <th key={idx} className={className} onClick={()=>this.handleSortClick(entry.key)}>{entry.value}</th>
                                                                 )
                                                             }
-                                                            return<th key={idx}>{entry.value}</th>
+                                                            return <th key={idx}>{entry.value}</th>
                                                         })}
                                                     </tr>
                                                 </thead>
                                                 {this.props.loading && <Spinner />}
-                                                <tbody>{this.props.data && this.props.data.map((row,idx)=>{
-                                                    return <TableRowFunc key={idx} data={row} openActionMaodal={this.openActionMaodal}/>
+                                                <tbody>{this.props.data.length && this.props.data.map((record)=>{
+                                                    return <TableRowFunc category={record} key={record._id} openActionMaodal={this.openActionMaodal} {...this.props}/>
                                                 })}</tbody>
                                             </table>
                                         </div>
@@ -177,7 +177,7 @@ class CrudSkeleton extends Component {
                                                 />
                                             </div>
                                         )}
-                                    </div>
+                                    </React.Fragment>
                                 )}
                             </div>
                         </div>
@@ -196,27 +196,25 @@ class CrudSkeleton extends Component {
                             )}
                             {this.state.actionType === "view" && (
                                 <ViewModal
-                                data={this.state.currentData}
+                                record={this.state.currentRecord}
                                 closeModal={this.closeModal}
                                 state = {this.props.state}
                                 />
                             )}
                             {this.state.actionType === "edit" && (
                                 <EditModal
-                                data={this.state.currentData}
+                                record={this.state.currentRecord}
                                 closeModal={this.closeModal}
                                 updateData={this.updateData}
-                                state = {this.props.state}
-                                /> 
+                                />
                             )}
                             {this.state.actionType === "del" && (
-                                
+
                                  <DeleteModal
-                                data={this.state.currentData}
+                                 record={this.state.currentRecord}
                                 closeModal={this.closeModal}
                                 deleteData={this.deleteData}
-                                state = {this.props.state}
-                                /> 
+                                />
                             )}
                         </Modal>
                     </div>
@@ -226,4 +224,4 @@ class CrudSkeleton extends Component {
     }
 }
 
-export default CrudSkeleton
+export default CrudSkeleton;

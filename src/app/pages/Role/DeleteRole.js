@@ -1,7 +1,6 @@
 import React from "react";
 
 function ViewCategory(props) {
-  const category = props.data
     return (
       <React.Fragment>
         <div className="pl-3 pr-3">
@@ -16,7 +15,7 @@ function ViewCategory(props) {
         </div>
         <hr className="modal-footer-ruler" />
         <div className="text-right">
-          <button className="btn btn-light mr-2" onClick={props.closeModal}>Cancel</button>
+          <button className="btn btn-light mr-2" onClick={props.closeModal}>Cancle</button>
           <button className="btn btn-danger" onClick={props.deleteData}>Delete</button>
         </div>
       </React.Fragment>
