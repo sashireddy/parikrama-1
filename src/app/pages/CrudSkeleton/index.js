@@ -14,10 +14,8 @@ class CrudSkeleton extends Component {
             showModal: false,
             currentRecord: null,
             actionType: null,
-            sort:{
-            },
-            search: {
-            },
+            sort:{},
+            search: {},
             currentPage: 1
         }
     }
@@ -33,7 +31,13 @@ class CrudSkeleton extends Component {
     }
 
     componentDidMount(){
-        this.loadData();
+        this.setState({
+                sort: this.props.sort,
+                search: this.props.search,
+                currentPage: this.props.currentPage
+            },
+            this.loadData()
+        );
     }
 
     onPageChanged = data => {
@@ -127,7 +131,7 @@ class CrudSkeleton extends Component {
                                                             <>
                                                             <Form.Control key={'Search'+entry.value} type="text" name="search" data-field="name"
                                                             onChange={this.handleChange}
-                                                            className="form-control" placeholder={'Search'+entry.value} value={this.state.search[entry.value] || ""} aria-label={'Search'+entry.value}/>
+                                                            className="form-control" placeholder={'Search '+entry.value} value={this.state.search[entry.key] || ""} aria-label={'Search '+entry.value}/>
                                                                 <div className="input-group-append">
                                                                     <button className="btn btn-sm btn-primary" type="submit">
                                                                         <i className="fa fa-search"></i>
@@ -206,8 +210,8 @@ class CrudSkeleton extends Component {
                             )}
                             {this.state.actionType === "del" && (
 
-                                 <DeleteModal
-                                 record={this.state.currentRecord}
+                                <DeleteModal
+                                record={this.state.currentRecord}
                                 closeModal={this.closeModal}
                                 deleteData={this.deleteData}
                                 />

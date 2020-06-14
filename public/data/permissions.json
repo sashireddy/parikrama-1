@@ -30,7 +30,7 @@
         "description": "Generate All Branch Level Report"
     },
     {
-        "_id": "uuid_6",
+        "_id": "uuid_12",
         "label": "View Branch Inventory",
         "description": "View branch level inventory"
     },

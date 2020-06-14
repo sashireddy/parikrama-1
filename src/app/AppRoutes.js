@@ -51,7 +51,7 @@ class AppRoutes extends Component {
           <Route path="/roles" component={ Role } />
         {/* {user.perm[cate] === true && */}
         {/* <> */}
-          <Route path="/category/list-category" component={ Category } />
+          <Route path="/categories" component={ Category } />
           {/* <Route path="/category/:id" component={ ViewCategory } />  */}
         {/* </> */}
         {/* } */}

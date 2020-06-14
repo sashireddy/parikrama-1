@@ -36,16 +36,16 @@ class Category extends React.Component {
         }
         const headerArr = [
                 {
-                    value : 'id',
-                    key : '_id'
-                },{
-                    value : 'name',
+                    value : 'Name',
                     key : 'name',
                     sortable : true,
                     searchable: true
                 },{
-                    value : 'description',
+                    value : 'Description',
                     key : 'description'
+                },{
+                    value : 'Status',
+                    key : 'isActive'
                 },{
                     value : 'Actions',
                     key : 'actions'

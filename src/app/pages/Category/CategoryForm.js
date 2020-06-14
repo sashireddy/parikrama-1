@@ -6,7 +6,8 @@ class CategoryForm extends React.Component {
         super();
         this.state = {
             name:"",
-            description:""
+            description:"",
+            isActive: true
         }
     }
 
@@ -18,6 +19,12 @@ class CategoryForm extends React.Component {
         this.setState({
             ...this.state,
             [evt.target.name]: evt.target.value
+        });
+    }
+
+    onStatusChange = evt => {
+        this.setState({
+            isActive: evt.target.value === "active"
         });
     }
 
@@ -37,14 +44,19 @@ class CategoryForm extends React.Component {
             <form className="forms-sample" onSubmit={this.onSubmit} >
                 <div className="pl-3 pr-3">
                     <Form.Group>
-                        <label htmlFor="exampleInputEmail1">Category Name</label>
+                        <label htmlFor="name">Category Name</label>
                         <Form.Control required type="text" className="form-control" id="categoryName" name="name" placeholder="Category Name" value={this.state.name} onChange={this.handleChange} />
                         <Form.Control.Feedback type="invalid">Please choose a category name</Form.Control.Feedback>
                     </Form.Group>
                     <Form.Group>
-                        <label htmlFor="exampleInputEmail1">Category Description</label>
+                        <label htmlFor="description">Category Description</label>
                         <Form.Control type="text" className="form-control" id="categoryDesc" name="description" placeholder="Category Description" value={this.state.description} onChange={this.handleChange} />
                         <Form.Control.Feedback type="invalid">Provide description of the category</Form.Control.Feedback>
+                    </Form.Group>
+                    <Form.Group>
+                        <label htmlFor="isActive">Category Status</label>
+                        <Form.Check type="radio" id="categoryIsActive" name="isActive" value="active" label="Active" checked={this.state.isActive} onChange={this.onStatusChange} />
+                        <Form.Check type="radio" id="categoryIsInActive" name="isActive" value="inActive" label="In Active" checked={!this.state.isActive} onChange={this.onStatusChange} />
                     </Form.Group>
                 </div>
                 <hr className="modal-footer-ruler" />

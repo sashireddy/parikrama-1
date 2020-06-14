@@ -10,7 +10,7 @@ import {connect} from "react-redux";
 
 const mapStateToProps = state => ({
     ...state["ROLE"],
-    ...state["PERMISSIONS"]
+    ...state["PERMISSION"]
 });
 
 const mapActionToProps = {
@@ -53,7 +53,7 @@ class Role extends React.Component {
             ]
 
         return (
-            <RoleSkeleton content={{pageTitle:'Role'}} AddModal={AddRole}
+            <RoleSkeleton key="role" content={{pageTitle:'Role'}} AddModal={AddRole}
              EditModal={EditRole} ViewModal={ViewRole} DeleteModal={DeleteRole}
              tableRowRenderFunc ={RoleListItem}
              headerArr = {headerArr} getTitle={getTitle}/>

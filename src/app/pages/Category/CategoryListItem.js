@@ -4,13 +4,18 @@ import {Button} from 'react-bootstrap';
 export default props => {
   return (
     <tr>
-        <td className="d-none d-sm-table-cell">{props.category._id}</td>
         <td>{props.category.name}</td>
         <td className="d-none d-sm-table-cell">
           <div className="text-truncate">{props.category.description}</div>
         </td>
+        <td className="d-none d-sm-table-cell">
+          {props.category.isActive
+            ? <label className="badge badge-success">Active</label>
+            : <label className="badge badge-warning">In Active</label>
+          }
+          </td>
         <td>
-          <nav className="text-center">
+          <nav>
             <Button className="btn btn-primary" onClick={() => props.openActionMaodal(props.category, "view")}>
               View
             </Button>
