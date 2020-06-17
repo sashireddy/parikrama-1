@@ -1,16 +1,16 @@
-// import {initialState} from './crudReducers'
+import {initialState} from './crudReducers'
 import crudReducers from './crudReducers'
 import pageConstants from '../constants/pages'
 
-const InventoryCrudReducers =  crudReducers(pageConstants.pages.branches)
-const initialState = {
-    data : [],
+const BranchCrudReducers =  crudReducers(pageConstants.pages.branches)
+const initialState1 = {
     allRecords : ['Kormangala','Belanduru','Kharkhana'],
+    ...initialState
 }
-export default function(state = initialState, action){
+export default function(state = initialState1, action){
     switch(action.type){
         //custom reducers apart from crud reducers need to go here
         default:
-            return InventoryCrudReducers(state,action)
+            return BranchCrudReducers(state,action)
     }
 }

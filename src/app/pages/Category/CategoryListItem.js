@@ -2,7 +2,7 @@ import React from 'react';
 import {Button} from 'react-bootstrap';
 
 export default props => {
-  const category = props.data
+  const category = props.record
   return (
     <tr key={props.id}>
         <td className="d-none d-sm-table-cell">{category._id}</td>
