@@ -2,12 +2,15 @@ import React from 'react';
 import {Button} from 'react-bootstrap';
 
 export default props => {
+  const address = (address) => {
+    return address.street +' , '+ address.city+' , '+address.state+' , '+address.country+' , '+address.zipcode
+  }
+  console.log(props)
   return (
     <tr>
-        <td className="d-none d-sm-table-cell">{props.record._id}</td>
-        <td>{props.record.name}</td>
+        <td className="d-none d-sm-table-cell">{props.record.name}</td>
         <td className="d-none d-sm-table-cell">
-          <div className="text-truncate">{props.record.description}</div>
+          <div className="text-truncate">{address(props.record.address)}</div>
         </td>
         <td>
           <nav className="text-center">

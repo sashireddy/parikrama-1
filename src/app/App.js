@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { withRouter,Redirect} from 'react-router-dom';
+import { withRouter} from 'react-router-dom';
 
 import './App.scss';
 import AppRoutes from './AppRoutes';
@@ -10,16 +10,10 @@ import store from './store';
 import categoryActions from './actions/categoryActions';
 import roleActions from './actions/roleActions';
 import permissionActions from './actions/permissionActions';
-
-console.log(roleActions, permissionActions);
-store.dispatch(categoryActions.getAllCategories());
-store.dispatch(roleActions.getAllRoles());
-store.dispatch(permissionActions.getAllPermissions());
+import thresholdActions from './actions/thresholdActions';
 
 class App extends Component {
 
-
-  
   constructor(props) {
     super(props)
     this.state={
@@ -27,25 +21,13 @@ class App extends Component {
     }
   }
   componentDidMount() {
-    // console.log('Loggin')
+    store.dispatch(categoryActions.getAllCategories());
+    store.dispatch(roleActions.getAllRoles());
+    store.dispatch(permissionActions.getAllPermissions());
+    store.dispatch(thresholdActions.getAllThreshold());
     this.onRouteChanged();
-    // this.listener = this.props.firebase.onAuthUserListener(
-    //   authUser => {
-    //     if (!!authUser) {
-    //       this.props.history.push('/user-pages/login-1');
-    //     }
-    //   },
-    //   () => this.props.history.push('/user-pages/login-1'),
-    // );
-  }
-  componentWillUnmount() {
-    // this.listener()
   }
   render () {
-    // if(!this.user) {
-    //   console.log('redirect')
-    //   // Redirect('/user-pages/login-1')
-    // }
     let navbarComponent = !this.state.isFullPageLayout ? <Navbar/> : '';
     let sidebarComponent = !this.state.isFullPageLayout ? <Sidebar/> : '';
     let footerComponent = !this.state.isFullPageLayout ? <Footer/> : '';
@@ -94,4 +76,4 @@ class App extends Component {
 
 }
 
-export default withRouter(withFirebase(App));
+export default withRouter(App);

@@ -101,7 +101,7 @@ class AddCategory extends React.Component {
                     <Form.Group>
                         <label htmlFor="exampleInputEmail1">Quantity</label>
                         <Form.Control required type="number" className="form-control" id="categoryName" name="name" placeholder="" value={this.state.inputQuantity} onChange={this.handleChange} />
-                        <Form.Control.Feedback type="invalid">Please choose a category name</Form.Control.Feedback>
+                        <Form.Control.Feedback type="invalid">Please enter a valid quantity</Form.Control.Feedback>
                     </Form.Group>
                     </Col>
                         </>)}

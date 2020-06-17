@@ -4,6 +4,7 @@ export default {
         category : 'CATEGORY',
         inventory : 'INVENTORY',
         branches : 'BRANCHES',
-        role: 'ROLE'
+        role: 'ROLE',
+        product : 'PRODUCT',
     }
 }

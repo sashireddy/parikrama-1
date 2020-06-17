@@ -2,13 +2,11 @@ import React from 'react';
 import {Button} from 'react-bootstrap';
 
 export default props => {
+  console.log(props);
   return (
     <tr>
-        <td className="d-none d-sm-table-cell">{props.record._id}</td>
-        <td>{props.record.name}</td>
-        <td className="d-none d-sm-table-cell">
-          <div className="text-truncate">{props.record.description}</div>
-        </td>
+        <td className="d-none d-sm-table-cell">{props.record.name}</td>
+        <td>{props.record.category}</td>
         <td>
           <nav className="text-center">
             <Button className="btn btn-primary" onClick={() => props.openActionMaodal(props.record, "view")}>

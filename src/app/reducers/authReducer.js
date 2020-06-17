@@ -3,7 +3,8 @@ import {USER_LOGIN} from '../actions/types'
 const initialState = {
     loggedIn: false,
     userInfo : {
-
+        //adding dummy data to test this info comes from The login page
+        userName : 'pari@pari.com'
     }
 }
 export default function(state = initialState, action){
@@ -13,7 +14,7 @@ export default function(state = initialState, action){
                 loggedIn: true,
                 userInfo : {
                     ...state.userInfo,
-                    email:action.payload.email
+                    userName:action.payload.email
                 }
             } 
         //custom reducers apart from crud reducers need to go here

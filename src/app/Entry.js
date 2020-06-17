@@ -10,10 +10,10 @@ const mapStateToProps = state => ({
 class Entry extends Component {
     
     render() {
-        if(this.props.loggedIn){
+        // if(this.props.loggedIn){
             return <App />
-        }
-        return <Login />
+        // }
+        // return <Login />
     }
 }
 

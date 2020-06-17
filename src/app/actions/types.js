@@ -28,3 +28,6 @@ export const FILTER_ROLES = "FILTER_ROLES"
 
 export const GET_ALL_PERMISSIONS = "GET_ALL_PERMISSIONS";
 // export const
+
+//threshold
+export const GET_ALL_THRESHOLD = "GET_ALL_THRESHOLD"

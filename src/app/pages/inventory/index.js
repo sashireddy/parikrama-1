@@ -3,7 +3,7 @@ import CrudSkeleton from '../CrudSkeleton/index'
 import inventoryActions from '../../actions/inventoryActions'
 import AddInventory from './AddInventory'
 import ViewInventory from './viewInventory'
-import {Table,Button} from 'react-bootstrap'
+import {Table,Button, Col,Row} from 'react-bootstrap'
 import {
     connect,
     // dispatch
@@ -82,21 +82,22 @@ class Inventory extends React.Component {
         const RowRender = (props) => {
             return (
                 <tr>
-                    <td>{props.data._id}</td>
-                    <td>{props.data.category}</td>
-                    <td>{props.data.product}</td>
-                    <td>{props.data.balance}</td>
-                    <td><Button onClick={() =>{props.openActionMaodal(props.data,'view')}}>Disburse Inventory</Button></td>
+                    <td>{props.record._id}</td>
+                    <td>{props.record.category}</td>
+                    <td>{props.record.product}</td>
+                    <td>{props.record.balance}</td>
+                    <td><Button onClick={() =>{props.openActionMaodal(props.record,'view')}}>Disburse Inventory</Button></td>
                 </tr>
             )
         }    
         const TransactionView = (props)=>{
             return (
-                <div className="row">
+            <>
+                <Row>
                 <div className="col-lg-12 grid-margin stretch-card">
                     <div className="card">
                         <div className="card-body">
-                            <h3>Transaction Requests</h3>
+                            <h3>Transaction Requests by other Branches</h3>
                             <Table>
                                 <thead>
                                     <tr>
@@ -116,7 +117,29 @@ class Inventory extends React.Component {
                                             <td>{request.requestedInventory}</td>
                                             <td>{request.note}</td>
                                             <td>{request.currentInventory - request.requestedInventory}</td>
-                                            <td><Button>Approve Request</Button><Button>Reject Request</Button></td>
+                                            <td><Row><Col><Button>Approve Request</Button></Col><Col><Button>Reject Request</Button></Col></Row></td>
+                                        </tr>)
+                                    )}
+                                </tbody>
+                            </Table>
+                            <br />
+                            <h3>Transaction Request raised by You</h3>
+                            <Table>
+                                <thead>
+                                    <tr>
+                                        <th>Branch</th>
+                                        <th>requested Inventory</th>
+                                        <th>note</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {requests.map((request,idx)=>(
+                                        <tr key={idx}>
+                                            <td>{request.branch}</td>
+                                            <td>{request.requestedInventory}</td>
+                                            <td>{request.note}</td>
+                                            <td><Row><Col><Button>Cancel Request</Button></Col></Row></td>
                                         </tr>)
                                     )}
                                 </tbody>
@@ -124,7 +147,8 @@ class Inventory extends React.Component {
                         </div>
                     </div>
                 </div>
-                </div>
+                </Row>
+            </>
             )
         }
         return (

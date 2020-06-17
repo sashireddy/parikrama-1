@@ -1,0 +1,26 @@
+{
+    "products": [
+      {
+        "name": "milk",
+        "category": "food",
+        "isActive": true,
+        "createdDate": "2020-06-12T11:16:04.060Z",
+        "lastUpdatedDate": "2020-06-12T11:16:14.460Z"
+      },
+      {
+        "name": "crocin",
+        "category": "pharmacy",
+        "isActive": true,
+        "createdDate": "2020-06-12T11:16:04.060Z",
+        "lastUpdatedDate": "2020-06-12T11:16:14.460Z"
+      },
+      {
+        "name": "bench",
+        "category": "furniture",
+        "isActive": true,
+        "createdDate": "2020-06-12T11:16:04.060Z",
+        "lastUpdatedDate": "2020-06-12T11:16:14.460Z"
+      }
+    ],
+    "totalProducts": 3
+  }

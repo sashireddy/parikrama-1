@@ -160,10 +160,10 @@ class CrudSkeleton extends Component {
                                                         })}
                                                     </tr>
                                                 </thead>
-                                                {this.props.loading && <Spinner />}
-                                                <tbody>{this.props.data.length && this.props.data.map((record)=>{
-                                                    return <TableRowFunc category={record} key={record._id} openActionMaodal={this.openActionMaodal} {...this.props}/>
-                                                })}</tbody>
+                                                {/* {this.props.loading && <Spinner />} */}
+                                                {!this.props.loading && (<tbody>{this.props.data.length && this.props.data.map((record)=>{
+                                                    return <TableRowFunc record={record} key={record._id} openActionMaodal={this.openActionMaodal} {...this.props}/>
+                                                })}</tbody>) }
                                             </table>
                                         </div>
                                         {this.props.data.length && (
