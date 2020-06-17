@@ -12,6 +12,10 @@ import roleActions from './actions/roleActions';
 import permissionActions from './actions/permissionActions';
 import thresholdActions from './actions/thresholdActions';
 
+store.dispatch(categoryActions.getAllCategories());
+store.dispatch(roleActions.getAllRoles());
+store.dispatch(permissionActions.getAllPermissions());
+
 class App extends Component {
 
   constructor(props) {

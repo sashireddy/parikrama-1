@@ -39,9 +39,9 @@ export const getData = () => {
                 "message": "Data Loaded Successfully!"
             };
             if(apiConfig.CACHING){
-                cachedData = res.data;
+                cachedData = res.data.permissions;
             }
-            resolve(res.data);
+            resolve(res.data.permissions);
         }
     });
 }
