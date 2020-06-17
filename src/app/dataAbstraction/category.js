@@ -27,7 +27,7 @@ export const loadInitialData = () => {
         const url = `${config.API.BASE_URL}${apiConfig.GET_CTEGORIES}`;
         const res = await axios.get(url);
         if(apiConfig.CACHING){
-            cachedData = res.data;
+            cachedData = res.data.categories;
         }
         resolve(res.data);
     });
@@ -39,7 +39,6 @@ export const loadInitialData = () => {
 // State params passed which will be used to pass to live api or
 // for static data to get proper data as per the params
 export const getCategoriesData = params => {
-    console.log(params);
     return new Promise(async (resolve, reject) => {
         if(cachedData === null){
             // Logic can be applied to generate URL using params
@@ -110,7 +109,7 @@ export const updateCategoryData = data => {
     return new Promise(async (resolve, reject) => {
         if(apiConfig.CACHING){
             cachedData = cachedData.map(item => {
-                if(item._id === data._id) {
+                if(item.name === data.name) {
                     return {
                         ...item,
                         ...data
@@ -149,7 +148,7 @@ export const deleteCategoryData = data => {
     return new Promise(async (resolve, reject) => {
         if(apiConfig.CACHING){
             cachedData = cachedData.filter(item => {
-                if(item._id === data._id) {
+                if(item.name === data.name) {
                     return false;
                 }
                 return true;
@@ -181,7 +180,6 @@ export const deleteCategoryData = data => {
 
 
 const getCurrentStateData = params => {
-    console.log(params);
     // Need to implement search and sort functionality here
     // After search total records may vary, reset pagination to 1st page.
     let records = filterData(params);
@@ -207,7 +205,6 @@ const validateCurrentPage = (params, records) => {
 
 // Need to filter and sort the data
 const filterData = params => {
-    console.trace(params);
     // More complex search need to handle as needed
     let result = cachedData;
     let searchText = params.search.name && params.search.name.toLowerCase();

@@ -10,7 +10,7 @@ import {connect} from "react-redux";
 
 const mapStateToProps = state => ({
     ...state["ROLE"],
-    ...state["PERMISSIONS"]
+    ...state["PERMISSION"]
 });
 
 const mapActionToProps = {
@@ -36,16 +36,16 @@ class Role extends React.Component {
         }
         const headerArr = [
                 {
-                    value : 'Id',
-                    key : '_id'
-                },{
                     value : 'Name',
-                    key : 'name',
+                    key : 'label',
                     sortable : true,
                     searchable: true
                 },{
                     value : 'Description',
                     key : 'description'
+                },{
+                    value : 'Status',
+                    key : 'isActive'
                 },{
                     value : 'Actions',
                     key : 'actions'
@@ -53,7 +53,7 @@ class Role extends React.Component {
             ]
 
         return (
-            <RoleSkeleton content={{pageTitle:'Role'}} AddModal={AddRole}
+            <RoleSkeleton key="role" content={{pageTitle:'Role'}} AddModal={AddRole}
              EditModal={EditRole} ViewModal={ViewRole} DeleteModal={DeleteRole}
              tableRowRenderFunc ={RoleListItem}
              headerArr = {headerArr} getTitle={getTitle}/>

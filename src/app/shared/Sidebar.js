@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Link, withRouter } from 'react-router-dom';
-import { Collapse } from 'react-bootstrap';
+// import { Collapse } from 'react-bootstrap';
 import { Dropdown } from 'react-bootstrap';
 
 class Sidebar extends Component {
@@ -107,6 +107,7 @@ class Sidebar extends Component {
               <span className="menu-title">Dashboard</span>
             </Link>
           </li>
+          {/*
           <li className={ this.isPathActive('/basic-ui') ? 'nav-item active' : 'nav-item' }>
             <div className={ this.state.basicUiMenuOpen ? 'nav-link menu-expanded' : 'nav-link' } onClick={ () => this.toggleMenuState('basicUiMenuOpen') } data-toggle="collapse">
               <i className="mdi mdi-crosshairs-gps menu-icon"></i>
@@ -133,12 +134,20 @@ class Sidebar extends Component {
               <span className="menu-title">Tables</span>
             </Link>
           </li>
-          <li className={ this.isPathActive('/category') ? 'nav-item active' : 'nav-item' }>
-            <Link className="nav-link" to="/category/list-category">
+          */}
+          <li className={ this.isPathActive('/categories') ? 'nav-item active' : 'nav-item' }>
+            <Link className="nav-link" to="/categories">
               <i className="mdi mdi-table-large menu-icon"></i>
               <span className="menu-title">Categories</span>
             </Link>
           </li>
+          <li className={ this.isPathActive('/roles') ? 'nav-item active' : 'nav-item' }>
+            <Link className="nav-link" to="/roles">
+              <i className="mdi mdi-table-large menu-icon"></i>
+              <span className="menu-title">Roles</span>
+            </Link>
+          </li>
+          {/*
           <li className={ this.isPathActive('/icons') ? 'nav-item active' : 'nav-item' }>
             <Link className="nav-link" to="/icons/font-awesome">
               <i className="mdi mdi-account-box-outline menu-icon"></i>
@@ -173,6 +182,7 @@ class Sidebar extends Component {
               <span className="menu-title">Documentation</span>
             </a>
           </li>
+          */}
         </ul>
       </nav>
     );

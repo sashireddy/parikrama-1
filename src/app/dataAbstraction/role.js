@@ -1,6 +1,6 @@
 import axios from 'axios';
 import config from "../constants/config";
-import {filterData, validateCurrentPage, create_UUID} from "./util";
+import {validateCurrentPage, create_UUID, getSortFunction} from "./util";
 
 const apiConfig = config.API.ROLE;
 
@@ -28,9 +28,9 @@ export const loadInitialData = () => {
         const url = `${config.API.BASE_URL}${apiConfig.GET_ROLES}`;
         const res = await axios.get(url);
         if(apiConfig.CACHING){
-            cachedData = res.data;
+            cachedData = res.data.roles;
         }
-        resolve(res.data);
+        resolve(res.data.roles);
     });
 }
 
@@ -40,7 +40,6 @@ export const loadInitialData = () => {
 // State params passed which will be used to pass to live api or
 // for static data to get proper data as per the params
 export const getData = params => {
-    console.log(params);
     return new Promise(async (resolve, reject) => {
         if(cachedData === null){
             // Logic can be applied to generate URL using params
@@ -53,7 +52,7 @@ export const getData = params => {
                     "message": "Data Loaded Successfully!"
                 };
                 if(apiConfig.CACHING){
-                    cachedData = res.data;
+                    cachedData = res.data.roles;
                 }
             } catch(err){
                 reject(err);
@@ -76,7 +75,7 @@ export const getData = params => {
 export const addData = data => {
     return new Promise(async (resolve, reject) => {
         if(apiConfig.CACHING){
-            data._id = create_UUID();
+            data.id = create_UUID();
             cachedData = [
                 ...cachedData,
                 data
@@ -111,7 +110,7 @@ export const updateData = data => {
     return new Promise(async (resolve, reject) => {
         if(apiConfig.CACHING){
             cachedData = cachedData.map(item => {
-                if(item._id === data._id) {
+                if(item.id === data.id) {
                     return {
                         ...item,
                         ...data
@@ -150,7 +149,7 @@ export const deleteData = data => {
     return new Promise(async (resolve, reject) => {
         if(apiConfig.CACHING){
             cachedData = cachedData.filter(item => {
-                if(item._id === data._id) {
+                if(item.id === data.id) {
                     return false;
                 }
                 return true;
@@ -182,7 +181,6 @@ export const deleteData = data => {
 
 
 const getCurrentStateData = params => {
-    console.log(params);
     // Need to implement search and sort functionality here
     // After search total records may vary, reset pagination to 1st page.
     let records = filterData(params, cachedData);
@@ -193,4 +191,18 @@ const getCurrentStateData = params => {
     apiResponse.search = params.search;
     apiResponse.sort = params.sort;
     apiResponse.currentPage = currentPage;
+}
+
+// Need to filter and sort the data
+const filterData = (params, records) => {
+    // More complex search need to handle as needed
+    let result = records;
+    let searchText = params.search.label && params.search.label.toLowerCase();
+    if(searchText) {
+        result = records.filter(item => item.label.toLowerCase().includes(searchText));
+    }
+    if(params.sort.key) {
+        return result.sort(getSortFunction(params.sort));
+    }
+    return result;
 }

@@ -1,20 +1,20 @@
 import React from "react";
-import CategoryForm from "./RoleForm";
+import RoleForm from "./RoleForm";
 
-class EditCategory extends React.Component {
+class EditRole extends React.Component {
     onSubmit = data => {
-        const category = {
-            ...this.props.category,
+        const role = {
+            ...this.props.record,
             ...data
         };
-        this.props.updateData(category);
+        this.props.updateData(role);
         this.props.closeModal();
     }
 
     render() {
         return (
-            <CategoryForm
-                category={this.props.record}
+            <RoleForm
+                record={this.props.record}
                 label='Update'
                 onSubmit={this.onSubmit}
                 closeModal={this.props.closeModal}
@@ -23,4 +23,4 @@ class EditCategory extends React.Component {
     }
 }
 
-export default EditCategory;
+export default EditRole ;
