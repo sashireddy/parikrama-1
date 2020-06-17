@@ -9,17 +9,17 @@ class ViewRole extends React.Component {
         <div className="pl-3 pr-3">
             <dl className="dl-horizontal">
               <dt>Role Id</dt>
-              <dd>{record._id}</dd>
+              <dd>{record.id}</dd>
               <dt>Role Name</dt>
-              <dd>{record.name}</dd>
+              <dd>{record.label}</dd>
               <dt>Description</dt>
               <dd>{record.description}</dd>
               <dt>Permissions</dt>
               <dd>
                 <ul>
                   {this.props.allPermissions
-                    .filter(permission => record.permissions.includes(permission._id))
-                    .map((permission, idx) => <li key={permission._id}>{permission.description}</li>)}
+                    .filter(permission => record.permissions.includes(permission.id))
+                    .map((permission, idx) => <li key={permission.id}>{permission.permission}</li>)}
                 </ul>
               </dd>
             </dl>

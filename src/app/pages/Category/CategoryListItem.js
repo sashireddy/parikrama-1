@@ -13,7 +13,7 @@ export default props => {
             ? <label className="badge badge-success">Active</label>
             : <label className="badge badge-warning">In Active</label>
           }
-          </td>
+        </td>
         <td>
           <nav>
             <Button className="btn btn-primary" onClick={() => props.openActionMaodal(props.category, "view")}>

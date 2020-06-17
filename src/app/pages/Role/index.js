@@ -36,16 +36,16 @@ class Role extends React.Component {
         }
         const headerArr = [
                 {
-                    value : 'Id',
-                    key : '_id'
-                },{
                     value : 'Name',
-                    key : 'name',
+                    key : 'label',
                     sortable : true,
                     searchable: true
                 },{
                     value : 'Description',
                     key : 'description'
+                },{
+                    value : 'Status',
+                    key : 'isActive'
                 },{
                     value : 'Actions',
                     key : 'actions'

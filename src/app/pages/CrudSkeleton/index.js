@@ -129,9 +129,12 @@ class CrudSkeleton extends Component {
                                                     if(!entry.searchable) return <></>
                                                         return(
                                                             <>
-                                                            <Form.Control key={'Search'+entry.value} type="text" name="search" data-field="name"
-                                                            onChange={this.handleChange}
-                                                            className="form-control" placeholder={'Search '+entry.value} value={this.state.search[entry.key] || ""} aria-label={'Search '+entry.value}/>
+                                                            <Form.Control key={'Search'+entry.value} type="text" name="search" data-field={entry.key}
+                                                                onChange={this.handleChange}
+                                                                className="form-control"
+                                                                placeholder={'Search '+entry.value}
+                                                                value={this.state.search[entry.key] || ""}
+                                                                aria-label={'Search '+entry.value}/>
                                                                 <div className="input-group-append">
                                                                     <button className="btn btn-sm btn-primary" type="submit">
                                                                         <i className="fa fa-search"></i>

@@ -6,8 +6,9 @@ class RoleForm extends React.Component {
     constructor(){
         super();
         this.state = {
-            name:"",
+            label:"",
             description:"",
+            isActive: true,
             permissions: []
         }
     }
@@ -20,6 +21,12 @@ class RoleForm extends React.Component {
         this.setState({
             ...this.state,
             [evt.target.name]: evt.target.value
+        });
+    }
+
+    onStatusChange = evt => {
+        this.setState({
+            isActive: evt.target.value === "active"
         });
     }
 
@@ -56,7 +63,7 @@ class RoleForm extends React.Component {
                 <div className="pl-3 pr-3">
                     <Form.Group>
                         <label htmlFor="name">Role Name</label>
-                        <Form.Control required type="text" className="form-control" id="categoryName" name="name" placeholder="Category Name" value={this.state.name} onChange={this.handleChange} />
+                        <Form.Control required type="text" className="form-control" id="categoryName" name="label" placeholder="Role" value={this.state.label} onChange={this.handleChange} />
                         <Form.Control.Feedback type="invalid">Please choose a category name</Form.Control.Feedback>
                     </Form.Group>
                     <Form.Group>
@@ -64,11 +71,16 @@ class RoleForm extends React.Component {
                         <Form.Control type="text" className="form-control" id="categoryDesc" name="description" placeholder="Category Description" value={this.state.description} onChange={this.handleChange} />
                         <Form.Control.Feedback type="invalid">Provide description of the category</Form.Control.Feedback>
                     </Form.Group>
+                    <Form.Group>
+                        <label htmlFor="isActive">Role Status</label>
+                        <Form.Check type="radio" id="categoryIsActive" name="isActive" value="active" label="Active" checked={this.state.isActive} onChange={this.onStatusChange} />
+                        <Form.Check type="radio" id="categoryIsInActive" name="isActive" value="inActive" label="In Active" checked={!this.state.isActive} onChange={this.onStatusChange} />
+                    </Form.Group>
                     <Form.Group id="formGridCheckbox">
                         <label htmlFor="permissions">Role Permissions</label>
                         {this.props.allPermissions.map(permission => {
-                            let checked = this.state.permissions.includes(permission._id);
-                            return <Form.Check key={permission._id} type="checkbox" value={permission._id} id={`permission_${permission._id}`} label={permission.description} checked={checked} onChange={this.onPermissionChange} />
+                            let checked = this.state.permissions.includes(permission.id);
+                            return <Form.Check key={permission.id} type="checkbox" value={permission.id} id={`permission_${permission.id}`} label={permission.permission} checked={checked} onChange={this.onPermissionChange} />
                         })}
                     </Form.Group>
                 </div>
