@@ -3,11 +3,16 @@ import { loadInitialData ,getData, updateData, addData, deleteData } from '../da
 import skeletonActions from './crudActions'
 import pageConstants from '../constants/pages'
 
+
+const processThresholds = (threshold) => { 
+}
+
 const actions = (()=>{
   const defaultSkeletonActions = skeletonActions(pageConstants.pages.threshold,
     getData, updateData, addData, deleteData)
     const getAllThreshold = () => async (dispatch) => {
         const allData = await loadInitialData();
+        processThresholds(allData.thresholds)
           dispatch({
             type: GET_ALL_THRESHOLD,
             payload: allData,

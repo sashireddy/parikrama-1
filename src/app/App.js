@@ -15,6 +15,7 @@ import thresholdActions from './actions/thresholdActions';
 store.dispatch(categoryActions.getAllCategories());
 store.dispatch(roleActions.getAllRoles());
 store.dispatch(permissionActions.getAllPermissions());
+store.dispatch(thresholdActions.getAllThreshold());
 
 class App extends Component {
 

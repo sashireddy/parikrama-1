@@ -50,7 +50,7 @@ class Inventory extends React.Component {
         const getTitle = (actionType) => {
             switch (actionType) {
                 case "add":
-                    return "Move Inventory";
+                    return "Add Inventory Locally";
                 case "view":
                     return "Dispurse Inventory";
                 case "edit":

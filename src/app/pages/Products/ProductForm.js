@@ -1,13 +1,24 @@
 import React from "react";
 import {Form} from "react-bootstrap";
-import { Typeahead } from 'react-bootstrap-typeahead'
+import Select from 'react-select'
+import {ValToDropDownEntry,arrToDropDownArr} from '../../utils/dropDownUtils'
+import {connect} from 'react-redux'
+import ProductActions from '../../actions/productActions'
+
+const mapStateToProps = state => ({
+    stateData :{
+        category : state["CATEGORY"],
+    } 
+});
+
+const mapActionToProps = {
+    ...ProductActions
+};
 
 class ProductForm extends React.Component {
     constructor(){
         super();
         this.state = {
-            name:"",
-            description:""
         }
     }
 
@@ -20,6 +31,12 @@ class ProductForm extends React.Component {
             ...this.state,
             [evt.target.name]: evt.target.value
         });
+    }
+    handleDropDown = (label,evt) => {
+        this.setState({
+            ...this.state,
+            [label]: evt.label
+        })
     }
 
     onSubmit = event => {
@@ -35,18 +52,23 @@ class ProductForm extends React.Component {
         
     }
 
+
     render() {
+        console.log(this.state.category)
+        const dropDownArr = arrToDropDownArr(this.props.stateData.category.allCategories.categories.map(category => category.name))
+        const defaultCategory = (this.props.record && this.props.record.category)||''
         return(
             <form className="forms-sample" onSubmit={this.onSubmit} >
                 <div className="pl-3 pr-3">
                     <Form.Group>
                         <label htmlFor="exampleInputEmail1">Product Name</label>
-                        <Form.Control required type="text" className="form-control" id="productName" name="name" placeholder="Category Name" value={this.state.name} onChange={this.handleChange} />
+                        <Form.Control required type="text" className="form-control" id="productName" name="name" placeholder="Product Name" value={this.state.name} onChange={this.handleChange} />
                         <Form.Control.Feedback type="invalid">Please provide a Product name</Form.Control.Feedback>
                     </Form.Group>
                     <Form.Group>
                         <label htmlFor="exampleInputEmail1">Category</label>
-                        <Form.Control required type="text" className="form-control" id="categoryName" name="category" placeholder="Category Name" value={this.state.category} onChange={this.handleChange} />
+                        <Select className="basic-single" classNamePrefix="select" defaultValue={ValToDropDownEntry(defaultCategory)} 
+                            isClearable={true} isSearchable={true}  options={dropDownArr} onChange={(e)=>{this.handleDropDown('category',e)}}/>
                         <Form.Control.Feedback type="invalid">Please provide the category name</Form.Control.Feedback>
                     </Form.Group>
                 </div>
@@ -60,4 +82,4 @@ class ProductForm extends React.Component {
     }
 }
 
-export default ProductForm;
+export default connect(mapStateToProps, mapActionToProps)(ProductForm);

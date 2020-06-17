@@ -4,10 +4,10 @@ import {Button} from 'react-bootstrap';
 export default props => {
   return (
     <tr>
-        <td>{props.category.label}</td>
-        <td className="d-none d-sm-table-cell">{props.category.description}</td>
+        <td>{props.record.label}</td>
+        <td className="d-none d-sm-table-cell">{props.record.description}</td>
         <td>
-          {props.category.isActive
+          {props.record.isActive
             ? <label className="badge badge-success">Active</label>
             : <label className="badge badge-warning">In Active</label>
           }

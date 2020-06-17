@@ -3,17 +3,21 @@ import ProductForm from "./ProductForm";
 
 class EditProduct extends React.Component {
     onSubmit = data => {
-        this.props.addData(data);
+        const product= {
+            ...this.props.record,
+            ...data
+        };
+        this.props.updateData(product);
         this.props.closeModal();
     }
 
     render() {
         return (
             <ProductForm
-                label='Add'
+                label='update'
                 onSubmit={this.onSubmit}
                 closeModal={this.props.closeModal}
-                {...this.props.record}
+                record = {this.props.record}
             />
         );
     }

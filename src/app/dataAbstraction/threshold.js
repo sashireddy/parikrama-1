@@ -26,6 +26,7 @@ const apiResponse = { // pMapping => Parameter Mapping
 export const loadInitialData = () => {
     return new Promise(async (resolve, reject) => {
         const url = `${config.API.BASE_URL}${apiConfig.GET_THRESHOLD}`;
+        console.log('calling url', url);
         const res = await axios.get(url);
         if(apiConfig.CACHING){
             cachedData = res.data;
