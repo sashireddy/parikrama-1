@@ -10,6 +10,11 @@ export default {
             "CACHING": true,
             "PAGE_LIMIT": 10
         },
+        "INVENTORY": {
+            "GET_CTEGORIES": "/data/inventory.json",
+            "CACHING": true,
+            "PAGE_LIMIT": 10
+        },
         "ROLE": {
             "GET_ROLES": "/data/roles.json",
             "CACHING": true,
@@ -19,6 +24,22 @@ export default {
             "GET_PERMISSIONS": "/data/permissions.json",
             "CACHING": true,
             "PAGE_LIMIT": 10
+        },
+        "BRANCHES": {
+            "GET_BRANCHES": "/data/branches.json",
+            "CACHING": true,
+            "PAGE_LIMIT": 10
+        },
+        "PRODUCTS": {
+            "GET_PRODUCTS": "/data/products.json",
+            "CACHING": true,
+            "PAGE_LIMIT": 10
+        },
+        "THRESHOLD" : {
+            "GET_THRESHOLD": "/data/threshold.json",
+            "CACHING": true,
+            "PAGE_LIMIT": 10
         }
+
     }
 };

@@ -2,19 +2,19 @@ import React from 'react';
 import {Button} from 'react-bootstrap';
 
 export default props => {
+  const address = (address) => {
+    return address.street +' , '+ address.city+' , '+address.state+' , '+address.country+' , '+address.zipcode
+  }
+  console.log(props)
   return (
     <tr>
-        <td>{props.record.label}</td>
-        <td className="d-none d-sm-table-cell">{props.record.description}</td>
-        <td>
-          {props.record.isActive
-            ? <label className="badge badge-success">Active</label>
-            : <label className="badge badge-warning">In Active</label>
-          }
+        <td className="d-none d-sm-table-cell">{props.record.name}</td>
+        <td className="d-none d-sm-table-cell">
+          <div className="text-truncate">{address(props.record.address)}</div>
         </td>
         <td>
-          <nav>
-            <Button className="btn btn-primary" onClick={() => props.openActionMaodal(props.category, "view")}>
+          <nav className="text-center">
+            <Button className="btn btn-primary" onClick={() => props.openActionMaodal(props.record, "view")}>
               View
             </Button>
             <Button onClick={() => props.openActionMaodal(props.record, "edit")} className="btn btn-primary ml-2">
