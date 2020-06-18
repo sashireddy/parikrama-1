@@ -14,6 +14,11 @@ export const CATEGORY_LOAD_ERROR = "CATEGORY_LOAD_ERROR";
 export const GET_USERS = "GET_USERS";
 export const USERS_LOADING = "USERS_LOADING"
 export const FILTER_USERS = "FILTER_USERS"
+// export const 
+
+
+//login 
+export const USER_LOGIN = 'USER_LOGIN'
 
 
 export const GET_ROLES = "GET_ROLES";
@@ -23,3 +28,6 @@ export const FILTER_ROLES = "FILTER_ROLES"
 
 export const GET_ALL_PERMISSIONS = "GET_ALL_PERMISSIONS";
 // export const
+
+//threshold
+export const GET_ALL_THRESHOLD = "GET_ALL_THRESHOLD"

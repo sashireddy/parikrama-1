@@ -31,7 +31,10 @@ const Reports = lazy(()=> import('./pages/reports'));
 // const ViewCategory = lazy(() => import('./components/category/ViewCategory'))
 // const ListUsers = lazy(()=> import('./pages/ListUsers'))
 // const Skeleton = lazy(()=> import('./pages/CrudSkeleton/Category'))
-const Category = lazy(()=> import('./pages/Category'));
+const Branch = lazy(() => import('./pages/Branches'))
+const Products = lazy(()=> import('./pages/Products'))
+const Inventory = lazy(()=>import('./pages/inventory'))
+const Category = lazy(()=> import('./pages/Category'))
 const Role = lazy(()=> import('./pages/Role'));
 const User = lazy(()=> import('./pages/User'));
 const Move = lazy(()=> import ('./pages/Move'));
@@ -62,7 +65,7 @@ class AppRoutes extends Component {
 
           <Route path="/charts/chart-js" component={ ChartJs } />
 
-
+          <Route path="/branch/" component={ Branch } />
           <Route path="/user-pages/login-1" component={ Login } />
           <Route path="/user-pages/register-1" component={ Register1 } />
 
@@ -70,10 +73,12 @@ class AppRoutes extends Component {
           <Route path="/user-pages/error-500" component={ Error500 } />
 
           <Route path="/user-pages/blank-page" component={ BlankPage } />
-
+          <Route path="/products" component={ Products } />
+          <Route path="/inventory/move" component={Move} />
+          <Route path="/inventory" component={Inventory} />
           <Route path="/reports" component ={ Reports } />
           <Redirect to="/dashboard" />
-          <Route path="/inventory/move" component={Move} />
+          
         </Switch>
       </Suspense>
     );

@@ -1,24 +1,35 @@
 import React, { Component } from 'react';
-import { withRouter } from 'react-router-dom';
-import {Provider} from 'react-redux';
+import { withRouter} from 'react-router-dom';
+
 import './App.scss';
 import AppRoutes from './AppRoutes';
 import Navbar from './shared/Navbar';
 import Sidebar from './shared/Sidebar';
 import Footer from './shared/Footer';
-
 import store from './store';
 import categoryActions from './actions/categoryActions';
 import roleActions from './actions/roleActions';
 import permissionActions from './actions/permissionActions';
+import thresholdActions from './actions/thresholdActions';
 
 store.dispatch(categoryActions.getAllCategories());
 store.dispatch(roleActions.getAllRoles());
 store.dispatch(permissionActions.getAllPermissions());
+store.dispatch(thresholdActions.getAllThreshold());
 
 class App extends Component {
-  state = {}
+
+  constructor(props) {
+    super(props)
+    this.state={
+      user : undefined
+    }
+  }
   componentDidMount() {
+    store.dispatch(categoryActions.getAllCategories());
+    store.dispatch(roleActions.getAllRoles());
+    store.dispatch(permissionActions.getAllPermissions());
+    store.dispatch(thresholdActions.getAllThreshold());
     this.onRouteChanged();
   }
   render () {
@@ -26,7 +37,7 @@ class App extends Component {
     let sidebarComponent = !this.state.isFullPageLayout ? <Sidebar/> : '';
     let footerComponent = !this.state.isFullPageLayout ? <Footer/> : '';
     return (
-      <Provider store={store}>
+      
         <div className="container-scroller">
           { navbarComponent }
           <div className="container-fluid page-body-wrapper">
@@ -39,7 +50,6 @@ class App extends Component {
             </div>
           </div>
         </div>
-      </Provider>
     );
   }
 

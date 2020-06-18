@@ -96,7 +96,7 @@ class CrudSkeleton extends Component {
 
     render() {
         // console.log(this.props)
-        // console.log(this.state)
+        console.log(this.state)
         const AddModal = this.props.AddModal
         const EditModal = this.props.EditModal
         const ViewModal = this.props.ViewModal
@@ -117,8 +117,10 @@ class CrudSkeleton extends Component {
                         </ol>
                 </nav>
                 </div>
+                {this.props.children}
                 <div className="row">
                     <div className="col-lg-12 grid-margin stretch-card">
+
                         <div className="card">
                             <div className="card-body">
                                 <div className="table-responsive">
@@ -165,14 +167,14 @@ class CrudSkeleton extends Component {
                                                         })}
                                                     </tr>
                                                 </thead>
-                                                {this.props.loading && <Spinner />}
-                                                <tbody>{this.props.data.length && this.props.data.map((record)=>{
+                                                {/* {this.props.loading && <Spinner />} */}
+                                                {!this.props.loading && (<tbody>{this.props.data.length && this.props.data.map((record)=>{
                                                     return <TableRowFunc record={record} key={record._id} openActionMaodal={this.openActionMaodal} {...this.props}/>
-                                                })}</tbody>
+                                                })}</tbody>) }
                                             </table>
                                         </div>
                                         {this.props.data.length && (
-                                            <div className="mt-4">
+                                            <div className="mt-4" key="7893628472">
                                                 <Pagination
                                                     totalRecords={this.props.totalRecords}
                                                     currentPage={this.props.currentPage}
@@ -196,12 +198,14 @@ class CrudSkeleton extends Component {
                                 <AddModal
                                 closeModal={this.closeModal}
                                 addData={this.addData}
+                                state = {this.props.state}
                                 />
                             )}
                             {this.state.actionType === "view" && (
                                 <ViewModal
                                 record={this.state.currentRecord}
                                 closeModal={this.closeModal}
+                                state = {this.props.state}
                                 />
                             )}
                             {this.state.actionType === "edit" && (

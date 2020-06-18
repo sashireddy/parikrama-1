@@ -1,0 +1,25 @@
+{
+    "thresholds": [
+      {
+        "product": "milk",
+        "createdDate": "2020-06-12T11:16:04.060Z",
+        "category": "food",
+        "unit": "litres",
+        "thresholds": {
+          "kormangala": 25,
+          "sarjapur": 30
+        }
+      },
+      {
+        "product": "bread",
+        "createdDate": "2020-06-12T11:16:04.060Z",
+        "category": "food",
+        "unit": "number",
+        "thresholds": {
+          "kormangala": 25,
+          "sarjapur": 30
+        }
+      }
+    ],
+    "totalProducts": 2
+  }
