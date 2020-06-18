@@ -1,46 +1,18 @@
+import { getData, updateData, addData, deleteData } from '../dataAbstraction/user';
+import skeletonActions from './crudActions';
+import pageConstants from '../constants/pages';
 
+const actions = (()=>{
+    const defaultSkeletonActions = skeletonActions(
+        pageConstants.pages.user,
+        getData,
+        updateData,
+        addData,
+        deleteData
+    );
 
-import { GET_USERS,USERS_LOADING,FILTER_USERS} from './types';
-import {getUserData} from "../dataAbstraction/user";
-
-// Get categories
-export const getUsers = data => async dispatch => {
-    // dispatch(setUserLoadingAction());
-    try{
-        const users = await getUserData(data);
-        dispatch({
-            type: GET_USERS,
-            payload:users 
-        });
-    } catch(err){
-        // dispatch({
-        //     type: CATEGORY_LOAD_ERROR,
-        //     payload: {}
-        // });
-    }
-}
-
-export const filterUsers = (filter,users=[]) => async dispatch => {
-    const filteredUsers = users.filter(user=>{
-        return user.name.includes(filter)
-    })
-    dispatch({
-        type: FILTER_USERS,
-        filter,
-        filteredUsers
-    })
-}
-
-// Category loading
-export const setUserLoadingAction = () => {
     return {
-        type: USERS_LOADING
+        ...defaultSkeletonActions
     }
-}
-
-// export const paginate = params => {
-//     return {
-//         type: CATEGORY_PAGINATE,
-//         payload: params
-//     }
-// }
+})()
+export default actions

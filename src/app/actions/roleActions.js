@@ -1,7 +1,7 @@
-import { GET_ALL_ROLES } from './types'
-import { getData, updateData, addData, deleteData, loadInitialData } from '../dataAbstraction/role'
-import skeletonActions from './crudActions'
-import pageConstants from '../constants/pages'
+import { GET_ALL_ROLES } from './types';
+import { getData, updateData, addData, deleteData, loadInitialData } from '../dataAbstraction/role';
+import skeletonActions from './crudActions';
+import pageConstants from '../constants/pages';
 
 const actions = (()=>{
   const defaultSkeletonActions = skeletonActions(pageConstants.pages.role,
@@ -17,7 +17,6 @@ const actions = (()=>{
   return {
     ...defaultSkeletonActions,
     getAllRoles
-    //other actions apart from the crud operations go here
   }
 
 })()

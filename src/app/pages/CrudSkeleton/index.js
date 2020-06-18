@@ -167,18 +167,18 @@ class CrudSkeleton extends Component {
                                                 </thead>
                                                 {this.props.loading && <Spinner />}
                                                 <tbody>{this.props.data.length && this.props.data.map((record)=>{
-                                                    return <TableRowFunc category={record} key={record._id} openActionMaodal={this.openActionMaodal} {...this.props}/>
+                                                    return <TableRowFunc record={record} key={record._id} openActionMaodal={this.openActionMaodal} {...this.props}/>
                                                 })}</tbody>
                                             </table>
                                         </div>
                                         {this.props.data.length && (
                                             <div className="mt-4">
                                                 <Pagination
-                                                totalRecords={this.props.totalRecords}
-                                                currentPage={this.props.currentPage}
-                                                pageLimit={this.props.pageLimit}
-                                                pageNeighbours={1}
-                                                onPageChanged={this.onPageChanged}
+                                                    totalRecords={this.props.totalRecords}
+                                                    currentPage={this.props.currentPage}
+                                                    pageLimit={this.props.pageLimit}
+                                                    pageNeighbours={1}
+                                                    onPageChanged={this.onPageChanged}
                                                 />
                                             </div>
                                         )}

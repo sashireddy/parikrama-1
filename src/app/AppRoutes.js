@@ -33,6 +33,7 @@ const Reports = lazy(()=> import('./pages/reports'));
 // const Skeleton = lazy(()=> import('./pages/CrudSkeleton/Category'))
 const Category = lazy(()=> import('./pages/Category'));
 const Role = lazy(()=> import('./pages/Role'));
+const User = lazy(()=> import('./pages/User'));
 const Move = lazy(()=> import ('./pages/Move'));
 class AppRoutes extends Component {
   render () {
@@ -49,6 +50,7 @@ class AppRoutes extends Component {
 
           <Route path="/tables/basic-table" component={ BasicTable } />
           <Route path="/roles" component={ Role } />
+          <Route path="/users" component={ User } />
         {/* {user.perm[cate] === true && */}
         {/* <> */}
           <Route path="/categories" component={ Category } />

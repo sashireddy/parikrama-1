@@ -1,7 +1,28 @@
-[
-    { "userId":"1", "name":"sashi-1" , "branch":"bellandur" , "mobileNumber": 9848022919, "email":"pvsashi123@gmail.com" },
-    { "userId":"2", "name":"sashi-2" , "branch":"bellandur" , "mobileNumber": 9848022919, "email":"pvsashi123@gmail.com" },
-    { "userId":"3", "name":"sashi-3" , "branch":"bellandur" , "mobileNumber": 9848022919, "email":"pvsashi123@gmail.com" },
-    { "userId":"4", "name":"sashi-4" , "branch":"bellandur" , "mobileNumber": 9848022919, "email":"pvsashi123@gmail.com" },
-    { "userId":"5", "name":"sashi-5" , "branch":"bellandur" , "mobileNumber": 9848022919, "email":"pvsashi123@gmail.com" }
-]
+{
+    "users": [
+        {
+            "id": "2zTYwPXLwPUYCH5n6hL1Ttu2aUD3",
+            "firstName": "Kia",
+            "role": "admin",
+            "createdDate": 1591986418387,
+            "isActive": false,
+            "branch": "koramangala",
+            "contact": "123-123-1234",
+            "lastName": "George",
+            "email": "k@abc.com",
+            "lastUpdatedDate": 1591986682575
+        },
+        {
+            "id": "2zTYwPXLwPUYCH5n6hL1Ttu2aUD4",
+            "firstName": "Jim",
+            "role": "system",
+            "createdDate": 1591986418387,
+            "isActive": false,
+            "branch": "sarjapur",
+            "contact": "123-123-12345",
+            "lastName": "Migget",
+            "email": "k@abc.com",
+            "lastUpdatedDate": 1591986682575
+        }
+    ]
+}

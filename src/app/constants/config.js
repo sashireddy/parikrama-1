@@ -19,6 +19,11 @@ export default {
             "GET_PERMISSIONS": "/data/permissions.json",
             "CACHING": true,
             "PAGE_LIMIT": 10
+        },
+        "USER": {
+            "GET_USERS": "/data/users.json",
+            "CACHING": true,
+            "PAGE_LIMIT": 10
         }
     }
 };
