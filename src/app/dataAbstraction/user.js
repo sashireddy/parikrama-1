@@ -179,6 +179,8 @@ const getCurrentStateData = params => {
     apiResponse.search = params.search;
     apiResponse.sort = params.sort;
     apiResponse.currentPage = currentPage;
+
+    console.log("Users", apiResponse.data);
 }
 
 // Need to filter and sort the data

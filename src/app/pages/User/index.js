@@ -17,7 +17,7 @@ const mapActionToProps = {
 };
 const UserSkeleton = connect(mapStateToProps, mapActionToProps)(Skeleton)
 
-class Role extends React.Component {
+class User extends React.Component {
     render(){
         const getTitle = (actionType) => {
             switch (actionType) {
@@ -43,11 +43,11 @@ class Role extends React.Component {
                     value : 'Email',
                     key : 'email'
                 },{
+                    value : 'Role',
+                    key : 'role'
+                },{
                     value : 'Status',
                     key : 'isActive'
-                },{
-                    value : 'Phone No',
-                    key : 'contact'
                 },{
                     value : 'Actions',
                     key : 'actions'
@@ -55,12 +55,12 @@ class Role extends React.Component {
             ]
 
         return (
-            <UserSkeleton key="role" content={{pageTitle:'Role'}} AddModal={AddUser}
+            <UserSkeleton key="user" content={{pageTitle:'Role'}} AddModal={AddUser}
                 EditModal={EditUser} ViewModal={ViewUser} DeleteModal={DeleteUser}
-                tableRowRenderFunc ={UserListItem}
+                tableRowRenderFunc ={UserListItem} pk="id"
                 headerArr = {headerArr} getTitle={getTitle}/>
         )
     }
 }
 
-export default Role;
+export default User;

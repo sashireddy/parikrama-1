@@ -1,15 +1,20 @@
 import React from "react";
 import {connect} from "react-redux";
 import {Form} from "react-bootstrap";
+import Select from 'react-select';
+import {getDropdownItem, getSelectedItem} from '../../utils/dropDownUtils'
 
-class RoleForm extends React.Component {
+class UserForm extends React.Component {
     constructor(){
         super();
         this.state = {
-            label:"",
-            description:"",
+            firstName: "",
+            role: "",
             isActive: true,
-            permissions: []
+            branch: "",
+            contact: "",
+            lastName: "",
+            email: ""
         }
     }
 
@@ -30,19 +35,12 @@ class RoleForm extends React.Component {
         });
     }
 
-    onPermissionChange = evt => {
-        if(evt.target.checked) {
-            this.setState({
-                permissions: this.state.permissions.concat(evt.target.value)
-            });
-        } else {
-            let permissions = [...this.state.permissions];
-            let index = permissions.indexOf(evt.target.value);
-            if (index !== -1) {
-                permissions.splice(index, 1);
-                this.setState({permissions});
-            }
-        }
+    handleDropDown = (field, evt) => {
+        console.log('Handle Dropdown ', evt);
+        this.setState({
+            ...this.state,
+            [field]: evt.value
+        })
     }
 
     onSubmit = event => {
@@ -58,30 +56,42 @@ class RoleForm extends React.Component {
     }
 
     render() {
+
+        const dropDownArr = this.props.allRoles.map(role => getDropdownItem(role.label, role.id));
+        console.log('Usre form Properties', this.state.role, dropDownArr);
         return(
             <form className="forms-sample" onSubmit={this.onSubmit} >
                 <div className="pl-3 pr-3">
                     <Form.Group>
-                        <label htmlFor="name">Role Name</label>
-                        <Form.Control required type="text" className="form-control" id="categoryName" name="label" placeholder="Role" value={this.state.label} onChange={this.handleChange} />
-                        <Form.Control.Feedback type="invalid">Please choose a category name</Form.Control.Feedback>
+                        <label htmlFor="name">First Name</label>
+                        <Form.Control required type="text" className="form-control" id="userFirstName" name="firstName" placeholder="First Name" value={this.state.firstName} onChange={this.handleChange} />
+                        <Form.Control.Feedback type="invalid">Please enter first name</Form.Control.Feedback>
                     </Form.Group>
                     <Form.Group>
-                        <label htmlFor="description">Role Description</label>
-                        <Form.Control type="text" className="form-control" id="categoryDesc" name="description" placeholder="Category Description" value={this.state.description} onChange={this.handleChange} />
-                        <Form.Control.Feedback type="invalid">Provide description of the category</Form.Control.Feedback>
+                        <label htmlFor="name">Last Name</label>
+                        <Form.Control required type="text" className="form-control" id="userLastName" name="lastName" placeholder="Last Name" value={this.state.lastName} onChange={this.handleChange} />
+                        <Form.Control.Feedback type="invalid">Please enter last name</Form.Control.Feedback>
                     </Form.Group>
                     <Form.Group>
-                        <label htmlFor="isActive">Role Status</label>
+                        <label htmlFor="name">Email Address</label>
+                        <Form.Control required type="text" className="form-control" id="userEmail" name="email" placeholder="E Mail" value={this.state.email} onChange={this.handleChange} />
+                        <Form.Control.Feedback type="invalid">Please enter valid email address</Form.Control.Feedback>
+                    </Form.Group>
+                    <Form.Group>
+                        <label htmlFor="exampleInputEmail1">Role</label>
+                        <Select className="basic-single" classNamePrefix="select" value={getSelectedItem(dropDownArr, this.state.role)}
+                            options={dropDownArr} onChange={(e)=>{this.handleDropDown('role', e)}}/>
+                        <Form.Control.Feedback type="invalid">Please select role</Form.Control.Feedback>
+                    </Form.Group>
+                    <Form.Group>
+                        <label htmlFor="isActive">User Status</label>
                         <Form.Check type="radio" id="categoryIsActive" name="isActive" value="active" label="Active" checked={this.state.isActive} onChange={this.onStatusChange} />
                         <Form.Check type="radio" id="categoryIsInActive" name="isActive" value="inActive" label="In Active" checked={!this.state.isActive} onChange={this.onStatusChange} />
                     </Form.Group>
-                    <Form.Group id="formGridCheckbox">
-                        <label htmlFor="permissions">Role Permissions</label>
-                        {this.props.allPermissions.map(permission => {
-                            let checked = this.state.permissions.includes(permission.id);
-                            return <Form.Check key={permission.id} type="checkbox" value={permission.id} id={`permission_${permission.id}`} label={permission.permission} checked={checked} onChange={this.onPermissionChange} />
-                        })}
+                    <Form.Group>
+                        <label htmlFor="name">User Contact</label>
+                        <Form.Control required type="text" className="form-control" id="userContact" name="contact" placeholder="Contact" value={this.state.contact} onChange={this.handleChange} />
+                        <Form.Control.Feedback type="invalid">Please phone number</Form.Control.Feedback>
                     </Form.Group>
                 </div>
                 <hr className="modal-footer-ruler" />
@@ -96,8 +106,8 @@ class RoleForm extends React.Component {
 
 const mapStateToProps = state => {
     return{
-        ...state["PERMISSION"]
+        ...state["ROLE"]
     }
 }
 
-export default connect(mapStateToProps, null)(RoleForm);
+export default connect(mapStateToProps, null)(UserForm);

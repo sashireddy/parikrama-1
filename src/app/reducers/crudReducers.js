@@ -22,6 +22,7 @@ const reducer = (pageId) => {
                 }
 
             case getData:
+                console.log(getData, action.payload);
                 return {
                     ...state,
                     ...action.payload,
