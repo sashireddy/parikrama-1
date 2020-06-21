@@ -126,26 +126,24 @@ class CrudSkeleton extends Component {
                                 <div className="table-responsive">
                                     <Form className="form-inline justify-content-end" onSubmit={this.onSearch}>
                                         <Form.Group>
-                                            <div className="input-group">
-                                                {this.props.headerArr.map((entry,idx)=>{
-                                                    if(!entry.searchable) return <></>
-                                                        return(
-                                                            <>
-                                                            <Form.Control key={'Search'+entry.value} type="text" name="search" data-field={entry.key}
-                                                                onChange={this.handleChange}
-                                                                className="form-control"
-                                                                placeholder={'Search '+entry.value}
-                                                                value={this.state.search[entry.key] || ""}
-                                                                aria-label={'Search '+entry.value}/>
-                                                                <div className="input-group-append">
-                                                                    <button className="btn btn-sm btn-primary" type="submit">
-                                                                        <i className="fa fa-search"></i>
-                                                                    </button>
-                                                                </div>
-                                                            </>
-                                                        )
-                                                })}
-                                            </div>
+                                            {this.props.headerArr.map((entry,idx)=>{
+                                                if(!entry.searchable) return null
+                                                    return(
+                                                        <div className="input-group" key={`search-${idx}`}>
+                                                        <Form.Control type="text" name="search" data-field={entry.key}
+                                                            onChange={this.handleChange}
+                                                            className="form-control"
+                                                            placeholder={'Search '+entry.value}
+                                                            value={this.state.search[entry.key] || ""}
+                                                            aria-label={'Search '+entry.value}/>
+                                                            <div className="input-group-append">
+                                                                <button className="btn btn-sm btn-primary" type="submit">
+                                                                    <i className="fa fa-search"></i>
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                    )
+                                            })}
                                         </Form.Group>
                                         <Button onClick={() => this.openActionMaodal(null, "add")} className="btn btn-primary ml-2 search-btn">Add Record</Button>
                                     </Form>
@@ -167,23 +165,26 @@ class CrudSkeleton extends Component {
                                                         })}
                                                     </tr>
                                                 </thead>
-                                                {/* {this.props.loading && <Spinner />} */}
-                                                {!this.props.loading && (<tbody>{this.props.data.length && this.props.data.map((record)=>{
-                                                    return <TableRowFunc record={record} key={record._id} openActionMaodal={this.openActionMaodal} {...this.props}/>
-                                                })}</tbody>) }
+                                                {this.props.loading && <Spinner />}
+                                                <tbody>
+                                                {!this.props.loading && this.props.data.length ?
+                                                    this.props.data.map((record)=> <TableRowFunc record={record} key={record[this.props.pk]} openActionMaodal={this.openActionMaodal} {...this.props}/>)
+                                                    : <tr><td colSpan={this.props.headerArr.length} className="text-center">No Records found!</td></tr>
+                                                }
+                                                </tbody>
                                             </table>
                                         </div>
-                                        {this.props.data.length && (
-                                            <div className="mt-4" key="7893628472">
+                                        {this.props.data.length ? (
+                                            <div className="mt-4">
                                                 <Pagination
-                                                totalRecords={this.props.totalRecords}
-                                                currentPage={this.props.currentPage}
-                                                pageLimit={this.props.pageLimit}
-                                                pageNeighbours={1}
-                                                onPageChanged={this.onPageChanged}
+                                                    totalRecords={this.props.totalRecords}
+                                                    currentPage={this.props.currentPage}
+                                                    pageLimit={this.props.pageLimit}
+                                                    pageNeighbours={1}
+                                                    onPageChanged={this.onPageChanged}
                                                 />
                                             </div>
-                                        )}
+                                        ) : null}
                                     </React.Fragment>
                                 )}
                             </div>

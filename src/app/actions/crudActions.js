@@ -13,11 +13,12 @@ const actions = (pageId,getEntityData,updateEntityData,addEntityData,deleteEntit
     getData: (data) => async (dispatch) => {
       dispatch(setLoading())
       try {
-        const UpdatedData = await getEntityData(data)
+        const UpdatedData = await getEntityData(data);
+        console.log(dispatch, "Action ", getData, UpdatedData);
         dispatch({
           type: getData,
           payload: UpdatedData,
-        })
+        });
       } catch (err) {
         dispatch({
           type: loadError,

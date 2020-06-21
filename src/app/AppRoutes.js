@@ -26,17 +26,16 @@ const Register1 = lazy(() => import('./user-pages/Register'));
 
 const BlankPage = lazy(() => import('./user-pages/BlankPage'));
 
-// const ListCategoty = lazy(() => import('./components/category/ListCategory'));
+
 const Reports = lazy(()=> import('./pages/reports'));
-// const ViewCategory = lazy(() => import('./components/category/ViewCategory'))
-// const ListUsers = lazy(()=> import('./pages/ListUsers'))
-// const Skeleton = lazy(()=> import('./pages/CrudSkeleton/Category'))
 const Branch = lazy(() => import('./pages/Branches'))
 const Products = lazy(()=> import('./pages/Products'))
 const Inventory = lazy(()=>import('./pages/inventory'))
 const Category = lazy(()=> import('./pages/Category'))
 const Role = lazy(()=> import('./pages/Role'));
+const User = lazy(()=> import('./pages/User'));
 const Move = lazy(()=> import ('./pages/Move'));
+
 class AppRoutes extends Component {
   render () {
     return (
@@ -52,6 +51,7 @@ class AppRoutes extends Component {
 
           <Route path="/tables/basic-table" component={ BasicTable } />
           <Route path="/roles" component={ Role } />
+          <Route path="/users" component={ User } />
         {/* {user.perm[cate] === true && */}
         {/* <> */}
           <Route path="/categories" component={ Category } />
@@ -76,7 +76,7 @@ class AppRoutes extends Component {
           <Route path="/inventory" component={Inventory} />
           <Route path="/reports" component ={ Reports } />
           <Redirect to="/dashboard" />
-          
+
         </Switch>
       </Suspense>
     );

@@ -4,8 +4,6 @@ export default {
     },
     "API" : {
         "BASE_URL": "",
-        "GET_USERS": "/data/users.json",
-        "GET_USER" : "/data/userData.json",
         "CATEGORY": {
             "GET_CTEGORIES": "/data/categories.json",
             "CACHING": true,
@@ -26,6 +24,12 @@ export default {
             "CACHING": true,
             "PAGE_LIMIT": 10
         },
+        "USER": {
+            "GET_USERS": "/data/users.json",
+            "GET_USER" : "/data/userData.json",
+            "CACHING": true,
+            "PAGE_LIMIT": 10
+        },
         "BRANCHES": {
             "GET_BRANCHES": "/data/branches.json",
             "CACHING": true,
@@ -41,6 +45,5 @@ export default {
             "CACHING": true,
             "PAGE_LIMIT": 10
         }
-
     }
 };

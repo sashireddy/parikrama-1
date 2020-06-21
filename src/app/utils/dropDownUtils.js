@@ -7,4 +7,14 @@ const ValToDropDownEntry = (entry) => {
 const arrToDropDownArr = (arr) => {
     return arr.map(ValToDropDownEntry)
 }
-export {ValToDropDownEntry,arrToDropDownArr}
+
+const getDropdownItem = (label, value) => {
+    return {
+        label,
+        value
+    }
+}
+const getSelectedItem = (arr, value) => {
+    return arr.find(item => item.value === value);
+}
+export {ValToDropDownEntry,arrToDropDownArr, getDropdownItem, getSelectedItem}

@@ -1,7 +1,7 @@
 import React from 'react'
 import Skeleton from '../CrudSkeleton/index'
 import RoleListItem from "./RoleListItem";
-import roleActions from "../../actions/roleActions.js";
+import userActions from "../../actions/roleActions";
 import ViewRole from "./ViewRole";
 import EditRole from "./EditRole";
 import AddRole from "./AddRole";
@@ -9,12 +9,11 @@ import DeleteRole from "./DeleteRole";
 import {connect} from "react-redux";
 
 const mapStateToProps = state => ({
-    ...state["ROLE"],
-    ...state["PERMISSION"]
+    ...state["ROLE"]
 });
 
 const mapActionToProps = {
-    ...roleActions
+    ...userActions
 };
 const RoleSkeleton = connect(mapStateToProps, mapActionToProps)(Skeleton)
 
@@ -55,7 +54,7 @@ class Role extends React.Component {
         return (
             <RoleSkeleton key="role" content={{pageTitle:'Role'}} AddModal={AddRole}
              EditModal={EditRole} ViewModal={ViewRole} DeleteModal={DeleteRole}
-             tableRowRenderFunc ={RoleListItem}
+             tableRowRenderFunc ={RoleListItem} pk="id"
              headerArr = {headerArr} getTitle={getTitle}/>
         )
     }

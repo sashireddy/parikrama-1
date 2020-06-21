@@ -1,59 +1,32 @@
+import { getData, updateData, addData, deleteData,getUserData } from '../dataAbstraction/user';
+import skeletonActions from './crudActions';
+import pageConstants from '../constants/pages';
+import {GET_LOGGEDIN_USER} from './types'
+const actions = (()=>{
+    const defaultSkeletonActions = skeletonActions(
+        pageConstants.pages.user,
+        getData,
+        updateData,
+        addData,
+        deleteData
+    );
 
-
-import { GET_USERS,USERS_LOADING,FILTER_USERS,GET_LOGGEDIN_USER} from './types';
-import {getAllUsersData,getUserData} from "../dataAbstraction/user";
-
-// Get categories
-export const getUsers = data => async dispatch => {
-    // dispatch(setUserLoadingAction());
-    try{
-        const users = await getAllUsersData(data);
-        dispatch({
-            type: GET_USERS,
-            payload:users 
-        });
-    } catch(err){
-        // dispatch({
-        //     type: CATEGORY_LOAD_ERROR,
-        //     payload: {}
-        // });
+    const getUserInfo = data => async dispatch => {
+        try{
+            const payload = await getUserData(data);
+            console.log('userInfo Actinos alnavklcj dpsvnkclm djsakml')
+            dispatch({
+                type:GET_LOGGEDIN_USER ,
+                payload
+            })
+        }catch(err){
+    
+        }
     }
-}
 
-export const getUserInfo = data => async dispatch => {
-    try{
-        const payload = await getUserData(data);
-        console.log('userInfo Actinos alnavklcj dpsvnkclm djsakml')
-        dispatch({
-            type:GET_LOGGEDIN_USER ,
-            payload
-        })
-    }catch(err){
-
-    }
-}
-
-export const filterUsers = (filter,users=[]) => async dispatch => {
-    const filteredUsers = users.filter(user=>{
-        return user.name.includes(filter)
-    })
-    dispatch({
-        type: FILTER_USERS,
-        filter,
-        filteredUsers
-    })
-}
-
-// Category loading
-export const setUserLoadingAction = () => {
     return {
-        type: USERS_LOADING
+        ...defaultSkeletonActions,
+        getUserInfo
     }
-}
-
-// export const paginate = params => {
-//     return {
-//         type: CATEGORY_PAGINATE,
-//         payload: params
-//     }
-// }
+})()
+export default actions

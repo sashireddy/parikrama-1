@@ -55,7 +55,7 @@ class Category extends React.Component {
         return (
             <CategorySkeleton content={{pageTitle:'Category'}} AddModal={AddCategory}
              EditModal={EditCategory} ViewModal={ViewCategory} DeleteModal={DeleteCategory}
-             tableRowRenderFunc ={CategoryListItem}
+             tableRowRenderFunc ={CategoryListItem} pk="name"
              headerArr = {headerArr} getTitle={getTitle}>
                 <div>
                     <h4>
