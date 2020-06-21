@@ -11,13 +11,13 @@ export const GET_CATEGORIES = "GET_CATEGORY";
 export const CATEGORY_LOAD_ERROR = "CATEGORY_LOAD_ERROR";
 
 //user
-export const GET_USERS = "GET_USERS";
-export const USERS_LOADING = "USERS_LOADING"
-export const FILTER_USERS = "FILTER_USERS"
-// export const 
+export const GET_USER = "GET_USER";
+export const USER_LOADING = "USER_LOADING";
+export const FILTER_USERS = "FILTER_USERS";
+// export const
 
 
-//login 
+//login
 export const USER_LOGIN = 'USER_LOGIN'
 
 

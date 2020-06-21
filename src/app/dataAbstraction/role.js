@@ -13,7 +13,7 @@ let cachedData = null;
 // can be used to map from any API response to below object
 // to avoid making changes in reducer structure
 // For API page limit can be passed while making call
-const apiResponse = { // pMapping => Parameter Mapping
+const apiResponse = {
     pageLimit: apiConfig.PAGE_LIMIT,
     totalRecords: 1,
     currentPage: 1,

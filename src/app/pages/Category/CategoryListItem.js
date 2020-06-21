@@ -2,8 +2,7 @@ import React from 'react';
 import {Button} from 'react-bootstrap';
 
 export default props => {
-  const category = props.record
-  console.log('categoory PROPS',category)
+  const category = props.record;
   return (
     <tr>
         <td>{category.name}</td>
