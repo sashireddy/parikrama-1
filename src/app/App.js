@@ -10,7 +10,7 @@ import store from './store';
 import categoryActions from './actions/categoryActions';
 import roleActions from './actions/roleActions';
 import permissionActions from './actions/permissionActions';
-import {getUserInfo} from './actions/userActions';
+import userActions from './actions/userActions';
 import {connect} from 'react-redux'
 
 const mapStateToProps = state => ({
@@ -32,7 +32,7 @@ class App extends Component {
     store.dispatch(categoryActions.getAllCategories());
     store.dispatch(roleActions.getAllRoles());
     store.dispatch(permissionActions.getAllPermissions());
-    store.dispatch(getUserInfo())
+    store.dispatch(userActions.getUserInfo())
     this.onRouteChanged();
   }
   render () {
