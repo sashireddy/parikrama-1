@@ -1,13 +1,13 @@
 
 
-import { GET_USERS,USERS_LOADING,FILTER_USERS} from './types';
-import {getUserData} from "../dataAbstraction/user";
+import { GET_USERS,USERS_LOADING,FILTER_USERS,GET_LOGGEDIN_USER} from './types';
+import {getAllUsersData,getUserData} from "../dataAbstraction/user";
 
 // Get categories
 export const getUsers = data => async dispatch => {
     // dispatch(setUserLoadingAction());
     try{
-        const users = await getUserData(data);
+        const users = await getAllUsersData(data);
         dispatch({
             type: GET_USERS,
             payload:users 
@@ -17,6 +17,19 @@ export const getUsers = data => async dispatch => {
         //     type: CATEGORY_LOAD_ERROR,
         //     payload: {}
         // });
+    }
+}
+
+export const getUserInfo = data => async dispatch => {
+    try{
+        const payload = await getUserData(data);
+        console.log('userInfo Actinos alnavklcj dpsvnkclm djsakml')
+        dispatch({
+            type:GET_LOGGEDIN_USER ,
+            payload
+        })
+    }catch(err){
+
     }
 }
 

@@ -10,13 +10,16 @@ import store from './store';
 import categoryActions from './actions/categoryActions';
 import roleActions from './actions/roleActions';
 import permissionActions from './actions/permissionActions';
-import thresholdActions from './actions/thresholdActions';
+import {getUserInfo} from './actions/userActions';
+import {connect} from 'react-redux'
 
-store.dispatch(categoryActions.getAllCategories());
-store.dispatch(roleActions.getAllRoles());
-store.dispatch(permissionActions.getAllPermissions());
-store.dispatch(thresholdActions.getAllThreshold());
+const mapStateToProps = state => ({
+  auth : state['AUTH'],
+  state
+})
+const mapActionToProps = {
 
+}
 class App extends Component {
 
   constructor(props) {
@@ -29,10 +32,11 @@ class App extends Component {
     store.dispatch(categoryActions.getAllCategories());
     store.dispatch(roleActions.getAllRoles());
     store.dispatch(permissionActions.getAllPermissions());
-    store.dispatch(thresholdActions.getAllThreshold());
+    store.dispatch(getUserInfo())
     this.onRouteChanged();
   }
   render () {
+    console.log(this.props.state)
     let navbarComponent = !this.state.isFullPageLayout ? <Navbar/> : '';
     let sidebarComponent = !this.state.isFullPageLayout ? <Sidebar/> : '';
     let footerComponent = !this.state.isFullPageLayout ? <Footer/> : '';
@@ -81,4 +85,4 @@ class App extends Component {
 
 }
 
-export default withRouter(App);
+export default connect(mapStateToProps, mapActionToProps)(withRouter(App))

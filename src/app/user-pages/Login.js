@@ -13,7 +13,6 @@ const mapActionToProps = {
 export class Login extends Component {
   constructor(props) {
     super(props)
-    console.log(props)
     this.state = {
       username : '',
       password : '',
@@ -37,9 +36,15 @@ export class Login extends Component {
      })
     this.props.firebase.doSignInWithEmailAndPassword(this.state.username,this.state.password)
     .then(resp=> {
-      this.props.login({
-        email:this.state.username
-      })
+      this.props.firebase.auth.currentUser.getIdToken(/* forceRefresh */ true).then((idToken) => {
+        console.log(idToken)
+        this.props.login({
+          email:this.state.username,
+          token: idToken
+        })
+      }).catch(function(error) {
+        throw error
+      });
       this.setState({
         loading:false,
       })

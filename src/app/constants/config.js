@@ -5,6 +5,7 @@ export default {
     "API" : {
         "BASE_URL": "",
         "GET_USERS": "/data/users.json",
+        "GET_USER" : "/data/userData.json",
         "CATEGORY": {
             "GET_CTEGORIES": "/data/categories.json",
             "CACHING": true,

@@ -4,13 +4,6 @@ import {connect} from 'react-redux'
 import inventoryActions from '../../actions/inventoryActions'
 
 
-const selectedProduct = {
-    name : 'pens',
-    alertAmount : 10,
-    currentQuantity : 100,
-    units : 'units'
-}
-
 const mapStateToProps = state => ({
     THRESHOLD : state['THRESHOLD']
 })
@@ -28,7 +21,6 @@ class ViewCategory extends React.Component {
     }
 
     handleChange = evt => {
-            const inputAmount = evt.target.value
             this.setState({
                 ...this.state,
                 note: evt.target.value

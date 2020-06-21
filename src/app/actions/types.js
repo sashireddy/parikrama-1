@@ -12,6 +12,7 @@ export const CATEGORY_LOAD_ERROR = "CATEGORY_LOAD_ERROR";
 
 //user
 export const GET_USERS = "GET_USERS";
+export const GET_LOGGEDIN_USER = "GET_LOGGEDIN_USER"
 export const USERS_LOADING = "USERS_LOADING"
 export const FILTER_USERS = "FILTER_USERS"
 // export const 
