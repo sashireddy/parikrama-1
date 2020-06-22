@@ -18,16 +18,22 @@ export const FILTER_USERS = "FILTER_USERS";
 
 
 //login
-export const USER_LOGIN = 'USER_LOGIN'
+export const USER_LOGIN = "USER_LOGIN";
 
 
 export const GET_ROLES = "GET_ROLES";
 export const GET_ALL_ROLES = "GET_ALL_ROLES";
-export const ROLES_LOADING = "ROLES_LOADING"
-export const FILTER_ROLES = "FILTER_ROLES"
+export const ROLES_LOADING = "ROLES_LOADING";
+export const FILTER_ROLES = "FILTER_ROLES";
 
 export const GET_ALL_PERMISSIONS = "GET_ALL_PERMISSIONS";
 // export const
 
 //threshold
-export const GET_ALL_THRESHOLD = "GET_ALL_THRESHOLD"
+export const GET_ALL_THRESHOLD = "GET_ALL_THRESHOLD";
+
+// Transactions
+export const GET_TRANSACTIONS = "GET_TRANSACTIONS";
+export const TRANSACTION_LOADING = "TRANSACTION_LOADING";
+export const TRANSACTION_LOAD_ERROR = "TRANSACTION_LOAD_ERROR";
+// End Transactions

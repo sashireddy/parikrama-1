@@ -43,6 +43,11 @@ export default {
             "GET_THRESHOLD": "/data/threshold.json",
             "CACHING": true,
             "PAGE_LIMIT": 10
+        },
+        "TRANSACTIONS" : {
+            "GET_TRANSACTIONS": "/data/transactions.json",
+            "CACHING": true,
+            "PAGE_LIMIT": 10
         }
     }
 };
