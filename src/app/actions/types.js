@@ -33,3 +33,8 @@ export const GET_ALL_PERMISSIONS = "GET_ALL_PERMISSIONS";
 
 //threshold
 export const GET_ALL_THRESHOLD = "GET_ALL_THRESHOLD"
+
+//units
+export const GET_ALL_UNITS = "GET_ALL_UNITS"
+export const ADD_UNIT = "ADD_UNIT"
+export const GET_UNITS = "GET_UNITS"

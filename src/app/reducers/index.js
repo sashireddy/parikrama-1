@@ -8,6 +8,7 @@ import roleReducer from './roleReducer';
 import permissionReducer from './permissionReducer';
 import productsReducer from './productReducer';
 import thresholdReducer from './thresholdReducer';
+import unitsReducer from './unitsReducer';
 
 export default combineReducers({
     CATEGORY: categoryReducer,
@@ -18,5 +19,6 @@ export default combineReducers({
     ROLE: roleReducer,
     PERMISSION: permissionReducer,
     PRODUCTS : productsReducer,
-    THRESHOLD : thresholdReducer
+    THRESHOLD : thresholdReducer,
+    UNITS : unitsReducer,
 });

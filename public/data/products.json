@@ -3,21 +3,36 @@
       {
         "name": "milk",
         "category": "food",
+        "unit":"litres",
         "isActive": true,
+        "thresholds": {
+          "kormangala": 15,
+          "sarjapur": 10
+        },
         "createdDate": "2020-06-12T11:16:04.060Z",
         "lastUpdatedDate": "2020-06-12T11:16:14.460Z"
       },
       {
         "name": "crocin",
         "category": "pharmacy",
+        "unit":"litres",
         "isActive": true,
+        "thresholds": {
+          "kormangala": 15,
+          "sarjapur": 10
+        },
         "createdDate": "2020-06-12T11:16:04.060Z",
         "lastUpdatedDate": "2020-06-12T11:16:14.460Z"
       },
       {
         "name": "bench",
         "category": "furniture",
+        "unit":"litres",
         "isActive": true,
+        "thresholds": {
+          "kormangala": 15,
+          "sarjapur": 10
+        },
         "createdDate": "2020-06-12T11:16:04.060Z",
         "lastUpdatedDate": "2020-06-12T11:16:14.460Z"
       }

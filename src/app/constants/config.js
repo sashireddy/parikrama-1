@@ -44,6 +44,12 @@ export default {
             "GET_THRESHOLD": "/data/threshold.json",
             "CACHING": true,
             "PAGE_LIMIT": 10
+        },
+        "UNITS" : {
+            "GET_ALL_UNITS" : "/data/units.json",
+            "ADD_UNIT": "/data/units.json",
+            "CACHING": true,
+            "PAGE_LIMIT": 10
         }
     }
 };

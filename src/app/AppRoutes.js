@@ -35,6 +35,7 @@ const Category = lazy(()=> import('./pages/Category'))
 const Role = lazy(()=> import('./pages/Role'));
 const User = lazy(()=> import('./pages/User'));
 const Move = lazy(()=> import ('./pages/Move'));
+const Unit = lazy(()=> import('./pages/Units'));
 
 class AppRoutes extends Component {
   render () {
@@ -52,6 +53,7 @@ class AppRoutes extends Component {
           <Route path="/tables/basic-table" component={ BasicTable } />
           <Route path="/roles" component={ Role } />
           <Route path="/users" component={ User } />
+          <Route path="/units" component={ Unit } />
         {/* {user.perm[cate] === true && */}
         {/* <> */}
           <Route path="/categories" component={ Category } />

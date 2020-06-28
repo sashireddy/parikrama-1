@@ -1,8 +1,7 @@
 import React from "react"
-import {Form,Col} from 'react-bootstrap'
+import {Form} from 'react-bootstrap'
 import { Typeahead } from 'react-bootstrap-typeahead'
 import {connect} from 'react-redux'
-import Select from 'react-select'
 
 const mapStateToProps = state => ({
     products: state['PRODUCTS']
@@ -28,6 +27,12 @@ class AddCategory extends React.Component {
             inputQuantity: evt.target.value
         });
     }
+    handleNote = evt => {
+        this.setState({
+            ...this.state,
+            note: evt.target.value
+        })
+    }
 
     handleDropDown = (evt,dropDown) => {
         this.setState({
@@ -37,14 +42,15 @@ class AddCategory extends React.Component {
 
     onSubmit = event => {
         const form = event.currentTarget;
-        if (form.checkValidity() === false) {
+        if (form.checkValidity() === false && !this.state.currentProduct) {
             event.preventDefault();
             event.stopPropagation();
         }else {
             event.preventDefault();
             this.props.onSubmit({...this.state});
+            this.props.closeModal();
         }
-        this.props.closeModal();
+       
     }
 
     handleProductDropDown = evt => {
@@ -67,13 +73,18 @@ class AddCategory extends React.Component {
                             onChange={this.handleProductDropDown}
                         />
                     </Form.Group>
-                    <Col>
                     <Form.Group>
                         <label htmlFor="exampleInputEmail1">Quantity</label>
                         <Form.Control required type="number" className="form-control" id="categoryName" name="name" placeholder="" value={this.state.inputQuantity} onChange={this.handleChange} />
                         <Form.Control.Feedback type="invalid">Please enter a valid quantity</Form.Control.Feedback>
                     </Form.Group>
-                    </Col>
+                    <Form.Group>
+                        <label htmlFor="">Note</label>
+                        <Form.Control required type="text" id="Note" className="form-control" 
+                            name="note" placeholder="Add info about the transaction" value={this.state.note}
+                            onChange={this.handleNote} />
+                        <Form.Control.Feedback type="invalid">Please enter a note about the transaction</Form.Control.Feedback>
+                    </Form.Group>
                 </div>
             </form>
         );

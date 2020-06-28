@@ -6,5 +6,6 @@ export default {
         branches : 'BRANCHES',
         role: 'ROLE',
         product : 'PRODUCT',
+        UNITS : "UNITS"
     }
 }

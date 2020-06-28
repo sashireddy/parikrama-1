@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { withRouter} from 'react-router-dom';
-
+import 'react-notifications-component/dist/theme.css'
+import ReactNotification from 'react-notifications-component'
 import './App.scss';
 import AppRoutes from './AppRoutes';
 import Navbar from './shared/Navbar';
@@ -11,7 +12,9 @@ import categoryActions from './actions/categoryActions';
 import roleActions from './actions/roleActions';
 import permissionActions from './actions/permissionActions';
 import userActions from './actions/userActions';
+import UnitActions from './actions/units';
 import {connect} from 'react-redux'
+import {addNotification} from './actions/notification'
 
 const mapStateToProps = state => ({
   auth : state['AUTH'],
@@ -33,6 +36,12 @@ class App extends Component {
     store.dispatch(roleActions.getAllRoles());
     store.dispatch(permissionActions.getAllPermissions());
     store.dispatch(userActions.getUserInfo())
+    store.dispatch(UnitActions.initialData())
+    addNotification({
+      title:'Welcome',
+      message : 'Welcome to parikrama Inventory Management ',
+      type:'success'
+    })
     this.onRouteChanged();
   }
   render () {
@@ -43,6 +52,7 @@ class App extends Component {
     return (
       
         <div className="container-scroller">
+          <ReactNotification />
           { navbarComponent }
           <div className="container-fluid page-body-wrapper">
             { sidebarComponent }

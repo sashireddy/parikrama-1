@@ -96,7 +96,9 @@ class CrudSkeleton extends Component {
 
     render() {
         // console.log(this.props)
+        console.log("***********skeleton-state*********************")
         console.log(this.state)
+        console.log(this.props)
         const AddModal = this.props.AddModal
         const EditModal = this.props.EditModal
         const ViewModal = this.props.ViewModal
