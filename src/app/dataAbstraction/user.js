@@ -1,6 +1,9 @@
 import axios from 'axios';
 import config from "../constants/config";
-import {validateCurrentPage, create_UUID, getSortFunction} from "./util";
+import {validateCurrentPage, getSortFunction} from "./util";
+import Firebase from "../Firebase";
+
+console.log('Firebase =>', typeof(Firebase));
 
 const apiConfig = config.API.USER;
 
@@ -31,7 +34,7 @@ export const getData = params => {
     return new Promise(async (resolve, reject) => {
         if(cachedData === null){
             // Logic can be applied to generate URL using params
-            const url = `${config.API.BASE_URL}${apiConfig.GET_USERS}`;
+            const url = `${apiConfig.GET_USERS}`;
             console.log("API calling...", url);
             try {
                 const res = await axios.get(url);
@@ -63,7 +66,24 @@ export const getData = params => {
 export const addData = data => {
     return new Promise(async (resolve, reject) => {
         if(apiConfig.CACHING){
-            data.id = create_UUID();
+            // data.id = create_UUID();
+            try {
+                console.log("Before auth entry");
+                Firebase.doCreateUserWithEmailAndPassword(data.email, "parikrama");
+                console.log("After auth entry");
+                let response = await axios.post(apiConfig.GET_USERS, data);
+                console.log("Create User response: ", response);
+            } catch(err) {
+                let response = {
+                    "flashMessage": {
+                        "type": "error",
+                        "message": "Unable to save the data!"
+                    }
+                };
+                console.log(err);
+                resolve(response);
+                return;
+            }
             cachedData = [
                 ...cachedData,
                 data
@@ -84,7 +104,13 @@ export const addData = data => {
                 };
                 resolve(res);
             } catch(err) {
-                reject(err);
+                let response = {
+                    "flashMessage": {
+                        "type": "error",
+                        "message": "Unable to save the data!"
+                    }
+                };
+                resolve(response);
             }
         } else {
             // Needs to handle API or DB data updates.
@@ -96,12 +122,28 @@ export const addData = data => {
 // Update category implementation
 export const updateData = data => {
     return new Promise(async (resolve, reject) => {
+        let user;
+        try{
+            let response = await axios.put(apiConfig.GET_USERS, data);
+            user = JSON.parse(response.config.data);
+            console.log("Updated User", user);
+        } catch(err) {
+            let response = {
+                "flashMessage": {
+                    "type": "error",
+                    "message": "Unable to update the data!"
+                }
+            };
+            resolve(response);
+            return;
+        }
         if(apiConfig.CACHING){
+            console.log("Updating now");
             cachedData = cachedData.map(item => {
-                if(item.id === data.id) {
+                if(item.id === user.id) {
                     return {
                         ...item,
-                        ...data
+                        ...user
                     }
                 }
                 return item;
@@ -135,6 +177,18 @@ export const updateData = data => {
 // Delete category implementation
 export const deleteData = data => {
     return new Promise(async (resolve, reject) => {
+        try{
+            await axios.delete(`${apiConfig.GET_USERS}/${data.id}`, data);
+        } catch(err) {
+            let response = {
+                "flashMessage": {
+                    "type": "error",
+                    "message": "Unable to delete the user!"
+                }
+            };
+            resolve(response);
+            return;
+        }
         if(apiConfig.CACHING){
             cachedData = cachedData.filter(item => {
                 if(item.id === data.id) {
@@ -179,8 +233,6 @@ const getCurrentStateData = params => {
     apiResponse.search = params.search;
     apiResponse.sort = params.sort;
     apiResponse.currentPage = currentPage;
-
-    console.log("Users", apiResponse.data);
 }
 
 // Need to filter and sort the data

@@ -32,6 +32,10 @@ class ViewUser extends React.Component {
               </dd>
               <dt>Email</dt>
               <dd>{record.email}</dd>
+              <dt>Created on</dt>
+              <dd>{record.createdDate}</dd>
+              <dt>Updated on</dt>
+              <dd>{record.lastUpdatedDate}</dd>
             </dl>
         </div>
         <hr className="modal-footer-ruler" />

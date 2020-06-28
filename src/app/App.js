@@ -11,11 +11,13 @@ import categoryActions from './actions/categoryActions';
 import roleActions from './actions/roleActions';
 import permissionActions from './actions/permissionActions';
 import thresholdActions from './actions/thresholdActions';
+import branchesActions from './actions/branchActions';
 
 store.dispatch(categoryActions.getAllCategories());
 store.dispatch(roleActions.getAllRoles());
 store.dispatch(permissionActions.getAllPermissions());
 store.dispatch(thresholdActions.getAllThreshold());
+store.dispatch(branchesActions.getAllBranches());
 
 class App extends Component {
 
@@ -26,10 +28,10 @@ class App extends Component {
     }
   }
   componentDidMount() {
-    store.dispatch(categoryActions.getAllCategories());
-    store.dispatch(roleActions.getAllRoles());
-    store.dispatch(permissionActions.getAllPermissions());
-    store.dispatch(thresholdActions.getAllThreshold());
+    // store.dispatch(categoryActions.getAllCategories());
+    // store.dispatch(roleActions.getAllRoles());
+    // store.dispatch(permissionActions.getAllPermissions());
+    // store.dispatch(thresholdActions.getAllThreshold());
     this.onRouteChanged();
   }
   render () {
@@ -37,7 +39,7 @@ class App extends Component {
     let sidebarComponent = !this.state.isFullPageLayout ? <Sidebar/> : '';
     let footerComponent = !this.state.isFullPageLayout ? <Footer/> : '';
     return (
-      
+
         <div className="container-scroller">
           { navbarComponent }
           <div className="container-fluid page-body-wrapper">

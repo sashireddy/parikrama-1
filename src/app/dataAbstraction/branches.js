@@ -22,15 +22,17 @@ const apiResponse = { // pMapping => Parameter Mapping
     sort: {}
 };
 
+
 // Function to load all the data as part for the initial load
 export const loadInitialData = () => {
     return new Promise(async (resolve, reject) => {
-        const url = `${config.API.BASE_URL}${apiConfig.GET_ROLES}`;
+        const url = `${apiConfig.GET_BRANCHES}`;
+        console.log("API calling for Branches...", url);
         const res = await axios.get(url);
         if(apiConfig.CACHING){
-            cachedData = res.data;
+            cachedData = res.data.branches;
         }
-        resolve(res.data);
+        resolve(res.data.branches);
     });
 }
 
@@ -44,7 +46,7 @@ export const getData = params => {
     return new Promise(async (resolve, reject) => {
         if(cachedData === null){
             // Logic can be applied to generate URL using params
-            const url = `${config.API.BASE_URL}${apiConfig.GET_BRANCHES}`;
+            const url = `${apiConfig.GET_BRANCHES}`;
             console.log("API calling...", url);
             try {
                 const res = await axios.get(url);
@@ -182,7 +184,6 @@ export const deleteData = data => {
 
 
 const getCurrentStateData = params => {
-    console.log(params);
     // Need to implement search and sort functionality here
     // After search total records may vary, reset pagination to 1st page.
     let records = filterData(params, cachedData);

@@ -15,22 +15,22 @@ export default {
             "PAGE_LIMIT": 10
         },
         "ROLE": {
-            "GET_ROLES": "/data/roles.json",
+            "GET_ROLES": "https://local-parikrama.web.app/api/roles",
             "CACHING": true,
             "PAGE_LIMIT": 10
         },
         "PERMISSION": {
-            "GET_PERMISSIONS": "/data/permissions.json",
+            "GET_PERMISSIONS": "https://local-parikrama.web.app/api/permissions",
             "CACHING": true,
             "PAGE_LIMIT": 10
         },
         "USER": {
-            "GET_USERS": "/data/users.json",
+            "GET_USERS": "https://local-parikrama.web.app/api/users",
             "CACHING": true,
             "PAGE_LIMIT": 10
         },
         "BRANCHES": {
-            "GET_BRANCHES": "/data/branches.json",
+            "GET_BRANCHES": "https://local-parikrama.web.app/api/branches",
             "CACHING": true,
             "PAGE_LIMIT": 10
         },

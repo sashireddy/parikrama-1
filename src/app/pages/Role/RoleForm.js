@@ -79,8 +79,8 @@ class RoleForm extends React.Component {
                     <Form.Group id="formGridCheckbox">
                         <label htmlFor="permissions">Role Permissions</label>
                         {this.props.allPermissions.map(permission => {
-                            let checked = this.state.permissions.includes(permission.id);
-                            return <Form.Check key={permission.id} type="checkbox" value={permission.id} id={`permission_${permission.id}`} label={permission.permission} checked={checked} onChange={this.onPermissionChange} />
+                            let checked = this.state.permissions.includes(permission.permission);
+                            return <Form.Check key={permission.id} type="checkbox" value={permission.permission} id={`permission_${permission.id}`} label={permission.permission} checked={checked} onChange={this.onPermissionChange} />
                         })}
                     </Form.Group>
                 </div>

@@ -1,15 +1,20 @@
-import React, { Component } from 'react'
+import React from "react";
+import LoadingOverlay from "react-loading-overlay";
 
-export class Spinner extends Component {
-  render() {
+
+
+function Spinner(props) {
     return (
-      <div>
-        <div className="spinner-wrapper">
-          <div className="donut"></div>
-        </div>
+      <div className={props.loading ? "full-page-loader-wrapper" : ""}>
+        <LoadingOverlay
+          active={props.loading}
+          spinner
+          text={props.text || "Loading..."}
+          >
+          {props.children}
+        </LoadingOverlay>
       </div>
     )
-  }
 }
 
 export default Spinner

@@ -255,3 +255,18 @@ small {
     }
   }
 }
+
+/*Full page loader styles*/
+.full-page-loader-wrapper {
+  height: 100vh;
+  width: 100vw;
+  background-color: rgba(26, 26, 27, 0.5);;
+  padding: 16px;
+  position: absolute;
+  z-index: 10000;
+  top: 0;
+  left: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

@@ -23,6 +23,7 @@ chrome-user-data
 .vscode
 *.swp
 *.swo
+.token.json
 .token
 
 packages/react-devtools-core/dist
