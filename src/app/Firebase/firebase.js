@@ -24,9 +24,7 @@ class Firebase {
     this.emailAuthProvider = app.auth.EmailAuthProvider;
 
     /* Firebase APIs */
-
     this.auth = app.auth();
-    this.db = app.database();
   }
 
   // *** Auth API ***
@@ -49,8 +47,7 @@ class Firebase {
   doPasswordUpdate = password =>
     this.auth.currentUser.updatePassword(password);
 
-  // *** Merge Auth and DB User API *** //
-
+  // auth helper 
   onAuthUserListener = (next, fallback) =>
     this.auth.onAuthStateChanged(authUser => {
       if (authUser) {
@@ -80,17 +77,6 @@ class Firebase {
       }
     });
 
-  // *** User API ***
-
-  user = uid => this.db.ref(`users/${uid}`);
-
-  users = () => this.db.ref('users');
-
-  // *** Message API ***
-
-  message = uid => this.db.ref(`messages/${uid}`);
-
-  messages = () => this.db.ref('messages');
 }
 
 export default new Firebase();

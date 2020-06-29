@@ -44,6 +44,9 @@ export default {
             "CACHING": true,
             "PAGE_LIMIT": 10
         },
+        "UNITS" : {
+            "GET_ALL_UNITS" : "/data/units.json",
+            "ADD_UNIT": "/data/units.json",
         "TRANSACTIONS" : {
             "GET_TRANSACTIONS": "/data/transactions.json",
             "CACHING": true,

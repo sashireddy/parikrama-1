@@ -1,7 +1,6 @@
 import React from "react";
 
 function ViewCategory(props) {
-  const category = props.data
     return (
       <React.Fragment>
         <div className="pl-3 pr-3">

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { withRouter} from 'react-router-dom';
-
+import 'react-notifications-component/dist/theme.css'
+import ReactNotification from 'react-notifications-component'
 import './App.scss';
 import AppRoutes from './AppRoutes';
 import Navbar from './shared/Navbar';
@@ -10,15 +11,18 @@ import store from './store';
 import categoryActions from './actions/categoryActions';
 import roleActions from './actions/roleActions';
 import permissionActions from './actions/permissionActions';
-import thresholdActions from './actions/thresholdActions';
+import userActions from './actions/userActions';
+import UnitActions from './actions/units';
+import {connect} from 'react-redux'
+import {addNotification} from './actions/notification'
 import branchesActions from './actions/branchActions';
 
-store.dispatch(categoryActions.getAllCategories());
-store.dispatch(roleActions.getAllRoles());
-store.dispatch(permissionActions.getAllPermissions());
-store.dispatch(thresholdActions.getAllThreshold());
-store.dispatch(branchesActions.getAllBranches());
-
+const mapStateToProps = state => ({
+  auth : state['AUTH'],
+  state
+})
+const mapActionToProps = {
+}
 class App extends Component {
 
   constructor(props) {
@@ -28,6 +32,16 @@ class App extends Component {
     }
   }
   componentDidMount() {
+    store.dispatch(categoryActions.getAllCategories());
+    store.dispatch(roleActions.getAllRoles());
+    store.dispatch(permissionActions.getAllPermissions());
+    store.dispatch(userActions.getUserInfo())
+    store.dispatch(UnitActions.initialData())
+    addNotification({
+      title:'Welcome',
+      message : 'Welcome to parikrama Inventory Management ',
+      type:'success'
+    })
     // store.dispatch(categoryActions.getAllCategories());
     // store.dispatch(roleActions.getAllRoles());
     // store.dispatch(permissionActions.getAllPermissions());
@@ -35,12 +49,14 @@ class App extends Component {
     this.onRouteChanged();
   }
   render () {
+    console.log(this.props.state)
     let navbarComponent = !this.state.isFullPageLayout ? <Navbar/> : '';
     let sidebarComponent = !this.state.isFullPageLayout ? <Sidebar/> : '';
     let footerComponent = !this.state.isFullPageLayout ? <Footer/> : '';
     return (
 
         <div className="container-scroller">
+          <ReactNotification />
           { navbarComponent }
           <div className="container-fluid page-body-wrapper">
             { sidebarComponent }
@@ -83,4 +99,4 @@ class App extends Component {
 
 }
 
-export default withRouter(App);
+export default connect(mapStateToProps, mapActionToProps)(withRouter(App))

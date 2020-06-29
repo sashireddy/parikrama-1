@@ -42,6 +42,12 @@ class Products extends React.Component {
                     value : 'Category',
                     key : 'category'
                 },{
+                    value : 'Threshold',
+                    key : 'threshold'
+                },{
+                    value : 'units',
+                    key : 'units'
+                },{
                     value : 'Actions',
                     key : 'actions'
                 }

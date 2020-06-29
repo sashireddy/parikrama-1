@@ -11,6 +11,8 @@ export const GET_CATEGORIES = "GET_CATEGORY";
 export const CATEGORY_LOAD_ERROR = "CATEGORY_LOAD_ERROR";
 
 //user
+export const GET_LOGGEDIN_USER = "GET_LOGGEDIN_USER"
+// export const 
 export const GET_USER = "GET_USER";
 export const USER_LOADING = "USER_LOADING";
 export const FILTER_USERS = "FILTER_USERS";
@@ -29,7 +31,11 @@ export const FILTER_ROLES = "FILTER_ROLES";
 export const GET_ALL_PERMISSIONS = "GET_ALL_PERMISSIONS";
 // export const
 
-//threshold
+
+//units
+export const GET_ALL_UNITS = "GET_ALL_UNITS"
+export const ADD_UNIT = "ADD_UNIT"
+export const GET_UNITS = "GET_UNITS"
 export const GET_ALL_THRESHOLD = "GET_ALL_THRESHOLD";
 
 // Transactions

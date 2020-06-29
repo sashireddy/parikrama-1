@@ -25,6 +25,23 @@ const apiResponse = { // pMapping => Parameter Mapping
     sort: {}
 };
 
+export const getUserData = params => {
+    return new Promise(async (resolve, reject) => {
+        const url = `${config.API.BASE_URL}${apiConfig.GET_USER}`;
+        console.log("API calling...", url);
+        try {
+            const res = await axios.get(url);
+            res.flashMessage = {
+                "type": "success",
+                "message": "Data Loaded Successfully!"
+            };
+            resolve(res.data)
+        } catch(err){
+            reject(err);
+        }
+    })
+}
+
 
 // All the method will return promise, which will hold good for doing
 // async operations, we don't have to make changes for the cached vs live data

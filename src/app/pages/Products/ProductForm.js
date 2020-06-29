@@ -8,6 +8,8 @@ import ProductActions from '../../actions/productActions'
 const mapStateToProps = state => ({
     stateData :{
         category : state["CATEGORY"],
+        unit : state["UNITS"],
+        user : state["USER"].loggedInUser,
     } 
 });
 
@@ -16,14 +18,15 @@ const mapActionToProps = {
 };
 
 class ProductForm extends React.Component {
-    constructor(){
-        super();
+    constructor(props){
+        super(props);
         this.state = {
+            ...props.record
         }
     }
 
     componentDidMount(){
-        this.setState({...this.props.record});
+        
     }
 
     handleChange = evt => {
@@ -54,9 +57,12 @@ class ProductForm extends React.Component {
 
 
     render() {
-        console.log(this.state.category)
-        const dropDownArr = arrToDropDownArr(this.props.stateData.category.allCategories.categories.map(category => category.name))
+        console.log(this.state)
+        console.log(this.props)
+        const categorydropDownArr = arrToDropDownArr(this.props.stateData.category.allCategories.categories.map(category => category.name))
+        const unitdropDownArr = arrToDropDownArr(this.props.stateData.unit.data)
         const defaultCategory = (this.props.record && this.props.record.category)||''
+        const defaultUnit = (this.props.record && this.props.record.unit)||''
         return(
             <form className="forms-sample" onSubmit={this.onSubmit} >
                 <div className="pl-3 pr-3">
@@ -68,8 +74,19 @@ class ProductForm extends React.Component {
                     <Form.Group>
                         <label htmlFor="exampleInputEmail1">Category</label>
                         <Select className="basic-single" classNamePrefix="select" defaultValue={ValToDropDownEntry(defaultCategory)} 
-                            isClearable={true} isSearchable={true}  options={dropDownArr} onChange={(e)=>{this.handleDropDown('category',e)}}/>
+                            isClearable={true} isSearchable={true}  options={categorydropDownArr} onChange={(e)=>{this.handleDropDown('category',e)}}/>
                         <Form.Control.Feedback type="invalid">Please provide the category name</Form.Control.Feedback>
+                    </Form.Group>
+                    <Form.Group>
+                        <label htmlFor="exampleInputEmail1">Unit</label>
+                        <Select className="basic-single" classNamePrefix="select" defaultValue={ValToDropDownEntry(defaultUnit)} 
+                            isClearable={true} isSearchable={true}  options={unitdropDownArr} onChange={(e)=>{this.handleDropDown('unit',e)}}/>
+                        <Form.Control.Feedback type="invalid">Please provide the unit name</Form.Control.Feedback>
+                    </Form.Group>
+                    <Form.Group>
+                        <label htmlFor="exampleInputEmail1">Threshold</label>
+                        <Form.Control type="number" className="form-control" id="productName" name="name" placeholder="Product Name" value={this.state.thresholds[this.props.stateData.user.branch]||undefined} onChange={this.handleChange} />
+                        <Form.Control.Feedback type="invalid">Please provide a Product name</Form.Control.Feedback>
                     </Form.Group>
                 </div>
                 <hr className="modal-footer-ruler" />
