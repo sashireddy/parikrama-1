@@ -14,7 +14,7 @@ export default props => {
         </td>
         <td>
           <nav>
-            <Button className="btn btn-primary" onClick={() => props.openActionMaodal(props.category, "view")}>
+            <Button className="btn btn-primary" onClick={() => props.openActionMaodal(props.record, "view")}>
               View
             </Button>
             <Button onClick={() => props.openActionMaodal(props.record, "edit")} className="btn btn-primary ml-2">

@@ -11,7 +11,7 @@ import store from './app/store'
 Sentry.init({dsn: "https://200b7efebd53449db724bd0f86673d63@o399355.ingest.sentry.io/5256320"});
 ReactDOM.render(
   <Provider store={store}>
-  <FirebaseContext.Provider value={new Firebase()}>
+  <FirebaseContext.Provider value={Firebase}>
     <BrowserRouter basename="/">
       <Entry />
     </BrowserRouter>

@@ -25,7 +25,7 @@ const apiResponse = {
 // Function to load all the data as part for the initial load
 export const loadInitialData = () => {
     return new Promise(async (resolve, reject) => {
-        const url = `${config.API.BASE_URL}${apiConfig.GET_ROLES}`;
+        const url = `${apiConfig.GET_ROLES}`;
         const res = await axios.get(url);
         if(apiConfig.CACHING){
             cachedData = res.data.roles;
@@ -43,7 +43,7 @@ export const getData = params => {
     return new Promise(async (resolve, reject) => {
         if(cachedData === null){
             // Logic can be applied to generate URL using params
-            const url = `${config.API.BASE_URL}${apiConfig.GET_ROLES}`;
+            const url = `${apiConfig.GET_ROLES}`;
             console.log("API calling...", url);
             try {
                 const res = await axios.get(url);
@@ -74,6 +74,19 @@ export const getData = params => {
 // Add category implementaion
 export const addData = data => {
     return new Promise(async (resolve, reject) => {
+        try {
+            let response = await axios.post(apiConfig.GET_ROLES, data);
+            console.log("Create Roles response: ", response);
+        } catch(err) {
+            let response = {
+                "flashMessage": {
+                    "type": "error",
+                    "message": "Unable to save the data!"
+                }
+            };
+            resolve(response);
+            return;
+        }
         if(apiConfig.CACHING){
             data.id = create_UUID();
             cachedData = [
@@ -108,9 +121,25 @@ export const addData = data => {
 // Update category implementation
 export const updateData = data => {
     return new Promise(async (resolve, reject) => {
+        let role;
+        try{
+            let response = await axios.put(apiConfig.GET_ROLES, data);
+            role = JSON.parse(response.config.data);
+            console.log("Updated Error", role);
+        } catch(err) {
+            console.log("Update Roles Error");
+            let response = {
+                "flashMessage": {
+                    "type": "error",
+                    "message": "Unable to update the data!"
+                }
+            };
+            resolve(response);
+            return;
+        }
         if(apiConfig.CACHING){
             cachedData = cachedData.map(item => {
-                if(item.id === data.id) {
+                if(item.id === role.id) {
                     return {
                         ...item,
                         ...data
@@ -147,6 +176,18 @@ export const updateData = data => {
 // Delete category implementation
 export const deleteData = data => {
     return new Promise(async (resolve, reject) => {
+        try{
+            await axios.delete(`${apiConfig.GET_ROLES}/${data.id}`, data);
+        } catch(err) {
+            let response = {
+                "flashMessage": {
+                    "type": "error",
+                    "message": "Unable to delete the user!"
+                }
+            };
+            resolve(response);
+            return;
+        }
         if(apiConfig.CACHING){
             cachedData = cachedData.filter(item => {
                 if(item.id === data.id) {

@@ -36,6 +36,7 @@ const Role = lazy(()=> import('./pages/Role'));
 const User = lazy(()=> import('./pages/User'));
 const Move = lazy(()=> import ('./pages/Move'));
 const Unit = lazy(()=> import('./pages/Units'));
+const Transaction = lazy(()=> import ('./pages/Transaction'));
 
 class AppRoutes extends Component {
   render () {
@@ -77,6 +78,7 @@ class AppRoutes extends Component {
           <Route path="/inventory/move" component={Move} />
           <Route path="/inventory" component={Inventory} />
           <Route path="/reports" component ={ Reports } />
+          <Route path="/transactions" component ={ Transaction } />
           <Redirect to="/dashboard" />
 
         </Switch>

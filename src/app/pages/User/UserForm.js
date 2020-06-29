@@ -36,7 +36,6 @@ class UserForm extends React.Component {
     }
 
     handleDropDown = (field, evt) => {
-        console.log('Handle Dropdown ', evt);
         this.setState({
             ...this.state,
             [field]: evt.value
@@ -56,9 +55,6 @@ class UserForm extends React.Component {
     }
 
     render() {
-
-        const dropDownArr = this.props.allRoles.map(role => getDropdownItem(role.label, role.id));
-        console.log('Usre form Properties', this.state.role, dropDownArr);
         return(
             <form className="forms-sample" onSubmit={this.onSubmit} >
                 <div className="pl-3 pr-3">
@@ -79,9 +75,15 @@ class UserForm extends React.Component {
                     </Form.Group>
                     <Form.Group>
                         <label htmlFor="exampleInputEmail1">Role</label>
-                        <Select className="basic-single" classNamePrefix="select" value={getSelectedItem(dropDownArr, this.state.role)}
-                            options={dropDownArr} onChange={(e)=>{this.handleDropDown('role', e)}}/>
+                        <Select className="basic-single" classNamePrefix="select" value={getSelectedItem(this.props.roleDropDownArr, this.state.role)}
+                            options={this.props.roleDropDownArr} onChange={(e)=>{this.handleDropDown('role', e)}}/>
                         <Form.Control.Feedback type="invalid">Please select role</Form.Control.Feedback>
+                    </Form.Group>
+                    <Form.Group>
+                        <label htmlFor="exampleInputEmail1">Branch</label>
+                        <Select className="basic-single" classNamePrefix="select" value={getSelectedItem(this.props.branchDropDownArr, this.state.branch)}
+                            options={this.props.branchDropDownArr} onChange={(e)=>{this.handleDropDown('branch', e)}}/>
+                        <Form.Control.Feedback type="invalid">Please select branch</Form.Control.Feedback>
                     </Form.Group>
                     <Form.Group>
                         <label htmlFor="isActive">User Status</label>
@@ -105,8 +107,11 @@ class UserForm extends React.Component {
 }
 
 const mapStateToProps = state => {
+    const roleDropDownArr = state.ROLE.allRoles.map(role => getDropdownItem(role.label, role.id));
+    const branchDropDownArr = state.BRANCHES.allRecords.map(branch => getDropdownItem(branch.branch, branch.branch));
     return{
-        ...state["ROLE"]
+        roleDropDownArr,
+        branchDropDownArr
     }
 }
 

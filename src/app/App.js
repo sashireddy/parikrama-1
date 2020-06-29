@@ -15,13 +15,13 @@ import userActions from './actions/userActions';
 import UnitActions from './actions/units';
 import {connect} from 'react-redux'
 import {addNotification} from './actions/notification'
+import branchesActions from './actions/branchActions';
 
 const mapStateToProps = state => ({
   auth : state['AUTH'],
   state
 })
 const mapActionToProps = {
-
 }
 class App extends Component {
 
@@ -42,6 +42,10 @@ class App extends Component {
       message : 'Welcome to parikrama Inventory Management ',
       type:'success'
     })
+    // store.dispatch(categoryActions.getAllCategories());
+    // store.dispatch(roleActions.getAllRoles());
+    // store.dispatch(permissionActions.getAllPermissions());
+    // store.dispatch(thresholdActions.getAllThreshold());
     this.onRouteChanged();
   }
   render () {
@@ -50,7 +54,7 @@ class App extends Component {
     let sidebarComponent = !this.state.isFullPageLayout ? <Sidebar/> : '';
     let footerComponent = !this.state.isFullPageLayout ? <Footer/> : '';
     return (
-      
+
         <div className="container-scroller">
           <ReactNotification />
           { navbarComponent }

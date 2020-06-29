@@ -1,0 +1,25 @@
+{
+    "transactions": [
+        {
+            "id": "2zTYwPXLwPUYCH5n6hL1Ttu2aUD3",
+            "closingQuantity": 12,
+            "date" : "2 June 2020 at 13:58:00 UTC+5:30",
+            "initialQuantity": 18,
+            "operation" : "issueProduct",
+            "operationalQuantity":6,
+            "product": "bread",
+            "user_id": "wwhite"
+        },
+        {
+            "id": "2zTYwPXLwPUYCH5n6hL1Ttu2aUD4",
+            "closingQuantity": 12,
+            "date" : "2 June 2020 at 13:58:00 UTC+5:30",
+            "initialQuantity": 18,
+            "operation" : "issueProduct",
+            "operationalQuantity":6,
+            "product": "milk",
+            "user_id": "wwhite"
+        }
+    ],
+    "totalTransactions": 2
+}

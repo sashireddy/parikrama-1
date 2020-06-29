@@ -95,10 +95,6 @@ class CrudSkeleton extends Component {
     }
 
     render() {
-        // console.log(this.props)
-        console.log("***********skeleton-state*********************")
-        console.log(this.state)
-        console.log(this.props)
         const AddModal = this.props.AddModal
         const EditModal = this.props.EditModal
         const ViewModal = this.props.ViewModal
@@ -106,6 +102,7 @@ class CrudSkeleton extends Component {
         const TableRowFunc = this.props.tableRowRenderFunc
         return (
             <div>
+                <Spinner loading={this.props.loading} />
                 <div className="page-header">
                     <h3 className="page-title"> {this.props.content.pageTitle} </h3>
                     <nav aria-label="breadcrumb">
@@ -150,45 +147,40 @@ class CrudSkeleton extends Component {
                                         <Button onClick={() => this.openActionMaodal(null, "add")} className="btn btn-primary ml-2 search-btn">Add Record</Button>
                                     </Form>
                                 </div>
-                                {this.props.loading ? ( <Spinner />) : (
-                                    <React.Fragment>
-                                        <div className="table-responsive">
-                                            <table className="table table-striped table-hover">
-                                                <thead>
-                                                    <tr>
-                                                        {this.props.headerArr.map((entry, idx)=>{
-                                                            if(entry.sortable){
-                                                                const className = entry.key === this.state.sort.key ? "sortable " + this.state.sort.direction : "sortable"
-                                                                return (
-                                                                    <th key={idx} className={className} onClick={()=>this.handleSortClick(entry.key)}>{entry.value}</th>
-                                                                )
-                                                            }
-                                                            return <th key={idx}>{entry.value}</th>
-                                                        })}
-                                                    </tr>
-                                                </thead>
-                                                {this.props.loading && <Spinner />}
-                                                <tbody>
-                                                {!this.props.loading && this.props.data.length ?
-                                                    this.props.data.map((record)=> <TableRowFunc record={record} key={record[this.props.pk]} openActionMaodal={this.openActionMaodal} {...this.props}/>)
-                                                    : <tr><td colSpan={this.props.headerArr.length} className="text-center">No Records found!</td></tr>
-                                                }
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                        {this.props.data.length ? (
-                                            <div className="mt-4">
-                                                <Pagination
-                                                    totalRecords={this.props.totalRecords}
-                                                    currentPage={this.props.currentPage}
-                                                    pageLimit={this.props.pageLimit}
-                                                    pageNeighbours={1}
-                                                    onPageChanged={this.onPageChanged}
-                                                />
-                                            </div>
-                                        ) : null}
-                                    </React.Fragment>
-                                )}
+                                <div className="table-responsive">
+                                    <table className="table table-striped table-hover">
+                                        <thead>
+                                            <tr>
+                                                {this.props.headerArr.map((entry, idx)=>{
+                                                    if(entry.sortable){
+                                                        const className = entry.key === this.state.sort.key ? "sortable " + this.state.sort.direction : "sortable"
+                                                        return (
+                                                            <th key={idx} className={className} onClick={()=>this.handleSortClick(entry.key)}>{entry.value}</th>
+                                                        )
+                                                    }
+                                                    return <th key={idx}>{entry.value}</th>
+                                                })}
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                        {this.props.data.length ?
+                                            this.props.data.map((record)=> <TableRowFunc record={record} key={record[this.props.pk]} openActionMaodal={this.openActionMaodal} {...this.props}/>)
+                                            : <tr><td colSpan={this.props.headerArr.length} className="text-center">No Records found!</td></tr>
+                                        }
+                                        </tbody>
+                                    </table>
+                                </div>
+                                {this.props.data.length ? (
+                                    <div className="mt-4">
+                                        <Pagination
+                                            totalRecords={this.props.totalRecords}
+                                            currentPage={this.props.currentPage}
+                                            pageLimit={this.props.pageLimit}
+                                            pageNeighbours={1}
+                                            onPageChanged={this.onPageChanged}
+                                        />
+                                    </div>
+                                ) : null}
                             </div>
                         </div>
                         <Modal title={this.props.getTitle(this.state.actionType)}

@@ -11,10 +11,9 @@ const actions = (pageId,getEntityData,updateEntityData,addEntityData,deleteEntit
   return {
     // get Entity unit data
     getData: (data) => async (dispatch) => {
-      dispatch(setLoading())
+      dispatch(setLoading());
       try {
         const UpdatedData = await getEntityData(data);
-        console.log(dispatch, "Action ", getData, UpdatedData);
         dispatch({
           type: getData,
           payload: UpdatedData,
@@ -32,7 +31,7 @@ const actions = (pageId,getEntityData,updateEntityData,addEntityData,deleteEntit
 
     // Add Entity Unit
     addData: (data) => async (dispatch) => {
-      dispatch(setLoading())
+      dispatch(setLoading());
       try {
         const UpdatedData = await addEntityData(data)
         dispatch({
@@ -49,7 +48,7 @@ const actions = (pageId,getEntityData,updateEntityData,addEntityData,deleteEntit
 
     // Update Entity Unit
     updateData: (data) => async (dispatch) => {
-      dispatch(setLoading())
+      dispatch(setLoading());
       try {
         const UpdatedData = await updateEntityData(data)
         dispatch({

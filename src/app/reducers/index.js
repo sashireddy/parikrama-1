@@ -9,6 +9,7 @@ import permissionReducer from './permissionReducer';
 import productsReducer from './productReducer';
 import thresholdReducer from './thresholdReducer';
 import unitsReducer from './unitsReducer';
+import transactionReducer from './transactionReducer';
 
 export default combineReducers({
     CATEGORY: categoryReducer,
@@ -21,4 +22,5 @@ export default combineReducers({
     PRODUCTS : productsReducer,
     THRESHOLD : thresholdReducer,
     UNITS : unitsReducer,
+    TRANSACTION: transactionReducer
 });
