@@ -1,5 +1,6 @@
 import axios from 'axios';
 import config from "../constants/config";
+axios.defaults.headers.common['Authorization'] = "Bearer TOKEN";
 
 const apiConfig = config.API.PERMISSION;
 
