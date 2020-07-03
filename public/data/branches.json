@@ -1,112 +1,35 @@
-[
-    {
-      "_id": "5ee36e1b3aed06046a3f7b6c",
-      "name": "McDonald Avenue",
-      "address": {
-        "city": "Websterville",
-        "country": "India",
-        "state": "Virginia",
-        "street": "Gerry Street",
-        "zipcode": 521179
+{
+  "branches": [
+      {
+          "address": {
+              "country": "India",
+              "city": "Bengaluru",
+              "zipcode": 560035,
+              "street": "2nd Street",
+              "state": "Karnataka"
+          },
+          "isActive": true,
+          "users": [],
+          "lastUpdatedDate": "2020-06-25T09:12:21.367Z",
+          "createdDate": "2020-06-25T09:12:21.367Z",
+          "isHeadOffice": true,
+          "branch": "kormangala"
+      },
+      {
+          "address": {
+              "country": "India",
+              "city": "Bengaluru",
+              "zipcode": 560045,
+              "street": "someStree 2t",
+              "state": "Karnataka"
+          },
+          "isActive": true,
+          "users": [],
+          "lastUpdatedDate": "2020-06-25T09:11:55.101Z",
+          "createdDate": "2020-06-25T09:11:55.101Z",
+          "isHeadOffice": false,
+          "branch": "sarjapur"
       }
-    },
-    {
-      "_id": "5ee36e1b14d313f779dcaf3e",
-      "name": "Front Street",
-      "address": {
-        "city": "Fannett",
-        "country": "India",
-        "state": "Nebraska",
-        "street": "Hunts Lane",
-        "zipcode": 521704
-      }
-    },
-    {
-      "_id": "5ee36e1b3eda582a42847a1f",
-      "name": "Campus Road",
-      "address": {
-        "city": "Roy",
-        "country": "India",
-        "state": "New York",
-        "street": "Lloyd Street",
-        "zipcode": 521308
-      }
-    },
-    {
-      "_id": "5ee36e1b1fce97b34fa717ab",
-      "name": "Garden Place",
-      "address": {
-        "city": "Glenshaw",
-        "country": "India",
-        "state": "Maryland",
-        "street": "Lawrence Street",
-        "zipcode": 521882
-      }
-    },
-    {
-      "_id": "5ee36e1b82561171b2c44d07",
-      "name": "Strickland Avenue",
-      "address": {
-        "city": "Brutus",
-        "country": "India",
-        "state": "Minnesota",
-        "street": "Brooklyn Avenue",
-        "zipcode": 521443
-      }
-    },
-    {
-      "_id": "5ee36e1bc09005cb39d8a962",
-      "name": "Rodney Street",
-      "address": {
-        "city": "Dowling",
-        "country": "India",
-        "state": "Rhode Island",
-        "street": "Bushwick Avenue",
-        "zipcode": 521566
-      }
-    },
-    {
-      "_id": "5ee36e1b1092aeb18392b809",
-      "name": "Canarsie Road",
-      "address": {
-        "city": "Clinton",
-        "country": "India",
-        "state": "Illinois",
-        "street": "Independence Avenue",
-        "zipcode": 521606
-      }
-    },
-    {
-      "_id": "5ee36e1bc31d160a02593001",
-      "name": "Columbia Place",
-      "address": {
-        "city": "Nogal",
-        "country": "India",
-        "state": "Hawaii",
-        "street": "Barbey Street",
-        "zipcode": 521162
-      }
-    },
-    {
-      "_id": "5ee36e1bdbd9117b08e5737c",
-      "name": "Little Street",
-      "address": {
-        "city": "Juarez",
-        "country": "India",
-        "state": "Virgin Islands",
-        "street": "Myrtle Avenue",
-        "zipcode": 521355
-      }
-    },
-    {
-      "_id": "5ee36e1beb59d1277bf07a30",
-      "name": "Irving Street",
-      "address": {
-        "city": "Forestburg",
-        "country": "India",
-        "state": "Texas",
-        "street": "Madison Street",
-        "zipcode": 521085
-      }
-    }
-  ]
+  ],
+  "totalBranches": 2
+}

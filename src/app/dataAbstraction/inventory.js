@@ -33,7 +33,7 @@ export const getData = params => {
     return new Promise(async (resolve, reject) => {
         if(cachedData === null){
             // Logic can be applied to generate URL using params
-            const url = `${config.API.BASE_URL}${pageConfig.GET_CTEGORIES}`;
+            const url = `${config.API.BASE_URL}${pageConfig.GET_BRANCH_INVENTORY}`;
             console.log("API calling...", url);
             try {
                 const res = await axios.get(url);
@@ -42,7 +42,7 @@ export const getData = params => {
                     "message": "Data Loaded Successfully!"
                 };
                 if(pageConfig.CACHING){
-                    cachedData = res.data;
+                    cachedData = res.data.inventory;
                 }
             } catch(err){
                 reject(err);

@@ -67,6 +67,11 @@ class ViewCategory extends React.Component {
                     </Row>
                     <Col>
                     </Col>
+                    <hr className="modal-footer-ruler" />
+                    <div className="text-right">
+                        <button type="button" className="btn btn-light mr-2" onClick={this.props.closeModal}>Cancel</button>
+                        <button type="submit" className="btn btn-primary">Add Inventory</button>
+                    </div>
                 </div>
             </form>
         );

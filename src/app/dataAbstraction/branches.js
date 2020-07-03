@@ -50,12 +50,13 @@ export const getData = params => {
             console.log("API calling...", url);
             try {
                 const res = await axios.get(url);
+                console.log(res.data.branches)
                 res.flashMessage = {
                     "type": "success",
                     "message": "Data Loaded Successfully!"
                 };
                 if(apiConfig.CACHING){
-                    cachedData = res.data;
+                    cachedData = res.data.branches;
                 }
             } catch(err){
                 reject(err);

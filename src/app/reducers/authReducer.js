@@ -1,9 +1,15 @@
 import {USER_LOGIN} from '../actions/types'
-
+const token = localStorage.getItem('Token')
+const expiryTime = localStorage.getItem('ExpiryTime')
+let loggedIn = false
+if(expiryTime > new Date() && token){
+    loggedIn = true     
+}
 const initialState = {
-    loggedIn: false,
+    loggedIn,
     userInfo : {
         //adding dummy data to test, this info comes from The login page
+        token : loggedIn ? token : undefined,
         userName : 'pari@pari.com'
     }
 }

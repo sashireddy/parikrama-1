@@ -35,6 +35,15 @@ class ProductForm extends React.Component {
             [evt.target.name]: evt.target.value
         });
     }
+    handleThresholdChange =(evt,branch) => {
+        this.setState({
+            ...this.state,
+            thresholds :{
+                ...this.state.thresholds,
+                [branch] : evt.target.value
+            }
+        })
+    }
     handleDropDown = (label,evt) => {
         this.setState({
             ...this.state,
@@ -63,6 +72,7 @@ class ProductForm extends React.Component {
         const unitdropDownArr = arrToDropDownArr(this.props.stateData.unit.data)
         const defaultCategory = (this.props.record && this.props.record.category)||''
         const defaultUnit = (this.props.record && this.props.record.unit)||''
+        const thresoldValue = this.state.thresholds && this.state.thresholds[this.props.stateData.user.branch]
         return(
             <form className="forms-sample" onSubmit={this.onSubmit} >
                 <div className="pl-3 pr-3">
@@ -85,7 +95,7 @@ class ProductForm extends React.Component {
                     </Form.Group>
                     <Form.Group>
                         <label htmlFor="exampleInputEmail1">Threshold</label>
-                        <Form.Control type="number" className="form-control" id="productName" name="name" placeholder="Product Name" value={this.state.thresholds[this.props.stateData.user.branch]||undefined} onChange={this.handleChange} />
+                        <Form.Control type="number" className="form-control" id="productName" name="name" placeholder="Product Name" value={thresoldValue} onChange={e=>this.handleThresholdChange(e,this.props.stateData.user.branch)} />
                         <Form.Control.Feedback type="invalid">Please provide a Product name</Form.Control.Feedback>
                     </Form.Group>
                 </div>

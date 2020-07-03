@@ -16,7 +16,7 @@ import UnitActions from './actions/units';
 import {connect} from 'react-redux'
 import {addNotification} from './actions/notification'
 import branchesActions from './actions/branchActions';
-
+import productActions from './actions/productActions';
 const mapStateToProps = state => ({
   auth : state['AUTH'],
   state
@@ -37,15 +37,12 @@ class App extends Component {
     store.dispatch(permissionActions.getAllPermissions());
     store.dispatch(userActions.getUserInfo())
     store.dispatch(UnitActions.initialData())
+    store.dispatch(productActions.getAllProducts());
     addNotification({
       title:'Welcome',
       message : 'Welcome to parikrama Inventory Management ',
       type:'success'
     })
-    // store.dispatch(categoryActions.getAllCategories());
-    // store.dispatch(roleActions.getAllRoles());
-    // store.dispatch(permissionActions.getAllPermissions());
-    // store.dispatch(thresholdActions.getAllThreshold());
     this.onRouteChanged();
   }
   render () {

@@ -28,9 +28,9 @@ export const loadInitialData = () => {
         const url = `${config.API.BASE_URL}${apiConfig.GET_PRODUCTS}`;
         const res = await axios.get(url);
         if(apiConfig.CACHING){
-            cachedData = res.data;
+            cachedData = res.data.products;
         }
-        resolve(res.data);
+        resolve(res.data.products);
     });
 }
 

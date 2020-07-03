@@ -2,36 +2,30 @@ import React from "react"
 import {Form, Row,Col,Alert} from 'react-bootstrap'
 import Select from 'react-select'
 
-const selectedProduct = {
-    name : 'pens',
-    alertAmount : 10,
-    currentQuantity : 100,
-    units : 'units'
-}
-
 class AddCategory extends React.Component {
     
-    constructor(){
-        super();
+    constructor(props){
+        super(props);
         this.state = {
+            ...this.props.record,
            inputQuantity : 0,
+           note : ""
         }
     }
 
-    componentDidMount(){
-        this.setState({...this.props.category});
-    }
-
     handleChange = evt => {
+        const inputQuantity = evt.target.value
+        if(inputQuantity >= 0 && inputQuantity < this.props.record.threshold){
+            this.setState({
+                ...this.state,
+                inputQuantity
+            });
+        }
+    }
+    handleNote = evt => {
         this.setState({
             ...this.state,
-            inputQuantity: evt.target.value
-        });
-    }
-
-    handleDropDown = (evt,dropDown) => {
-        this.setState({
-            [dropDown] : evt
+            note: evt.target.value
         })
     }
 
@@ -47,42 +41,20 @@ class AddCategory extends React.Component {
         this.props.closeModal();
     }
 
-    handleProductDropDown = evt => {
-        this.setState({
-            currentProduct: evt[0],
-            selectedProduct
-        })
-    }
-
     render() {
         console.log(this.state)
-        let stockAfter = 0
-        if(this.state.selectedProduct){
-            stockAfter = this.state.selectedProduct.currentQuantity-this.state.inputQuantity
-        }
+        const stockAfter = this.props.record.availableQuantity-this.state.inputQuantity
         return (
             <form className="forms-sample" onSubmit={this.onSubmit} >
                 <div className="pl-3 pr-3">
-                    <Form.Group>
-                        <label htmlFor="exampleInputEmail1">Product</label>
-                        <Select />
-                    </Form.Group>
-                    { this.state.selectedProduct && (<>
                     <Row>
                         <Col>
-                            <h6>Current Stock: {this.state.selectedProduct.currentQuantity}</h6> 
+                            <h6>Current Stock: {this.props.record.availableQuantity}</h6> 
                         </Col>
                         <Col>
                             <h6>Stock left after transaction: {stockAfter}</h6>
                         </Col>
                     </Row>
-                    { stockAfter < this.state.selectedProduct.alertAmount && (
-                    <Row>
-                        <Alert variant={'danger'}>
-                        your stock will fall below threshold after this transaction
-                        </Alert>
-                    </Row>
-                    )}
                     <Col>
                     <Form.Group>
                         <label htmlFor="exampleInputEmail1">Quantity</label>
@@ -90,7 +62,27 @@ class AddCategory extends React.Component {
                         <Form.Control.Feedback type="invalid">Please enter a valid quantity</Form.Control.Feedback>
                     </Form.Group>
                     </Col>
-                        </>)}
+                    <Col>
+                    <Form.Group>
+                        <label htmlFor="">Note</label>
+                        <Form.Control required type="text" id="Note" className="form-control" 
+                            name="note" placeholder="Add info about the transaction" value={this.state.note}
+                            onChange={this.handleNote} />
+                        <Form.Control.Feedback type="invalid">Please enter a note about the transaction</Form.Control.Feedback>
+                    </Form.Group>
+                    </Col>
+                    { stockAfter < this.props.record.threshold && (
+                    <Row>
+                        <Alert variant={'danger'}>
+                        your stock will fall below threshold after this transaction
+                        </Alert>
+                    </Row>
+                    )}
+                </div>
+                <hr className="modal-footer-ruler" />
+                <div className="text-right">
+                        <button type="button" className="btn btn-light mr-2" onClick={this.props.closeModal}>Cancel</button>
+                        <button type="submit" className="btn btn-primary">Disburse Inventory</button>
                 </div>
             </form>
         );

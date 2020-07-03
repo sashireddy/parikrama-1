@@ -13,7 +13,7 @@ class EditBranch extends React.Component {
                 label='Add'
                 onSubmit={this.onSubmit}
                 closeModal={this.props.closeModal}
-                {...this.props.record}
+                record={this.props.record}
             />
         );
     }

@@ -8,9 +8,16 @@ export default props => {
   console.log(props)
   return (
     <tr>
-        <td className="d-none d-sm-table-cell">{props.record.name}</td>
+        <td className="d-none d-sm-table-cell">{props.record.branch}</td>
         <td className="d-none d-sm-table-cell">
           <div className="text-truncate">{address(props.record.address)}</div>
+        </td>
+        <td>
+            {props.record.isActive
+              ? <label className="badge badge-success">Active</label>
+              : <label className="badge badge-warning">In Active</label>
+            }
+            {props.record.isHeadOffice && <label className="badge badge-warning">Head Office</label>}
         </td>
         <td>
           <nav className="text-center">

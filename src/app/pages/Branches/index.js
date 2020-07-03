@@ -47,6 +47,10 @@ class Products extends React.Component {
                 },{
                     value : 'Address',
                     key : 'Address'
+                },
+                {
+                    value : 'Tag',
+                    key:'tag'
                 },{
                     value : 'Actions',
                     key : 'actions'

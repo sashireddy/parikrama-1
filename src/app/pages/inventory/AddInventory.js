@@ -1,5 +1,5 @@
 import React from "react"
-import {Form} from 'react-bootstrap'
+import {Form,Row} from 'react-bootstrap'
 import { Typeahead } from 'react-bootstrap-typeahead'
 import {connect} from 'react-redux'
 
@@ -47,7 +47,7 @@ class AddCategory extends React.Component {
             event.stopPropagation();
         }else {
             event.preventDefault();
-            this.props.onSubmit({...this.state});
+            this.props.addData({...this.state});
             this.props.closeModal();
         }
        
@@ -55,12 +55,12 @@ class AddCategory extends React.Component {
 
     handleProductDropDown = evt => {
         this.setState({
-            currentProduct: evt[0],
+            currentProduct: this.props.products.allRecords.filter(product =>evt[0]===product.name)[0],
         })
     }
 
     render() {
-        console.log(this.state)
+        console.log(this.props)
         return (
             <form className="forms-sample" onSubmit={this.onSubmit} >
                 <div className="pl-3 pr-3">
@@ -69,13 +69,19 @@ class AddCategory extends React.Component {
                         <Typeahead 
                             id="Products"
                             key='1'
-                            options={['Pens']}
+                            options={this.props.products.allRecords.filter(record => record.isActive).map(record => record.name)}
                             onChange={this.handleProductDropDown}
                         />
                     </Form.Group>
+                    {   this.state.currentProduct && (<>
+                        <dt>Category</dt>
+                        <dd>{this.state.currentProduct.category}</dd>
+                        </>)
+                    }
                     <Form.Group>
                         <label htmlFor="exampleInputEmail1">Quantity</label>
                         <Form.Control required type="number" className="form-control" id="categoryName" name="name" placeholder="" value={this.state.inputQuantity} onChange={this.handleChange} />
+                        <dd>{this.state.currentProduct && this.state.currentProduct.unit}</dd>
                         <Form.Control.Feedback type="invalid">Please enter a valid quantity</Form.Control.Feedback>
                     </Form.Group>
                     <Form.Group>
@@ -85,6 +91,11 @@ class AddCategory extends React.Component {
                             onChange={this.handleNote} />
                         <Form.Control.Feedback type="invalid">Please enter a note about the transaction</Form.Control.Feedback>
                     </Form.Group>
+                    <hr className="modal-footer-ruler" />
+                    <div className="text-right">
+                        <button type="button" className="btn btn-light mr-2" onClick={this.props.closeModal}>Cancel</button>
+                        <button type="submit" className="btn btn-primary">Add Inventory</button>
+                    </div>
                 </div>
             </form>
         );

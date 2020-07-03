@@ -9,13 +9,15 @@ const actions = (()=>{
     const updateMyRequest = () => {}
     const disburseLocally = () => {}
     const raiseRequest = () => {}
+    const addDataLocally = () => {}
   return {
     //other actions apart from the crud operations go here 
     getData : defaultSkeletonActions.getData,
     updateExternalRequest,
     updateMyRequest,
     disburseLocally,
-    raiseRequest    
+    raiseRequest,
+    addData:addDataLocally
   }
 
 })()

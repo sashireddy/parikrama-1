@@ -10,7 +10,8 @@ export default {
             "PAGE_LIMIT": 10
         },
         "INVENTORY": {
-            "GET_CTEGORIES": "/data/inventory.json",
+            "GET_BRANCH_INVENTORY": "/data/inventory.json",  
+            "GET_ALL_INVENTORY":"/data/allInventory.json",
             "CACHING": true,
             "PAGE_LIMIT": 10
         },
@@ -25,6 +26,7 @@ export default {
             "PAGE_LIMIT": 10
         },
         "USER": {
+            "GET_USER" : '/data/userData.json',
             "GET_USERS": "https://local-parikrama.web.app/api/users",
             "CACHING": true,
             "PAGE_LIMIT": 10
