@@ -70,7 +70,7 @@ class UserForm extends React.Component {
                     </Form.Group>
                     <Form.Group>
                         <label htmlFor="name">Email Address</label>
-                        <Form.Control required type="text" className="form-control" id="userEmail" name="email" placeholder="E Mail" value={this.state.email} onChange={this.handleChange} />
+                        <Form.Control required type="email" className="form-control" id="userEmail" name="email" placeholder="E Mail" value={this.state.email} onChange={this.handleChange} />
                         <Form.Control.Feedback type="invalid">Please enter valid email address</Form.Control.Feedback>
                     </Form.Group>
                     <Form.Group>
@@ -107,7 +107,7 @@ class UserForm extends React.Component {
 }
 
 const mapStateToProps = state => {
-    const roleDropDownArr = state.ROLE.allRoles.map(role => getDropdownItem(role.label, role.id));
+    const roleDropDownArr = state.ROLE.allRoles.map(role => getDropdownItem(role.name, role.id));
     const branchDropDownArr = state.BRANCHES.allRecords.map(branch => getDropdownItem(branch.branch, branch.branch));
     return{
         roleDropDownArr,

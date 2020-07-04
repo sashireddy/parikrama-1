@@ -35,8 +35,9 @@ class App extends Component {
     store.dispatch(categoryActions.getAllCategories());
     store.dispatch(roleActions.getAllRoles());
     store.dispatch(permissionActions.getAllPermissions());
-    store.dispatch(userActions.getUserInfo())
-    store.dispatch(UnitActions.initialData())
+    store.dispatch(userActions.getUserInfo());
+    store.dispatch(UnitActions.initialData());
+    // store.dispatch(branchesActions.getAllBranches());
     addNotification({
       title:'Welcome',
       message : 'Welcome to parikrama Inventory Management ',
@@ -49,7 +50,6 @@ class App extends Component {
     this.onRouteChanged();
   }
   render () {
-    console.log(this.props.state)
     let navbarComponent = !this.state.isFullPageLayout ? <Navbar/> : '';
     let sidebarComponent = !this.state.isFullPageLayout ? <Sidebar/> : '';
     let footerComponent = !this.state.isFullPageLayout ? <Footer/> : '';

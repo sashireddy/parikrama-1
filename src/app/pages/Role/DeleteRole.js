@@ -9,8 +9,8 @@ function ViewCategory(props) {
             <dl className="dl-horizontal">
               <dt>Role Id</dt>
               <dd>{record.id}</dd>
-              <dt>Role Label</dt>
-              <dd>{record.label}</dd>
+              <dt>Role Name</dt>
+              <dd>{record.name}</dd>
               <dt>Description</dt>
               <dd>{record.description}</dd>
             </dl>

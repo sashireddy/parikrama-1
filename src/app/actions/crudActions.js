@@ -1,28 +1,42 @@
+import {addNotification} from "./notification";
+
 const actions = (pageId,getEntityData,updateEntityData,addEntityData,deleteEntityData) => {
 
-  const getData = 'GET_'+pageId
-  const loadError = pageId+'_LOAD_ERROR'
-  const loading = pageId+'_LOADING'
+  const getData = 'GET_'+pageId;
+  const loading = pageId+'_LOADING';
   const setLoading = () => {
     return {
         type: loading,
       }
   }
+
+  const notifyStatus = (res) => {
+    if(res.flashMessage){
+      addNotification({
+        title: getData,
+        type: res.flashMessage.type,
+        message : res.flashMessage.message
+      });
+    }
+  }
+
   return {
     // get Entity unit data
     getData: (data) => async (dispatch) => {
       dispatch(setLoading());
       try {
-        const UpdatedData = await getEntityData(data);
+        const res = await getEntityData(data);
+        notifyStatus(res);
         dispatch({
           type: getData,
-          payload: UpdatedData,
+          payload: res,
         });
       } catch (err) {
-        dispatch({
-          type: loadError,
-          payload: {},
-        })
+        addNotification({
+          title: getData,
+          type: "danger",
+          message : "Unable to load data, this is the error message"
+        });
       }
     },
 
@@ -33,16 +47,18 @@ const actions = (pageId,getEntityData,updateEntityData,addEntityData,deleteEntit
     addData: (data) => async (dispatch) => {
       dispatch(setLoading());
       try {
-        const UpdatedData = await addEntityData(data)
+        const res = await addEntityData(data);
+        notifyStatus(res);
         dispatch({
           type: getData,
-          payload: UpdatedData,
-        })
+          payload: res,
+        });
       } catch (err) {
-        dispatch({
-          type: loadError,
-          payload: {},
-        })
+        addNotification({
+          title: getData,
+          type: "danger",
+          message : "Unable to add data"
+        });
       }
     },
 
@@ -50,33 +66,37 @@ const actions = (pageId,getEntityData,updateEntityData,addEntityData,deleteEntit
     updateData: (data) => async (dispatch) => {
       dispatch(setLoading());
       try {
-        const UpdatedData = await updateEntityData(data)
+        const res = await updateEntityData(data);
+        notifyStatus(res);
         dispatch({
           type: getData,
-          payload: UpdatedData,
-        })
+          payload: res,
+        });
       } catch (err) {
-        dispatch({
-          type: loadError,
-          payload: {},
-        })
+        addNotification({
+          title: getData,
+          type: "danger",
+          message : "Unable to update data"
+        });
       }
     },
 
     // delete Entity Unit
     deleteData: (data) => async (dispatch) => {
-      dispatch(setLoading())
+      dispatch(setLoading());
       try {
-        const UpdatedData = await deleteEntityData(data)
+        const res = await deleteEntityData(data)
+        notifyStatus(res);
         dispatch({
           type: getData,
-          payload: UpdatedData,
+          payload: res,
         })
       } catch (err) {
-        dispatch({
-          type: loadError,
-          payload: {},
-        })
+        addNotification({
+          title: getData,
+          type: "danger",
+          message : "Unable to delete data"
+        });
       }
     }
   }

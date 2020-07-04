@@ -14,13 +14,12 @@ const actions = (()=>{
     const getUserInfo = data => async dispatch => {
         try{
             const payload = await getUserData(data);
-            console.log('userInfo Actinos alnavklcj dpsvnkclm djsakml')
             dispatch({
                 type:GET_LOGGEDIN_USER ,
                 payload
-            })
+            });
         }catch(err){
-    
+
         }
     }
 
