@@ -33,7 +33,6 @@ export const getData = () => {
         if(cachedData === null){
             // Logic can be applied to generate URL using params
             const url = `${config.API.BASE_URL}${apiConfig.GET_PERMISSIONS}`;
-            console.log("API calling...", url);
             const res = await axios.get(url);
             res.flashMessage = {
                 "type": "success",

@@ -1,7 +1,7 @@
 import React from 'react'
 import Skeleton from '../CrudSkeleton/index'
 import RoleListItem from "./RoleListItem";
-import userActions from "../../actions/roleActions";
+import roleActions from "../../actions/roleActions";
 import ViewRole from "./ViewRole";
 import EditRole from "./EditRole";
 import AddRole from "./AddRole";
@@ -13,7 +13,7 @@ const mapStateToProps = state => ({
 });
 
 const mapActionToProps = {
-    ...userActions
+    ...roleActions
 };
 const RoleSkeleton = connect(mapStateToProps, mapActionToProps)(Skeleton)
 

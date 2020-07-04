@@ -17,9 +17,9 @@ const actions = (()=>{
             dispatch({
                 type:GET_LOGGEDIN_USER ,
                 payload
-            })
+            });
         }catch(err){
-    
+
         }
     }
 

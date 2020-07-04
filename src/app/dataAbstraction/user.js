@@ -27,7 +27,7 @@ const apiResponse = { // pMapping => Parameter Mapping
 
 export const getUserData = params => {
     return new Promise(async (resolve, reject) => {
-        const url = `${config.API.BASE_URL}${apiConfig.GET_USER}`;
+        const url = `${apiConfig.GET_USER}`;
         console.log("API calling...", url);
         try {
             const res = await axios.get(url);
@@ -93,7 +93,7 @@ export const addData = data => {
             } catch(err) {
                 let response = {
                     "flashMessage": {
-                        "type": "error",
+                        "type": "danger",
                         "message": "Unable to save the data!"
                     }
                 };
@@ -123,7 +123,7 @@ export const addData = data => {
             } catch(err) {
                 let response = {
                     "flashMessage": {
-                        "type": "error",
+                        "type": "danger",
                         "message": "Unable to save the data!"
                     }
                 };
@@ -147,10 +147,11 @@ export const updateData = data => {
         } catch(err) {
             let response = {
                 "flashMessage": {
-                    "type": "error",
+                    "type": "danger",
                     "message": "Unable to update the data!"
                 }
             };
+            console.log("Update User Error", err);
             resolve(response);
             return;
         }

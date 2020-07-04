@@ -1,6 +1,6 @@
 import axios from 'axios';
 import config from "../constants/config";
-import {validateCurrentPage, create_UUID, getSortFunction} from "./util";
+import {validateCurrentPage, getSortFunction} from "./util";
 
 const apiConfig = config.API.ROLE;
 
@@ -26,11 +26,15 @@ const apiResponse = {
 export const loadInitialData = () => {
     return new Promise(async (resolve, reject) => {
         const url = `${apiConfig.GET_ROLES}`;
-        const res = await axios.get(url);
-        if(apiConfig.CACHING){
-            cachedData = res.data.roles;
+        try {
+            const res = await axios.get(url);
+            if(apiConfig.CACHING){
+                cachedData = res.data.roles;
+            }
+            resolve(res.data.roles);
+        } catch(err){
+            console.log(err);
         }
-        resolve(res.data.roles);
     });
 }
 
@@ -44,7 +48,7 @@ export const getData = params => {
         if(cachedData === null){
             // Logic can be applied to generate URL using params
             const url = `${apiConfig.GET_ROLES}`;
-            console.log("API calling...", url);
+            console.log("Role API calling...", url);
             try {
                 const res = await axios.get(url);
                 res.flashMessage = {
@@ -74,24 +78,25 @@ export const getData = params => {
 // Add category implementaion
 export const addData = data => {
     return new Promise(async (resolve, reject) => {
+        let response;
         try {
-            let response = await axios.post(apiConfig.GET_ROLES, data);
+            response = await axios.post(apiConfig.GET_ROLES, data);
             console.log("Create Roles response: ", response);
         } catch(err) {
-            let response = {
+            response = {
                 "flashMessage": {
-                    "type": "error",
+                    "type": "danger",
                     "message": "Unable to save the data!"
                 }
             };
             resolve(response);
             return;
         }
+        console.log('Want to see who reaches here...');
         if(apiConfig.CACHING){
-            data.id = create_UUID();
             cachedData = [
                 ...cachedData,
-                data
+                response.data
             ];
             const params = {
                 currentPage: apiResponse.currentPage,
@@ -130,7 +135,7 @@ export const updateData = data => {
             console.log("Update Roles Error");
             let response = {
                 "flashMessage": {
-                    "type": "error",
+                    "type": "danger",
                     "message": "Unable to update the data!"
                 }
             };
@@ -181,7 +186,7 @@ export const deleteData = data => {
         } catch(err) {
             let response = {
                 "flashMessage": {
-                    "type": "error",
+                    "type": "danger",
                     "message": "Unable to delete the user!"
                 }
             };

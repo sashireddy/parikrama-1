@@ -12,14 +12,14 @@ class ViewRole extends React.Component {
               <dt>Role Id</dt>
               <dd>{record.id}</dd>
               <dt>Role Name</dt>
-              <dd>{record.label}</dd>
+              <dd>{record.name}</dd>
               <dt>Description</dt>
               <dd>{record.description}</dd>
               <dt>Permissions</dt>
               <dd>
                 <ul>
                   {this.props.allPermissions
-                    .filter(permission => record.permissions.includes(permission.permission))
+                    .filter(permission => record.permissions.includes(permission.id))
                     .map((permission, idx) => <li key={permission.id}>{permission.permission}</li>)}
                 </ul>
               </dd>
