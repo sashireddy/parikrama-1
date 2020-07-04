@@ -262,8 +262,8 @@ small {
   width: 100vw;
   background-color: rgba(26, 26, 27, 0.5);;
   padding: 16px;
-  position: absolute;
-  z-index: 10000;
+  position: fixed;
+  z-index: 1040;
   top: 0;
   left: 0;
   display: flex;

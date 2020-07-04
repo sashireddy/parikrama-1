@@ -4,7 +4,7 @@ import {connect} from "react-redux";
 class ViewUser extends React.Component {
   getRoleLable = role => {
     let roleObj = this.props.allRoles.find(item => item.id === role);
-    return roleObj ? roleObj.label : role;
+    return roleObj ? roleObj.name : role;
   }
 
   render() {

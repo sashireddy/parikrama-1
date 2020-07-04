@@ -37,7 +37,7 @@ class App extends Component {
     store.dispatch(permissionActions.getAllPermissions());
     store.dispatch(userActions.getUserInfo());
     store.dispatch(UnitActions.initialData());
-    // store.dispatch(branchesActions.getAllBranches());
+    store.dispatch(branchesActions.getAllBranches());
     addNotification({
       title:'Welcome',
       message : 'Welcome to parikrama Inventory Management ',

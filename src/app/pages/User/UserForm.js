@@ -108,7 +108,7 @@ class UserForm extends React.Component {
 
 const mapStateToProps = state => {
     const roleDropDownArr = state.ROLE.allRoles.map(role => getDropdownItem(role.name, role.id));
-    const branchDropDownArr = state.BRANCHES.allRecords.map(branch => getDropdownItem(branch.branch, branch.branch));
+    const branchDropDownArr = state.BRANCHES.allRecords.map(branch => getDropdownItem(branch.name, branch.id));
     return{
         roleDropDownArr,
         branchDropDownArr
