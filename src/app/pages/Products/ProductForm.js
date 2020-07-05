@@ -1,7 +1,8 @@
 import React from "react";
 import {Form} from "react-bootstrap";
 import Select from 'react-select'
-import {ValToDropDownEntry,dropDownResponseFromMap} from '../../utils/dropDownUtils'
+import {getDropdownItem,dropDownResponseFromMap} from '../../utils/dropDownUtils'
+import {getCategory,getUnit} from '../../utils/dataUtils'
 import {connect} from 'react-redux'
 import ProductActions from '../../actions/productActions'
 
@@ -83,13 +84,13 @@ class ProductForm extends React.Component {
                     </Form.Group>
                     <Form.Group>
                         <label htmlFor="exampleInputEmail1">Category</label>
-                        <Select className="basic-single" classNamePrefix="select" defaultValue={ValToDropDownEntry(defaultCategory)} 
+                        <Select className="basic-single" classNamePrefix="select" defaultValue={getDropdownItem(getCategory(defaultCategory),defaultCategory)} 
                             isClearable={true} isSearchable={true}  options={categorydropDownArr} onChange={(e)=>{this.handleDropDown('category',e)}}/>
                         <Form.Control.Feedback type="invalid">Please provide the category name</Form.Control.Feedback>
                     </Form.Group>
                     <Form.Group>
                         <label htmlFor="exampleInputEmail1">Unit</label>
-                        <Select className="basic-single" classNamePrefix="select" defaultValue={ValToDropDownEntry(defaultUnit)} 
+                        <Select className="basic-single" classNamePrefix="select" defaultValue={getDropdownItem(getUnit(defaultUnit),defaultUnit)} 
                             isClearable={true} isSearchable={true}  options={unitdropDownArr} onChange={(e)=>{this.handleDropDown('unit',e)}}/>
                         <Form.Control.Feedback type="invalid">Please provide the unit name</Form.Control.Feedback>
                     </Form.Group>
