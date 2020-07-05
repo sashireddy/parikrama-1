@@ -5,7 +5,8 @@ class AddCategory extends React.Component {
     constructor(props){
         super(props)
         this.state = {
-            unit:''
+            unit:'',
+            isActive : true,
         }
     }
     onSubmit = event => {
@@ -36,6 +37,11 @@ class AddCategory extends React.Component {
                     <label htmlFor="description">Unit</label>
                     <Form.Control type="text" className="form-control" id="categoryDesc" name="unit" placeholder="Unit" value={this.state.unit} onChange={this.handleChange} />
                     <Form.Control.Feedback type="invalid">Provide the Unit Name</Form.Control.Feedback>
+                </Form.Group>
+                <Form.Group>
+                    <label htmlFor="description">Description</label>
+                    <Form.Control type="text" className="form-control" id="categoryDesc" name="description" placeholder="description" value={this.state.description} onChange={this.handleChange} />
+                    <Form.Control.Feedback type="invalid">Provide the Unit description</Form.Control.Feedback>
                 </Form.Group>
             </div>
             <hr className="modal-footer-ruler" />

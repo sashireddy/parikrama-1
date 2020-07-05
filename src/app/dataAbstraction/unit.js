@@ -1,6 +1,6 @@
 import axios from 'axios';
 import config from "../constants/config";
-import {validateCurrentPage, create_UUID, filterData} from "./util";
+import {validateCurrentPage, arrayToMapWithId, filterData} from "./util";
 
 const apiConfig = config.API.UNITS;
 
@@ -30,7 +30,7 @@ export const loadInitialData = () => {
         if(apiConfig.CACHING){
             cachedData = res.data.units;
         }
-        resolve(res.data.units);
+        resolve(arrayToMapWithId(res.data.units));
     });
 }
 
@@ -72,16 +72,16 @@ export const getPageData = params => {
 export const addUnitData = data => {
     return new Promise(async (resolve, reject) => {
         if(apiConfig.CACHING){
-            data.id = create_UUID();
+            console.log(data)
             cachedData = [
                 ...cachedData,
-                data.unit
+                data
             ];
             // Need to Add the actual data to the source
             // Get the data back from source for the above params
             try {
-                const url = `${config.API.BASE_URL}${apiConfig.GET_ALL_UNITS}`;
-                const res = await axios.get(url);
+                const url = `${config.API.BASE_URL}${apiConfig.ADD_UNIT}`;
+                const res = await axios.post(url,data);
                 res.flashMessage = {
                     "type": "success",
                     "message": "Role Added Successfully!"

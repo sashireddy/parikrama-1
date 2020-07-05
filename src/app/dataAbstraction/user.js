@@ -27,7 +27,7 @@ const apiResponse = { // pMapping => Parameter Mapping
 
 export const getUserData = params => {
     return new Promise(async (resolve, reject) => {
-        const url = `${apiConfig.GET_USER}`;
+        const url = `${apiConfig.GET_USER+"/"+Firebase.auth.currentUser.uid}`;
         console.log("API calling...", url);
         try {
             const res = await axios.get(url);

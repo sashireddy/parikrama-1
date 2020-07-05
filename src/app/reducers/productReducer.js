@@ -11,7 +11,7 @@ export default function(state = initialState, action){
         case GET_ALL_PRODUCTS:
             return {
                 ...state,
-                loading: false,
+                initialLoad : true,
                 allRecords : action.payload
             }
         default:

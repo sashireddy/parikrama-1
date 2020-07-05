@@ -59,3 +59,31 @@ export const filterData = (params, records) => {
     }
     return result;
 }
+
+export const handleResponse = res => {
+    if(res.status >= 400 && res.status < 500) {
+        //need to refresh the page or redirect to login page
+        //optional for now
+        // window.location.reload()
+        return [null,{
+            err : res.data,
+            status : res.status
+        }]
+    }else if(res.status >= 500){
+        //retry or put error card
+        return [null,{
+            err : res.data,
+            status : res.status
+        }]
+    }else if(res.status >=200 && res.status <300) {
+        return [res,null]
+    }
+}
+
+export const arrayToMapWithId = array => {
+    let result = {}
+    array.forEach(item => {
+        result[item.id] = item
+    })
+    return result;
+}

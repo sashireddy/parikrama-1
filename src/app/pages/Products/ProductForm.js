@@ -1,7 +1,7 @@
 import React from "react";
 import {Form} from "react-bootstrap";
 import Select from 'react-select'
-import {ValToDropDownEntry,arrToDropDownArr} from '../../utils/dropDownUtils'
+import {ValToDropDownEntry,dropDownResponseFromMap} from '../../utils/dropDownUtils'
 import {connect} from 'react-redux'
 import ProductActions from '../../actions/productActions'
 
@@ -47,7 +47,7 @@ class ProductForm extends React.Component {
     handleDropDown = (label,evt) => {
         this.setState({
             ...this.state,
-            [label]: evt.label
+            [label]: evt.value
         })
     }
 
@@ -68,8 +68,8 @@ class ProductForm extends React.Component {
     render() {
         console.log(this.state)
         console.log(this.props)
-        const categorydropDownArr = arrToDropDownArr(this.props.stateData.category.allCategories.categories.map(category => category.name))
-        const unitdropDownArr = arrToDropDownArr(this.props.stateData.unit.data)
+        const categorydropDownArr = dropDownResponseFromMap(this.props.stateData.category.allCategories)
+        const unitdropDownArr = dropDownResponseFromMap(this.props.stateData.unit.allRecords)
         const defaultCategory = (this.props.record && this.props.record.category)||''
         const defaultUnit = (this.props.record && this.props.record.unit)||''
         const thresoldValue = this.state.thresholds && this.state.thresholds[this.props.stateData.user.branch]

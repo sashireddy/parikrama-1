@@ -39,7 +39,7 @@ class Role extends React.Component {
             ]
 
         return (
-            <RoleSkeleton key="role" content={{pageTitle:'Role'}} AddModal={Add}
+            <RoleSkeleton key="Unit" content={{pageTitle:'Unit'}} AddModal={Add}
              EditModal={()=><></>} ViewModal={()=><></>} DeleteModal={()=><></>}
              tableRowRenderFunc ={(props)=>{
                  

@@ -21,6 +21,7 @@ export const FILTER_USERS = "FILTER_USERS";
 
 //login
 export const USER_LOGIN = "USER_LOGIN";
+export const LOG_OUT = "LOG_OUT";
 
 
 export const GET_ROLES = "GET_ROLES";

@@ -14,6 +14,7 @@ export default function(state = initialState, action){
         case GET_ALL_CATEGORIES: {
             return {
                 ...state,
+                initialLoad : true,
                 'allCategories': action.payload
             }
         }

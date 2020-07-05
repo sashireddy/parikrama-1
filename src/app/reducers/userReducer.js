@@ -12,6 +12,7 @@ export default function(state = initialState, action) {
         case GET_LOGGEDIN_USER:
             return {
                 ...state,
+                initialLoad : true,
                 loggedInUser: {
                     ...action.payload
                 }

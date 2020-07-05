@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import {Spinner} from 'react-bootstrap';
 import { withRouter} from 'react-router-dom';
 import 'react-notifications-component/dist/theme.css'
 import ReactNotification from 'react-notifications-component'
@@ -16,6 +17,7 @@ import UnitActions from './actions/units';
 import {connect} from 'react-redux'
 import {addNotification} from './actions/notification'
 import branchesActions from './actions/branchActions';
+import {validateIntialLoad} from './utils/dataUtils'
 import productActions from './actions/productActions';
 const mapStateToProps = state => ({
   auth : state['AUTH'],
@@ -32,9 +34,9 @@ class App extends Component {
     }
   }
   componentDidMount() {
+    store.dispatch(permissionActions.getAllPermissions());
     store.dispatch(categoryActions.getAllCategories());
     store.dispatch(roleActions.getAllRoles());
-    store.dispatch(permissionActions.getAllPermissions());
     store.dispatch(userActions.getUserInfo())
     store.dispatch(UnitActions.initialData())
     store.dispatch(productActions.getAllProducts());
@@ -47,6 +49,10 @@ class App extends Component {
     this.onRouteChanged();
   }
   render () {
+    
+    const loading = validateIntialLoad(this.props.state.BRANCHES) && validateIntialLoad(this.props.state.CATEGORY)
+                       && validateIntialLoad(this.props.state.USER) && validateIntialLoad(this.props.state.PERMISSION) 
+                       && validateIntialLoad(this.props.state.PRODUCTS) && validateIntialLoad(this.props.state.UNITS)
     let navbarComponent = !this.state.isFullPageLayout ? <Navbar/> : '';
     let sidebarComponent = !this.state.isFullPageLayout ? <Sidebar/> : '';
     let footerComponent = !this.state.isFullPageLayout ? <Footer/> : '';
@@ -59,7 +65,8 @@ class App extends Component {
             { sidebarComponent }
             <div className="main-panel">
               <div className="content-wrapper">
-                <AppRoutes/>
+                {!loading && <Spinner /> }
+                {loading && <AppRoutes/> }
               </div>
               { footerComponent }
             </div>
