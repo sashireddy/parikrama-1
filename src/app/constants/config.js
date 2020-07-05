@@ -4,13 +4,21 @@ export default {
     },
     "API" : {
         "BASE_URL": "",
-        "CATEGORY": {
+        "CATEGORYMOCK": {
             "GET_CTEGORIES": "/data/categories.json",
             "CACHING": true,
             "PAGE_LIMIT": 10
         },
+        "CATEGORY": {
+            "GET_CTEGORIES": "https://local-parikrama.web.app/api/categories",
+            "UPDATE_CATEGORIES" : "https://local-parikrama.web.app/api/categories/desc",
+            "DELETE_CATEGORIES" : "https://local-parikrama.web.app/api/categories/",
+            "CACHING": true,
+            "PAGE_LIMIT": 10
+        },
         "INVENTORY": {
-            "GET_CTEGORIES": "/data/inventory.json",
+            "GET_BRANCH_INVENTORY": "/data/inventory.json",  
+            "GET_ALL_INVENTORY":"/data/allInventory.json",
             "CACHING": true,
             "PAGE_LIMIT": 10
         },
@@ -25,6 +33,7 @@ export default {
             "PAGE_LIMIT": 10
         },
         "USER": {
+            "GET_USER" : 'https://local-parikrama.web.app/api/users',
             "GET_USERS": "https://local-parikrama.web.app/api/users",
             "CACHING": true,
             "PAGE_LIMIT": 10
@@ -35,7 +44,8 @@ export default {
             "PAGE_LIMIT": 10
         },
         "PRODUCTS": {
-            "GET_PRODUCTS": "/data/products.json",
+            "GET_PRODUCTS": "https://local-parikrama.web.app/api/products",
+            // "GET_PRODUCTS": "/data/products.json",
             "CACHING": true,
             "PAGE_LIMIT": 10
         },
@@ -45,8 +55,8 @@ export default {
             "PAGE_LIMIT": 10
         },
         "UNITS" : {
-            "GET_ALL_UNITS" : "/data/units.json",
-            "ADD_UNIT": "/data/units.json",
+            "GET_ALL_UNITS" : "https://local-parikrama.web.app/api/units",
+            "ADD_UNIT": "https://local-parikrama.web.app/api/units",
             "CACHING": true,
             "PAGE_LIMIT": 10
         },

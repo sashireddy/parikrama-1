@@ -16,6 +16,7 @@ export default function(state = initialState1, action){
         case GET_ALL_BRANCHES: {
             return {
                 ...state,
+                initialLoad : true,
                 'allRecords': action.payload
             }
         }

@@ -1,6 +1,6 @@
 import config from "../constants/config";
 import axios from 'axios';
-
+import {arrayToMapWithId} from './util'
 const apiConfig = config.API.CATEGORY;
 
 // Null indicates we need to fetch the data from the source
@@ -24,12 +24,19 @@ const apiResponse = {
 // Function to load all the data as part for the initial load
 export const loadInitialData = () => {
     return new Promise(async (resolve, reject) => {
-        const url = `${config.API.BASE_URL}${apiConfig.GET_CTEGORIES}`;
-        const res = await axios.get(url);
+        let res;
+        try{
+            const url = `${config.API.BASE_URL}${apiConfig.GET_CTEGORIES}`;            
+            console.log(url)
+            res = await axios.get(url);
+            console.log(res);
+        }catch (err){
+            reject()
+        }
         if(apiConfig.CACHING){
             cachedData = res.data.categories;
         }
-        resolve(res.data);
+        resolve(arrayToMapWithId(res.data.categories));
     });
 }
 
@@ -73,11 +80,16 @@ export const getCategoriesData = params => {
 // Add category implementaion
 export const addCategoryData = data => {
     return new Promise(async (resolve, reject) => {
+        let res;
+        try{
+            res = await axios.post(config.API.CATEGORY.GET_CTEGORIES,data)
+        } catch (err) {
+
+        }
         if(apiConfig.CACHING){
-            data._id = create_UUID();
             cachedData = [
                 ...cachedData,
-                data
+                res.data
             ];
             const params = {
                 currentPage: apiResponse.currentPage,
@@ -107,7 +119,13 @@ export const addCategoryData = data => {
 // Update category implementation
 export const updateCategoryData = data => {
     return new Promise(async (resolve, reject) => {
-        if(apiConfig.CACHING){
+        let response ;
+        try{
+            response = await axios.put(apiConfig.GET_CTEGORIES,data)
+        } catch(err){
+            // need to put an error message
+        }
+        if(apiConfig.CACHING && response.status === 204){
             cachedData = cachedData.map(item => {
                 if(item.name === data.name) {
                     return {
@@ -117,6 +135,7 @@ export const updateCategoryData = data => {
                 }
                 return item;
             });
+        }
             const params = {
                 currentPage: apiResponse.currentPage,
                 pageLimit: apiResponse.pageLimit,
@@ -135,10 +154,6 @@ export const updateCategoryData = data => {
             } catch(err) {
                 reject(err);
             }
-        } else {
-            // Needs to handle API or DB data updates.
-            console.log("Need to implement API based data updates");
-        }
     });
 }
 
@@ -146,13 +161,20 @@ export const updateCategoryData = data => {
 // Delete category implementation
 export const deleteCategoryData = data => {
     return new Promise(async (resolve, reject) => {
-        if(apiConfig.CACHING){
+        let response;
+        try {
+            response = await axios.delete(apiConfig.DELETE_CATEGORIES+data.id);
+        }catch(err) {
+
+        }
+        if(apiConfig.CACHING && response.status === 200){
             cachedData = cachedData.filter(item => {
                 if(item.name === data.name) {
                     return false;
                 }
                 return true;
             });
+        }
             const params = {
                 currentPage: apiResponse.currentPage,
                 pageLimit: apiResponse.pageLimit,
@@ -171,10 +193,6 @@ export const deleteCategoryData = data => {
             } catch(err) {
                 reject(err);
             }
-        } else {
-            // Needs to handle API or DB data updates.
-            console.log("Need to implement API based data deletion");
-        }
     });
 }
 

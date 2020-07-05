@@ -17,4 +17,13 @@ const getDropdownItem = (label, value) => {
 const getSelectedItem = (arr, value) => {
     return arr.find(item => item.value === value);
 }
-export {ValToDropDownEntry,arrToDropDownArr, getDropdownItem, getSelectedItem}
+
+const dropDownResponseFromMap = map => {
+    let resp = []
+    Object.keys(map).forEach(key => {
+        resp.push(getDropdownItem(map[key].name,key))
+    })
+    return resp
+}
+
+export {ValToDropDownEntry,arrToDropDownArr, getDropdownItem, getSelectedItem,dropDownResponseFromMap}

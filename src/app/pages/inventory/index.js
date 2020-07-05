@@ -1,8 +1,8 @@
 import React from 'react'
 import CrudSkeleton from '../CrudSkeleton/index'
-import inventoryActions from '../../actions/inventoryActions'
+import InventoryActions from '../../actions/inventoryActions'
 import AddInventory from './AddInventory'
-import ViewInventory from './viewInventory'
+import ViewInventory from './AddRecord'
 import {Table,Button, Col,Row} from 'react-bootstrap'
 import {
     connect,
@@ -24,9 +24,11 @@ const mapStateToProps = state => ({
     ...state['INVENTORY']
 });
 
+console.log(InventoryActions)
 
 const mapActionToProps = {
-    ...inventoryActions
+    getData : InventoryActions.getData,
+    addData : InventoryActions.addData,
 };
 const InventorySkeleton = CrudSkeleton
 
@@ -63,18 +65,16 @@ class Inventory extends React.Component {
         }
         const headerArr = [
             {
-                value : 'id',
-                key : '_id',
-            },{
                 value: 'category',
                 key: 'category',
             },{
                 value: 'product',
                 key: 'product',
             },{
-                value: 'balance',
-                key: 'balance',
-            },{
+                value: 'Available Quantity',
+                key: 'availableQuantity',
+            },
+            {
                 value:'actions',
                 key:'actions'
             }
@@ -82,10 +82,13 @@ class Inventory extends React.Component {
         const RowRender = (props) => {
             return (
                 <tr>
-                    <td>{props.record._id}</td>
                     <td>{props.record.category}</td>
                     <td>{props.record.product}</td>
-                    <td>{props.record.balance}</td>
+                    <td> { props.record.availableQuantity > props.record.threshold ? 
+                        <label className="badge badge-success">{props.record.availableQuantity}  {props.record.unit}</label> :
+                        <label className="badge badge-warning">{props.record.availableQuantity}  {props.record.unit}</label>
+                        }   
+                    </td>
                     <td><Button onClick={() =>{props.openActionMaodal(props.record,'view')}}>Disburse Inventory</Button></td>
                 </tr>
             )

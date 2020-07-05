@@ -15,6 +15,7 @@ export default function(state = initialState, action) {
         case GET_ALL_ROLES: {
             return {
                 ...state,
+                initialLoad : true,
                 "allRoles": action.payload
             }
         }

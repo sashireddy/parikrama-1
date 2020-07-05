@@ -1,7 +1,7 @@
 import React from "react";
 import {Form} from "react-bootstrap";
 import Select from 'react-select'
-import {ValToDropDownEntry,arrToDropDownArr} from '../../utils/dropDownUtils'
+import {ValToDropDownEntry,dropDownResponseFromMap} from '../../utils/dropDownUtils'
 import {connect} from 'react-redux'
 import ProductActions from '../../actions/productActions'
 
@@ -35,10 +35,19 @@ class ProductForm extends React.Component {
             [evt.target.name]: evt.target.value
         });
     }
+    handleThresholdChange =(evt,branch) => {
+        this.setState({
+            ...this.state,
+            thresholds :{
+                ...this.state.thresholds,
+                [branch] : evt.target.value
+            }
+        })
+    }
     handleDropDown = (label,evt) => {
         this.setState({
             ...this.state,
-            [label]: evt.label
+            [label]: evt.value
         })
     }
 
@@ -59,10 +68,11 @@ class ProductForm extends React.Component {
     render() {
         console.log(this.state)
         console.log(this.props)
-        const categorydropDownArr = arrToDropDownArr(this.props.stateData.category.allCategories.categories.map(category => category.name))
-        const unitdropDownArr = arrToDropDownArr(this.props.stateData.unit.data)
+        const categorydropDownArr = dropDownResponseFromMap(this.props.stateData.category.allCategories)
+        const unitdropDownArr = dropDownResponseFromMap(this.props.stateData.unit.allRecords)
         const defaultCategory = (this.props.record && this.props.record.category)||''
         const defaultUnit = (this.props.record && this.props.record.unit)||''
+        const thresoldValue = this.state.thresholds && this.state.thresholds[this.props.stateData.user.branch]
         return(
             <form className="forms-sample" onSubmit={this.onSubmit} >
                 <div className="pl-3 pr-3">
@@ -85,7 +95,7 @@ class ProductForm extends React.Component {
                     </Form.Group>
                     <Form.Group>
                         <label htmlFor="exampleInputEmail1">Threshold</label>
-                        <Form.Control type="number" className="form-control" id="productName" name="name" placeholder="Product Name" value={this.state.thresholds[this.props.stateData.user.branch]||undefined} onChange={this.handleChange} />
+                        <Form.Control type="number" className="form-control" id="productName" name="name" placeholder="Product Name" value={thresoldValue} onChange={e=>this.handleThresholdChange(e,this.props.stateData.user.branch)} />
                         <Form.Control.Feedback type="invalid">Please provide a Product name</Form.Control.Feedback>
                     </Form.Group>
                 </div>

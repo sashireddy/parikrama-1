@@ -1,6 +1,7 @@
 import config from "../constants/config";
 
 const initialState = {
+    initialLoad : false,
     data: [],
     currentPage: 1,
     pageLimit: config.PAGINATION.PAGE_LIMIT,

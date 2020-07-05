@@ -1,6 +1,6 @@
 import axios from 'axios';
 import config from "../constants/config";
-import {filterData, validateCurrentPage, create_UUID} from "./util";
+import {filterData, validateCurrentPage, handleResponse} from "./util";
 
 const apiConfig = config.API.PRODUCTS;
 
@@ -25,12 +25,16 @@ const apiResponse = { // pMapping => Parameter Mapping
 // Function to load all the data as part for the initial load
 export const loadInitialData = () => {
     return new Promise(async (resolve, reject) => {
+        try{
         const url = `${config.API.BASE_URL}${apiConfig.GET_PRODUCTS}`;
         const res = await axios.get(url);
         if(apiConfig.CACHING){
-            cachedData = res.data;
+            cachedData = res.data.products;
         }
-        resolve(res.data);
+        resolve(res.data.products);
+    }catch(err){
+        reject(err);
+    }
     });
 }
 
@@ -75,12 +79,18 @@ export const getData = params => {
 // Add category implementaion
 export const addData = data => {
     return new Promise(async (resolve, reject) => {
+        let response;
+        try{
+            response= await axios.post(apiConfig.GET_PRODUCTS,data)
+        } catch(err){
+
+        }
         if(apiConfig.CACHING){
-            data._id = create_UUID();
             cachedData = [
                 ...cachedData,
-                data
+                response.data
             ];
+        }
             const params = {
                 currentPage: apiResponse.currentPage,
                 pageLimit: apiResponse.pageLimit,
@@ -99,17 +109,19 @@ export const addData = data => {
             } catch(err) {
                 reject(err);
             }
-        } else {
-            // Needs to handle API or DB data updates.
-            console.log("Need to implement API based data insertion");
-        }
     });
 }
 
 // Update category implementation
 export const updateData = data => {
     return new Promise(async (resolve, reject) => {
-        if(apiConfig.CACHING){
+        let response;
+        try{
+            response = await axios.put(apiConfig.GET_PRODUCTS)
+        }catch(err) {
+            reject(err);
+        }const [processedResponse,err] = handleResponse(response);
+        if(apiConfig.CACHING && !err) {
             cachedData = cachedData.map(item => {
                 if(item._id === data._id) {
                     return {
@@ -119,6 +131,7 @@ export const updateData = data => {
                 }
                 return item;
             });
+        }
             const params = {
                 currentPage: apiResponse.currentPage,
                 pageLimit: apiResponse.pageLimit,
@@ -137,10 +150,6 @@ export const updateData = data => {
             } catch(err) {
                 reject(err);
             }
-        } else {
-            // Needs to handle API or DB data updates.
-            console.log("Need to implement API based data updates");
-        }
     });
 }
 
@@ -148,13 +157,20 @@ export const updateData = data => {
 // Delete category implementation
 export const deleteData = data => {
     return new Promise(async (resolve, reject) => {
-        if(apiConfig.CACHING){
+        let response;
+        try{
+            response = await axios.put(apiConfig.GET_PRODUCTS)
+        }catch(err) {
+            reject(err);
+        }const [,err] = handleResponse(response);
+        if(apiConfig.CACHING && !err){
             cachedData = cachedData.filter(item => {
                 if(item._id === data._id) {
                     return false;
                 }
                 return true;
             });
+        }
             const params = {
                 currentPage: apiResponse.currentPage,
                 pageLimit: apiResponse.pageLimit,
@@ -173,10 +189,10 @@ export const deleteData = data => {
             } catch(err) {
                 reject(err);
             }
-        } else {
-            // Needs to handle API or DB data updates.
-            console.log("Need to implement API based data deletion");
-        }
+        // } else {
+        //     // Needs to handle API or DB data updates.
+        //     console.log("Need to implement API based data deletion");
+        // }
     });
 }
 

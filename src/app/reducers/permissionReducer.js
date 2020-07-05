@@ -9,6 +9,7 @@ export default function(state = initialState, action){
         case GET_ALL_PERMISSIONS:
             return {
                 ...state,
+                initialLoad : true,
                 "allPermissions": action.payload
             }
         default:

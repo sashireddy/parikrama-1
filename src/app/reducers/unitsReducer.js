@@ -14,7 +14,8 @@ export default function(state = initialState, action){
     switch(action.type){
         case GET_ALL_UNITS:
             return {
-                data : action.payload,
+                allRecords : action.payload,
+                initialLoad : true,
                 loading : false
             }
         case ADD_UNIT:
