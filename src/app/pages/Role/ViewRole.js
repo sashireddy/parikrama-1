@@ -19,7 +19,7 @@ class ViewRole extends React.Component {
               <dd>
                 <ul>
                   {this.props.allPermissions
-                    .filter(permission => record.permissions.includes(permission.id))
+                    .filter(permission => record.permissions.includes(permission.permission))
                     .map((permission, idx) => <li key={permission.id}>{permission.permission}</li>)}
                 </ul>
               </dd>

@@ -243,9 +243,9 @@ const getCurrentStateData = params => {
 const filterData = (params, records) => {
     // More complex search need to handle as needed
     let result = records;
-    let searchText = params.search.label && params.search.label.toLowerCase();
+    let searchText = params.search.name && params.search.name.toLowerCase();
     if(searchText) {
-        result = records.filter(item => item.label.toLowerCase().includes(searchText));
+        result = records.filter(item => item.name.toLowerCase().includes(searchText));
     }
     if(params.sort.key) {
         return result.sort(getSortFunction(params.sort));

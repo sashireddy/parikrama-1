@@ -178,7 +178,7 @@ export const updateData = data => {
                 const res = await getData(params);
                 res.flashMessage = {
                     "type": "success",
-                    "message": "Role Updated Successfully!"
+                    "message": "User Updated Successfully!"
                 };
                 resolve(res);
             } catch(err) {
@@ -226,7 +226,7 @@ export const deleteData = data => {
                 const res = await getData(params);
                 res.flashMessage = {
                     "type": "success",
-                    "message": "Role Deleted Successfully!"
+                    "message": "User Deleted Successfully!"
                 };
                 resolve(res);
             } catch(err) {
