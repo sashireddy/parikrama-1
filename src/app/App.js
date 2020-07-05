@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {Spinner} from 'react-bootstrap';
+import Spinner from '../app/shared/Spinner';
 import { withRouter} from 'react-router-dom';
 import 'react-notifications-component/dist/theme.css'
 import ReactNotification from 'react-notifications-component'
@@ -30,7 +30,6 @@ class App extends Component {
   constructor(props) {
     super(props)
     this.state={
-      user : undefined
     }
   }
   componentDidMount() {
@@ -65,7 +64,7 @@ class App extends Component {
             { sidebarComponent }
             <div className="main-panel">
               <div className="content-wrapper">
-                {!loading && <Spinner /> }
+                {!loading && (<div><Spinner loading/></div>) }
                 {loading && <AppRoutes/> }
               </div>
               { footerComponent }
