@@ -4,6 +4,7 @@ import Login from './user-pages/Login'
 import App from './App'
 import Firebase from './Firebase/firebase'
 import {login,logout} from './actions/login'
+import Spinner from '../app/shared/Spinner';
 
 const mapStateToProps = state => ({
     ...state.AUTH
@@ -16,13 +17,19 @@ class Entry extends Component {
         Firebase.auth.onAuthStateChanged(user => {
             console.log(user)
             if(user){
+                localStorage.setItem('loggedIn', true)
                 this.props.login()
             }else{
+                localStorage.removeItem('loggedIn')
                 this.props.logout()
             }
         })
     }
     render() {
+        console.log("expectedLoggedIn",this.props.expectedLoggedIn)
+        if(this.props.expectedLoggedIn){
+            return <Spinner loading/>
+        }
         if(this.props.loggedIn){
             return <App />
         }
