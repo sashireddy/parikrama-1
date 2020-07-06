@@ -10,10 +10,10 @@ const actions = (pageId,getEntityData,updateEntityData,addEntityData,deleteEntit
       }
   }
 
-  const notifyStatus = (res) => {
+  const notifyStatus = (res, title) => {
     if(res.flashMessage){
       addNotification({
-        title: getData,
+        title: title,
         type: res.flashMessage.type,
         message : res.flashMessage.message
       });
@@ -26,7 +26,7 @@ const actions = (pageId,getEntityData,updateEntityData,addEntityData,deleteEntit
       dispatch(setLoading());
       try {
         const res = await getEntityData(data);
-        notifyStatus(res);
+        notifyStatus(res, `LOAD ${pageId}`);
         dispatch({
           type: getData,
           payload: res,
@@ -48,7 +48,7 @@ const actions = (pageId,getEntityData,updateEntityData,addEntityData,deleteEntit
       dispatch(setLoading());
       try {
         const res = await addEntityData(data);
-        notifyStatus(res);
+        notifyStatus(res, `ADD ${pageId}`);
         dispatch({
           type: getData,
           payload: res,
@@ -68,7 +68,7 @@ const actions = (pageId,getEntityData,updateEntityData,addEntityData,deleteEntit
       dispatch(setLoading());
       try {
         const res = await updateEntityData(data);
-        notifyStatus(res);
+        notifyStatus(res, `UPDATE ${pageId}`);
         dispatch({
           type: getData,
           payload: res,
@@ -88,7 +88,7 @@ const actions = (pageId,getEntityData,updateEntityData,addEntityData,deleteEntit
       dispatch(setLoading());
       try {
         const res = await deleteEntityData(data)
-        notifyStatus(res);
+        notifyStatus(res,`DELETE ${pageId}`);
         dispatch({
           type: getData,
           payload: res,

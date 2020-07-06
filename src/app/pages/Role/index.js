@@ -36,7 +36,7 @@ class Role extends React.Component {
         const headerArr = [
                 {
                     value : 'Name',
-                    key : 'label',
+                    key : 'name',
                     sortable : true,
                     searchable: true
                 },{

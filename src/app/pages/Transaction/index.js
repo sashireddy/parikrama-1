@@ -1,6 +1,8 @@
 import React from "react";
 import {Link} from "react-router-dom";
 import {connect} from "react-redux";
+import TransactionListItem from "./TransactionListItem";
+import Spinner from "../../shared/Spinner";
 import transactionActions from "../../actions/transactionActions";
 
 class Transaction extends React.Component {
@@ -40,6 +42,7 @@ class Transaction extends React.Component {
     render(){
         return(
             <div>
+                <Spinner loading={this.props.loading} />
                 <div className="page-header">
                     <h3 className="page-title"> Transactions </h3>
                     <nav aria-label="breadcrumb">
@@ -58,7 +61,9 @@ class Transaction extends React.Component {
                     <div className="col-lg-12 grid-margin stretch-card">
                         <div className="card">
                             <div className="card-body">
-                                <h3>Transaction Logs will go here...</h3>
+                                <ul className="timeline">
+                                    {this.props.data.map(txn => <TransactionListItem txn={txn} key={txn.id} />)}
+                                </ul>
                             </div>
                         </div>
                     </div>

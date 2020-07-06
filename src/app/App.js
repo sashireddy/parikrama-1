@@ -48,9 +48,9 @@ class App extends Component {
     this.onRouteChanged();
   }
   render () {
-    
+
     const loading = validateIntialLoad(this.props.state.BRANCHES) && validateIntialLoad(this.props.state.CATEGORY)
-                       && validateIntialLoad(this.props.state.USER) && validateIntialLoad(this.props.state.PERMISSION) 
+                       && validateIntialLoad(this.props.state.USER) && validateIntialLoad(this.props.state.PERMISSION)
                        && validateIntialLoad(this.props.state.PRODUCTS) && validateIntialLoad(this.props.state.UNITS)
     let navbarComponent = !this.state.isFullPageLayout ? <Navbar/> : '';
     let sidebarComponent = !this.state.isFullPageLayout ? <Sidebar/> : '';
@@ -64,7 +64,7 @@ class App extends Component {
             { sidebarComponent }
             <div className="main-panel">
               <div className="content-wrapper">
-                {!loading && (<div><Spinner loading/></div>) }
+                {!loading && <Spinner loading/> }
                 {loading && <AppRoutes/> }
               </div>
               { footerComponent }

@@ -87,7 +87,7 @@ export const addData = data => {
             // data.id = create_UUID();
             try {
                 console.log("Before auth entry");
-                Firebase.doCreateUserWithEmailAndPassword(data.email, "parikrama");
+                Firebase.doCreateUserWithEmailAndPassword(data.email, data.password);
                 console.log("After auth entry");
                 let response = await axios.post(apiConfig.GET_USERS, data);
                 console.log("Create User response: ", response);
@@ -179,7 +179,7 @@ export const updateData = data => {
                 const res = await getData(params);
                 res.flashMessage = {
                     "type": "success",
-                    "message": "Role Updated Successfully!"
+                    "message": "User Updated Successfully!"
                 };
                 resolve(res);
             } catch(err) {
@@ -227,7 +227,7 @@ export const deleteData = data => {
                 const res = await getData(params);
                 res.flashMessage = {
                     "type": "success",
-                    "message": "Role Deleted Successfully!"
+                    "message": "User Deleted Successfully!"
                 };
                 resolve(res);
             } catch(err) {
