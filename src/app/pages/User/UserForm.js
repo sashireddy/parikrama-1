@@ -14,7 +14,9 @@ class UserForm extends React.Component {
             branch: "",
             contact: "",
             lastName: "",
-            email: ""
+            email: "",
+            password: "",
+            showPassword: false
         }
     }
 
@@ -40,6 +42,13 @@ class UserForm extends React.Component {
             ...this.state,
             [field]: evt.value
         })
+    }
+
+    toggleShowPassword = event => {
+        event.preventDefault();
+        this.setState({
+            showPassword: !this.state.showPassword
+        });
     }
 
     onSubmit = event => {
@@ -73,6 +82,21 @@ class UserForm extends React.Component {
                         <Form.Control required type="email" className="form-control" id="userEmail" name="email" placeholder="E Mail" value={this.state.email} onChange={this.handleChange} />
                         <Form.Control.Feedback type="invalid">Please enter valid email address</Form.Control.Feedback>
                     </Form.Group>
+                    {!this.props.record ?
+                        <Form.Group>
+                            <label htmlFor="name">User Password</label>
+                            <div className="input-group">
+                                <Form.Control required type={this.state.showPassword ? "text" : "password"} className="form-control" id="userPassword" name="password" placeholder="User Password" value={this.state.password} onChange={this.handleChange} />
+                                <div className="input-group-append">
+                                    <button className="btn btn-sm btn-primary" type="button" onClick={this.toggleShowPassword}>
+                                        {this.state.showPassword ? <i className="fa fa-eye" /> : <i className="fa fa-eye-slash" /> }
+                                    </button>
+                                </div>
+                            </div>
+                            <em><small>Create a password for user to login for the first time.</small></em>
+                            <Form.Control.Feedback type="invalid">Please enter password</Form.Control.Feedback>
+                        </Form.Group>
+                    : null }
                     <Form.Group>
                         <label htmlFor="exampleInputEmail1">Role</label>
                         <Select className="basic-single" classNamePrefix="select" value={getSelectedItem(this.props.roleDropDownArr, this.state.role)}
