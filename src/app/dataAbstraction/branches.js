@@ -1,6 +1,6 @@
 import axios from 'axios';
 import config from "../constants/config";
-import {filterData, validateCurrentPage, create_UUID} from "./util";
+import {filterData, validateCurrentPage, handleResponse} from "./util";
 
 const apiConfig = config.API.BRANCHES;
 
@@ -78,12 +78,20 @@ export const getData = params => {
 // Add category implementaion
 export const addData = data => {
     return new Promise(async (resolve, reject) => {
-        if(apiConfig.CACHING){
-            data._id = create_UUID();
+        let response;
+        try{
+            response= await axios.post(apiConfig.GET_BRANCHES,data)
+
+        } catch(err){
+
+        }
+        const [resp,error] =  handleResponse(response)
+        if(apiConfig.CACHING && !error){
             cachedData = [
                 ...cachedData,
-                data
+                resp.data
             ];
+        }
             const params = {
                 currentPage: apiResponse.currentPage,
                 pageLimit: apiResponse.pageLimit,
@@ -102,19 +110,23 @@ export const addData = data => {
             } catch(err) {
                 reject(err);
             }
-        } else {
-            // Needs to handle API or DB data updates.
-            console.log("Need to implement API based data insertion");
-        }
     });
 }
 
 // Update category implementation
 export const updateData = data => {
     return new Promise(async (resolve, reject) => {
-        if(apiConfig.CACHING){
+        let response;
+        try{
+            response= await axios.put(apiConfig.GET_PRODUCTS,data)
+
+        } catch(err){
+
+        }
+        const [resp,error] =  handleResponse(response)
+        if(apiConfig.CACHING && !error){
             cachedData = cachedData.map(item => {
-                if(item._id === data._id) {
+                if(item.id === data.id) {
                     return {
                         ...item,
                         ...data
@@ -151,9 +163,17 @@ export const updateData = data => {
 // Delete category implementation
 export const deleteData = data => {
     return new Promise(async (resolve, reject) => {
-        if(apiConfig.CACHING){
+        let response;
+        try{
+            response= await axios.delete(apiConfig.GET_PRODUCTS,data+data.id)
+
+        } catch(err){
+
+        }
+        const [resp,error] =  handleResponse(response)
+        if(apiConfig.CACHING && !error){
             cachedData = cachedData.filter(item => {
-                if(item._id === data._id) {
+                if(item.id === data.id) {
                     return false;
                 }
                 return true;

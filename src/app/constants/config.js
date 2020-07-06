@@ -17,7 +17,11 @@ export default {
             "PAGE_LIMIT": 10
         },
         "INVENTORY": {
-            "GET_BRANCH_INVENTORY": "/data/inventory.json",  
+            "ISSUE_PRODUCT":"https://local-parikrama.web.app/api/actions/issueproduct",
+            "ADJUSTMENT":"",
+            "ADD_PRODUCT":"https://local-parikrama.web.app/api/actions/addproduct",
+            "PENDING_TRANSACTIONS": "https://local-parikrama.web.app/api/pendingTransactions/branches/",
+            "GET_BRANCH_INVENTORY": "https://local-parikrama.web.app/api/inventories/",  
             "GET_ALL_INVENTORY":"/data/allInventory.json",
             "CACHING": true,
             "PAGE_LIMIT": 10

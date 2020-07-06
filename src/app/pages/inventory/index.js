@@ -2,12 +2,13 @@ import React from 'react'
 import CrudSkeleton from '../CrudSkeleton/index'
 import InventoryActions from '../../actions/inventoryActions'
 import AddInventory from './AddInventory'
-import ViewInventory from './AddRecord'
+import ViewInventory from './IssueRecord'
 import {Table,Button, Col,Row} from 'react-bootstrap'
 import {
     connect,
     // dispatch
 } from "react-redux";
+import {getUnit,getCategory,getProduct} from '../../utils/dataUtils'
 
 
 const requests = [{
@@ -80,13 +81,14 @@ class Inventory extends React.Component {
             }
             ]
         const RowRender = (props) => {
+            const product = getProduct(props.record.product)
             return (
                 <tr>
-                    <td>{props.record.category}</td>
-                    <td>{props.record.product}</td>
+                    <td>{getCategory(product.category).name}</td>
+                    <td>{product.name}</td>
                     <td> { props.record.availableQuantity > props.record.threshold ? 
-                        <label className="badge badge-success">{props.record.availableQuantity}  {props.record.unit}</label> :
-                        <label className="badge badge-warning">{props.record.availableQuantity}  {props.record.unit}</label>
+                        <label className="badge badge-success">{props.record.availableQuantity}  {getUnit(product.unit).name}</label> :
+                        <label className="badge badge-warning">{props.record.availableQuantity}  {getUnit(product.unit).name}</label>
                         }   
                     </td>
                     <td><Button onClick={() =>{props.openActionMaodal(props.record,'view')}}>Disburse Inventory</Button></td>
@@ -126,7 +128,7 @@ class Inventory extends React.Component {
                                 </tbody>
                             </Table>
                             <br />
-                            <h3>Transaction Request raised by You</h3>
+                            {/* <h3>Transaction Request raised by You</h3>
                             <Table>
                                 <thead>
                                     <tr>
@@ -146,7 +148,7 @@ class Inventory extends React.Component {
                                         </tr>)
                                     )}
                                 </tbody>
-                            </Table>
+                            </Table> */}
                         </div>
                     </div>
                 </div>
