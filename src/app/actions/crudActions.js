@@ -1,6 +1,6 @@
 import {addNotification} from "./notification";
 
-const actions = (pageId,getEntityData,updateEntityData,addEntityData,deleteEntityData) => {
+const actions = (pageId,getEntityData,updateEntityData,addEntityData,deleteEntityData,updateData) => {
 
   const getData = 'GET_'+pageId;
   const loading = pageId+'_LOADING';
@@ -53,6 +53,7 @@ const actions = (pageId,getEntityData,updateEntityData,addEntityData,deleteEntit
           type: getData,
           payload: res,
         });
+        if(updateData) { updateData(dispatch)}
       } catch (err) {
         addNotification({
           title: getData,
@@ -72,6 +73,7 @@ const actions = (pageId,getEntityData,updateEntityData,addEntityData,deleteEntit
           type: getData,
           payload: res,
         });
+        if(updateData) { updateData(dispatch)}
       } catch (err) {
         addNotification({
           title: getData,
@@ -91,6 +93,7 @@ const actions = (pageId,getEntityData,updateEntityData,addEntityData,deleteEntit
           type: getData,
           payload: res,
         })
+        if(updateData) { updateData(dispatch)}
       } catch (err) {
         addNotification({
           title: getData,

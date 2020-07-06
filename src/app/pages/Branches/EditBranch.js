@@ -3,11 +3,12 @@ import BranchForm from "./BranchForm";
 
 class EditBranch extends React.Component {
     onSubmit = data => {
-        this.props.addData(data);
+        this.props.updateData(data);
         this.props.closeModal();
     }
 
     render() {
+        console.log(this.props)
         return (
             <BranchForm
                 label='Add'

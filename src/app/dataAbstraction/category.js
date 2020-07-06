@@ -39,7 +39,14 @@ export const loadInitialData = () => {
         resolve(arrayToMapWithId(res.data.categories));
     });
 }
-
+export const updateData = () => {
+    return new Promise((resolve, reject) => {
+        if(cachedData)
+            resolve(arrayToMapWithId(cachedData))
+        else
+            reject(new Error("CacheData not present"))
+    })
+}
 
 // All the method will return promise, which will hold good for doing
 // async operations, we don't have to make changes for the cached vs live data

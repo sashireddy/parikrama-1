@@ -1,24 +1,30 @@
 import React from "react"
 import {Form, Row,Col,Alert} from 'react-bootstrap'
-import Select from 'react-select'
-
-class AddCategory extends React.Component {
+import {connect} from 'react-redux'
+import {getLoggedInUserInfo,getProduct} from '../../utils/dataUtils'
+import InventoryActions from '../../actions/inventoryActions'
+class IssueProduct extends React.Component {
     
     constructor(props){
         super(props);
+        console.log(props);
         this.state = {
             ...this.props.record,
-           inputQuantity : 0,
+            productName:getProduct(this.props.record.product).name,
+            branch :getLoggedInUserInfo().branch,
+
+           type:"ISSUE_PRODUCT",
+           operationalQuantity : 0,
            note : ""
         }
     }
 
     handleChange = evt => {
-        const inputQuantity = evt.target.value
-        if(inputQuantity >= 0 && inputQuantity < this.props.record.threshold){
+        const operationalQuantity = evt.target.value
+        if(operationalQuantity >= 0 && operationalQuantity < this.props.record.availableQuantity){
             this.setState({
                 ...this.state,
-                inputQuantity
+                operationalQuantity
             });
         }
     }
@@ -36,14 +42,14 @@ class AddCategory extends React.Component {
             event.stopPropagation();
         }else {
             event.preventDefault();
-            this.props.onSubmit({...this.state});
+            this.props.createTransaction({...this.state});
         }
         this.props.closeModal();
     }
 
     render() {
         console.log(this.state)
-        const stockAfter = this.props.record.availableQuantity-this.state.inputQuantity
+        const stockAfter = this.props.record.availableQuantity-this.state.operationalQuantity
         return (
             <form className="forms-sample" onSubmit={this.onSubmit} >
                 <div className="pl-3 pr-3">
@@ -58,7 +64,7 @@ class AddCategory extends React.Component {
                     <Col>
                     <Form.Group>
                         <label htmlFor="exampleInputEmail1">Quantity</label>
-                        <Form.Control required type="number" className="form-control" id="categoryName" name="name" placeholder="" value={this.state.inputQuantity} onChange={this.handleChange} />
+                        <Form.Control required type="number" className="form-control" id="operationalQuantity" name="operationalQuantity" placeholder="" value={this.state.operationalQuantity} onChange={this.handleChange} />
                         <Form.Control.Feedback type="invalid">Please enter a valid quantity</Form.Control.Feedback>
                     </Form.Group>
                     </Col>
@@ -89,4 +95,4 @@ class AddCategory extends React.Component {
     }
 }
 
-export default AddCategory;
+export default connect(()=>({}),{createTransaction :InventoryActions.createInventoryTransaction})(IssueProduct);

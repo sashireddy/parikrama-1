@@ -1,12 +1,20 @@
 import config from "../constants/config";
 import axios from 'axios';
-
+import {handleResponse} from './util'
+import {getLoggedInUserInfo,getProduct} from '../utils/dataUtils'
 const pageConfig = config.API.INVENTORY;
 
 // Null indicates we need to fetch the data from the source
 // Incase of caching ON, need to fetch the data for first time
 // Incase of Live interaction we'll never set cached data, forcing it to fetch all the time
 let cachedData = null;
+
+let defaultConfig = {
+    currentPage: 1,
+    pageLimit: 10,
+    search: {},
+    sort: {},
+}
 
 // Mimiking Starndard API response structure
 // can be used to map from any API response to below object
@@ -24,6 +32,71 @@ const output = {
 
 
 
+export const getPendingTransactions = (params) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            const [response,err]= handleResponse(await axios.get(pageConfig.PENDINGTRANSACTIONS+params.branchId))
+            if(err){ reject(err)}
+            resolve(response(response.data))
+        }catch(err){
+            reject(err)
+        }
+    })
+}
+
+export const createTransaction = ({type,...otherParams}) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            const url = pageConfig[type]
+            const queryParams = {
+                "branch": otherParams.branch,
+                "productName":otherParams.productName,
+                "product": otherParams.product,
+                "operationalQuantity": otherParams.operationalQuantity,
+                "note": otherParams.note
+            }
+            const [response,err]= handleResponse(await axios.post(url,queryParams))
+            if(err){ reject(err)}
+            if(pageConfig.CACHING){
+                if(type==="ISSUE_PRODUCT"){
+                    // otherParams.operationalQuantity = params.oper
+                    cachedData = cachedData.map(prod => {
+                        if(prod.product === otherParams.product){
+                            prod.availableQuantity = prod.availableQuantity - otherParams.operationalQuantity
+                            return prod
+                        }else {
+                            return prod
+                        }
+                    })
+                }
+                if(type === "ADD_PRODUCT"){
+                    const product = getProduct(otherParams.product)
+                    const record = {
+                        availableQuantity:otherParams.operationalQuantity,
+                        product:otherParams.product,
+                        threshold:product.threshold[otherParams.branch]
+                    }
+                    cachedData = [...cachedData, record]
+                }
+            }
+            const resParams = {
+                currentPage: defaultConfig.currentPage,
+                pageLimit: defaultConfig.pageLimit,
+                search: defaultConfig.search,
+                sort: defaultConfig.sort
+            }
+            // Need to Add the actual data to the source
+            // Get the data back from source for the above params
+            const res = await getData(resParams);
+            resolve(res)
+        }catch(err){
+            reject(err)
+        }
+    })
+}
+
+
+
 // All the method will return promise, which will hold good for doing
 // async operations, we don't have to make changes for the cached vs live data
 // State params passed which will be used to pass to live api or
@@ -33,7 +106,7 @@ export const getData = params => {
     return new Promise(async (resolve, reject) => {
         if(cachedData === null){
             // Logic can be applied to generate URL using params
-            const url = `${config.API.BASE_URL}${pageConfig.GET_BRANCH_INVENTORY}`;
+            const url = `${config.API.BASE_URL}${pageConfig.GET_BRANCH_INVENTORY}`+getLoggedInUserInfo().branch;
             console.log("API calling...", url);
             try {
                 const res = await axios.get(url);

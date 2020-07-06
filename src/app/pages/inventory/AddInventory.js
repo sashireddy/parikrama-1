@@ -1,7 +1,10 @@
 import React from "react"
-import {Form,Row} from 'react-bootstrap'
-import { Typeahead } from 'react-bootstrap-typeahead'
+import {Form} from 'react-bootstrap'
+import Select from 'react-select'
 import {connect} from 'react-redux'
+import {dropDownResponseFromMap} from '../../utils/dropDownUtils'
+import {getLoggedInUserInfo} from '../../utils/dataUtils'
+import InventoryActions from '../../actions/inventoryActions'
 
 const mapStateToProps = state => ({
     products: state['PRODUCTS']
@@ -12,7 +15,9 @@ class AddCategory extends React.Component {
     constructor(){
         super();
         this.state = {
-           inputQuantity : 0,
+            branch: getLoggedInUserInfo().branch,
+           type:"ADD_PRODUCT",
+           operationalQuantity : 0,
 
         }
     }
@@ -24,7 +29,7 @@ class AddCategory extends React.Component {
     handleChange = evt => {
         this.setState({
             ...this.state,
-            inputQuantity: evt.target.value
+            operationalQuantity: evt.target.value
         });
     }
     handleNote = evt => {
@@ -34,9 +39,11 @@ class AddCategory extends React.Component {
         })
     }
 
-    handleDropDown = (evt,dropDown) => {
+    handleDropDown = (evt) => {
         this.setState({
-            [dropDown] : evt
+            ...this.state,
+            product: evt.value,
+            productName: evt.label
         })
     }
 
@@ -47,31 +54,28 @@ class AddCategory extends React.Component {
             event.stopPropagation();
         }else {
             event.preventDefault();
-            this.props.addData({...this.state});
+            this.props.createTransaction({...this.state});
             this.props.closeModal();
         }
        
     }
 
-    handleProductDropDown = evt => {
-        this.setState({
-            currentProduct: this.props.products.allRecords.filter(product =>evt[0]===product.name)[0],
-        })
-    }
+    // handleProductDropDown = evt => {
+    //     this.setState({
+    //         currentProduct: evt.this.props.products..filter(product =>evt[0]===product.name)[0],
+    //     })
+    // }
 
     render() {
         console.log(this.props)
+        const productDropdownArr = dropDownResponseFromMap(this.props.products.allRecords)
         return (
             <form className="forms-sample" onSubmit={this.onSubmit} >
                 <div className="pl-3 pr-3">
                     <Form.Group>
                         <label htmlFor="exampleInputEmail1">Product</label>
-                        <Typeahead 
-                            id="Products"
-                            key='1'
-                            options={this.props.products.allRecords.filter(record => record.isActive).map(record => record.name)}
-                            onChange={this.handleProductDropDown}
-                        />
+                        <Select className="basic-single" classNamePrefix="select"
+                            isClearable={true} isSearchable={true}  options={productDropdownArr} onChange={(e)=>{this.handleDropDown(e)}}/>
                     </Form.Group>
                     {   this.state.currentProduct && (<>
                         <dt>Category</dt>
@@ -80,7 +84,7 @@ class AddCategory extends React.Component {
                     }
                     <Form.Group>
                         <label htmlFor="exampleInputEmail1">Quantity</label>
-                        <Form.Control required type="number" className="form-control" id="categoryName" name="name" placeholder="" value={this.state.inputQuantity} onChange={this.handleChange} />
+                        <Form.Control required type="number" className="form-control" id="operationalQuantity" name="operationalQuantity" placeholder="" value={this.state.operationalQuantity} onChange={this.handleChange} />
                         <dd>{this.state.currentProduct && this.state.currentProduct.unit}</dd>
                         <Form.Control.Feedback type="invalid">Please enter a valid quantity</Form.Control.Feedback>
                     </Form.Group>
@@ -102,4 +106,4 @@ class AddCategory extends React.Component {
     }
 }
 
-export default connect(mapStateToProps,{})(AddCategory);
+export default connect(mapStateToProps,{createTransaction :InventoryActions.createInventoryTransaction})(AddCategory);

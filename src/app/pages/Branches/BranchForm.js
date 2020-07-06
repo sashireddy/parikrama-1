@@ -5,11 +5,14 @@ class BranchForm extends React.Component {
     constructor(props){
         super(props);
         this.state = {
-            ...this.props.record
+            isActive : true,
+            isHeadOffice : false,
+            ...this.props.record,
         }
         if(!this.state.address) {
             this.state.address = {}
         }
+        console.log(this.state)
     }
 
     componentDidMount(){
@@ -36,6 +39,12 @@ class BranchForm extends React.Component {
         
     }
 
+    onStatusChange = (evt,attr) => {
+        this.setState({
+            [attr]: evt.target.value === "active"
+        });
+    }
+
     handleAddressChange = event => {
         this.setState({
             ...this.state,
@@ -52,7 +61,7 @@ class BranchForm extends React.Component {
                 <div className="pl-3 pr-3">
                     <Form.Group>
                         <label htmlFor="exampleInputEmail1">Branch Name</label>
-                        <Form.Control required type="text" className="form-control" id="categoryName" name="branch" placeholder="Category Name" value={this.state.branch} onChange={this.handleChange} />
+                        <Form.Control required type="text" className="form-control" id="branchName" name="name" placeholder="Branch Name" value={this.state.name} onChange={this.handleChange} />
                         <Form.Control.Feedback type="invalid">Please choose a branch name</Form.Control.Feedback>
                     </Form.Group>
                     <Form.Group>
@@ -79,6 +88,16 @@ class BranchForm extends React.Component {
                         <label htmlFor="exampleInputEmail1">Zip</label>
                         <Form.Control type="text" className="form-control" id="Zip" name="zipcode" placeholder="Zip Code" value={getFallbackIfEmpty(this.state.address.zipcode)} onChange={this.handleAddressChange} />
                         <Form.Control.Feedback type="invalid">Please provide street name</Form.Control.Feedback>
+                    </Form.Group>
+                    <Form.Group>
+                        <label htmlFor="isActive">Branch Status</label>
+                        <Form.Check type="radio" id="BranchIsActive" name="isActive" value="active" label="Active" checked={this.state.isActive} onChange={e=>this.onStatusChange(e,"isActive")} />
+                        <Form.Check type="radio" id="BranchIsInActive" name="isActive" value="inActive" label="In Active" checked={!this.state.isActive} onChange={e=>this.onStatusChange(e,"isActive")} />
+                    </Form.Group>
+                    <Form.Group>
+                        <label htmlFor="isHeadOffice">Head Office</label>
+                        <Form.Check type="radio" id="HeadOfficeIsActive" name="isActive" value="active" label="Head Office" checked={this.state.isHeadOffice} onChange={e=>this.onStatusChange(e,"isHeadOffice")} />
+                        <Form.Check type="radio" id="HeadOfficeIsActive" name="isActive" value="inActive" label="Not Head office" checked={!this.state.isHeadOffice} onChange={e=>this.onStatusChange(e,"isHeadOffice")} />
                     </Form.Group>
                 </div>
                 <hr className="modal-footer-ruler" />
