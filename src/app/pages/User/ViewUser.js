@@ -18,8 +18,6 @@ class ViewUser extends React.Component {
       <React.Fragment>
         <div className="pl-3 pr-3">
             <dl className="dl-horizontal">
-              <dt>User Id</dt>
-              <dd>{record.id}</dd>
               <dt>User Name</dt>
               <dd>{`${record.firstName} ${record.lastName}`}</dd>
               <dt>Role</dt>

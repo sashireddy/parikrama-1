@@ -80,7 +80,7 @@ class UserForm extends React.Component {
                     </Form.Group>
                     <Form.Group>
                         <label htmlFor="name">Email Address</label>
-                        <Form.Control required type="email" className="form-control" id="userEmail" name="email" placeholder="E Mail" value={this.state.email} onChange={!isUpdate ? this.hadleChange : () => {}} readOnly={isUpdate} />
+                        <Form.Control required type="email" className="form-control" id="userEmail" name="email" placeholder="E Mail" value={this.state.email} onChange={this.handleChange} readOnly={isUpdate} />
                         <Form.Control.Feedback type="invalid">Please enter valid email address</Form.Control.Feedback>
                     </Form.Group>
                     {!isUpdate ?
