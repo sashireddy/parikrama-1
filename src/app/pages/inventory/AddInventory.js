@@ -40,11 +40,13 @@ class AddCategory extends React.Component {
     }
 
     handleDropDown = (evt) => {
-        this.setState({
-            ...this.state,
-            product: evt.value,
-            productName: evt.label
-        })
+        // if(evt){
+            this.setState({
+                ...this.state,
+                product: evt && evt.value,
+                productName: evt && evt.label
+            })
+        // }
     }
 
     onSubmit = event => {
@@ -67,7 +69,7 @@ class AddCategory extends React.Component {
     // }
 
     render() {
-        console.log(this.props)
+        console.log(this.state)
         const productDropdownArr = dropDownResponseFromMap(this.props.products.allRecords)
         return (
             <form className="forms-sample" onSubmit={this.onSubmit} >

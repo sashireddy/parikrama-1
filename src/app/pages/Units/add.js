@@ -5,7 +5,6 @@ class AddCategory extends React.Component {
     constructor(props){
         super(props)
         this.state = {
-            unit:'',
             isActive : true,
         }
     }
@@ -35,7 +34,7 @@ class AddCategory extends React.Component {
             <div className="pl-3 pr-3">
                 <Form.Group>
                     <label htmlFor="description">Unit</label>
-                    <Form.Control type="text" className="form-control" id="categoryDesc" name="unit" placeholder="Unit" value={this.state.unit} onChange={this.handleChange} />
+                    <Form.Control type="text" className="form-control" id="categoryDesc" name="name" placeholder="Unit" value={this.state.name} onChange={this.handleChange} />
                     <Form.Control.Feedback type="invalid">Provide the Unit Name</Form.Control.Feedback>
                 </Form.Group>
                 <Form.Group>

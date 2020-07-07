@@ -66,27 +66,27 @@ class BranchForm extends React.Component {
                     </Form.Group>
                     <Form.Group>
                         <label htmlFor="exampleInputEmail1">Street</label>
-                        <Form.Control type="text" className="form-control" id="Street" name="street" placeholder="Street Name" value={getFallbackIfEmpty(this.state.address.street)} onChange={this.handleAddressChange} />
+                        <Form.Control required type="text" className="form-control" id="Street" name="street" placeholder="Street Name" value={getFallbackIfEmpty(this.state.address.street)} onChange={this.handleAddressChange} />
                         <Form.Control.Feedback type="invalid">Please provide street name</Form.Control.Feedback>
                     </Form.Group>
                     <Form.Group>
                         <label htmlFor="exampleInputEmail1">City</label>
-                        <Form.Control type="text" className="form-control" id="City" name="city" placeholder="City Name" value={getFallbackIfEmpty(this.state.address.city)} onChange={this.handleAddressChange} />
+                        <Form.Control required type="text" className="form-control" id="City" name="city" placeholder="City Name" value={getFallbackIfEmpty(this.state.address.city)} onChange={this.handleAddressChange} />
                         <Form.Control.Feedback type="invalid">Please provide street name</Form.Control.Feedback>
                     </Form.Group>
                     <Form.Group>
                         <label htmlFor="exampleInputEmail1">State</label>
-                        <Form.Control type="text" className="form-control" id="State" name="state" placeholder="State Name" value={getFallbackIfEmpty(this.state.address.state)} onChange={this.handleAddressChange} />
+                        <Form.Control required type="text" className="form-control" id="State" name="state" placeholder="State Name" value={getFallbackIfEmpty(this.state.address.state)} onChange={this.handleAddressChange} />
                         <Form.Control.Feedback type="invalid">Please provide State name</Form.Control.Feedback>
                     </Form.Group>
                     <Form.Group>
                         <label htmlFor="exampleInputEmail1">Country</label>
-                        <Form.Control type="text" className="form-control" id="Country" name="country" placeholder="Country Name" value={getFallbackIfEmpty(this.state.address.country)} onChange={this.handleAddressChange} />
+                        <Form.Control required type="text" className="form-control" id="Country" name="country" placeholder="Country Name" value={getFallbackIfEmpty(this.state.address.country)} onChange={this.handleAddressChange} />
                         <Form.Control.Feedback type="invalid">Please provide country name</Form.Control.Feedback>
                     </Form.Group>
                     <Form.Group>
                         <label htmlFor="exampleInputEmail1">Zip</label>
-                        <Form.Control type="text" className="form-control" id="Zip" name="zipcode" placeholder="Zip Code" value={getFallbackIfEmpty(this.state.address.zipcode)} onChange={this.handleAddressChange} />
+                        <Form.Control required type="text" className="form-control" id="Zip" name="zipcode" placeholder="Zip Code" value={getFallbackIfEmpty(this.state.address.zipcode)} onChange={this.handleAddressChange} />
                         <Form.Control.Feedback type="invalid">Please provide street name</Form.Control.Feedback>
                     </Form.Group>
                     <Form.Group>

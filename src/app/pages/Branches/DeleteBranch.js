@@ -6,10 +6,18 @@ function ViewCategory(props) {
         <div className="pl-3 pr-3">
             <p>Are you sure you want to delete this Record?</p>
             <dl className="dl-horizontal">
-              <dt>Category Id</dt>
-              <dd>{props.record._id}</dd>
-              <dt>Category Name</dt>
+            <dt>Branch</dt>
               <dd>{props.record.name}</dd>
+              <dt>Street</dt>  
+              <dd>{props.record.address.street}</dd>
+              <dt>City</dt>
+              <dd>{props.record.address.city}</dd>
+              <dt>State</dt>
+              <dd>{props.record.address.state}</dd>
+              <dt>Country</dt>
+              <dd>{props.record.address.country}</dd>
+              <dt>Zip</dt>
+              <dd>{props.record.address.zipcode}</dd>
             </dl>
             <p className="text-warning">This action cannot be undone</p>
         </div>

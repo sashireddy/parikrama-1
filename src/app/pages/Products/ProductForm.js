@@ -55,7 +55,7 @@ class ProductForm extends React.Component {
 
     onSubmit = event => {
         const form = event.currentTarget;
-        if (form.checkValidity() === false) {
+        if (form.checkValidity() === false && this.state.category && this.state.unit) {
             event.preventDefault();
             event.stopPropagation();
         }else {

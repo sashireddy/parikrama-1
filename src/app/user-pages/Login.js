@@ -37,8 +37,8 @@ export class Login extends Component {
     this.props.firebase.doSignInWithEmailAndPassword(this.state.username,this.state.password)
     .then(resp=> {
       this.props.firebase.auth.currentUser.getIdToken(/* forceRefresh */ true).then((idToken) => {
-        localStorage.setItem('Token',idToken)
-        localStorage.setItem('ExpiryTime',new Date().setMinutes(new Date().getMinutes()+30))
+        // localStorage.setItem('Token',idToken)
+        // localStorage.setItem('ExpiryTime',new Date().setMinutes(new Date().getMinutes()+30))
         this.props.login({
           email:this.state.username,
           token: idToken
