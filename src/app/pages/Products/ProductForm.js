@@ -25,6 +25,9 @@ class ProductForm extends React.Component {
             ...props.record,
             isActive: true
         }
+        if(this.state.thresholds){
+            Object.keys(this.state.thresholds).forEach(key => this.state.thresholds[key] = parseInt(this.state.thresholds[key]))
+        }
     }
 
     componentDidMount(){
@@ -42,7 +45,7 @@ class ProductForm extends React.Component {
             ...this.state,
             thresholds :{
                 ...this.state.thresholds,
-                [branch] : evt.target.value
+                [branch] : parseInt(evt.target.value)
             }
         })
     }
@@ -72,8 +75,10 @@ class ProductForm extends React.Component {
         console.log(this.props)
         const categorydropDownArr = dropDownResponseFromMap(this.props.stateData.category.allCategories)
         const unitdropDownArr = dropDownResponseFromMap(this.props.stateData.unit.allRecords)
-        const defaultCategory = (this.props.record && this.props.record.category)||''
-        const defaultUnit = (this.props.record && this.props.record.unit)||''
+        const defaultCategory = (this.props.record && this.props.record.category)
+        const defaultUnit = (this.props.record && this.props.record.unit)
+        const defaultUnitName = defaultUnit && getUnit(defaultUnit) && getUnit(defaultUnit).name
+        const defaulCategoryName =  defaultCategory && getCategory(defaultCategory) && getCategory(defaultCategory).name
         const thresoldValue = this.state.thresholds && this.state.thresholds[this.props.stateData.user.branch]
         return(
             <form className="forms-sample" onSubmit={this.onSubmit} >
@@ -85,13 +90,13 @@ class ProductForm extends React.Component {
                     </Form.Group>
                     <Form.Group>
                         <label htmlFor="exampleInputEmail1">Category</label>
-                        <Select className="basic-single" classNamePrefix="select" defaultValue={getDropdownItem(getCategory(defaultCategory).name,defaultCategory)} 
+                        <Select className="basic-single" classNamePrefix="select" defaultValue={getDropdownItem(defaulCategoryName,defaultCategory)} 
                             isClearable={true} isSearchable={true}  options={categorydropDownArr} onChange={(e)=>{this.handleDropDown('category',e)}}/>
                         <Form.Control.Feedback type="invalid">Please provide the category name</Form.Control.Feedback>
                     </Form.Group>
                     <Form.Group>
                         <label htmlFor="exampleInputEmail1">Unit</label>
-                        <Select className="basic-single" classNamePrefix="select" defaultValue={getDropdownItem(getUnit(defaultUnit).name,defaultUnit)} 
+                        <Select className="basic-single" classNamePrefix="select" defaultValue={getDropdownItem(defaultUnitName,defaultUnit)} 
                             isClearable={true} isSearchable={true}  options={unitdropDownArr} onChange={(e)=>{this.handleDropDown('unit',e)}}/>
                         <Form.Control.Feedback type="invalid">Please provide the unit name</Form.Control.Feedback>
                     </Form.Group>

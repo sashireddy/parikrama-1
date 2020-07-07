@@ -126,7 +126,7 @@ export const updateData = data => {
     return new Promise(async (resolve, reject) => {
         let response;
         try{
-            response = await axios.put(apiConfig.GET_PRODUCTS)
+            response = await axios.put(apiConfig.GET_PRODUCTS,data)
         }catch(err) {
             reject(err);
         }const [,err] = handleResponse(response);

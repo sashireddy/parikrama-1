@@ -52,7 +52,7 @@ export const createTransaction = ({type,...otherParams}) => {
                 "branch": otherParams.branch,
                 "productName":otherParams.productName,
                 "product": otherParams.product,
-                "operationalQuantity": otherParams.operationalQuantity,
+                "operationalQuantity": parseInt(otherParams.operationalQuantity),
                 "note": otherParams.note
             }
             const [,err]= handleResponse(await axios.post(url,queryParams))
