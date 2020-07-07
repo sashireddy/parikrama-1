@@ -84,12 +84,12 @@ export const getData = params => {
 export const addData = data => {
     return new Promise(async (resolve, reject) => {
         if(apiConfig.CACHING){
-            // data.id = create_UUID();
+            let response;
             try {
-                console.log("Before auth entry");
-                Firebase.doCreateUserWithEmailAndPassword(data.email, data.password);
-                console.log("After auth entry");
-                let response = await axios.post(apiConfig.GET_USERS, data);
+                await Firebase.doCreateUserWithEmailAndPassword(data.email, data.password);
+                delete data.password;
+                delete data.showPassword;
+                response = await axios.post(apiConfig.GET_USERS, data);
                 console.log("Create User response: ", response);
             } catch(err) {
                 let response = {
@@ -104,7 +104,7 @@ export const addData = data => {
             }
             cachedData = [
                 ...cachedData,
-                data
+                response.data
             ];
             const params = {
                 currentPage: apiResponse.currentPage,
@@ -142,6 +142,8 @@ export const updateData = data => {
     return new Promise(async (resolve, reject) => {
         let user;
         try{
+            delete data.password;
+            delete data.showPassword;
             let response = await axios.put(apiConfig.GET_USERS, data);
             user = JSON.parse(response.config.data);
             console.log("Updated User", user);

@@ -9,8 +9,6 @@ class ViewRole extends React.Component {
       <React.Fragment>
         <div className="pl-3 pr-3">
             <dl className="dl-horizontal">
-              <dt>Role Id</dt>
-              <dd>{record.id}</dd>
               <dt>Role Name</dt>
               <dd>{record.name}</dd>
               <dt>Description</dt>
