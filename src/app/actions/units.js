@@ -1,4 +1,4 @@
-import { addUnitData,loadInitialData,getPageData} from '../dataAbstraction/unit'
+import { addUnitData,loadInitialData,getPageData,refreshStateData} from '../dataAbstraction/unit'
 import { GET_ALL_UNITS,GET_UNITS } from './types'
 
 const actions = (()=>{
@@ -9,6 +9,13 @@ const actions = (()=>{
             payload
         })
     }
+    const updateAllRecords = async (dispatch) => {
+      const allData = refreshStateData();
+      dispatch({
+        type: GET_ALL_UNITS,
+        payload: allData,
+      });
+    }
     const addData = params => async dispatch => {
       console.log(params)
       console.log('******************')
@@ -17,6 +24,7 @@ const actions = (()=>{
             type: GET_UNITS,
             payload : resp
         })
+        updateAllRecords(dispatch)
     }
     const getData = params => async dispatch => {
         try {

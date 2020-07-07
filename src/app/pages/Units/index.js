@@ -14,7 +14,7 @@ const mapActionToProps = {
 };
 const RoleSkeleton = connect(mapStateToProps, mapActionToProps)(Skeleton)
 
-class Role extends React.Component {
+class Unit extends React.Component {
     render(){
         const getTitle = (actionType) => {
             switch (actionType) {
@@ -29,10 +29,14 @@ class Role extends React.Component {
         const headerArr = [
                 {
                     value : 'Name',
-                    key : 'label',
+                    key : 'name',
                     sortable : true,
                     searchable: true
                 },{
+                    value : 'Description',
+                    key : 'description'
+                },
+                {
                     value : 'Actions',
                     key : 'actions'
                 }
@@ -44,7 +48,8 @@ class Role extends React.Component {
              tableRowRenderFunc ={(props)=>{
                  
                  return <tr>
-                            <td>{props.record}</td>
+                            <td>{props.record.name}</td>
+                            <td>{props.record.description}</td>
                             <td><Button>Delete</Button></td>
                         </tr>
              }} pk="id"
@@ -53,4 +58,4 @@ class Role extends React.Component {
     }
 }
 
-export default Role;
+export default Unit;

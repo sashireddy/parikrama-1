@@ -38,6 +38,15 @@ export const loadInitialData = () => {
     });
 }
 
+export const refreshStateData = () => {
+    return new Promise((resolve, reject) => {
+        if(cachedData)
+            resolve((cachedData))
+        else
+            reject(new Error("CacheData not present"))
+    })
+}
+
 
 // All the method will return promise, which will hold good for doing
 // async operations, we don't have to make changes for the cached vs live data
@@ -120,7 +129,7 @@ export const updateData = data => {
             response = await axios.put(apiConfig.GET_PRODUCTS)
         }catch(err) {
             reject(err);
-        }const [processedResponse,err] = handleResponse(response);
+        }const [,err] = handleResponse(response);
         if(apiConfig.CACHING && !err) {
             cachedData = cachedData.map(item => {
                 if(item._id === data._id) {

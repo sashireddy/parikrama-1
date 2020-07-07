@@ -34,6 +34,14 @@ export const loadInitialData = () => {
     });
 }
 
+export const refreshStateData = () => {
+    return new Promise((resolve, reject) => {
+        if(cachedData)
+            resolve((cachedData))
+        else
+            reject(new Error("CacheData not present"))
+    })
+}
 
 export const getPageData = params => {
     return new Promise(async (resolve, reject) => {

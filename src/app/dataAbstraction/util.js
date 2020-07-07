@@ -61,6 +61,7 @@ export const filterData = (params, records) => {
 }
 
 export const handleResponse = res => {
+    if(!res) return [null,new Error("Response is empty")]
     if(res.status >= 400 && res.status < 500) {
         //need to refresh the page or redirect to login page
         //optional for now

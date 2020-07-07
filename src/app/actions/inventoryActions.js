@@ -1,4 +1,4 @@
-import { addData,deleteData,getData,updateData,getPendingTransactions,createTransaction } from '../dataAbstraction/inventory'
+import { addData,deleteData,getData,updateData,createTransaction } from '../dataAbstraction/inventory'
 import skeletonActions from './crudActions'
 import pageConstants from '../constants/pages'
 

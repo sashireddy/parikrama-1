@@ -55,7 +55,7 @@ export const createTransaction = ({type,...otherParams}) => {
                 "operationalQuantity": otherParams.operationalQuantity,
                 "note": otherParams.note
             }
-            const [response,err]= handleResponse(await axios.post(url,queryParams))
+            const [,err]= handleResponse(await axios.post(url,queryParams))
             if(err){ reject(err)}
             if(pageConfig.CACHING){
                 if(type==="ISSUE_PRODUCT"){
@@ -71,12 +71,22 @@ export const createTransaction = ({type,...otherParams}) => {
                 }
                 if(type === "ADD_PRODUCT"){
                     const product = getProduct(otherParams.product)
-                    const record = {
-                        availableQuantity:otherParams.operationalQuantity,
-                        product:otherParams.product,
-                        threshold:product.threshold[otherParams.branch]
+                    let rec
+                    cachedData = cachedData.map(prod => {
+                        if(prod.product === otherParams.product){
+                            rec = prod
+                            prod.availableQuantity = parseInt(prod.availableQuantity) + parseInt(otherParams.operationalQuantity)
+                        }
+                        return prod
+                    })
+                    if(!rec){
+                        const record = {
+                            availableQuantity:otherParams.operationalQuantity,
+                            product:otherParams.product,
+                            threshold:product.threshold[otherParams.branch]
+                        }
+                        cachedData = [...cachedData, record]
                     }
-                    cachedData = [...cachedData, record]
                 }
             }
             const resParams = {

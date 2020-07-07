@@ -36,6 +36,15 @@ export const loadInitialData = () => {
     });
 }
 
+export const refreshStateData = () => {
+    return new Promise((resolve, reject) => {
+        if(cachedData)
+            resolve((cachedData))
+        else
+            reject(new Error("CacheData not present"))
+    })
+}
+
 
 // All the method will return promise, which will hold good for doing
 // async operations, we don't have to make changes for the cached vs live data
@@ -123,7 +132,7 @@ export const updateData = data => {
         } catch(err){
 
         }
-        const [resp,error] =  handleResponse(response)
+        const [,error] =  handleResponse(response)
         if(apiConfig.CACHING && !error){
             cachedData = cachedData.map(item => {
                 if(item.id === data.id) {
@@ -170,7 +179,7 @@ export const deleteData = data => {
         } catch(err){
 
         }
-        const [resp,error] =  handleResponse(response)
+        const [,error] =  handleResponse(response)
         if(apiConfig.CACHING && !error){
             cachedData = cachedData.filter(item => {
                 if(item.id === data.id) {
