@@ -64,6 +64,7 @@ class UserForm extends React.Component {
     }
 
     render() {
+        const isUpdate = !!this.props.record;
         return(
             <form className="forms-sample" onSubmit={this.onSubmit} >
                 <div className="pl-3 pr-3">
@@ -79,10 +80,10 @@ class UserForm extends React.Component {
                     </Form.Group>
                     <Form.Group>
                         <label htmlFor="name">Email Address</label>
-                        <Form.Control required type="email" className="form-control" id="userEmail" name="email" placeholder="E Mail" value={this.state.email} onChange={this.handleChange} />
+                        <Form.Control required type="email" className="form-control" id="userEmail" name="email" placeholder="E Mail" value={this.state.email} onChange={!isUpdate ? this.hadleChange : () => {}} readOnly={isUpdate} />
                         <Form.Control.Feedback type="invalid">Please enter valid email address</Form.Control.Feedback>
                     </Form.Group>
-                    {!this.props.record ?
+                    {!isUpdate ?
                         <Form.Group>
                             <label htmlFor="name">User Password</label>
                             <div className="input-group">
@@ -116,8 +117,10 @@ class UserForm extends React.Component {
                     </Form.Group>
                     <Form.Group>
                         <label htmlFor="name">User Contact</label>
-                        <Form.Control required type="text" className="form-control" id="userContact" name="contact" placeholder="Contact" value={this.state.contact} onChange={this.handleChange} />
-                        <Form.Control.Feedback type="invalid">Please phone number</Form.Control.Feedback>
+                        <Form.Control required type="text" className="form-control" id="userContact" name="contact" placeholder="Contact" value={this.state.contact} onChange={this.handleChange}
+                        pattern="\d{10}" title="Please enter 10 digits mobile number" />
+                        <em><small>Please enter 10 digits mobile number</small></em>
+                        <Form.Control.Feedback type="invalid">Please enter valid phone number</Form.Control.Feedback>
                     </Form.Group>
                 </div>
                 <hr className="modal-footer-ruler" />

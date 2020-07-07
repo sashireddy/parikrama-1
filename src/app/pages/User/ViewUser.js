@@ -2,9 +2,14 @@ import React from "react";
 import {connect} from "react-redux";
 
 class ViewUser extends React.Component {
-  getRoleLable = role => {
+  getRoleLabel = role => {
     let roleObj = this.props.allRoles.find(item => item.id === role);
     return roleObj ? roleObj.name : role;
+  }
+
+  getBranchLabel = branch => {
+    let branchObj = this.props.allBranches.find(item => item.id === branch);
+    return branchObj ? branchObj.name : branch;
   }
 
   render() {
@@ -18,9 +23,9 @@ class ViewUser extends React.Component {
               <dt>User Name</dt>
               <dd>{`${record.firstName} ${record.lastName}`}</dd>
               <dt>Role</dt>
-              <dd>{this.getRoleLable(record.role)}</dd>
+              <dd>{this.getRoleLabel(record.role)}</dd>
               <dt>Branch</dt>
-              <dd>{record.branch}</dd>
+              <dd>{this.getBranchLabel(record.branch)}</dd>
               <dt>Phone Number</dt>
               <dd>{record.contact}</dd>
               <dt>Status</dt>
@@ -47,7 +52,8 @@ class ViewUser extends React.Component {
   }
 }
 const mapStateToProps = state => ({
-  ...state["ROLE"]
+  allRoles : state["ROLE"].allRoles,
+  allBranches : state["BRANCHES"].allRecords
 });
 
 export default connect(mapStateToProps, null)(ViewUser);
