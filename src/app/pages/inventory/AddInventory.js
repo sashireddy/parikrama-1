@@ -27,10 +27,13 @@ class AddCategory extends React.Component {
     }
 
     handleChange = evt => {
-        this.setState({
-            ...this.state,
-            operationalQuantity: evt.target.value
-        });
+        const operationalQuantity = parseInt(evt.target.value)
+        if(operationalQuantity){
+            this.setState({
+                ...this.state,
+                operationalQuantity
+            });
+        }
     }
     handleNote = evt => {
         this.setState({
@@ -40,13 +43,11 @@ class AddCategory extends React.Component {
     }
 
     handleDropDown = (evt) => {
-        // if(evt){
             this.setState({
                 ...this.state,
                 product: evt && evt.value,
                 productName: evt && evt.label
             })
-        // }
     }
 
     onSubmit = event => {

@@ -85,18 +85,18 @@ class ProductForm extends React.Component {
                     </Form.Group>
                     <Form.Group>
                         <label htmlFor="exampleInputEmail1">Category</label>
-                        <Select className="basic-single" classNamePrefix="select" defaultValue={getDropdownItem(getCategory(defaultCategory),defaultCategory)} 
+                        <Select className="basic-single" classNamePrefix="select" defaultValue={getDropdownItem(getCategory(defaultCategory).name,defaultCategory)} 
                             isClearable={true} isSearchable={true}  options={categorydropDownArr} onChange={(e)=>{this.handleDropDown('category',e)}}/>
                         <Form.Control.Feedback type="invalid">Please provide the category name</Form.Control.Feedback>
                     </Form.Group>
                     <Form.Group>
                         <label htmlFor="exampleInputEmail1">Unit</label>
-                        <Select className="basic-single" classNamePrefix="select" defaultValue={getDropdownItem(getUnit(defaultUnit),defaultUnit)} 
+                        <Select className="basic-single" classNamePrefix="select" defaultValue={getDropdownItem(getUnit(defaultUnit).name,defaultUnit)} 
                             isClearable={true} isSearchable={true}  options={unitdropDownArr} onChange={(e)=>{this.handleDropDown('unit',e)}}/>
                         <Form.Control.Feedback type="invalid">Please provide the unit name</Form.Control.Feedback>
                     </Form.Group>
                     <Form.Group>
-                        <label htmlFor="exampleInputEmail1">Threshold</label>
+                        <label htmlFor="exampleInputEmail1">Product Threshold at your branch</label>
                         <Form.Control type="number" className="form-control" id="productName" name="name" placeholder="Product Name" value={thresoldValue} onChange={e=>this.handleThresholdChange(e,this.props.stateData.user.branch)} />
                         <Form.Control.Feedback type="invalid">Please provide a Product name</Form.Control.Feedback>
                     </Form.Group>
