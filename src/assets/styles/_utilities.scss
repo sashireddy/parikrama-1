@@ -275,6 +275,13 @@ small {
 ul.timeline {
   list-style-type: none;
   position: relative;
+
+  .list-inline{display:block; font-size: .9em;}
+  .list-inline li{display:inline-block;}
+  .list-inline li:after{content:'|'; margin:0 10px;}
+  .list-inline li:last-child:after{content:''; margin:0 10px;}
+
+  p.text-info{margin-bottom: 5px;}
 }
 ul.timeline:before {
   content: ' ';
@@ -287,7 +294,7 @@ ul.timeline:before {
   z-index: 400;
 }
 ul.timeline > li {
-  margin: 20px 0;
+  margin: 10px 0;
   padding-left: 20px;
 
   &.fa {
@@ -311,4 +318,16 @@ ul.timeline > li:before {
   width: 20px;
   height: 20px;
   z-index: 400;
+}
+
+.was-validated :invalid ~ .basic-single{
+  border: 1px solid #dc3545;
+}
+.was-validated .form-control:valid ~ .basic-single{
+  border: 1px solid #28a745;
+}
+
+.basic-single .select__control {
+  padding: 5px 0;
+  border-radius: 0;
 }

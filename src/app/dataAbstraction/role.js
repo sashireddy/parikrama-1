@@ -1,6 +1,6 @@
 import axios from 'axios';
 import config from "../constants/config";
-import {validateCurrentPage, getSortFunction} from "./util";
+import {validateCurrentPage, getSortFunction, arrayToMapWithId} from "./util";
 
 const apiConfig = config.API.ROLE;
 
@@ -31,7 +31,7 @@ export const loadInitialData = () => {
             if(apiConfig.CACHING){
                 cachedData = res.data.roles;
             }
-            resolve(res.data.roles);
+            resolve(arrayToMapWithId(res.data.roles));
         } catch(err){
             console.log(err);
         }

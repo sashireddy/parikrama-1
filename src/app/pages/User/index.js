@@ -46,6 +46,12 @@ class User extends React.Component {
                     value : 'Role',
                     key : 'role'
                 },{
+                    value : 'Branch',
+                    key : 'branch'
+                },{
+                    value : 'Contact',
+                    key : 'contact'
+                },{
                     value : 'Status',
                     key : 'isActive'
                 },{
