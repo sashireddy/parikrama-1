@@ -36,7 +36,7 @@ class CrudSkeleton extends Component {
                 search: this.props.search,
                 currentPage: this.props.currentPage
             },
-            this.loadData()
+            this.loadData
         );
     }
 

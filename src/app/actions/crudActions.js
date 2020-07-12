@@ -35,7 +35,7 @@ const actions = (pageId,getEntityData,updateEntityData,addEntityData,deleteEntit
         addNotification({
           title: getData,
           type: "danger",
-          message : "Unable to load data, this is the error message"
+          message : "Unable to load data"
         });
       }
     },

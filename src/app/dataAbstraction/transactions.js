@@ -1,5 +1,6 @@
 import config from "../constants/config";
 import axios from 'axios';
+import dateFormat from "dateformat";
 
 const apiConfig = config.API.TRANSACTIONS;
 
@@ -26,14 +27,15 @@ const apiResponse = {
 // State params passed which will be used to pass to live api or
 // for static data to get proper data as per the params
 export const getTransactionsData = params => {
+    console.log("Transactions API calling ", params);
     return new Promise(async (resolve, reject) => {
         if(cachedData === null){
             // Logic can be applied to generate URL using params
-            const url = `${apiConfig.GET_TRANSACTIONS}/${params.branch}`;
+            const url = formTransactionUrl(params);
             console.log("Transaction API calling...", url);
             try {
                 const res = await axios.get(url);
-                res.flashMessage = {
+                apiResponse.flashMessage = {
                     "type": "success",
                     "message": "Data Loaded Successfully!"
                 };
@@ -41,9 +43,19 @@ export const getTransactionsData = params => {
                     cachedData = res.data.transactions;
                 } else {
                     apiResponse.data = res.data.transactions;
+                    apiResponse.startDate = params.startDate;
+                    apiResponse.endDate = params.endDate;
+                    apiResponse.email = params.email;
+                    apiResponse.branch = params.branch;
                 }
             } catch(err){
-                reject(err);
+                let response = {
+                    "flashMessage": {
+                        "type": "danger",
+                        "message": "Unable to load the data at this moment!"
+                    }
+                };
+                resolve(response);
             }
         }
         if(apiConfig.CACHING){
@@ -70,4 +82,23 @@ const getCurrentStateData = params => {
     apiResponse.search = params.search;
     apiResponse.sort = params.sort;
     apiResponse.currentPage = currentPage;
+}
+
+const formTransactionUrl = params => {
+    let url = `${apiConfig.GET_TRANSACTIONS}/${params.branch}`;
+    let urlParams = {}
+    if(params.startDate && params.endDate){
+        urlParams.fromDate = dateFormat(params.startDate, "yyyy-mm-dd");
+        urlParams.toDate = dateFormat(params.endDate, "yyyy-mm-dd");
+    }
+
+    if(params.email.trim()){
+        urlParams.user = params.email.trim()
+    }
+
+    let queryParams = "?";
+    for(let [key, value] of Object.entries(urlParams)){
+        queryParams += `${key}=${value}&`;
+    }
+    return `${url}${queryParams.slice(0, -1)}`;
 }

@@ -4,7 +4,6 @@ import {connect} from "react-redux";
 import DatePicker from "react-datepicker";
 import { Form } from "react-bootstrap";
 import Select from 'react-select';
-import dateFormat from "dateformat";
 import TransactionListItem from "./TransactionListItem";
 import Spinner from "../../shared/Spinner";
 import transactionActions from "../../actions/transactionActions";
@@ -15,19 +14,19 @@ class Transaction extends React.Component {
     constructor(){
         super()
         this.state = {
-            branch: "MxoS2K8t8jT7MATniD4x",
+            branch: "",
             startDate: "",
             endDate: "",
             email: "",
-            error: false
+            errorMsg: ""
         }
     }
 
     loadData() {
         const params = {
             branch: this.state.branch,
-            startDate: this.state.startDate ? dateFormat(this.state.startDate, "yyyy-mm-dd") : "",
-            endDate: this.state.endDate ? dateFormat(this.state.endDate, "yyyy-mm-dd") : "",
+            startDate: this.state.startDate,
+            endDate: this.state.endDate,
             email: this.state.email
         };
         this.props.getTransactions(params);
@@ -52,21 +51,46 @@ class Transaction extends React.Component {
     }
 
     componentDidMount(){
-        this.loadData();
+        this.setState({
+                startDate: this.props.startDate,
+                endDate: this.props.endDate,
+                email: this.props.email,
+                branch: this.props.branch
+            },
+            this.loadData
+        );
     }
 
     onSubmit = evt => {
         evt.preventDefault();
         const {startDate, endDate} = this.state;
         // Both are present or both are empty then only search
-        if((startDate && endDate) || (!startDate && !endDate)){
-            this.setState({error: false});
-            this.loadData();
+        if(this.isParmasChanged()) {
+            if(((startDate && endDate) || (!startDate && !endDate))){
+                this.setState({errorMsg: ""});
+                this.loadData();
+            } else {
+                this.setState({errorMsg: "Both Start date and End date are needs to be selected or removed."});
+            }
         } else {
-            this.setState({error: true});
+            this.setState({errorMsg: "Filter parameters not changed"});
         }
+    }
 
+    resetFilter = () => {
+        this.setState({
+            startDate: null,
+            endDate: null,
+            email: "",
+            branch: this.props.branch
+        });
+    }
 
+    isParmasChanged = () => {
+        return !(this.props.startDate === this.state.startDate
+            && this.props.endDate === this.state.endDate
+            && this.props.email === this.state.email
+            && this.props.branch === this.state.branch);
     }
 
     render(){
@@ -129,13 +153,17 @@ class Transaction extends React.Component {
                                             <Form.Control type="text" className="form-control" name="email" placeholder="User Email" value={this.state.email} onChange={this.handleChange}/>
                                         </Form.Group>
                                         <Form.Group>
-                                            <input type="submit" value="Search" className="btn btn-primary"/>
+                                            <input type="submit" value="Search" className="btn btn-primary mr-4"/>
+                                            <input type="button" value="Reset" className="btn btn-secondary" onClick={this.resetFilter}/>
                                         </Form.Group>
                                 </Form>
-                                {this.state.error ? <p className="text-warning">Please select both start and end date</p> : null}
-                                <ul className="timeline">
-                                    {this.props.data.map((txn, id) => <TransactionListItem txn={txn} key={id} />)}
-                                </ul>
+                                {this.state.errorMsg.trim() ? <p className="text-warning">{this.state.errorMsg}</p> : null}
+                                {this.props.data.length ?
+                                    <ul className="timeline">
+                                        {this.props.data.map(txn => <TransactionListItem txn={txn} key={txn.transactionId} />)}
+                                    </ul>
+                                : <p className="text-center text-info">No Transactions logs found, try changing the filter.</p> }
+
                             </div>
                         </div>
                     </div>
