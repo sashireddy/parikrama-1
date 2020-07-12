@@ -61,7 +61,7 @@ class User extends React.Component {
             ]
 
         return (
-            <UserSkeleton key="user" content={{pageTitle:'Role'}} AddModal={AddUser}
+            <UserSkeleton key="user" content={{pageTitle:'User'}} AddModal={AddUser}
                 EditModal={EditUser} ViewModal={ViewUser} DeleteModal={DeleteUser}
                 tableRowRenderFunc ={UserListItem} pk="id"
                 headerArr = {headerArr} getTitle={getTitle}/>

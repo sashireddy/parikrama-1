@@ -2,7 +2,7 @@ import React from "react";
 import {connect} from "react-redux";
 import {Form} from "react-bootstrap";
 import Select from 'react-select';
-import {getSelectedItem, dropDownResponseFromMap} from '../../utils/dropDownUtils'
+import {getSelectedItem, dropDownResponseFromMap} from '../../utils/dropDownUtils';
 
 class UserForm extends React.Component {
     constructor(){
@@ -26,7 +26,6 @@ class UserForm extends React.Component {
 
     handleChange = evt => {
         this.setState({
-            ...this.state,
             [evt.target.name]: evt.target.value
         });
     }
@@ -39,7 +38,6 @@ class UserForm extends React.Component {
 
     handleDropDown = (field, evt) => {
         this.setState({
-            ...this.state,
             [field]: evt ? evt.value : ""
         });
     }

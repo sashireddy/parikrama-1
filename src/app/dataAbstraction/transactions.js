@@ -29,8 +29,8 @@ export const getTransactionsData = params => {
     return new Promise(async (resolve, reject) => {
         if(cachedData === null){
             // Logic can be applied to generate URL using params
-            const url = `${config.API.BASE_URL}${apiConfig.GET_TRANSACTIONS}`;
-            console.log("API calling...", url);
+            const url = `${apiConfig.GET_TRANSACTIONS}/${params.branch}`;
+            console.log("Transaction API calling...", url);
             try {
                 const res = await axios.get(url);
                 res.flashMessage = {
@@ -39,6 +39,8 @@ export const getTransactionsData = params => {
                 };
                 if(apiConfig.CACHING){
                     cachedData = res.data.transactions;
+                } else {
+                    apiResponse.data = res.data.transactions;
                 }
             } catch(err){
                 reject(err);
@@ -53,6 +55,7 @@ export const getTransactionsData = params => {
             // categories.search = res.search;
             // categories.currentPage = res.currentPage;
         }
+        console.log(apiResponse);
         resolve(apiResponse);
     });
 }
