@@ -1,6 +1,6 @@
 import axios from 'axios';
 import config from "../constants/config";
-import {filterData, validateCurrentPage, handleResponse} from "./util";
+import {filterData, validateCurrentPage, handleResponse,arrayToMapWithId} from "./util";
 
 const apiConfig = config.API.BRANCHES;
 
@@ -32,14 +32,14 @@ export const loadInitialData = () => {
         if(apiConfig.CACHING){
             cachedData = res.data.branches;
         }
-        resolve(res.data.branches);
+        resolve(arrayToMapWithId(res.data.branches));
     });
 }
 
 export const refreshStateData = () => {
     return new Promise((resolve, reject) => {
         if(cachedData)
-            resolve((cachedData))
+            resolve(arrayToMapWithId(cachedData))
         else
             reject(new Error("CacheData not present"))
     })
@@ -127,7 +127,7 @@ export const updateData = data => {
     return new Promise(async (resolve, reject) => {
         let response;
         try{
-            response= await axios.put(apiConfig.GET_PRODUCTS,data)
+            response= await axios.put(apiConfig.GET_BRANCHES,data)
 
         } catch(err){
 
@@ -174,7 +174,7 @@ export const deleteData = data => {
     return new Promise(async (resolve, reject) => {
         let response;
         try{
-            response= await axios.delete(apiConfig.GET_PRODUCTS,data+data.id)
+            response= await axios.delete(apiConfig.GET_BRANCHES,data+data.id)
 
         } catch(err){
 

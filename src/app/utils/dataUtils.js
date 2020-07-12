@@ -17,3 +17,15 @@ export const getProduct = productId => {
 export const getLoggedInUserInfo = () => {
     return store.getState()['USER'].loggedInUser;
 }
+export const getBranchInfo = branchId => {
+    return store.getState()['BRANCHES'].allRecords[branchId]
+}
+
+export const getDisabledPayload = (record) => {
+    record.isActive = false
+    return record
+}
+export const getActivePayload = (record) => {
+    record.isActive = true
+    return record
+}

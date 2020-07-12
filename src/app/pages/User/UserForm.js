@@ -2,7 +2,7 @@ import React from "react";
 import {connect} from "react-redux";
 import {Form} from "react-bootstrap";
 import Select from 'react-select';
-import {getDropdownItem, getSelectedItem} from '../../utils/dropDownUtils'
+import {getDropdownItem, getSelectedItem,dropDownResponseFromMap} from '../../utils/dropDownUtils'
 
 class UserForm extends React.Component {
     constructor(){
@@ -135,7 +135,7 @@ class UserForm extends React.Component {
 
 const mapStateToProps = state => {
     const roleDropDownArr = state.ROLE.allRoles.map(role => getDropdownItem(role.name, role.id));
-    const branchDropDownArr = state.BRANCHES.allRecords.map(branch => getDropdownItem(branch.name, branch.id));
+    const branchDropDownArr = dropDownResponseFromMap(state.BRANCHES.allRecords);
     return{
         roleDropDownArr,
         branchDropDownArr

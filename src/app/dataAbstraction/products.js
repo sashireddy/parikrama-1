@@ -132,7 +132,7 @@ export const updateData = data => {
         }const [,err] = handleResponse(response);
         if(apiConfig.CACHING && !err) {
             cachedData = cachedData.map(item => {
-                if(item._id === data._id) {
+                if(item.id === data.id) {
                     return {
                         ...item,
                         ...data

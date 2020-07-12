@@ -17,7 +17,7 @@ export default function(state = initialState1, action){
             return {
                 ...state,
                 initialLoad : true,
-                'allRecords': action.payload
+                allRecords: action.payload
             }
         }
         default:

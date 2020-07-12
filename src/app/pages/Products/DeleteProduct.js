@@ -1,6 +1,8 @@
 import React from "react";
 import {getCategory,getUnit,getLoggedInUserInfo} from '../../utils/dataUtils'
-
+import {getDisabledPayload} from '../../utils/dataUtils'
+import ProductActions from '../../actions/productActions'
+import Store from '../../store'
 function ViewCategory(props) {
     return (
       <React.Fragment>
@@ -21,7 +23,9 @@ function ViewCategory(props) {
         <hr className="modal-footer-ruler" />
         <div className="text-right">
           <button className="btn btn-light mr-2" onClick={props.closeModal}>Cancel</button>
-          <button className="btn btn-danger" onClick={props.deleteData}>Delete</button>
+          <button className="btn btn-danger" onClick={()=>{
+            props.closeModal()
+            Store.dispatch(ProductActions.updateData(getDisabledPayload(props.record)))}}>Delete</button>
         </div>
       </React.Fragment>
     );

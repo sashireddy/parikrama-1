@@ -12,7 +12,6 @@ class BranchForm extends React.Component {
         if(!this.state.address) {
             this.state.address = {}
         }
-        console.log(this.state)
     }
 
     componentDidMount(){
@@ -90,14 +89,9 @@ class BranchForm extends React.Component {
                         <Form.Control.Feedback type="invalid">Please provide street name</Form.Control.Feedback>
                     </Form.Group>
                     <Form.Group>
-                        <label htmlFor="isActive">Branch Status</label>
-                        <Form.Check type="radio" id="BranchIsActive" name="isActive" value="active" label="Active" checked={this.state.isActive} onChange={e=>this.onStatusChange(e,"isActive")} />
-                        <Form.Check type="radio" id="BranchIsInActive" name="isActive" value="inActive" label="In Active" checked={!this.state.isActive} onChange={e=>this.onStatusChange(e,"isActive")} />
-                    </Form.Group>
-                    <Form.Group>
                         <label htmlFor="isHeadOffice">Head Office</label>
                         <Form.Check type="radio" id="HeadOfficeIsActive" name="isActive" value="active" label="Head Office" checked={this.state.isHeadOffice} onChange={e=>this.onStatusChange(e,"isHeadOffice")} />
-                        <Form.Check type="radio" id="HeadOfficeIsActive" name="isActive" value="inActive" label="Not Head office" checked={!this.state.isHeadOffice} onChange={e=>this.onStatusChange(e,"isHeadOffice")} />
+                        <Form.Check type="radio" id="HeadOfficeIsActive" name="isActive" value="inActive" label="Branch office" checked={!this.state.isHeadOffice} onChange={e=>this.onStatusChange(e,"isHeadOffice")} />
                     </Form.Group>
                 </div>
                 <hr className="modal-footer-ruler" />

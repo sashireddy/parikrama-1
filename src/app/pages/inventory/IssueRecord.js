@@ -11,8 +11,7 @@ class IssueProduct extends React.Component {
         this.state = {
             ...this.props.record,
             productName:getProduct(this.props.record.product).name,
-            branch :getLoggedInUserInfo().branch,
-
+            fromBranch :getLoggedInUserInfo().branch,
            type:"ISSUE_PRODUCT",
            operationalQuantity : 0,
            note : ""

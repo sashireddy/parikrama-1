@@ -4,10 +4,13 @@ import InventoryActions from '../../actions/inventoryActions'
 import AddInventory from './AddInventory'
 import ViewInventory from './IssueRecord'
 import {Table,Button, Col,Row} from 'react-bootstrap'
+import PendingTransactions from './PendingInventory'
 import {
     connect,
     // dispatch
 } from "react-redux";
+import {getLoggedInUserInfo,getBranchInfo} from '../../utils/dataUtils'
+import {getDropdownItem,dropDownResponseFromMap} from '../../utils/dropDownUtils'
 import {getUnit,getCategory,getProduct} from '../../utils/dataUtils'
 
 
@@ -44,9 +47,7 @@ class Inventory extends React.Component {
         }
     }
 
-    componentDidMount(){
-        //add other dependencies here 
-        // dispatch(loadBranchData())        
+    componentDidMount(){ 
     }
 
     render() {
@@ -95,71 +96,70 @@ class Inventory extends React.Component {
                 </tr>
             )
         }    
-        const TransactionView = (props)=>{
-            return (
-            <>
-                <Row>
-                <div className="col-lg-12 grid-margin stretch-card">
-                    <div className="card">
-                        <div className="card-body">
-                            <h3>Transaction Requests by other Branches</h3>
-                            <Table>
-                                <thead>
-                                    <tr>
-                                        <th>Branch</th>
-                                        <th>current Inventory</th>
-                                        <th>requested Inventory</th>
-                                        <th>note</th>
-                                        <th>After Transaction</th>
-                                        <th>Actions</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {requests.map((request,idx)=>(
-                                        <tr key={idx}>
-                                            <td>{request.branch}</td>
-                                            <td>{request.currentInventory}</td>
-                                            <td>{request.requestedInventory}</td>
-                                            <td>{request.note}</td>
-                                            <td>{request.currentInventory - request.requestedInventory}</td>
-                                            <td><Row><Col><Button>Approve Request</Button></Col><Col><Button>Reject Request</Button></Col></Row></td>
-                                        </tr>)
-                                    )}
-                                </tbody>
-                            </Table>
-                            <br />
-                            {/* <h3>Transaction Request raised by You</h3>
-                            <Table>
-                                <thead>
-                                    <tr>
-                                        <th>Branch</th>
-                                        <th>requested Inventory</th>
-                                        <th>note</th>
-                                        <th>Actions</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {requests.map((request,idx)=>(
-                                        <tr key={idx}>
-                                            <td>{request.branch}</td>
-                                            <td>{request.requestedInventory}</td>
-                                            <td>{request.note}</td>
-                                            <td><Row><Col><Button>Cancel Request</Button></Col></Row></td>
-                                        </tr>)
-                                    )}
-                                </tbody>
-                            </Table> */}
-                        </div>
-                    </div>
-                </div>
-                </Row>
-            </>
-            )
-        }
+        // const TransactionView = (props)=>{
+        //     return (
+        //     <>
+        //         <Row>
+        //         <div className="col-lg-12 grid-margin stretch-card">
+        //             <div className="card">
+        //                 <div className="card-body">
+        //                     <h3>Transaction Requests by other Branches</h3>
+        //                     <Table>
+        //                         <thead>
+        //                             <tr>
+        //                                 <th>Branch</th>
+        //                                 <th>current Inventory</th>
+        //                                 <th>requested Inventory</th>
+        //                                 <th>note</th>
+        //                                 <th>After Transaction</th>
+        //                                 <th>Actions</th>
+        //                             </tr>
+        //                         </thead>
+        //                         <tbody>
+        //                             {requests.map((request,idx)=>(
+        //                                 <tr key={idx}>
+        //                                     <td>{request.branch}</td>
+        //                                     <td>{request.currentInventory}</td>
+        //                                     <td>{request.requestedInventory}</td>
+        //                                     <td>{request.note}</td>
+        //                                     <td>{request.currentInventory - request.requestedInventory}</td>
+        //                                     <td><Row><Col><Button>Approve Request</Button></Col><Col><Button>Reject Request</Button></Col></Row></td>
+        //                                 </tr>)
+        //                             )}
+        //                         </tbody>
+        //                     </Table>
+        //                     <br />
+        //                     {/* <h3>Transaction Request raised by You</h3>
+        //                     <Table>
+        //                         <thead>
+        //                             <tr>
+        //                                 <th>Branch</th>
+        //                                 <th>requested Inventory</th>
+        //                                 <th>note</th>
+        //                                 <th>Actions</th>
+        //                             </tr>
+        //                         </thead>
+        //                         <tbody>
+        //                             {requests.map((request,idx)=>(
+        //                                 <tr key={idx}>
+        //                                     <td>{request.branch}</td>
+        //                                     <td>{request.requestedInventory}</td>
+        //                                     <td>{request.note}</td>
+        //                                     <td><Row><Col><Button>Cancel Request</Button></Col></Row></td>
+        //                                 </tr>)
+        //                             )}
+        //                         </tbody>
+        //                     </Table> */}
+        //                 </div>
+        //             </div>
+        //         </div>
+        //         </Row>
+        //     </>
+        //     )
+        // }
         return (
             <div>
                 <InventorySkeleton key="Inventory" content={{pageTitle:'Inventory'}} 
-                    OptionalTabel = {TransactionView}
                     AddModal={AddInventory}
                     EditModal={()=><></>}
                     ViewModal={ViewInventory}
@@ -169,7 +169,7 @@ class Inventory extends React.Component {
                     getTitle={getTitle}
                     {...this.props}
               >
-                  <TransactionView /> 
+                <PendingTransactions />
               </InventorySkeleton>
             </div>
         )

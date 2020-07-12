@@ -15,7 +15,7 @@ let defaultConfig = {
     search: {},
     sort: {},
 }
-
+let pendingTransactions = null;
 // Mimiking Starndard API response structure
 // can be used to map from any API response to below object
 // to avoid making changes in reducer structure
@@ -35,25 +35,52 @@ const output = {
 export const getPendingTransactions = (params) => {
     return new Promise(async (resolve, reject) => {
         try {
-            const [response,err]= handleResponse(await axios.get(pageConfig.PENDINGTRANSACTIONS+params.branchId))
-            if(err){ reject(err)}
-            resolve(response(response.data))
+            if(!pendingTransactions){
+                const [response,err]= handleResponse(await axios.get(pageConfig.PENDING_TRANSACTIONS+params.branch))
+                pendingTransactions = response.data
+                if(err){ reject(err)}
+            }
+            resolve(pendingTransactions)
         }catch(err){
             reject(err)
         }
     })
 }
 
+export const respondToTransferRequest = async params => {
+    const [response , err ] = handleResponse(await axios.post(pageConfig.TRANSFER_REQUEST,params))
+    if(err){
+        throw new Error(err)
+    }
+    pendingTransactions = pendingTransactions.filter(entry => entry.id === params.id)
+    return pendingTransactions
+}
+
 export const createTransaction = ({type,...otherParams}) => {
     return new Promise(async (resolve, reject) => {
         try {
-            const url = pageConfig[type]
-            const queryParams = {
-                "branch": otherParams.branch,
-                "productName":otherParams.productName,
-                "product": otherParams.product,
-                "operationalQuantity": parseInt(otherParams.operationalQuantity),
-                "note": otherParams.note
+            let url = pageConfig[type]
+            let queryParams = {}
+            if(type === "RAISE_REQUEST"){
+                queryParams = {
+                    "fromBranch": otherParams.fromBranch,
+	                "toBranch": otherParams.toBranch, //always headoffice
+                	"fromBranchName": otherParams.fromBranchName,
+	                "toBranchName": otherParams.toBranchName,
+                    "branch": otherParams.fromBranch,
+                    "productName":otherParams.productName,
+                    "productId": otherParams.product,
+                    "operationalQuantity": parseInt(otherParams.operationalQuantity),
+                    "note": otherParams.note
+                }
+            }else {
+                queryParams = {
+                    "branch": otherParams.fromBranch,
+                    "productName":otherParams.productName,
+                    "product": otherParams.product,
+                    "operationalQuantity": parseInt(otherParams.operationalQuantity),
+                    "note": otherParams.note
+                }
             }
             const [,err]= handleResponse(await axios.post(url,queryParams))
             if(err){ reject(err)}
@@ -68,8 +95,7 @@ export const createTransaction = ({type,...otherParams}) => {
                             return prod
                         }
                     })
-                }
-                if(type === "ADD_PRODUCT"){
+                }else if(type === "ADD_PRODUCT"){
                     const product = getProduct(otherParams.product)
                     let rec
                     cachedData = cachedData.map(prod => {
@@ -83,7 +109,7 @@ export const createTransaction = ({type,...otherParams}) => {
                         const record = {
                             availableQuantity:otherParams.operationalQuantity,
                             product:otherParams.product,
-                            threshold:product.threshold[otherParams.branch]
+                            threshold:product.threshold[otherParams.fromBranch]
                         }
                         cachedData = [...cachedData, record]
                     }
@@ -222,7 +248,7 @@ export const deleteData = data => {
     return new Promise(async (resolve, reject) => {
         if(pageConfig.CACHING){
             cachedData = cachedData.filter(item => {
-                if(item._id === data._id) {
+                if(item.id === data.id) {
                     return false;
                 }
                 return true;

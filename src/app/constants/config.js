@@ -22,7 +22,9 @@ export default {
             "ADD_PRODUCT":"https://local-parikrama.web.app/api/actions/addproduct",
             "PENDING_TRANSACTIONS": "https://local-parikrama.web.app/api/pendingTransactions/branches/",
             "GET_BRANCH_INVENTORY": "https://local-parikrama.web.app/api/inventories/",  
-            "GET_ALL_INVENTORY":"/data/allInventory.json",
+            "GET_ALL_INVENTORY":"",
+            "RAISE_REQUEST" : "https://local-parikrama.web.app/api/actions/requestProduct",
+            "TRANSFER_REQUEST":"",
             "CACHING": true,
             "PAGE_LIMIT": 10
         },

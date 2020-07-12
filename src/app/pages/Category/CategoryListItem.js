@@ -1,6 +1,8 @@
 import React from 'react';
 import {Button} from 'react-bootstrap';
-
+import Store from '../../store'
+import CategoryActions from '../../actions/categoryActions'
+import {getActivePayload} from '../../utils/dataUtils'
 export default props => {
   const category = props.record;
   return (
@@ -17,6 +19,8 @@ export default props => {
         </td>
         <td>
           <nav>
+            {props.record.isActive && (
+              <>
             <Button className="btn btn-primary" onClick={() => props.openActionMaodal(category, "view")}>
               View
             </Button>
@@ -25,7 +29,8 @@ export default props => {
             </Button>
             <Button onClick={() => props.openActionMaodal(category, "del")} className="btn btn-danger ml-2">
               Delete
-            </Button>
+            </Button></>)}
+            {!props.record.isActive && (<Button onClick={()=>Store.dispatch(CategoryActions.updateData(getActivePayload(props.record)))}>Activate</Button>)}
           </nav>
         </td>
     </tr>

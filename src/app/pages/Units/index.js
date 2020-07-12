@@ -35,10 +35,6 @@ class Unit extends React.Component {
                 },{
                     value : 'Description',
                     key : 'description'
-                },
-                {
-                    value : 'Actions',
-                    key : 'actions'
                 }
             ]
 
@@ -50,7 +46,6 @@ class Unit extends React.Component {
                  return <tr>
                             <td>{props.record.name}</td>
                             <td>{props.record.description}</td>
-                            <td><Button>Delete</Button></td>
                         </tr>
              }} pk="id"
              headerArr = {headerArr} getTitle={getTitle}/>
