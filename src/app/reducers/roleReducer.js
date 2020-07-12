@@ -5,7 +5,7 @@ import pageConstants from "../constants/pages"
 import { GET_ALL_ROLES } from "../actions/types";
 
 let initialState = {...stateTemplate}
-initialState["allRoles"] = [];
+initialState["allRecords"] = [];
 
 const reducerFunc = crudReducers(pageConstants.pages.role);
 
@@ -16,7 +16,7 @@ export default function(state = initialState, action) {
             return {
                 ...state,
                 initialLoad : true,
-                "allRoles": action.payload
+                "allRecords": action.payload
             }
         }
         default:

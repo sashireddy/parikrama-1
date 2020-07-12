@@ -2,7 +2,7 @@ import React from "react";
 import {connect} from "react-redux";
 import {Form} from "react-bootstrap";
 import Select from 'react-select';
-import {getDropdownItem, getSelectedItem,dropDownResponseFromMap} from '../../utils/dropDownUtils'
+import {getSelectedItem, dropDownResponseFromMap} from '../../utils/dropDownUtils';
 
 class UserForm extends React.Component {
     constructor(){
@@ -16,7 +16,7 @@ class UserForm extends React.Component {
             lastName: "",
             email: "",
             password: "",
-            showPassword: false
+            showPassword: false,
         }
     }
 
@@ -26,7 +26,6 @@ class UserForm extends React.Component {
 
     handleChange = evt => {
         this.setState({
-            ...this.state,
             [evt.target.name]: evt.target.value
         });
     }
@@ -39,9 +38,8 @@ class UserForm extends React.Component {
 
     handleDropDown = (field, evt) => {
         this.setState({
-            ...this.state,
-            [field]: evt.value
-        })
+            [field]: evt ? evt.value : ""
+        });
     }
 
     toggleShowPassword = event => {
@@ -57,66 +55,79 @@ class UserForm extends React.Component {
         if (form.checkValidity() === false) {
             event.preventDefault();
             event.stopPropagation();
-        }else {
-            event.preventDefault();
-            this.props.onSubmit({...this.state});
+        } else {
+            this.props.onSubmit({
+                firstName: this.state.firstName,
+                lastName: this.state.lastName,
+                email: this.state.email,
+                password: this.state.password,
+                isActive: this.state.isActive,
+                branch: this.state.branch,
+                role: this.state.role,
+                contact: this.state.contact
+            });
         }
+        this.setState({validated: true});
     }
 
     render() {
         const isUpdate = !!this.props.record;
         return(
-            <form className="forms-sample" onSubmit={this.onSubmit} >
+            <Form noValidate validated={this.state.validated} onSubmit={this.onSubmit}>
                 <div className="pl-3 pr-3">
                     <Form.Group>
-                        <label htmlFor="name">First Name</label>
-                        <Form.Control required type="text" className="form-control" id="userFirstName" name="firstName" placeholder="First Name" value={this.state.firstName} onChange={this.handleChange} />
+                        <Form.Label>First Name</Form.Label>
+                        <Form.Control required type="text" id="userFirstName" name="firstName" placeholder="First Name" value={this.state.firstName} onChange={this.handleChange} />
                         <Form.Control.Feedback type="invalid">Please enter first name</Form.Control.Feedback>
                     </Form.Group>
                     <Form.Group>
-                        <label htmlFor="name">Last Name</label>
-                        <Form.Control required type="text" className="form-control" id="userLastName" name="lastName" placeholder="Last Name" value={this.state.lastName} onChange={this.handleChange} />
+                        <Form.Label>Last Name</Form.Label>
+                        <Form.Control required type="text" id="userLastName" name="lastName" placeholder="Last Name" value={this.state.lastName} onChange={this.handleChange} />
                         <Form.Control.Feedback type="invalid">Please enter last name</Form.Control.Feedback>
                     </Form.Group>
                     <Form.Group>
-                        <label htmlFor="name">Email Address</label>
-                        <Form.Control required type="email" className="form-control" id="userEmail" name="email" placeholder="E Mail" value={this.state.email} onChange={this.handleChange} readOnly={isUpdate} />
+                        <Form.Label>Email Address</Form.Label>
+                        <Form.Control required type="text" className="form-control" id="userEmail" name="email" placeholder="E Mail" value={this.state.email} onChange={this.handleChange} readOnly={isUpdate} pattern="[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}" />
                         <Form.Control.Feedback type="invalid">Please enter valid email address</Form.Control.Feedback>
                     </Form.Group>
                     {!isUpdate ?
                         <Form.Group>
                             <label htmlFor="name">User Password</label>
+                            <em className="d-block"><small>Create a password for user to login for the first time.</small></em>
                             <div className="input-group">
-                                <Form.Control required type={this.state.showPassword ? "text" : "password"} className="form-control" id="userPassword" name="password" placeholder="User Password" value={this.state.password} onChange={this.handleChange} />
+                                <Form.Control required type={this.state.showPassword ? "text" : "password"} className="form-control" id="userPassword" name="password" placeholder="User Password" value={this.state.password} onChange={this.handleChange} minlength="6" />
                                 <div className="input-group-append">
                                     <button className="btn btn-sm btn-primary" type="button" onClick={this.toggleShowPassword}>
                                         {this.state.showPassword ? <i className="fa fa-eye" /> : <i className="fa fa-eye-slash" /> }
                                     </button>
                                 </div>
+                                <Form.Control.Feedback type="invalid">Please enter minimum 6 character password</Form.Control.Feedback>
                             </div>
-                            <em><small>Create a password for user to login for the first time.</small></em>
-                            <Form.Control.Feedback type="invalid">Please enter password</Form.Control.Feedback>
                         </Form.Group>
                     : null }
                     <Form.Group>
-                        <label htmlFor="exampleInputEmail1">Role</label>
-                        <Select className="basic-single" classNamePrefix="select" value={getSelectedItem(this.props.roleDropDownArr, this.state.role)}
-                            options={this.props.roleDropDownArr} onChange={(e)=>{this.handleDropDown('role', e)}}/>
-                        <Form.Control.Feedback type="invalid">Please select role</Form.Control.Feedback>
+                        <Form.Label>Role</Form.Label>
+                        <Form.Control required type="text" value={this.state.role} className="d-none"/>
+                        <Select required className="basic-single" classNamePrefix="select" value={getSelectedItem(this.props.roleDropDownArr, this.state.role)}
+                            options={this.props.roleDropDownArr} onChange={(e)=>{this.handleDropDown('role', e)}}
+                            isClearable isSearchable placeholder="Select Role"/>
+                        <Form.Control.Feedback type="invalid">Please select role for the user</Form.Control.Feedback>
                     </Form.Group>
                     <Form.Group>
-                        <label htmlFor="exampleInputEmail1">Branch</label>
+                        <Form.Label>Branch</Form.Label>
+                        <Form.Control required type="text" value={this.state.branch} className="d-none"/>
                         <Select className="basic-single" classNamePrefix="select" value={getSelectedItem(this.props.branchDropDownArr, this.state.branch)}
-                            options={this.props.branchDropDownArr} onChange={(e)=>{this.handleDropDown('branch', e)}}/>
-                        <Form.Control.Feedback type="invalid">Please select branch</Form.Control.Feedback>
+                            options={this.props.branchDropDownArr} onChange={(e)=>{this.handleDropDown('branch', e)}}
+                            isClearable isSearchable placeholder="Select Branch"/>
+                        <Form.Control.Feedback type="invalid">Please select branch for the user</Form.Control.Feedback>
                     </Form.Group>
                     <Form.Group>
-                        <label htmlFor="isActive">User Status</label>
+                        <Form.Label>User Status</Form.Label>
                         <Form.Check type="radio" id="categoryIsActive" name="isActive" value="active" label="Active" checked={this.state.isActive} onChange={this.onStatusChange} />
                         <Form.Check type="radio" id="categoryIsInActive" name="isActive" value="inActive" label="In Active" checked={!this.state.isActive} onChange={this.onStatusChange} />
                     </Form.Group>
                     <Form.Group>
-                        <label htmlFor="name">User Contact</label>
+                        <Form.Label>User Contact</Form.Label>
                         <Form.Control required type="text" className="form-control" id="userContact" name="contact" placeholder="Contact" value={this.state.contact} onChange={this.handleChange}
                         pattern="\d{10}" title="Please enter 10 digits mobile number" />
                         <em><small>Please enter 10 digits mobile number</small></em>
@@ -128,13 +139,13 @@ class UserForm extends React.Component {
                     <button type="button" className="btn btn-light mr-2" onClick={this.props.closeModal}>Cancel</button>
                     <button type="submit" className="btn btn-primary">{this.props.label}</button>
                 </div>
-            </form>
+            </Form>
         );
     }
 }
 
 const mapStateToProps = state => {
-    const roleDropDownArr = state.ROLE.allRoles.map(role => getDropdownItem(role.name, role.id));
+    const roleDropDownArr = dropDownResponseFromMap(state.ROLE.allRecords);
     const branchDropDownArr = dropDownResponseFromMap(state.BRANCHES.allRecords);
     return{
         roleDropDownArr,

@@ -1,0 +1,29 @@
+.react-datepicker-popper {
+    z-index: 1040;
+}
+.custom-page-filter {
+    .form-group {
+        width: 250px;
+        display: inline-block;
+        margin-right: 20px;
+
+        .react-datepicker-wrapper {
+            display: block;
+        }
+
+        .input-field {
+            padding: 4px 8px;
+            height: 2.2rem;
+        }
+    }
+    .select-box-fix-na{
+        .form-label{
+            position: relative;
+            top: 7px;
+        }
+
+        .select__control{
+            top: 7px;
+        }
+    }
+}

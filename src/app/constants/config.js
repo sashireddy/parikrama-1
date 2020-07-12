@@ -22,9 +22,9 @@ export default {
             "ADD_PRODUCT":"https://local-parikrama.web.app/api/actions/addproduct",
             "PENDING_TRANSACTIONS": "https://local-parikrama.web.app/api/pendingTransactions/branches/",
             "GET_BRANCH_INVENTORY": "https://local-parikrama.web.app/api/inventories/",  
-            "GET_ALL_INVENTORY":"",
             "RAISE_REQUEST" : "https://local-parikrama.web.app/api/actions/requestProduct",
             "TRANSFER_REQUEST":"",
+            "GET_ALL_INVENTORY":"/data/allInventory.json",
             "CACHING": true,
             "PAGE_LIMIT": 10
         },
@@ -67,8 +67,8 @@ export default {
             "PAGE_LIMIT": 10
         },
         "TRANSACTIONS" : {
-            "GET_TRANSACTIONS": "/data/transactions.json",
-            "CACHING": true,
+            "GET_TRANSACTIONS": "https://local-parikrama.web.app/api/transactions",
+            "CACHING": false,
             "PAGE_LIMIT": 10
         }
     }

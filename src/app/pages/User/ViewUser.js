@@ -1,57 +1,41 @@
 import React from "react";
-import {connect} from "react-redux";
+import {getBranch, getRole} from '../../utils/dataUtils';
 
-class ViewUser extends React.Component {
-  getRoleLabel = role => {
-    let roleObj = this.props.allRoles.find(item => item.id === role);
-    return roleObj ? roleObj.name : role;
-  }
-
-  getBranchLabel = branch => {
-    let branchObj = this.props.allBranches.find(item => item.id === branch);
-    return branchObj ? branchObj.name : branch;
-  }
-
-  render() {
-    const {record} = this.props;
-    return (
-      <React.Fragment>
-        <div className="pl-3 pr-3">
-            <dl className="dl-horizontal">
-              <dt>User Name</dt>
-              <dd>{`${record.firstName} ${record.lastName}`}</dd>
-              <dt>Role</dt>
-              <dd>{this.getRoleLabel(record.role)}</dd>
-              <dt>Branch</dt>
-              <dd>{this.getBranchLabel(record.branch)}</dd>
-              <dt>Phone Number</dt>
-              <dd>{record.contact}</dd>
-              <dt>Status</dt>
-              <dd>
-                {record.isActive
-                  ? <label className="badge badge-success">Active</label>
-                  : <label className="badge badge-warning">In Active</label>
-                }
-              </dd>
-              <dt>Email</dt>
-              <dd>{record.email}</dd>
-              <dt>Created on</dt>
-              <dd>{record.createdDate}</dd>
-              <dt>Updated on</dt>
-              <dd>{record.lastUpdatedDate}</dd>
-            </dl>
-        </div>
-        <hr className="modal-footer-ruler" />
-        <div className="text-right">
-          <button className="btn btn-light mr-2" onClick={() => {this.props.closeModal()}}>Close</button>
-        </div>
-      </React.Fragment>
-    );
-  }
+const ViewUser = props => {
+  const {record} = props;
+  return (
+    <React.Fragment>
+      <div className="pl-3 pr-3">
+          <dl className="dl-horizontal">
+            <dt>User Name</dt>
+            <dd>{`${record.firstName} ${record.lastName}`}</dd>
+            <dt>Role</dt>
+            <dd>{getRole(record.role).name}</dd>
+            <dt>Branch</dt>
+            <dd>{getBranch(record.branch).name}</dd>
+            <dt>Phone Number</dt>
+            <dd>{record.contact}</dd>
+            <dt>Status</dt>
+            <dd>
+              {record.isActive
+                ? <label className="badge badge-success">Active</label>
+                : <label className="badge badge-warning">In Active</label>
+              }
+            </dd>
+            <dt>Email</dt>
+            <dd>{record.email}</dd>
+            <dt>Created on</dt>
+            <dd>{record.createdDate}</dd>
+            <dt>Updated on</dt>
+            <dd>{record.lastUpdatedDate}</dd>
+          </dl>
+      </div>
+      <hr className="modal-footer-ruler" />
+      <div className="text-right">
+        <button className="btn btn-light mr-2" onClick={() => {props.closeModal()}}>Close</button>
+      </div>
+    </React.Fragment>
+  );
 }
-const mapStateToProps = state => ({
-  allRoles : state["ROLE"].allRoles,
-  allBranches : state["BRANCHES"].allRecords
-});
 
-export default connect(mapStateToProps, null)(ViewUser);
+export default ViewUser;
