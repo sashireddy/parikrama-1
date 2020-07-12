@@ -1,6 +1,6 @@
 import axios from 'axios';
 import config from "../constants/config";
-import {filterData, validateCurrentPage, handleResponse} from "./util";
+import {filterData, validateCurrentPage, handleResponse, arrayToMapWithId} from "./util";
 
 const apiConfig = config.API.BRANCHES;
 
@@ -32,7 +32,7 @@ export const loadInitialData = () => {
         if(apiConfig.CACHING){
             cachedData = res.data.branches;
         }
-        resolve(res.data.branches);
+        resolve(arrayToMapWithId(res.data.branches));
     });
 }
 

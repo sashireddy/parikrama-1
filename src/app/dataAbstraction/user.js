@@ -88,7 +88,6 @@ export const addData = data => {
             try {
                 await Firebase.doCreateUserWithEmailAndPassword(data.email, data.password);
                 delete data.password;
-                delete data.showPassword;
                 response = await axios.post(apiConfig.GET_USERS, data);
                 console.log("Create User response: ", response);
             } catch(err) {

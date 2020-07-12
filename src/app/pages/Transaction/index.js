@@ -1,42 +1,72 @@
 import React from "react";
 import {Link} from "react-router-dom";
 import {connect} from "react-redux";
+import DatePicker from "react-datepicker";
+import { Form } from "react-bootstrap";
+import Select from 'react-select';
+import dateFormat from "dateformat";
 import TransactionListItem from "./TransactionListItem";
 import Spinner from "../../shared/Spinner";
 import transactionActions from "../../actions/transactionActions";
+import {getSelectedItem, dropDownResponseFromMap} from '../../utils/dropDownUtils';
+
 
 class Transaction extends React.Component {
     constructor(){
         super()
         this.state = {
-            showModal: false,
-            currentRecord: null,
-            actionType: null,
-            sort:{},
-            search: {},
-            currentPage: 1
+            branch: "MxoS2K8t8jT7MATniD4x",
+            startDate: "",
+            endDate: "",
+            email: "",
+            error: false
         }
     }
 
     loadData() {
         const params = {
-            "currentPage": this.state.currentPage,
-            "pageLimit": this.props.pageLimit,
-            "search": this.state.search,
-            "sort":this.state.sort
+            branch: this.state.branch,
+            startDate: this.state.startDate ? dateFormat(this.state.startDate, "yyyy-mm-dd") : "",
+            endDate: this.state.endDate ? dateFormat(this.state.endDate, "yyyy-mm-dd") : "",
+            email: this.state.email
         };
         this.props.getTransactions(params);
     }
 
-    componentDidMount(){
+    setDate = (field, date) => {
         this.setState({
-                sort: this.props.sort,
-                search: this.props.search,
-                currentPage: this.props.currentPage,
-                pageLimit: this.props.pageLimit
-            },
-            this.loadData()
-        );
+            [field]: date
+        });
+    }
+
+    handleDropDown = (field, evt) => {
+        this.setState({
+            [field]: evt ? evt.value : ""
+        });
+    }
+
+    handleChange = evt => {
+        this.setState({
+            [evt.target.name]: evt.target.value
+        });
+    }
+
+    componentDidMount(){
+        this.loadData();
+    }
+
+    onSubmit = evt => {
+        evt.preventDefault();
+        const {startDate, endDate} = this.state;
+        // Both are present or both are empty then only search
+        if((startDate && endDate) || (!startDate && !endDate)){
+            this.setState({error: false});
+            this.loadData();
+        } else {
+            this.setState({error: true});
+        }
+
+
     }
 
     render(){
@@ -61,8 +91,50 @@ class Transaction extends React.Component {
                     <div className="col-lg-12 grid-margin stretch-card">
                         <div className="card">
                             <div className="card-body">
+                                <Form className="custom-page-filter" onSubmit={this.onSubmit}>
+                                        <Form.Group>
+                                            <Form.Label>Start Date</Form.Label>
+                                            <DatePicker
+                                                dateFormat="yyyy-MM-dd"
+                                                selected={this.state.startDate}
+                                                onChange={date => this.setDate('startDate', date)}
+                                                selectsStart
+                                                startDate={this.state.startDate}
+                                                endDate={this.state.endDate}
+                                                maxDate={this.state.endDate}
+                                                className="form-control"
+                                            />
+                                        </Form.Group>
+                                        <Form.Group>
+                                            <Form.Label>End Date</Form.Label>
+                                            <DatePicker
+                                                dateFormat="yyyy-MM-dd"
+                                                selected={this.state.endDate}
+                                                onChange={date => this.setDate('endDate', date)}
+                                                selectsEnd
+                                                startDate={this.state.startDate}
+                                                endDate={this.state.endDate}
+                                                minDate={this.state.startDate}
+                                                className="form-control"
+                                            />
+                                        </Form.Group>
+                                        <Form.Group className="select-box-fix">
+                                            <Form.Label>Branch</Form.Label>
+                                            <Select className="basic-single" classNamePrefix="select" value={getSelectedItem(this.props.branchDropDownArr, this.state.branch)}
+                                                options={this.props.branchDropDownArr} onChange={(e)=>{this.handleDropDown('branch', e)}}
+                                                isSearchable placeholder="Select Branch" styles={customStyles}/>
+                                        </Form.Group>
+                                        <Form.Group>
+                                            <Form.Label>Email</Form.Label>
+                                            <Form.Control type="text" className="form-control" name="email" placeholder="User Email" value={this.state.email} onChange={this.handleChange}/>
+                                        </Form.Group>
+                                        <Form.Group>
+                                            <input type="submit" value="Search" className="btn btn-primary"/>
+                                        </Form.Group>
+                                </Form>
+                                {this.state.error ? <p className="text-warning">Please select both start and end date</p> : null}
                                 <ul className="timeline">
-                                    {this.props.data.map(txn => <TransactionListItem txn={txn} key={txn.id} />)}
+                                    {this.props.data.map((txn, id) => <TransactionListItem txn={txn} key={id} />)}
                                 </ul>
                             </div>
                         </div>
@@ -72,12 +144,23 @@ class Transaction extends React.Component {
         );
     }
 }
-const mapStateToProps = state => ({
-    ...state["TRANSACTION"]
-});
+const mapStateToProps = state => {
+    const branchDropDownArr = dropDownResponseFromMap(state.BRANCHES.allRecords);
+    return {
+        branchDropDownArr,
+        ...state["TRANSACTION"]
+    }
+};
 
 const mapActionToProps = {
     ...transactionActions
+};
+
+const customStyles = {
+    control: base => ({
+      ...base,
+      height: 45
+    })
 };
 
 export default connect(mapStateToProps, mapActionToProps)(Transaction);
