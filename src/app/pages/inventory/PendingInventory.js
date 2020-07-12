@@ -6,7 +6,7 @@ import {dropDownResponseFromMap} from '../../utils/dropDownUtils'
 import Modal from '../../shared/Modal'
 import {getLoggedInUserInfo,getBranchInfo} from '../../utils/dataUtils'
 import InventoryActions from '../../actions/inventoryActions'
-
+import Spinner from "../../shared/Spinner";
 
 class PendingTransactions extends React.Component {
     constructor(props){
@@ -22,6 +22,7 @@ class PendingTransactions extends React.Component {
        let requests = this.props.inventory.pendingTransactions
         return (
         <>
+            <Spinner loading={this.props.inventory.pendingTransactionsLoading} />
             <Row>
             <div className="col-lg-12 grid-margin stretch-card">
                 <div className="card">

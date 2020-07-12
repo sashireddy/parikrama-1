@@ -20,7 +20,7 @@ export default {
             "ISSUE_PRODUCT":"https://local-parikrama.web.app/api/actions/issueproduct",
             "ADJUSTMENT":"",
             "ADD_PRODUCT":"https://local-parikrama.web.app/api/actions/addproduct",
-            "PENDING_TRANSACTIONS": "https://local-parikrama.web.app/api/pendingTransactions/branches/",
+            "PENDING_TRANSACTIONS": "https://local-parikrama.web.app/api/pendingRequests/branches/",
             "GET_BRANCH_INVENTORY": "https://local-parikrama.web.app/api/inventories/",  
             "RAISE_REQUEST" : "https://local-parikrama.web.app/api/actions/requestProduct",
             "TRANSFER_REQUEST":"",

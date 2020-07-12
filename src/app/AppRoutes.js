@@ -37,7 +37,7 @@ const User = lazy(()=> import('./pages/User'));
 const Move = lazy(()=> import ('./pages/Move'));
 const Unit = lazy(()=> import('./pages/Units'));
 const Transaction = lazy(()=> import ('./pages/Transaction'));
-
+const InventoryReports = lazy(()=> import('./pages/InventorySummary'));
 class AppRoutes extends Component {
   render () {
     return (
@@ -55,6 +55,7 @@ class AppRoutes extends Component {
           <Route path="/roles" component={ Role } />
           <Route path="/users" component={ User } />
           <Route path="/units" component={ Unit } />
+          <Route path="/inventoryReports" component={InventoryReports} />
         {/* {user.perm[cate] === true && */}
         {/* <> */}
           <Route path="/categories" component={ Category } />
@@ -80,7 +81,6 @@ class AppRoutes extends Component {
           <Route path="/reports" component ={ Reports } />
           <Route path="/transactions" component ={ Transaction } />
           <Redirect to="/dashboard" />
-
         </Switch>
       </Suspense>
     );
