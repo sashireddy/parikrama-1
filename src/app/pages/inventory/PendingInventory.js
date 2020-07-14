@@ -19,7 +19,7 @@ class PendingTransactions extends React.Component {
         this.props.loadPendingTransactions({branch:getLoggedInUserInfo().branch})
     }
    render(){
-       let requests = this.props.inventory.pendingTransactions
+       let requests = this.props.inventory.pendingTransactions || []
         return (
         <>
             <Spinner loading={this.props.inventory.pendingTransactionsLoading} />
@@ -70,104 +70,105 @@ class PendingTransactions extends React.Component {
 }
 
 
-class RaiseTransactionView extends React.Component {
-    constructor(props) {
-        super(props);
-        const userInfo = getLoggedInUserInfo();
-        const branchInfo = getBranchInfo(userInfo.branch)
-        this.state = {
-            fromBranch: userInfo.branch,
-            fromBranchName: branchInfo.name,
-            operationalQuantity: 0,
-            note: ""
-        }
-    }
-    handleChange = evt => {
-        const operationalQuantity = parseInt(evt.target.value)
-        if(operationalQuantity){
-            this.setState({
-                ...this.state,
-                operationalQuantity
-            });
-        }
-    }
-    handleNote = evt => {
-        this.setState({
-            ...this.state,
-            note: evt.target.value
-        })
-    }
+// class RaiseTransactionView extends React.Component {
+//     constructor(props) {
+//         super(props);
+//         const userInfo = getLoggedInUserInfo();
+//         const branchInfo = getBranchInfo(userInfo.branch)
+//         this.state = {
+//             fromBranch: userInfo.branch,
+//             fromBranchName: branchInfo.name,
+//             operationalQuantity: 0,
+//             note: ""
+//         }
+//     }
+//     handleChange = evt => {
+//         const operationalQuantity = parseInt(evt.target.value)
+//         if(operationalQuantity){
+//             this.setState({
+//                 ...this.state,
+//                 operationalQuantity
+//             });
+//         }
+//     }
+//     handleNote = evt => {
+//         this.setState({
+//             ...this.state,
+//             note: evt.target.value
+//         })
+//     }
 
-    handleProductDropDown = (evt) => {
-            this.setState({
-                ...this.state,
-                productId: evt && evt.value,
-                productName: evt && evt.label
-            })
-    }
+//     handleProductDropDown = (evt) => {
+//             this.setState({
+//                 ...this.state,
+//                 productId: evt && evt.value,
+//                 productName: evt && evt.label
+//             })
+//     }
 
-    handleBranchDropDown =evt => [
-        this.setState({
-            ...this.state,
-            toBranch: evt && evt.value,
-            toBranchName: evt && evt.label
-        })
-    ]
+//     handleBranchDropDown =evt => [
+//         this.setState({
+//             ...this.state,
+//             toBranch: evt && evt.value,
+//             toBranchName: evt && evt.label
+//         })
+//     ]
 
-    onSubmit = event => {
-        const form = event.currentTarget;
-        if (form.checkValidity() === false && !this.state.productId && !this.state.toBranch) {
-            event.preventDefault();
-            event.stopPropagation();
-        }else {
-            event.preventDefault();
-            this.props.raiseRequest({...this.state})
-            this.props.closeModal();
-        }
+//     onSubmit = event => {
+//         const form = event.currentTarget;
+//         if (form.checkValidity() === false && !this.state.productId && !this.state.toBranch) {
+//             event.preventDefault();
+//             event.stopPropagation();
+//         }else {
+//             event.preventDefault();
+//             this.props.raiseRequest({...this.state})
+//             this.props.closeModal();
+//         }
        
-    }
-    render(){
-    console.log(this.state)
-    const productDropdownArr = dropDownResponseFromMap(this.props.products.allRecords)
-    const branchDropdownArr = dropDownResponseFromMap(this.props.branches.allRecords)
-    return (
-        <Modal show={true} closeModal={this.props.closeModal}>
-             <form className="forms-sample" onSubmit={this.onSubmit} >
-                <div className="pl-3 pr-3">
-                    <Form.Group>
-                        <label htmlFor="exampleInputEmail1">Product</label>
-                        <Select className="basic-single" classNamePrefix="select"
-                            isClearable={true} isSearchable={true}  options={productDropdownArr} onChange={(e)=>{this.handleProductDropDown(e)}}/>
-                    </Form.Group>
-                    <Form.Group>
-                        <label htmlFor="exampleInputEmail1">Head Branch</label>
-                        <Select className="basic-single" classNamePrefix="select"
-                            isClearable={true} isSearchable={true}  options={branchDropdownArr} onChange={(e)=>{this.handleBranchDropDown(e)}}/>
-                    </Form.Group>
-                    <Form.Group>
-                        <label htmlFor="exampleInputEmail1">Quantity</label>
-                        <Form.Control required type="number" className="form-control" id="operationalQuantity" name="operationalQuantity" placeholder="" value={this.state.operationalQuantity} onChange={this.handleChange} />
-                        <dd>{this.state.currentProduct && this.state.currentProduct.unit}</dd>
-                        <Form.Control.Feedback type="invalid">Please enter a valid quantity</Form.Control.Feedback>
-                    </Form.Group>
-                    <Form.Group>
-                        <label htmlFor="">Note</label>
-                        <Form.Control required type="text" id="Note" className="form-control" 
-                            name="note" placeholder="Add info about the transaction" value={this.state.note}
-                            onChange={this.handleNote} />
-                        <Form.Control.Feedback type="invalid">Please enter a note about the transaction</Form.Control.Feedback>
-                    </Form.Group>
-                    <hr className="modal-footer-ruler" />
-                    <div className="text-right">
-                        <button type="button" className="btn btn-light mr-2" onClick={this.props.closeModal}>Cancel</button>
-                        <button type="submit" className="btn btn-primary">Add Inventory</button>
-                    </div>
-                </div>
-            </form>
-        </Modal>
-    )
-}
-}
+//     }
+//     render(){
+//     console.log(this.state)
+//     const productDropdownArr = dropDownResponseFromMap(this.props.products.allRecords)
+//     const branchDropdownArr = dropDownResponseFromMap(this.props.branches.allRecords)
+//     return (
+//         <Modal show={true} closeModal={this.props.closeModal}>
+//              <form className="forms-sample" onSubmit={this.onSubmit} >
+//                 <div className="pl-3 pr-3">
+//                     <Form.Group>
+//                         <label htmlFor="exampleInputEmail1">Product</label>
+//                         <Select className="basic-single" classNamePrefix="select"
+//                             isClearable={true} isSearchable={true}  options={productDropdownArr} onChange={(e)=>{this.handleProductDropDown(e)}}/>
+//                     </Form.Group>
+//                     <Form.Group>
+//                         <label htmlFor="exampleInputEmail1">Head Branch</label>
+//                         <Select className="basic-single" classNamePrefix="select"
+//                             isClearable={true} isSearchable={true}  options={branchDropdownArr} onChange={(e)=>{this.handleBranchDropDown(e)}}/>
+//                     </Form.Group>
+//                     <Form.Group>
+//                         <label htmlFor="exampleInputEmail1">Quantity</label>
+//                         <Form.Control required type="number" className="form-control" id="operationalQuantity" name="operationalQuantity" placeholder="" value={this.state.operationalQuantity} onChange={this.handleChange} />
+//                         <dd>{this.state.currentProduct && this.state.currentProduct.unit}</dd>
+//                         <Form.Control.Feedback type="invalid">Please enter a valid quantity</Form.Control.Feedback>
+//                     </Form.Group>
+//                     <Form.Group>
+//                         <label htmlFor="">Note</label>
+//                         <Form.Control required type="text" id="Note" className="form-control" 
+//                             name="note" placeholder="Add info about the transaction" value={this.state.note}
+//                             onChange={this.handleNote} />
+//                         <Form.Control.Feedback type="invalid">Please enter a note about the transaction</Form.Control.Feedback>
+//                     </Form.Group>
+//                     <hr className="modal-footer-ruler" />
+//                     <div className="text-right">
+//                         <button type="button" className="btn btn-light mr-2" onClick={this.props.closeModal}>Cancel</button>
+//                         <button type="submit" className="btn btn-primary">Add Inventory</button>
+//                     </div>
+//                 </div>
+//             </form>
+//         </Modal>
+//     )
+// }
+// }
+
 const ApproveOrRejectView = props => {
     return (
         <Modal>
@@ -196,6 +197,7 @@ const ApproveOrRejectView = props => {
    </Modal>
     )
 }
+
 export default connect(state=>({
      products: state['PRODUCTS'],
      branches : state['BRANCHES'],

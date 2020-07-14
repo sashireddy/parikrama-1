@@ -6,6 +6,7 @@ import { Form } from "react-bootstrap";
 import Select from 'react-select';
 import dateFormat from "dateformat";
 import inventoryActions from "../../actions/inventoryActions";
+import Pagination from "../../shared/Pagination";
 import {getSelectedItem, dropDownResponseFromMap} from '../../utils/dropDownUtils';
 
 
@@ -16,7 +17,10 @@ class Transaction extends React.Component {
             branch: "MxoS2K8t8jT7MATniD4x",
             startDate: "",
             endDate: "",
-            error: false
+            error: false,
+            sort:{},
+            search: {},
+            currentPage: 1
         }
     }
 
@@ -48,6 +52,11 @@ class Transaction extends React.Component {
     }
 
     componentDidMount(){
+        this.setState({
+            sort: this.props.sort,
+            search: this.props.search,
+            currentPage: this.props.currentPage
+        });
         this.loadData();
     }
 
@@ -61,8 +70,13 @@ class Transaction extends React.Component {
         } else {
             this.setState({error: true});
         }
-
-
+    }
+    
+    onPageChanged = data => {
+        this.setState(
+            {currentPage: data.currentPage},
+            this.loadData
+        );
     }
 
     render(){
@@ -125,6 +139,17 @@ class Transaction extends React.Component {
                                         </Form.Group>
                                 </Form>
                                 {this.state.error ? <p className="text-warning">Please select both start and end date</p> : null}
+                                {this.props.data.length ? (
+                                    <div className="mt-4">
+                                        <Pagination
+                                            totalRecords={this.props.totalRecords}
+                                            currentPage={this.props.currentPage}
+                                            pageLimit={this.props.pageLimit}
+                                            pageNeighbours={1}
+                                            onPageChanged={this.onPageChanged}
+                                        />
+                                    </div>
+                                ) : null}
                             </div>
                         </div>
                     </div>

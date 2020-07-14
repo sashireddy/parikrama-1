@@ -24,9 +24,15 @@ export default {
             "GET_BRANCH_INVENTORY": "https://local-parikrama.web.app/api/inventories/",  
             "RAISE_REQUEST" : "https://local-parikrama.web.app/api/actions/requestProduct",
             "TRANSFER_REQUEST":"",
-            "GET_ALL_INVENTORY":"/data/allInventory.json",
+            "GET_ALL_INVENTORY": "https://local-parikrama.web.app/api/inventories/",
+            // "GET_ALL_INVENTORY":"/data/inventory.json",
             "CACHING": true,
             "PAGE_LIMIT": 10
+        },
+        "INVENTORY_SUMMARY":{
+            "GET_REPORT_SUMMARY": "/data/reports.json",
+            "PAGE_LIMIT": 25,
+            "CACHING": true
         },
         "ROLE": {
             "GET_ROLES": "https://local-parikrama.web.app/api/roles",

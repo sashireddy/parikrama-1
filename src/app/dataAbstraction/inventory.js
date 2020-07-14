@@ -1,13 +1,18 @@
 import config from "../constants/config";
 import axios from 'axios';
 import {handleResponse} from './util'
-import {getLoggedInUserInfo,getProduct} from '../utils/dataUtils'
+import {getLoggedInUserInfo,getProduct,getBranchInfo,getUnit,getCategory} from '../utils/dataUtils'
+// import inventory from "../pages/inventory";
+import {arrayToCsvContent,download} from '../utils/csvUtils'
 const pageConfig = config.API.INVENTORY;
 
 // Null indicates we need to fetch the data from the source
 // Incase of caching ON, need to fetch the data for first time
 // Incase of Live interaction we'll never set cached data, forcing it to fetch all the time
 let cachedData = null;
+
+let cache = null
+let summaryCache = null
 
 let defaultConfig = {
     currentPage: 1,
@@ -31,13 +36,12 @@ const output = {
 };
 
 
-
 export const getPendingTransactions = (params) => {
     return new Promise(async (resolve, reject) => {
         try {
             if(!pendingTransactions){
                 const [response,err]= handleResponse(await axios.get(pageConfig.PENDING_TRANSACTIONS+params.branch))
-                pendingTransactions = response.data
+                pendingTransactions = response.data.pendingTransactions
                 if(err){ reject(err)}
             }
             resolve(pendingTransactions)
@@ -132,6 +136,40 @@ export const createTransaction = ({type,...otherParams}) => {
 }
 
 
+const parseInventoryResp = (inventory) => {
+    cache = {}
+    summaryCache = {}
+    inventory.inventories[0].forEach(branchInventory => {
+        cache[branchInventory.branch] = branchInventory.inventory
+        branchInventory.inventory.forEach(product => {
+            let newProductInfo = summaryCache[product.id] || {}
+            newProductInfo[branchInventory.branch] = {
+                threshold : product.threshold,
+                availableQuantity : product.availableQuantity
+            }
+            summaryCache[product.id] = newProductInfo
+        })
+    })
+    console.log(JSON.stringify(summaryCache))
+    console.log(JSON.stringify(cache))
+}
+
+const getThreshold = (productId,branchId) => 10
+
+const makeEntry = (productId,branchId) => {
+    summaryCache[productId] = summaryCache[productId] || {}
+    cache[branchId] = cache[branchId] || []
+    cache[branchId].push({
+        threshold : getThreshold(productId,branchId),
+        availableQuantity : 0,
+        id: productId
+    })
+    summaryCache[productId][branchId] = {
+        threshold : getThreshold(productId,branchId),
+        availableQuantity : 0
+    }
+}
+
 
 // All the method will return promise, which will hold good for doing
 // async operations, we don't have to make changes for the cached vs live data
@@ -140,9 +178,9 @@ export const createTransaction = ({type,...otherParams}) => {
 export const getData = params => {
     console.log(params);
     return new Promise(async (resolve, reject) => {
-        if(cachedData === null){
+        if(cache === null){
             // Logic can be applied to generate URL using params
-            const url = `${config.API.BASE_URL}${pageConfig.GET_BRANCH_INVENTORY}`+getLoggedInUserInfo().branch;
+            const url = `${config.API.BASE_URL}${pageConfig.GET_ALL_INVENTORY}`;
             console.log("API calling...", url);
             try {
                 const res = await axios.get(url);
@@ -151,7 +189,7 @@ export const getData = params => {
                     "message": "Data Loaded Successfully!"
                 };
                 if(pageConfig.CACHING){
-                    cachedData = res.data.inventory;
+                    parseInventoryResp(res.data)
                 }
             } catch(err){
                 reject(err);
@@ -283,7 +321,8 @@ const getCurrentStateData = params => {
     console.log(params);
     // Need to implement search and sort functionality here
     // After search total records may vary, reset pagination to 1st page.
-    let records = filterData(params);
+    // let records = filterData(params);
+    let records = cache[params.branch] || cache[0]
     let currentPage = validateCurrentPage(params, records);
     output.totalRecords = records.length;
     const offset = (currentPage - 1) * params.pageLimit;
@@ -291,7 +330,7 @@ const getCurrentStateData = params => {
     output.search = params.search;
     output.sort = params.sort;
     output.currentPage = currentPage;
-    output.allRecords = cachedData
+    // output.allRecords = cachedData
 }
 
 // Validate current page, Might change due to delete, search operation
@@ -353,4 +392,19 @@ const getSortFunction = sort => {
             return 0;
         }
     }
+}
+
+export const generateCsv = (params) => {
+    const arr = cache[params.branch] || []
+    const outArr = []
+    arr.forEach(row=> {
+        const tempRow = []
+        const product = getProduct(row.product)
+        tempRow.push(product.name)
+        tempRow.push(getCategory(product.category).name)
+        tempRow.push(`${row.availableQuantity} `+getUnit(product.unit).name)
+        tempRow.push(row.threshold)
+        outArr.push(tempRow)
+    })
+    download(arrayToCsvContent(outArr),"Inventory.csv",)
 }

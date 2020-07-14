@@ -144,7 +144,9 @@ class CrudSkeleton extends Component {
                                                     )
                                             })}
                                         </Form.Group>
-                                        <Button onClick={() => this.openActionMaodal(null, "add")} className="btn btn-primary ml-2 search-btn">Add Record</Button>
+                                        {
+                                         !this.props.DontShowButon  && <Button onClick={() => this.openActionMaodal(null, "add")} className="btn btn-primary ml-2 search-btn">Add Record</Button>
+                                        }
                                     </Form>
                                 </div>
                                 <div className="table-responsive">

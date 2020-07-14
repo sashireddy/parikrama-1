@@ -1,0 +1,31 @@
+{
+    "branch": "pAhsD46B6cTMUQltjmrl",
+    "name": "dhankawadi",
+    "fromDate": "2020-07-02",
+    "toDate": "2020-07-02",
+    "report": [
+        {
+            "unit": "Il6dg4x4LywRTEONlBWF",
+            "name": "oats",
+            "category": "miSfk8RC2935IiDzC3fx",
+            "product": "tV90MxDDZGHoIvBkCpr9",
+            "threshold": 45,
+            "initialQuantity": 0,
+            "addedQuantity": 50,
+            "consumedQuantity": 0,
+            "closingQuantity": 50
+        },
+        {
+            "unit": "SZYf35oJqP992E7PdusL",
+            "name": "The Monk Who Sold His Ferrari",
+            "category": "B7t3rfHbkGhXnahF5d26",
+            "product": "ufjGAgxFsq0FpAs864ha",
+            "threshold": 75,
+            "initialQuantity": 0,
+            "addedQuantity": 30,
+            "consumedQuantity": 0,
+            "closingQuantity": 30
+        }
+    ],
+    "totalProducts": 2
+}

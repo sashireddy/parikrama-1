@@ -37,7 +37,7 @@ const User = lazy(()=> import('./pages/User'));
 const Move = lazy(()=> import ('./pages/Move'));
 const Unit = lazy(()=> import('./pages/Units'));
 const Transaction = lazy(()=> import ('./pages/Transaction'));
-const InventoryReports = lazy(()=> import('./pages/InventorySummary'));
+const InventoryReports = lazy(()=> import('./pages/InventorySummary/r'));
 class AppRoutes extends Component {
   render () {
     return (

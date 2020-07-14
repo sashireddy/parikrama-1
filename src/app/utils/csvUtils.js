@@ -16,7 +16,7 @@
   }
   // The download function takes a CSV string, the filename and mimeType as parameters
   // Scroll/look down at the bottom of this snippet to see how download is called
-  var download = function(content, fileName, mimeType) {
+  var download = function(content, fileName = 'download.csv', mimeType='text/csv;encoding:utf-8') {
     var a = document.createElement('a');
     mimeType = mimeType || 'application/octet-stream';
   
@@ -33,7 +33,7 @@
       a.click();
       document.body.removeChild(a);
     } else {
-      location.href = 'data:application/octet-stream,' + encodeURIComponent(content); // only this mime type is supported
+      // location.href = 'data:application/octet-stream,' + encodeURIComponent(content); // only this mime type is supported
     }
   }
   

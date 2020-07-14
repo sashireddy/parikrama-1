@@ -1,4 +1,4 @@
-import { addData,deleteData,getData,updateData,createTransaction,getPendingTransactions } from '../dataAbstraction/inventory'
+import { addData,deleteData,getData,updateData,createTransaction,getPendingTransactions,generateCsv } from '../dataAbstraction/inventory'
 import skeletonActions from './crudActions'
 import pageConstants from '../constants/pages'
 import {GET_PENDING_TRANSACTIONS} from './types'
@@ -23,12 +23,16 @@ const actions = (()=>{
         payload : resp
       })
     }
+    const downloadCSV = params => async () => {
+      generateCsv(params)
+    }
   return {
     //other actions apart from the crud operations go here 
     getData : defaultSkeletonActions.getData,
     loadPendingTransactions,
     acceptOrRejectExtRequest,
-    createInventoryTransaction
+    createInventoryTransaction,
+    downloadCSV
   }
 
 })()

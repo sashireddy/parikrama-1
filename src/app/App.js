@@ -33,9 +33,9 @@ class App extends Component {
     }
   }
   componentDidMount() {
-    store.dispatch(permissionActions.getAllPermissions());
+    // store.dispatch(permissionActions.getAllPermissions());
     store.dispatch(categoryActions.getAllCategories());
-    store.dispatch(roleActions.getAllRoles());
+    // store.dispatch(roleActions.getAllRoles());
     store.dispatch(userActions.getUserInfo())
     store.dispatch(UnitActions.initialData())
     store.dispatch(productActions.getAllProducts());
@@ -50,7 +50,7 @@ class App extends Component {
   render () {
 
     const loading = validateIntialLoad(this.props.state.BRANCHES) && validateIntialLoad(this.props.state.CATEGORY)
-                       && validateIntialLoad(this.props.state.USER) && validateIntialLoad(this.props.state.PERMISSION)
+                       && validateIntialLoad(this.props.state.USER)  //&& validateIntialLoad(this.props.state.PERMISSION)
                        && validateIntialLoad(this.props.state.PRODUCTS) && validateIntialLoad(this.props.state.UNITS)
     let navbarComponent = !this.state.isFullPageLayout ? <Navbar/> : '';
     let sidebarComponent = !this.state.isFullPageLayout ? <Sidebar/> : '';
