@@ -2,6 +2,8 @@ import axios from 'axios';
 import config from "../constants/config";
 import {validateCurrentPage, getSortFunction, arrayToMapWithId} from "./util";
 
+axios.defaults.headers.common['Authorization'] = "Bearer TOKEN";
+
 const apiConfig = config.API.ROLE;
 
 // Null indicates we need to fetch the data from the source

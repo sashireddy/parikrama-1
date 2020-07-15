@@ -11,7 +11,6 @@ import Footer from './shared/Footer';
 import store from './store';
 import categoryActions from './actions/categoryActions';
 import roleActions from './actions/roleActions';
-import permissionActions from './actions/permissionActions';
 import userActions from './actions/userActions';
 import UnitActions from './actions/units';
 import {connect} from 'react-redux'
@@ -33,11 +32,11 @@ class App extends Component {
     }
   }
   componentDidMount() {
-    store.dispatch(permissionActions.getAllPermissions());
-    store.dispatch(categoryActions.getAllCategories());
+    // store.dispatch(permissionActions.getAllPermissions());
     store.dispatch(roleActions.getAllRoles());
-    store.dispatch(userActions.getUserInfo())
-    store.dispatch(UnitActions.initialData())
+    store.dispatch(userActions.getUserInfo());
+    store.dispatch(UnitActions.initialData());
+    store.dispatch(categoryActions.getAllCategories());
     store.dispatch(productActions.getAllProducts());
     store.dispatch(branchesActions.getAllBranches());
     addNotification({
@@ -50,7 +49,7 @@ class App extends Component {
   render () {
 
     const loading = validateIntialLoad(this.props.state.BRANCHES) && validateIntialLoad(this.props.state.CATEGORY)
-                       && validateIntialLoad(this.props.state.USER) && validateIntialLoad(this.props.state.PERMISSION)
+                       && validateIntialLoad(this.props.state.USER) /* && validateIntialLoad(this.props.state.PERMISSION) */
                        && validateIntialLoad(this.props.state.PRODUCTS) && validateIntialLoad(this.props.state.UNITS)
     let navbarComponent = !this.state.isFullPageLayout ? <Navbar/> : '';
     let sidebarComponent = !this.state.isFullPageLayout ? <Sidebar/> : '';
@@ -59,7 +58,7 @@ class App extends Component {
 
         <div className="container-scroller">
           <ReactNotification />
-          { navbarComponent }
+          {navbarComponent }
           <div className="container-fluid page-body-wrapper">
             { sidebarComponent }
             <div className="main-panel">

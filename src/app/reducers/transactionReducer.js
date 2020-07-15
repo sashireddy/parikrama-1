@@ -5,8 +5,10 @@ let initialState = {
     startDate: null,
     endDate: null,
     email: "",
-    branch: "MxoS2K8t8jT7MATniD4x",
-    loading: false
+    branch: "",
+    loading: false,
+    nextPageToken: null,
+    prevPageToken: null
 };
 
 export default function(state = initialState, action){
@@ -18,7 +20,6 @@ export default function(state = initialState, action){
             }
 
         case GET_TRANSACTIONS:
-            let data = action.payload.data;
             return {
                 ...state,
                 ...action.payload,

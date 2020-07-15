@@ -1,5 +1,7 @@
 import React from 'react';
 import {Button} from 'react-bootstrap';
+import {MODULE_INVENTORY} from "../../utils/accessControl";
+import isAllowed, {ACTION_VIEW, ACTION_MANAGE} from "../../utils/accessControl";
 
 export default props => {
   const category = props.record;
@@ -17,15 +19,21 @@ export default props => {
         </td>
         <td>
           <nav>
-            <Button className="btn btn-primary" onClick={() => props.openActionMaodal(category, "view")}>
-              View
-            </Button>
-            <Button onClick={() => props.openActionMaodal(category, "edit")} className="btn btn-primary ml-2">
-              Edit
-            </Button>
-            <Button onClick={() => props.openActionMaodal(category, "del")} className="btn btn-danger ml-2">
-              Delete
-            </Button>
+              {isAllowed(ACTION_VIEW, MODULE_INVENTORY) &&
+                  <Button className="btn btn-primary" onClick={() => props.openActionMaodal(category, "view")}>
+                      View
+                  </Button>
+              }
+              {isAllowed(ACTION_MANAGE, MODULE_INVENTORY) &&
+                  <Button onClick={() => props.openActionMaodal(category, "edit")} className="btn btn-primary ml-2">
+                      Edit
+                  </Button>
+              }
+              {isAllowed(ACTION_MANAGE, MODULE_INVENTORY) &&
+                  <Button onClick={() => props.openActionMaodal(category, "del")} className="btn btn-danger ml-2">
+                      Delete
+                  </Button>
+              }
           </nav>
         </td>
     </tr>

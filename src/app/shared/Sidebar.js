@@ -2,6 +2,16 @@ import React, { Component } from 'react';
 import { Link, withRouter } from 'react-router-dom';
 // import { Collapse } from 'react-bootstrap';
 import { Dropdown } from 'react-bootstrap';
+import isAllowed from "../utils/accessControl";
+import {ACTION_VIEW } from "../utils/accessControl";
+import {
+        MODULE_BRANCH,
+        MODULE_USER,
+        MODULE_ROLE,
+        //MODULE_TRANSFER,
+        MODULE_INVENTORY,
+        //MODULE_AUDITLOG,
+        MODULE_TRANSACTION } from "../utils/accessControl";
 
 class Sidebar extends Component {
   state = {};
@@ -107,48 +117,70 @@ class Sidebar extends Component {
               <span className="menu-title">Dashboard</span>
             </Link>
           </li>
+          {isAllowed(ACTION_VIEW, MODULE_INVENTORY) &&
           <li className={ this.isPathActive('/categories') ? 'nav-item active' : 'nav-item' }>
             <Link className="nav-link" to="/categories">
               <i className="mdi mdi-table-large menu-icon"></i>
               <span className="menu-title">Categories</span>
             </Link>
           </li>
+          }
+          {isAllowed(ACTION_VIEW, MODULE_BRANCH) &&
           <li className={ this.isPathActive('/branches') ? 'nav-item active' : 'nav-item' }>
             <Link className="nav-link" to="/branches">
               <i className="mdi mdi-table-large menu-icon"></i>
               <span className="menu-title">Branches</span>
             </Link>
           </li>
+          }
+          {isAllowed(ACTION_VIEW, MODULE_ROLE) &&
           <li className={ this.isPathActive('/roles') ? 'nav-item active' : 'nav-item' }>
             <Link className="nav-link" to="/roles">
               <i className="mdi mdi-table-large menu-icon"></i>
               <span className="menu-title">Roles</span>
             </Link>
           </li>
+          }
+          {isAllowed(ACTION_VIEW, MODULE_INVENTORY) &&
           <li className={ this.isPathActive('/inventory') ? 'nav-item active' : 'nav-item' }>
             <Link className="nav-link" to="/inventory">
               <i className="mdi mdi-table-large menu-icon"></i>
               <span className="menu-title">Inventory</span>
             </Link>
           </li>
+          }
+          {isAllowed(ACTION_VIEW, MODULE_USER) &&
           <li className={ this.isPathActive('/users') ? 'nav-item active' : 'nav-item' }>
             <Link className="nav-link" to="/users">
               <i className="mdi mdi-table-large menu-icon"></i>
               <span className="menu-title">Users</span>
             </Link>
           </li>
-          <li className={ this.isPathActive('/products') ? 'nav-item active' : 'nav-item' }>
-            <Link className="nav-link" to="/products">
+          }
+          {isAllowed(ACTION_VIEW, MODULE_INVENTORY) &&
+          <li className={ this.isPathActive('/units') ? 'nav-item active' : 'nav-item' }>
+            <Link className="nav-link" to="/units">
               <i className="mdi mdi-table-large menu-icon"></i>
-              <span className="menu-title">Products</span>
+              <span className="menu-title">Units</span>
             </Link>
           </li>
-          <li className={ this.isPathActive('/transactions') ? 'nav-item active' : 'nav-item' }>
-            <Link className="nav-link" to="/transactions">
-              <i className="mdi mdi-table-large menu-icon"></i>
-              <span className="menu-title">Transactions</span>
-            </Link>
-          </li>
+          }
+          {isAllowed(ACTION_VIEW, MODULE_INVENTORY) &&
+            <li className={ this.isPathActive('/products') ? 'nav-item active' : 'nav-item' }>
+              <Link className="nav-link" to="/products">
+                <i className="mdi mdi-table-large menu-icon"></i>
+                <span className="menu-title">Products</span>
+              </Link>
+            </li>
+          }
+          {isAllowed(ACTION_VIEW, MODULE_TRANSACTION) &&
+            <li className={ this.isPathActive('/transactions') ? 'nav-item active' : 'nav-item' }>
+              <Link className="nav-link" to="/transactions">
+                <i className="mdi mdi-table-large menu-icon"></i>
+                <span className="menu-title">Transactions</span>
+              </Link>
+            </li>
+          }
         </ul>
       </nav>
     );

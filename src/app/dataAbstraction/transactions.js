@@ -27,12 +27,11 @@ const apiResponse = {
 // State params passed which will be used to pass to live api or
 // for static data to get proper data as per the params
 export const getTransactionsData = params => {
-    console.log("Transactions API calling ", params);
     return new Promise(async (resolve, reject) => {
         if(cachedData === null){
             // Logic can be applied to generate URL using params
             const url = formTransactionUrl(params);
-            console.log("Transaction API calling...", url);
+            // console.log("Transaction API calling...", url);
             try {
                 const res = await axios.get(url);
                 apiResponse.flashMessage = {
@@ -47,6 +46,8 @@ export const getTransactionsData = params => {
                     apiResponse.endDate = params.endDate;
                     apiResponse.email = params.email;
                     apiResponse.branch = params.branch;
+                    apiResponse.nextPageToken = res.data.nextPageToken;
+                    apiResponse.prevPageToken = res.data.prevPageToken;
                 }
             } catch(err){
                 let response = {
@@ -86,7 +87,12 @@ const getCurrentStateData = params => {
 
 const formTransactionUrl = params => {
     let url = `${apiConfig.GET_TRANSACTIONS}/${params.branch}`;
-    let urlParams = {}
+    let urlParams = {};
+    if(params.dir){
+        params.dir === 'next'
+            ? urlParams.nextPageToken = params.nextPageToken
+            : urlParams.prevPageToken = params.prevPageToken
+    }
     if(params.startDate && params.endDate){
         urlParams.fromDate = dateFormat(params.startDate, "yyyy-mm-dd");
         urlParams.toDate = dateFormat(params.endDate, "yyyy-mm-dd");

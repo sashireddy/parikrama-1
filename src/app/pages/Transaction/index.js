@@ -8,6 +8,7 @@ import TransactionListItem from "./TransactionListItem";
 import Spinner from "../../shared/Spinner";
 import transactionActions from "../../actions/transactionActions";
 import {getSelectedItem, dropDownResponseFromMap} from '../../utils/dropDownUtils';
+import {ROLE_BRANCH} from "../../utils/accessControl";
 
 
 class Transaction extends React.Component {
@@ -22,12 +23,15 @@ class Transaction extends React.Component {
         }
     }
 
-    loadData() {
+    loadData = dir => {
         const params = {
             branch: this.state.branch,
             startDate: this.state.startDate,
             endDate: this.state.endDate,
-            email: this.state.email
+            email: this.state.email,
+            nextPageToken: this.props.nextPageToken,
+            prevPageToken: this.props.prevPageToken,
+            dir: dir
         };
         this.props.getTransactions(params);
     }
@@ -55,9 +59,13 @@ class Transaction extends React.Component {
                 startDate: this.props.startDate,
                 endDate: this.props.endDate,
                 email: this.props.email,
-                branch: this.props.branch
+                branch: this.props.branch ? this.props.branch : this.props.userBranch
             },
-            this.loadData
+            () => {
+                if(this.props.data.length === 0){
+                    this.loadData()
+                }
+            }
         );
     }
 
@@ -82,7 +90,7 @@ class Transaction extends React.Component {
             startDate: null,
             endDate: null,
             email: "",
-            branch: this.props.branch
+            branch: this.props.userBranch
         });
     }
 
@@ -139,15 +147,18 @@ class Transaction extends React.Component {
                                                 startDate={this.state.startDate}
                                                 endDate={this.state.endDate}
                                                 minDate={this.state.startDate}
+                                                maxDate={new Date()}
                                                 className="form-control"
                                             />
                                         </Form.Group>
-                                        <Form.Group className="select-box-fix">
-                                            <Form.Label>Branch</Form.Label>
-                                            <Select className="basic-single" classNamePrefix="select" value={getSelectedItem(this.props.branchDropDownArr, this.state.branch)}
-                                                options={this.props.branchDropDownArr} onChange={(e)=>{this.handleDropDown('branch', e)}}
-                                                isSearchable placeholder="Select Branch" styles={customStyles}/>
-                                        </Form.Group>
+                                        {this.props.role !== ROLE_BRANCH &&
+                                            <Form.Group className="select-box-fix">
+                                                <Form.Label>Branch</Form.Label>
+                                                <Select className="basic-single" classNamePrefix="select" value={getSelectedItem(this.props.branchDropDownArr, this.state.branch)}
+                                                    options={this.props.branchDropDownArr} onChange={(e)=>{this.handleDropDown('branch', e)}}
+                                                    isSearchable placeholder="Select Branch" styles={customStyles}/>
+                                            </Form.Group>
+                                        }
                                         <Form.Group>
                                             <Form.Label>Email</Form.Label>
                                             <Form.Control type="text" className="form-control" name="email" placeholder="User Email" value={this.state.email} onChange={this.handleChange}/>
@@ -160,10 +171,13 @@ class Transaction extends React.Component {
                                 {this.state.errorMsg.trim() ? <p className="text-warning">{this.state.errorMsg}</p> : null}
                                 {this.props.data.length ?
                                     <ul className="timeline">
-                                        {this.props.data.map(txn => <TransactionListItem txn={txn} key={txn.transactionId} />)}
+                                        {this.props.data.map(txn => <TransactionListItem txn={txn} key={txn.id} />)}
                                     </ul>
                                 : <p className="text-center text-info">No Transactions logs found, try changing the filter.</p> }
-
+                                <div className="text-center">
+                                    {<button className="btn btn-primary active mr-4" disabled={!this.props.prevPageToken} onClick={() => this.loadData("prev")}><i className="mr-1 fa fa-chevron-left"></i>Previous</button>}
+                                    {<button className="btn btn-primary active" disabled={!this.props.nextPageToken} onClick={() => this.loadData("next")}>Next <i className="ml-1 fa fa-chevron-right"></i></button>}
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -176,7 +190,9 @@ const mapStateToProps = state => {
     const branchDropDownArr = dropDownResponseFromMap(state.BRANCHES.allRecords);
     return {
         branchDropDownArr,
-        ...state["TRANSACTION"]
+        ...state["TRANSACTION"],
+        role: state.USER.loggedInUser.role,
+        userBranch: state.USER.loggedInUser.branch
     }
 };
 

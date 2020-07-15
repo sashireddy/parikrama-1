@@ -7,6 +7,8 @@ import AddProduct from './AddProduct'
 import ProductListItem from './ProductListItem'
 import Skeleton from '../CrudSkeleton/index'
 import ProductActions from '../../actions/productActions'
+import {MODULE_INVENTORY} from "../../utils/accessControl";
+
 const mapStateToProps = state => ({
     ...state["PRODUCTS"],
 });
@@ -53,11 +55,12 @@ class Products extends React.Component {
                 }
             ]
         return (
-            <ProductSkeleton 
+            <ProductSkeleton
              content={{pageTitle:'Product'}} AddModal={AddProduct}
              EditModal={EditProduct} ViewModal={ViewProduct} DeleteModal={DeleteProduct}
              tableRowRenderFunc ={ProductListItem}
              headerArr = {headerArr} getTitle={getTitle}
+             moduleName={MODULE_INVENTORY}
             />
         )
     }

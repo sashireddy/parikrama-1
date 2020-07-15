@@ -1,5 +1,5 @@
 import {addNotification} from "./notification";
-import { GET_TRANSACTIONS, TRANSACTION_LOADING, TRANSACTION_LOAD_ERROR } from './types';
+import { GET_TRANSACTIONS, TRANSACTION_LOADING } from './types';
 import {getTransactionsData} from "../dataAbstraction/transactions";
 
 const transactionLoading = () => {

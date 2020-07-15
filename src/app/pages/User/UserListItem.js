@@ -1,6 +1,8 @@
 import React from 'react';
 import {Button} from 'react-bootstrap';
 import {getBranch, getRole} from '../../utils/dataUtils';
+import {MODULE_USER} from "../../utils/accessControl";
+import isAllowed, {ACTION_VIEW, ACTION_MANAGE} from "../../utils/accessControl";
 
 const UserListItem = props => {
     let {record} = props;
@@ -20,15 +22,21 @@ const UserListItem = props => {
 
             <td>
                 <nav>
-                <Button className="btn btn-primary" onClick={() => props.openActionMaodal(record, "view")}>
-                    View
-                </Button>
-                <Button onClick={() => props.openActionMaodal(record, "edit")} className="btn btn-primary ml-2">
-                    Edit
-                </Button>
-                <Button onClick={() => props.openActionMaodal(record, "del")} className="btn btn-danger ml-2">
-                    Delete
-                </Button>
+                    {isAllowed(ACTION_VIEW, MODULE_USER) &&
+                        <Button className="btn btn-primary" onClick={() => props.openActionMaodal(record, "view")}>
+                            View
+                        </Button>
+                    }
+                    {isAllowed(ACTION_MANAGE, MODULE_USER) &&
+                        <Button onClick={() => props.openActionMaodal(record, "edit")} className="btn btn-primary ml-2">
+                            Edit
+                        </Button>
+                    }
+                    {isAllowed(ACTION_MANAGE, MODULE_USER) &&
+                        <Button onClick={() => props.openActionMaodal(record, "del")} className="btn btn-danger ml-2">
+                            Delete
+                        </Button>
+                    }
                 </nav>
             </td>
         </tr>
