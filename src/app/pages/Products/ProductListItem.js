@@ -3,7 +3,7 @@ import {Button} from 'react-bootstrap';
 import {connect} from 'react-redux';
 import {getCategory,getUnit} from '../../utils/dataUtils';
 import {MODULE_INVENTORY} from "../../utils/accessControl";
-import isAllowed, {ACTION_VIEW, ACTION_MANAGE} from "../../utils/accessControl";
+import isAllowed, {ACTION_VIEW, ACTION_MANAGE, ACTION_DELETE} from "../../utils/accessControl";
 
 const mapStateToProps = state => ({
   userInfo:state['USER'].loggedInUser,
@@ -32,7 +32,7 @@ class RowRender extends React.Component {
                     Edit
                 </Button>
             }
-            {isAllowed(ACTION_MANAGE, MODULE_INVENTORY) &&
+            {isAllowed(ACTION_DELETE, MODULE_INVENTORY) &&
                 <Button onClick={() => this.props.openActionMaodal(this.props.record, "del")} className="btn btn-danger ml-2">
                     Delete
                 </Button>

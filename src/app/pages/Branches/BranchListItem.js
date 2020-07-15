@@ -1,7 +1,7 @@
 import React from 'react';
 import {Button} from 'react-bootstrap';
 import {MODULE_BRANCH} from "../../utils/accessControl";
-import isAllowed, {ACTION_VIEW, ACTION_MANAGE} from "../../utils/accessControl";
+import isAllowed, {ACTION_VIEW, ACTION_MANAGE, ACTION_DELETE} from "../../utils/accessControl";
 
 export default props => {
   const address = (address) => {
@@ -33,7 +33,7 @@ export default props => {
                       Edit
                   </Button>
               }
-              {isAllowed(ACTION_MANAGE, MODULE_BRANCH) &&
+              {isAllowed(ACTION_DELETE, MODULE_BRANCH) &&
                   <Button onClick={() => props.openActionMaodal(props.record, "del")} className="btn btn-danger ml-2">
                       Delete
                   </Button>

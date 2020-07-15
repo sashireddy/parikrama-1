@@ -1,7 +1,7 @@
 import React from 'react';
 import {Button} from 'react-bootstrap';
 import {MODULE_INVENTORY} from "../../utils/accessControl";
-import isAllowed, {ACTION_VIEW, ACTION_MANAGE} from "../../utils/accessControl";
+import isAllowed, {ACTION_VIEW, ACTION_MANAGE, ACTION_DELETE} from "../../utils/accessControl";
 
 export default props => {
   const category = props.record;
@@ -29,7 +29,7 @@ export default props => {
                       Edit
                   </Button>
               }
-              {isAllowed(ACTION_MANAGE, MODULE_INVENTORY) &&
+              {isAllowed(ACTION_DELETE, MODULE_INVENTORY) &&
                   <Button onClick={() => props.openActionMaodal(category, "del")} className="btn btn-danger ml-2">
                       Delete
                   </Button>
