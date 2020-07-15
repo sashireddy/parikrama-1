@@ -29,7 +29,6 @@ class PendingTransactions extends React.Component {
                     <div className="card-body">
                         <Row>
                             <Col><h3>Transaction Requests by other Branches</h3></Col>
-                            <Col className="justify-content-end"><Button onClick={()=>this.setState({showAddModal:true})}>Raise Transaction</Button></Col>
                         </Row>
                         <Table>
                             <thead>
@@ -60,9 +59,9 @@ class PendingTransactions extends React.Component {
                 </div>
             </div>
             </Row>
-            {/* <Row>
-                {this.state.showAddModal && <RaiseTransactionView products={this.props.products} branches={this.props.branches} raiseRequest = {this.props.raiseRequest} closeModal={()=>this.setState({showAddModal:false})}/>}
-            </Row> */}
+            <Row>
+                {this.state.showAddModal && <ApproveOrRejectView products={this.props.products} branches={this.props.branches} raiseRequest = {this.props.raiseRequest} closeModal={()=>this.setState({showAddModal:false})}/>}
+            </Row>
             
         </>
         )
@@ -169,9 +168,11 @@ class PendingTransactions extends React.Component {
 // }
 // }
 
-const ApproveOrRejectView = props => {
+
+class ApproveOrRejectView extends React.Component {
+    render(){
     return (
-        <Modal>
+        <Modal show={this.props.show}>
         <form className="forms-sample" onSubmit={this.onSubmit} >
            <div className="pl-3 pr-3">
                <Form.Group>
@@ -196,6 +197,7 @@ const ApproveOrRejectView = props => {
        </form>
    </Modal>
     )
+}
 }
 
 export default connect(state=>({

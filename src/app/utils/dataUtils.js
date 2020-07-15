@@ -37,3 +37,7 @@ export const getBranch = branchId => {
 export const getRole = roleId => {
     return store.getState()['ROLE'].allRecords[roleId];
 }
+
+export const isAdmin = () => {
+    return true
+}

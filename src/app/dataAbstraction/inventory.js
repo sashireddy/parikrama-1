@@ -1,7 +1,7 @@
 import config from "../constants/config";
 import axios from 'axios';
 import {handleResponse} from './util'
-import {getLoggedInUserInfo,getProduct,getBranchInfo,getUnit,getCategory} from '../utils/dataUtils'
+import {getProduct,getUnit,getCategory} from '../utils/dataUtils'
 // import inventory from "../pages/inventory";
 import {arrayToCsvContent,download} from '../utils/csvUtils'
 const pageConfig = config.API.INVENTORY;
@@ -66,6 +66,7 @@ export const createTransaction = ({type,...otherParams}) => {
             let url = pageConfig[type]
             let queryParams = {}
             if(type === "RAISE_REQUEST"){
+                //raise request from branch to head office
                 queryParams = {
                     "fromBranch": otherParams.fromBranch,
 	                "toBranch": otherParams.toBranch, //always headoffice
@@ -77,7 +78,21 @@ export const createTransaction = ({type,...otherParams}) => {
                     "operationalQuantity": parseInt(otherParams.operationalQuantity),
                     "note": otherParams.note
                 }
-            }else {
+            }else if(type === "TransferOperation"){
+                // move product from one branch to other
+                queryParams = {
+                    "fromBranch": otherParams.fromBranch,
+	                "toBranch": otherParams.toBranch, //always headoffice
+                	"fromBranchName": otherParams.fromBranchName,
+	                "toBranchName": otherParams.toBranchName,
+                    "branch": otherParams.fromBranch,
+                    "productName":otherParams.productName,
+                    "productId": otherParams.product,
+                    "operationalQuantity": parseInt(otherParams.operationalQuantity),
+                    "note": otherParams.note
+                }
+            }else{
+                // add locally or disburse locally
                 queryParams = {
                     "branch": otherParams.fromBranch,
                     "productName":otherParams.productName,
@@ -87,43 +102,23 @@ export const createTransaction = ({type,...otherParams}) => {
                 }
             }
             const [,err]= handleResponse(await axios.post(url,queryParams))
-            if(err){ reject(err)}
+            if(err){ return reject(err)}
             if(pageConfig.CACHING){
                 if(type==="ISSUE_PRODUCT"){
-                    // otherParams.operationalQuantity = params.oper
-                    cachedData = cachedData.map(prod => {
-                        if(prod.product === otherParams.product){
-                            prod.availableQuantity = prod.availableQuantity - otherParams.operationalQuantity
-                            return prod
-                        }else {
-                            return prod
-                        }
-                    })
+                    updateQuantity(parseInt(otherParams.operationalQuantity),otherParams.fromBranch,otherParams.product,"sub")
                 }else if(type === "ADD_PRODUCT"){
-                    const product = getProduct(otherParams.product)
-                    let rec
-                    cachedData = cachedData.map(prod => {
-                        if(prod.product === otherParams.product){
-                            rec = prod
-                            prod.availableQuantity = parseInt(prod.availableQuantity) + parseInt(otherParams.operationalQuantity)
-                        }
-                        return prod
-                    })
-                    if(!rec){
-                        const record = {
-                            availableQuantity:otherParams.operationalQuantity,
-                            product:otherParams.product,
-                            threshold:product.threshold[otherParams.fromBranch]
-                        }
-                        cachedData = [...cachedData, record]
-                    }
+                    updateQuantity(parseInt(otherParams.operationalQuantity),otherParams.fromBranch,otherParams.product,"add")
+                }else if ( type === "TransferOperation") {
+                    updateQuantity(parseInt(otherParams.operationalQuantity),otherParams.toBranch,otherParams.product,"add")
+                    updateQuantity(parseInt(otherParams.operationalQuantity),otherParams.fromBranch,otherParams.product,"sub")
                 }
             }
             const resParams = {
                 currentPage: defaultConfig.currentPage,
                 pageLimit: defaultConfig.pageLimit,
                 search: defaultConfig.search,
-                sort: defaultConfig.sort
+                sort: defaultConfig.sort,
+                branch : otherParams.fromBranch
             }
             // Need to Add the actual data to the source
             // Get the data back from source for the above params
@@ -135,6 +130,26 @@ export const createTransaction = ({type,...otherParams}) => {
     })
 }
 
+const changeValue = (type,quantity,change) => {
+    if(type === "add"){
+        return parseInt(quantity) + parseInt(change)
+    }else {
+        return parseInt(quantity) - parseInt(change)
+    }
+}
+
+const updateQuantity = (quantity,branch,product,type) => {
+    if(!summaryCache[product][branch]){
+        makeEntry(product,branch)
+    }
+    cache[branch].map(entry => {
+        if(product === entry.product){
+            entry.availableQuantity = changeValue(type,entry.availableQuantity,quantity )
+        }
+        return entry
+    })
+    summaryCache[product][branch].availableQuantity = changeValue(type,summaryCache[product][branch].availableQuantity,quantity )
+}
 
 const parseInventoryResp = (inventory) => {
     cache = {}
@@ -142,16 +157,14 @@ const parseInventoryResp = (inventory) => {
     inventory.inventories[0].forEach(branchInventory => {
         cache[branchInventory.branch] = branchInventory.inventory
         branchInventory.inventory.forEach(product => {
-            let newProductInfo = summaryCache[product.id] || {}
+            let newProductInfo = summaryCache[product.product] || {}
             newProductInfo[branchInventory.branch] = {
                 threshold : product.threshold,
                 availableQuantity : product.availableQuantity
             }
-            summaryCache[product.id] = newProductInfo
+            summaryCache[product.product] = newProductInfo
         })
     })
-    console.log(JSON.stringify(summaryCache))
-    console.log(JSON.stringify(cache))
 }
 
 const getThreshold = (productId,branchId) => 10
@@ -162,7 +175,7 @@ const makeEntry = (productId,branchId) => {
     cache[branchId].push({
         threshold : getThreshold(productId,branchId),
         availableQuantity : 0,
-        id: productId
+        product: productId
     })
     summaryCache[productId][branchId] = {
         threshold : getThreshold(productId,branchId),
@@ -330,7 +343,7 @@ const getCurrentStateData = params => {
     output.search = params.search;
     output.sort = params.sort;
     output.currentPage = currentPage;
-    // output.allRecords = cachedData
+    output.summaryCache = summaryCache
 }
 
 // Validate current page, Might change due to delete, search operation

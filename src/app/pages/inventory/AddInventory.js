@@ -11,8 +11,9 @@ const mapStateToProps = state => ({
     branches : state['BRANCHES'],
 })
 
-const LocalRequest = "LocalRequest"
-const TransferRequest = "TransferRequest"
+const LocalRequest = "ADD_PRODUCT"
+const TransferRequest = "RAISE_REQUEST"
+const Adjustment = "ADJUSTMENT"
 class AddCategory extends React.Component {
     
     constructor(){
@@ -24,7 +25,6 @@ class AddCategory extends React.Component {
             fromBranchName: branchInfo.name,
            type:"ADD_PRODUCT",
            operationalQuantity : 0,
-           localRequest: true,
         }
     }
 
@@ -78,19 +78,17 @@ class AddCategory extends React.Component {
     }
 
     onStatusChange = label => {
-        if(label === LocalRequest){
+        // if(label === LocalRequest){
             this.setState({
                 ...this.state,
-                type:"ADD_PRODUCT",
-                localRequest: true,
+                type:label,
             })
-        }else{
-            this.setState({
-                ...this.state,
-                type:"RAISE_REQUEST",
-                localRequest: false,
-            })
-        }
+        // }else{
+        //     this.setState({
+        //         ...this.state,
+        //         type:TransferRequest,
+        //     })
+        // }
     }
 
 
@@ -103,15 +101,22 @@ class AddCategory extends React.Component {
                 <div className="pl-3 pr-3">
                     <Form.Group>
                         <label htmlFor="isHeadOffice">Request Type</label>
-                        <Form.Check type="radio" id={LocalRequest} name={LocalRequest} value={LocalRequest} label="Add Inventory Locally" checked={this.state.localRequest} onChange={e=>this.onStatusChange(LocalRequest)} />
-                        <Form.Check type="radio" id={TransferRequest} name={TransferRequest} value={TransferRequest} label="Request from Head Office" checked={!this.state.localRequest} onChange={e=>this.onStatusChange(TransferRequest)} />
+                        <Form.Check type="radio" id={LocalRequest} name={LocalRequest} value={LocalRequest} 
+                            label="Add Inventory Locally" checked={this.state.type === LocalRequest}
+                            onChange={e=>this.onStatusChange(LocalRequest)} />
+                        <Form.Check type="radio" id={TransferRequest} name={TransferRequest} value={TransferRequest} 
+                            label="Request from Head Office" checked={this.state.type===TransferRequest} 
+                            onChange={e=>this.onStatusChange(TransferRequest)} />
+                        <Form.Check type="radio" id={Adjustment} name={Adjustment} value={Adjustment} 
+                            label="Add Adjustment transaction" checked={this.state.type===Adjustment} 
+                            onChange={e=>this.onStatusChange(Adjustment)} />
                     </Form.Group>
                     <Form.Group>
                         <label htmlFor="exampleInputEmail1">Product</label>
                         <Select className="basic-single" classNamePrefix="select"
                             isClearable={true} isSearchable={true}  options={productDropdownArr} onChange={(e)=>{this.handleProductDropDown(e)}}/>
                     </Form.Group>
-                    {!this.state.localRequest &&<Form.Group>
+                    {this.state.type === TransferRequest &&<Form.Group>
                         <label htmlFor="exampleInputEmail1">From Branch(Head Offices)</label>
                         <Select className="basic-single" classNamePrefix="select"
                             isClearable={true} isSearchable={true}  options={branchDropdownArr} onChange={(e)=>{this.handleBranchDropDown(e)}}/>

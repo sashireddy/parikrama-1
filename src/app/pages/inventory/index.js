@@ -114,7 +114,7 @@ class Inventory extends React.Component {
                         <label className="badge badge-warning">{props.record.availableQuantity}  {getUnit(product.unit).name}</label>
                         }   
                     </td>
-                    { this.state.branch === getLoggedInUserInfo().branch && <td><Button onClick={() =>{props.openActionMaodal(props.record,'view')}}>Disburse Inventory</Button></td>}
+                    <td>{ this.state.branch === getLoggedInUserInfo().branch && <Button onClick={() =>{props.openActionMaodal(props.record,'view')}}>Disburse Inventory</Button>}</td>
                 </tr>
             )
         }    
