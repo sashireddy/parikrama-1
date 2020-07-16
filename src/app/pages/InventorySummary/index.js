@@ -1,63 +1,37 @@
-import React from "react";
-import {Link} from "react-router-dom";
-import {connect} from "react-redux";
-import DatePicker from "react-datepicker";
-import { Form } from "react-bootstrap";
+import React from 'react'
+import Skeleton from '../CrudSkeleton/index'
+import { connect } from 'react-redux'
+import {Form} from 'react-bootstrap'
+import DatePicker from "react-datepicker"
 import Select from 'react-select';
+import { Card } from 'react-bootstrap'
 import dateFormat from "dateformat";
-import inventoryActions from "../../actions/inventoryActions";
-import Pagination from "../../shared/Pagination";
 import {getSelectedItem, dropDownResponseFromMap} from '../../utils/dropDownUtils';
+import InventorySummaryAction from '../../actions/InventoryView'
 
 
-class Transaction extends React.Component {
-    constructor(){
+const customStyles = {
+    control: base => ({
+      ...base,
+      height: 45
+    })
+};
+
+class InventorySummary extends React.Component {
+
+    constructor(props){
         super()
         this.state = {
             branch: "MxoS2K8t8jT7MATniD4x",
             startDate: "",
             endDate: "",
-            error: false,
-            sort:{},
-            search: {},
-            currentPage: 1
+            email: "",
+            error: false
         }
     }
-
-    loadData() {
-        const params = {
-            branch: this.state.branch,
-            startDate: this.state.startDate ? dateFormat(this.state.startDate, "yyyy-mm-dd") : "",
-            endDate: this.state.endDate ? dateFormat(this.state.endDate, "yyyy-mm-dd") : "",
-        };
-        // this.props.getInventory(params);
-    }
-
-    setDate = (field, date) => {
-        this.setState({
-            [field]: date
-        });
-    }
-
-    handleDropDown = (field, evt) => {
-        this.setState({
-            [field]: evt ? evt.value : ""
-        });
-    }
-
-    handleChange = evt => {
-        this.setState({
-            [evt.target.name]: evt.target.value
-        });
-    }
-
-    componentDidMount(){
-        this.setState({
-            sort: this.props.sort,
-            search: this.props.search,
-            currentPage: this.props.currentPage
-        });
-        this.loadData();
+    getData = (crudParams) => {
+        console.log(crudParams)
+        this.props.loadData(crudParams)
     }
 
     onSubmit = evt => {
@@ -71,50 +45,79 @@ class Transaction extends React.Component {
             this.setState({error: true});
         }
     }
-    
-    onPageChanged = data => {
-        this.setState(
-            {currentPage: data.currentPage},
-            this.loadData
-        );
-    }
 
     render(){
+        const getTitle = (actionType) => {
+            switch (actionType) {
+                case "add":
+                    return "Add Branch";
+                case "view":
+                    return "View Branch";
+                case "edit":
+                    return "Edit Branch";
+                case "del":
+                    return "Delete Branch";
+                default:
+                    return "Manage Branch";
+            }
+        }
+        const headerArr = [
+                {
+                    value : 'Name',
+                    key : 'name',
+                    sortable : true,
+                    searchable: true
+                },{
+                    value : 'Category',
+                    key : 'category'
+                },{
+                    value : 'Threshold',
+                    key : 'threshold'
+                },{
+                    value : 'units',
+                    key : 'units'
+                },{
+                    value : 'Actions',
+                    key : 'actions'
+                }
+            ]
+        const EmptyRender = () => <></>
+        const tableRowRenderFunc = (props)=> {
+            return(
+            <tr>
+                <td>{props.record.name}</td>
+                <td>{props.record.category}</td>
+                <td>{props.record.product}</td>
+                <td>{props.record.addedQuantity}</td>
+            </tr>
+            )
+        }
+        console.log(this.props.stateData)
         return(
-            <div>
-                {/* <Spinner loading={this.props.loading} /> */}
-                <div className="page-header">
-                    <h3 className="page-title"> Inventory Reports </h3>
-                    <nav aria-label="breadcrumb">
-                        <ol className="breadcrumb">
-                            <li className="breadcrumb-item">
-                                <Link to="/">Inventory</Link>
-                            </li>
-                            <li className="breadcrumb-item active" aria-current="page">
-                                Inventory
-                            </li>
-                        </ol>
-                    </nav>
-                </div>
-
-                <div className="row">
-                    <div className="col-lg-12 grid-margin stretch-card">
-                        <div className="card">
-                            <div className="card-body">
-                                <Form className="custom-page-filter" onSubmit={this.onSubmit}>
-                                        <Form.Group>
-                                            <Form.Label>Date</Form.Label>
-                                            <DatePicker
-                                                dateFormat="yyyy-MM-dd"
-                                                selected={this.state.startDate}
-                                                onChange={date => this.setDate('startDate', date)}
-                                                // selectsStart
-                                                startDate={this.state.startDate}
-                                                // endDate={this.state.endDate}
-                                                // maxDate={this.state.endDate}
-                                                className="form-control"
-                                            />
-                                        </Form.Group>
+            <Skeleton 
+             content={{pageTitle:'Inventory Summary'}} AddModal={EmptyRender}
+             EditModal={EmptyRender} ViewModal={EmptyRender} DeleteModal={EmptyRender}
+             tableRowRenderFunc ={tableRowRenderFunc}
+             headerArr = {headerArr} getTitle={getTitle}
+             getData = {this.getData} {...this.props.stateData}
+             DontShowButon 
+            >
+                <Card>
+                    <Card.Body>
+                <Form className="custom-page-filter" onSubmit={this.onSubmit}>
+                    <Form.Group>
+                        <Form.Label>Date</Form.Label>
+                        <DatePicker
+                            dateFormat="yyyy-MM-dd"
+                            selected={this.state.startDate}
+                            onChange={date => this.setDate('startDate', date)}
+                            // selectsStart
+                            startDate={this.state.startDate}
+                            // endDate={this.state.endDate}
+                            // maxDate={this.state.endDate}
+                            className="form-control"
+                        />
+                    </Form.Group>
                                         {/* <Form.Group>
                                             <Form.Label>End Date</Form.Label>
                                             <DatePicker
@@ -128,53 +131,29 @@ class Transaction extends React.Component {
                                                 className="form-control"
                                             />
                                         </Form.Group> */}
-                                        <Form.Group className="select-box-fix">
-                                            <Form.Label>Branch</Form.Label>
-                                            <Select className="basic-single" classNamePrefix="select" value={getSelectedItem(this.props.branchDropDownArr, this.state.branch)}
-                                                options={this.props.branchDropDownArr} onChange={(e)=>{this.handleDropDown('branch', e)}}
-                                                isSearchable placeholder="Select Branch" styles={customStyles}/>
-                                        </Form.Group>
-                                        <Form.Group>
-                                            <input type="submit" value="Search" className="btn btn-primary"/>
-                                        </Form.Group>
-                                </Form>
-                                {this.state.error ? <p className="text-warning">Please select both start and end date</p> : null}
-                                {this.props.data.length ? (
-                                    <div className="mt-4">
-                                        <Pagination
-                                            totalRecords={this.props.totalRecords}
-                                            currentPage={this.props.currentPage}
-                                            pageLimit={this.props.pageLimit}
-                                            pageNeighbours={1}
-                                            onPageChanged={this.onPageChanged}
-                                        />
-                                    </div>
-                                ) : null}
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        );
+                    <Form.Group className="select-box-fix">
+                        <Form.Label>Branch</Form.Label>
+                        <Select className="basic-single" classNamePrefix="select" value={getSelectedItem(this.props.branchDropDownArr, this.state.branch)}
+                        options={this.props.branchDropDownArr} onChange={(e)=>{this.handleDropDown('branch', e)}}
+                        isSearchable placeholder="Select Branch" styles={customStyles}/>
+                    </Form.Group>
+                    <Form.Group>
+                        <input type="submit" value="Search" className="btn btn-primary"/>
+                    </Form.Group>
+                </Form>
+                {this.state.error ? <p className="text-warning">Please select both start and end date</p> : null}
+                                        
+                </Card.Body>
+            </Card>
+            </Skeleton>
+        )
     }
 }
-const mapStateToProps = state => {
-    const branchDropDownArr = dropDownResponseFromMap(state.BRANCHES.allRecords);
-    return {
-        branchDropDownArr,
-        ...state["TRANSACTION"]
-    }
-};
-
-const mapActionToProps = {
-    ...inventoryActions
-};
-
-const customStyles = {
-    control: base => ({
-      ...base,
-      height: 45
-    })
-};
-
-export default connect(mapStateToProps, mapActionToProps)(Transaction);
+const mapStateToProps = (state) => ({
+    branchDropDownArr : dropDownResponseFromMap(state.BRANCHES.allRecords),
+    stateData : state['INVENTORYSUMMARY']
+})
+const actionsToProps = {
+    loadData : InventorySummaryAction.getInventory
+}
+export default connect(mapStateToProps,actionsToProps)(InventorySummary)

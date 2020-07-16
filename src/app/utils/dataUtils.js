@@ -41,3 +41,6 @@ export const getRole = roleId => {
 export const isAdmin = () => {
     return true
 }
+export const getThreshold = (productId,branchId) => {
+    return store.getState()['PRODUCTS'].allRecords[productId][branchId];
+}

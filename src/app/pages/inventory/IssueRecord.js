@@ -95,16 +95,28 @@ class IssueProduct extends React.Component {
                             <h6>Current Stock: {this.props.record.availableQuantity}</h6> 
                         </Col>
                         <Col>
+                            <h6>Threshold : {this.props.record.threshold}</h6>
+                        </Col>
+                        <Col>
                             <h6>Stock left after transaction: {stockAfter}</h6>
                         </Col>
                     </Row>
-                    <Col>
+                    <Row>
+                        <Col>
+                            <h6>
+                                Product : {this.props.record.productName}
+                            </h6>
+                        </Col>
+                    </Row>
+                    <Row><Col>
                     <Form.Group>
                         <label htmlFor="exampleInputEmail1">Quantity</label>
                         <Form.Control required type="number" className="form-control" id="operationalQuantity" name="operationalQuantity" placeholder="" value={this.state.operationalQuantity} onChange={this.handleChange} />
                         <Form.Control.Feedback type="invalid">Please enter a valid quantity</Form.Control.Feedback>
                     </Form.Group>
                     </Col>
+                    </Row>
+                    <Row>
                     <Col>
                     <Form.Group>
                         <label htmlFor="">Note</label>
@@ -114,11 +126,14 @@ class IssueProduct extends React.Component {
                         <Form.Control.Feedback type="invalid">Please enter a note about the transaction</Form.Control.Feedback>
                     </Form.Group>
                     </Col>
+                    </Row>
                     { stockAfter < this.props.record.threshold && (
                     <Row>
+                        <Col>
                         <Alert variant={'danger'}>
                         your stock will fall below threshold after this transaction
                         </Alert>
+                        </Col>
                     </Row>
                     )}
                 </div>

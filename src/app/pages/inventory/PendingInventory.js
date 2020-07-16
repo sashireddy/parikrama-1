@@ -7,18 +7,42 @@ import Modal from '../../shared/Modal'
 import {getLoggedInUserInfo,getBranchInfo} from '../../utils/dataUtils'
 import InventoryActions from '../../actions/inventoryActions'
 import Spinner from "../../shared/Spinner";
-
+import Accept from './viewInventory'
+import dateFormat from "dateformat";
 class PendingTransactions extends React.Component {
     constructor(props){
         super(props)
         this.state = {
-            showAddModal: false
+            showModal: false,
+            selectedRecord : null
         }
     }
     componentDidMount(){
         this.props.loadPendingTransactions({branch:getLoggedInUserInfo().branch})
     }
+    updateRecordAndOpenModal = (record)=> {
+        this.setState({
+            selectedRecord : record,
+            showModal : true
+        })
+    }
+    closeModalAndDeleteRecord = () => {
+        this.setState({
+            showModal : false,
+            selectedRecord : null
+        })
+    }
    render(){
+       const rowRender = (request,idx)=>(
+            <tr key={idx}>
+                <td>{dateFormat(request.date, "yyyy-mm-dd") }</td>
+                <td>{request.user}</td>
+                <td>{request.fromBranchName}</td>
+                <td>{request.productName}</td>
+                <td>{request.operationalQuantity}</td>
+                <td>{request.note}</td>
+                <td><Row><Col><Button onClick={()=>this.updateRecordAndOpenModal(request)}>Respond</Button></Col></Row></td>
+            </tr>)
        let requests = this.props.inventory.pendingTransactions || []
         return (
         <>
@@ -33,26 +57,21 @@ class PendingTransactions extends React.Component {
                         <Table>
                             <thead>
                                 <tr>
+                                    <th>Date</th>
+                                    <th>User</th>
                                     <th>Branch</th>
-                                    <th>current Inventory</th>
-                                    <th>requested Inventory</th>
+                                    <th>Product</th>
+                                    <th>Requested Quantity</th>
                                     <th>note</th>
-                                    <th>After Transaction</th>
                                     <th>Actions</th>
                                 </tr>
                             </thead>
 
                             <tbody>
-                                {requests.map((request,idx)=>(
-                                    <tr key={idx}>
-                                        <td>{request.branch}</td>
-                                        <td>{request.currentInventory}</td>
-                                        <td>{request.requestedInventory}</td>
-                                        <td>{request.note}</td>
-                                        <td>{request.currentInventory - request.requestedInventory}</td>
-                                        <td><Row><Col><Button>Approve Request</Button></Col><Col><Button>Reject Request</Button></Col></Row></td>
-                                    </tr>)
-                                )}
+                                {requests.length ?
+                                            requests.map((record,idx)=> rowRender(record,idx))
+                                            : <tr><td colSpan={6} className="text-center">No Records found!</td></tr>
+                                }
                             </tbody>
                         </Table>
                     </div>
@@ -60,7 +79,13 @@ class PendingTransactions extends React.Component {
             </div>
             </Row>
             <Row>
-                {this.state.showAddModal && <ApproveOrRejectView products={this.props.products} branches={this.props.branches} raiseRequest = {this.props.raiseRequest} closeModal={()=>this.setState({showAddModal:false})}/>}
+                {this.state.showModal && <Accept 
+                    products={this.props.products} branches={this.props.branches} 
+                    inventory = {this.props.inventory}
+                    acceptOrRejectTransaction = {this.props.acceptOrRejectTransaction}
+                    closeModal={()=>this.setState({showModal:false})}
+                    record = {this.state.selectedRecord}
+                    />}
             </Row>
             
         </>
@@ -169,39 +194,42 @@ class PendingTransactions extends React.Component {
 // }
 
 
-class ApproveOrRejectView extends React.Component {
-    render(){
-    return (
-        <Modal show={this.props.show}>
-        <form className="forms-sample" onSubmit={this.onSubmit} >
-           <div className="pl-3 pr-3">
-               <Form.Group>
-                   <label htmlFor="exampleInputEmail1">Quantity</label>
-                   <Form.Control required type="number" className="form-control" id="operationalQuantity" name="operationalQuantity" placeholder="" value={this.state.operationalQuantity} onChange={this.handleChange} />
-                   <dd>{this.state.currentProduct && this.state.currentProduct.unit}</dd>
-                   <Form.Control.Feedback type="invalid">Please enter a valid quantity</Form.Control.Feedback>
-               </Form.Group>
-               <Form.Group>
-                   <label htmlFor="">Note</label>
-                   <Form.Control required type="text" id="Note" className="form-control" 
-                       name="note" placeholder="Add info about the transaction" value={this.state.note}
-                       onChange={this.handleNote} />
-                   <Form.Control.Feedback type="invalid">Please enter a note about the transaction</Form.Control.Feedback>
-               </Form.Group>
-               <hr className="modal-footer-ruler" />
-               <div className="text-right">
-                   <button type="button" className="btn btn-light mr-2" onClick={this.props.closeModal}>Cancel</button>
-                   <button type="submit" className="btn btn-primary">Add Inventory</button>
-               </div>
-           </div>
-       </form>
-   </Modal>
-    )
-}
-}
+// class ApproveOrRejectView extends React.Component {
+//     render(){
+//     return (
+//         <Modal show={this.props.show}>
+//         <form className="forms-sample" onSubmit={this.onSubmit} >
+//            <div className="pl-3 pr-3">
+//                <Form.Group>
+//                    <label htmlFor="exampleInputEmail1">Quantity</label>
+//                    <Form.Control required type="number" className="form-control" id="operationalQuantity" name="operationalQuantity" placeholder="" value={this.state.operationalQuantity} onChange={this.handleChange} />
+//                    <dd>{this.state.currentProduct && this.state.currentProduct.unit}</dd>
+//                    <Form.Control.Feedback type="invalid">Please enter a valid quantity</Form.Control.Feedback>
+//                </Form.Group>
+//                <Form.Group>
+//                    <label htmlFor="">Note</label>
+//                    <Form.Control required type="text" id="Note" className="form-control" 
+//                        name="note" placeholder="Add info about the transaction" value={this.state.note}
+//                        onChange={this.handleNote} />
+//                    <Form.Control.Feedback type="invalid">Please enter a note about the transaction</Form.Control.Feedback>
+//                </Form.Group>
+//                <hr className="modal-footer-ruler" />
+//                <div className="text-right">
+//                    <button type="button" className="btn btn-light mr-2" onClick={this.props.closeModal}>Cancel</button>
+//                    <button type="submit" className="btn btn-primary">Add Inventory</button>
+//                </div>
+//            </div>
+//        </form>
+//    </Modal>
+//     )
+// }
+// }
 
 export default connect(state=>({
      products: state['PRODUCTS'],
      branches : state['BRANCHES'],
      inventory : state['INVENTORY']
-    }),{loadPendingTransactions : InventoryActions.loadPendingTransactions})(PendingTransactions)
+    }),{
+        loadPendingTransactions : InventoryActions.loadPendingTransactions,
+        acceptOrRejectTransaction : InventoryActions.acceptOrRejectExtRequest
+    })(PendingTransactions)

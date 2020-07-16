@@ -40,9 +40,10 @@ export const getPendingTransactions = (params) => {
     return new Promise(async (resolve, reject) => {
         try {
             if(!pendingTransactions){
-                const [response,err]= handleResponse(await axios.get(pageConfig.PENDING_TRANSACTIONS+params.branch))
+                const [response,err]= handleResponse(await axios.get(pageConfig.PENDING_TRANSACTIONS+'R1vTnxSLWByLa7NocDDX'))
+                // const [response,err]= handleResponse(await axios.get(pageConfig.PENDING_TRANSACTIONS+params.branch))
                 pendingTransactions = response.data.pendingTransactions
-                if(err){ reject(err)}
+                if(err){return reject(err)}
             }
             resolve(pendingTransactions)
         }catch(err){
@@ -52,10 +53,8 @@ export const getPendingTransactions = (params) => {
 }
 
 export const respondToTransferRequest = async params => {
-    const [response , err ] = handleResponse(await axios.post(pageConfig.TRANSFER_REQUEST,params))
-    if(err){
-        throw new Error(err)
-    }
+    // const [, err ] = handleResponse(await axios.post(pageConfig.TRANSFER_REQUEST,params))
+    // if(err){ throw new Error(err) }
     pendingTransactions = pendingTransactions.filter(entry => entry.id === params.id)
     return pendingTransactions
 }
@@ -72,9 +71,8 @@ export const createTransaction = ({type,...otherParams}) => {
 	                "toBranch": otherParams.toBranch, //always headoffice
                 	"fromBranchName": otherParams.fromBranchName,
 	                "toBranchName": otherParams.toBranchName,
-                    "branch": otherParams.fromBranch,
                     "productName":otherParams.productName,
-                    "productId": otherParams.product,
+                    "product": otherParams.product,
                     "operationalQuantity": parseInt(otherParams.operationalQuantity),
                     "note": otherParams.note
                 }
