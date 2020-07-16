@@ -1,7 +1,15 @@
-import {initialState as stateTemplate} from './crudReducers';
 import { GET_TRANSACTIONS, TRANSACTION_LOADING } from '../actions/types';
 
-let initialState = {...stateTemplate}
+let initialState = {
+    data: [],
+    startDate: null,
+    endDate: null,
+    email: "",
+    branch: "",
+    loading: false,
+    nextPageToken: null,
+    prevPageToken: null
+};
 
 export default function(state = initialState, action){
     switch(action.type){
@@ -12,11 +20,9 @@ export default function(state = initialState, action){
             }
 
         case GET_TRANSACTIONS:
-            let data = state.data.concat(action.payload.data);
             return {
                 ...state,
                 ...action.payload,
-                data,
                 loading: false
             }
         default:

@@ -2,6 +2,16 @@ import React, { Component,Suspense, lazy } from 'react';
 import { Switch, Route, Redirect } from 'react-router-dom';
 
 import Spinner from '../app/shared/Spinner';
+import isAllowed, {ACTION_VIEW, ACTION_GENERATE} from "./utils/accessControl";
+import {
+        MODULE_BRANCH,
+        MODULE_USER,
+        MODULE_ROLE,
+        //MODULE_TRANSFER,
+        MODULE_INVENTORY,
+        //MODULE_AUDITLOG,
+        MODULE_TRANSACTION,
+        MODULE_REPORT } from "./utils/accessControl";
 
 const Dashboard = lazy(() => import('./dashboard/Dashboard'));
 
@@ -44,42 +54,30 @@ class AppRoutes extends Component {
       <Suspense fallback={<Spinner/>}>
         <Switch>
           <Route exact path="/dashboard" component={ Dashboard } />
+          {isAllowed(ACTION_VIEW, MODULE_ROLE) && <Route path="/roles" component={ Role } />}
+          {isAllowed(ACTION_VIEW, MODULE_USER) && <Route path="/users" component={ User } />}
+          {isAllowed(ACTION_VIEW, MODULE_INVENTORY) && <Route path="/units" component={ Unit } />}
+          {isAllowed(ACTION_VIEW, MODULE_INVENTORY) && <Route path="/categories" component={ Category } />}
+          {isAllowed(ACTION_VIEW, MODULE_INVENTORY) && <Route path="/products" component={ Products } />}
+          {isAllowed(ACTION_VIEW, MODULE_INVENTORY) && <Route path="/inventory/move" component={Move} />}
+          {isAllowed(ACTION_VIEW, MODULE_INVENTORY) && <Route path="/inventory" component={Inventory} />}
+          {isAllowed(ACTION_GENERATE, MODULE_REPORT) && <Route path="/reports" component ={ Reports } />}
+          {isAllowed(ACTION_VIEW, MODULE_TRANSACTION) && <Route path="/transactions" component ={ Transaction } />}
+          {isAllowed(ACTION_VIEW, MODULE_BRANCH) && <Route path="/branches/" component={ Branch } />}
 
           <Route path="/basic-ui/buttons" component={ Buttons } />
           <Route path="/basic-ui/dropdowns" component={ Dropdowns } />
           <Route path="/basic-ui/typography" component={ Typography } />
-
           <Route path="/form-Elements/basic-elements" component={ BasicElements } />
-
           <Route path="/tables/basic-table" component={ BasicTable } />
-          <Route path="/roles" component={ Role } />
-          <Route path="/users" component={ User } />
-          <Route path="/units" component={ Unit } />
-          <Route path="/inventoryReports" component={InventoryReports} />
-        {/* {user.perm[cate] === true && */}
-        {/* <> */}
-          <Route path="/categories" component={ Category } />
-          {/* <Route path="/category/:id" component={ ViewCategory } />  */}
-        {/* </> */}
-        {/* } */}
-          {/* <Route path="/users" component={ Skeleton } /> */}
-          <Route path="/icons/font-awesome" component={ FontAwesome } />
-
-          <Route path="/charts/chart-js" component={ ChartJs } />
-
-          <Route path="/branches/" component={ Branch } />
           <Route path="/user-pages/login-1" component={ Login } />
           <Route path="/user-pages/register-1" component={ Register1 } />
-
           <Route path="/user-pages/error-404" component={ Error404 } />
           <Route path="/user-pages/error-500" component={ Error500 } />
-
           <Route path="/user-pages/blank-page" component={ BlankPage } />
-          <Route path="/products" component={ Products } />
-          <Route path="/inventory/move" component={Move} />
-          <Route path="/inventory" component={Inventory} />
-          <Route path="/reports" component ={ Reports } />
-          <Route path="/transactions" component ={ Transaction } />
+          <Route path="/icons/font-awesome" component={ FontAwesome } />
+          <Route path="/charts/chart-js" component={ ChartJs } />
+
           <Redirect to="/dashboard" />
         </Switch>
       </Suspense>

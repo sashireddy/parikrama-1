@@ -2,6 +2,8 @@ import React,{ Component} from 'react';
 import {Button} from 'react-bootstrap';
 import {connect } from 'react-redux';
 import BranchActions from '../../actions/branchActions'
+import {MODULE_BRANCH} from "../../utils/accessControl";
+import isAllowed, {ACTION_VIEW, ACTION_MANAGE} from "../../utils/accessControl";
 
 const enableActionPayload = (record) => {
   record.isActive = true
@@ -30,15 +32,21 @@ class BranchListRender extends Component {
         <td>
           <nav className="text-center">
             {this.props.record.isActive && (<>
-            <Button className="btn btn-primary" onClick={() => this.props.openActionMaodal(this.props.record, "view")}>
-              View
-            </Button>
-            <Button onClick={() => this.props.openActionMaodal(this.props.record, "edit")} className="btn btn-primary ml-2">
-              Edit
-            </Button>
-            <Button onClick={() => this.props.openActionMaodal(this.props.record, "del")} className="btn btn-danger ml-2">
-              Disable
-            </Button>
+              {isAllowed(ACTION_VIEW, MODULE_BRANCH) &&
+                  <Button className="btn btn-primary" onClick={() => this.props.openActionMaodal(this.props.record, "view")}>
+                      View
+                  </Button>
+              }
+              {isAllowed(ACTION_MANAGE, MODULE_BRANCH) &&
+                  <Button onClick={() => this.props.openActionMaodal(this.props.record, "edit")} className="btn btn-primary ml-2">
+                      Edit
+                  </Button>
+              }
+              {isAllowed(ACTION_MANAGE, MODULE_BRANCH) &&
+                  <Button onClick={() => this.props.openActionMaodal(this.props.record, "del")} className="btn btn-danger ml-2">
+                      Delete
+                  </Button>
+              }
             </>)}
             {!this.props.record.isActive && (
               <>

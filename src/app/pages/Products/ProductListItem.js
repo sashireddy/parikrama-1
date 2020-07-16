@@ -5,6 +5,9 @@ import {getCategory,getUnit} from '../../utils/dataUtils'
 import {getActivePayload} from '../../utils/dataUtils'
 import ProductActions from '../../actions/productActions'
 import Store from '../../store'
+import {MODULE_INVENTORY} from "../../utils/accessControl";
+import isAllowed, {ACTION_VIEW, ACTION_MANAGE} from "../../utils/accessControl";
+
 const mapStateToProps = state => ({
   userInfo:state['USER'].loggedInUser,
   category : state['CATEGORY'].allCategories,
@@ -23,21 +26,28 @@ class RowRender extends React.Component {
         <td>
           <nav className="text-center">
           {this.props.record.isActive && (<>
-            <Button className="btn btn-primary" onClick={() => this.props.openActionMaodal(this.props.record, "view")}>
-              View
-            </Button>
-            <Button onClick={() => this.props.openActionMaodal(this.props.record, "edit")} className="btn btn-primary ml-2">
-              Edit
-            </Button>
-            <Button onClick={() => this.props.openActionMaodal(this.props.record, "del")} className="btn btn-danger ml-2">
-              Disable
-            </Button>
+            {isAllowed(ACTION_VIEW, MODULE_INVENTORY) &&
+                <Button className="btn btn-primary" onClick={() => this.props.openActionMaodal(this.props.record, "view")}>
+                    View
+                </Button>
+            }
+            {isAllowed(ACTION_MANAGE, MODULE_INVENTORY) &&
+                <Button onClick={() => this.props.openActionMaodal(this.props.record, "edit")} className="btn btn-primary ml-2">
+                    Edit
+                </Button>
+            }
+            {isAllowed(ACTION_MANAGE, MODULE_INVENTORY) &&
+                <Button onClick={() => this.props.openActionMaodal(this.props.record, "del")} className="btn btn-danger ml-2">
+                    Delete
+                </Button>
+            }
             </>)}
             {!this.props.record.isActive && (
               <>
                 <Button className="btn btn-primary" onClick={() => Store.dispatch(ProductActions.updateData(getActivePayload(this.props.record)))}>Enable</Button>
               </>
             )}
+
           </nav>
         </td>
     </tr>

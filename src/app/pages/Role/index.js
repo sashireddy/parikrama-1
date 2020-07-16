@@ -3,9 +3,6 @@ import Skeleton from '../CrudSkeleton/index'
 import RoleListItem from "./RoleListItem";
 import roleActions from "../../actions/roleActions";
 import ViewRole from "./ViewRole";
-import EditRole from "./EditRole";
-import AddRole from "./AddRole";
-import DeleteRole from "./DeleteRole";
 import {connect} from "react-redux";
 
 const mapStateToProps = state => ({
@@ -45,15 +42,12 @@ class Role extends React.Component {
                 },{
                     value : 'Status',
                     key : 'isActive'
-                },{
-                    value : 'Actions',
-                    key : 'actions'
                 }
             ]
 
         return (
-            <RoleSkeleton key="role" content={{pageTitle:'Role'}} AddModal={AddRole}
-             EditModal={EditRole} ViewModal={ViewRole} DeleteModal={DeleteRole}
+            <RoleSkeleton key="role" content={{pageTitle:'Role'}}
+             ViewModal={ViewRole}
              tableRowRenderFunc ={RoleListItem} pk="id"
              headerArr = {headerArr} getTitle={getTitle}/>
         )

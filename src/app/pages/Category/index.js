@@ -7,6 +7,7 @@ import EditCategory from "./EditCategory";
 import AddCategory from "./AddCategory";
 import DeleteCategory from "./DeleteCategory";
 import {connect} from "react-redux";
+import {MODULE_INVENTORY} from "../../utils/accessControl";
 
 const mapStateToProps = state => ({
     ...state['CATEGORY']
@@ -55,13 +56,8 @@ class Category extends React.Component {
         return (
             <CategorySkeleton content={{pageTitle:'Category'}} AddModal={AddCategory}
              EditModal={EditCategory} ViewModal={ViewCategory} DeleteModal={DeleteCategory}
-             tableRowRenderFunc ={CategoryListItem} pk="name"
-             headerArr = {headerArr} getTitle={getTitle}>
-                <div>
-                    <h4>
-
-                    </h4>
-                </div>
+             tableRowRenderFunc ={CategoryListItem} pk="id"
+             headerArr = {headerArr} getTitle={getTitle} moduleName={MODULE_INVENTORY}>
             </CategorySkeleton>
         )
     }

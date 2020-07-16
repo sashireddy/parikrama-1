@@ -3,6 +3,9 @@ import {Button} from 'react-bootstrap';
 import Store from '../../store'
 import CategoryActions from '../../actions/categoryActions'
 import {getActivePayload} from '../../utils/dataUtils'
+import {MODULE_INVENTORY} from "../../utils/accessControl";
+import isAllowed, {ACTION_VIEW, ACTION_MANAGE} from "../../utils/accessControl";
+
 export default props => {
   const category = props.record;
   return (
@@ -21,16 +24,24 @@ export default props => {
           <nav>
             {props.record.isActive && (
               <>
-            <Button className="btn btn-primary" onClick={() => props.openActionMaodal(category, "view")}>
-              View
-            </Button>
-            <Button onClick={() => props.openActionMaodal(category, "edit")} className="btn btn-primary ml-2">
-              Edit
-            </Button>
-            <Button onClick={() => props.openActionMaodal(category, "del")} className="btn btn-danger ml-2">
-              Delete
-            </Button></>)}
+              {isAllowed(ACTION_VIEW, MODULE_INVENTORY) &&
+                  <Button className="btn btn-primary" onClick={() => this.props.openActionMaodal(category, "view")}>
+                      View
+                  </Button>
+              }
+              {isAllowed(ACTION_MANAGE, MODULE_INVENTORY) &&
+                  <Button onClick={() => this.props.openActionMaodal(category, "edit")} className="btn btn-primary ml-2">
+                      Edit
+                  </Button>
+              }
+              {isAllowed(ACTION_MANAGE, MODULE_INVENTORY) &&
+                  <Button onClick={() => this.props.openActionMaodal(category, "del")} className="btn btn-danger ml-2">
+                      Delete
+                  </Button>
+              }
+           </>)}
             {!props.record.isActive && (<Button onClick={()=>Store.dispatch(CategoryActions.updateData(getActivePayload(props.record)))}>Activate</Button>)}
+
           </nav>
         </td>
     </tr>

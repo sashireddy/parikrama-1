@@ -4,31 +4,34 @@ import {connect} from "react-redux";
 import DatePicker from "react-datepicker";
 import { Form } from "react-bootstrap";
 import Select from 'react-select';
-import dateFormat from "dateformat";
 import TransactionListItem from "./TransactionListItem";
 import Spinner from "../../shared/Spinner";
 import transactionActions from "../../actions/transactionActions";
 import {getSelectedItem, dropDownResponseFromMap} from '../../utils/dropDownUtils';
+import {ROLE_BRANCH} from "../../utils/accessControl";
 
 
 class Transaction extends React.Component {
     constructor(){
         super()
         this.state = {
-            branch: "MxoS2K8t8jT7MATniD4x",
+            branch: "",
             startDate: "",
             endDate: "",
             email: "",
-            error: false
+            errorMsg: ""
         }
     }
 
-    loadData() {
+    loadData = dir => {
         const params = {
             branch: this.state.branch,
-            startDate: this.state.startDate ? dateFormat(this.state.startDate, "yyyy-mm-dd") : "",
-            endDate: this.state.endDate ? dateFormat(this.state.endDate, "yyyy-mm-dd") : "",
-            email: this.state.email
+            startDate: this.state.startDate,
+            endDate: this.state.endDate,
+            email: this.state.email,
+            nextPageToken: this.props.nextPageToken,
+            prevPageToken: this.props.prevPageToken,
+            dir: dir
         };
         this.props.getTransactions(params);
     }
@@ -52,21 +55,50 @@ class Transaction extends React.Component {
     }
 
     componentDidMount(){
-        this.loadData();
+        this.setState({
+                startDate: this.props.startDate,
+                endDate: this.props.endDate,
+                email: this.props.email,
+                branch: this.props.branch ? this.props.branch : this.props.userBranch
+            },
+            () => {
+                if(this.props.data.length === 0){
+                    this.loadData()
+                }
+            }
+        );
     }
 
     onSubmit = evt => {
         evt.preventDefault();
         const {startDate, endDate} = this.state;
         // Both are present or both are empty then only search
-        if((startDate && endDate) || (!startDate && !endDate)){
-            this.setState({error: false});
-            this.loadData();
+        if(this.isParmasChanged()) {
+            if(((startDate && endDate) || (!startDate && !endDate))){
+                this.setState({errorMsg: ""});
+                this.loadData();
+            } else {
+                this.setState({errorMsg: "Both Start date and End date are needs to be selected or removed."});
+            }
         } else {
-            this.setState({error: true});
+            this.setState({errorMsg: "Filter parameters not changed"});
         }
+    }
 
+    resetFilter = () => {
+        this.setState({
+            startDate: null,
+            endDate: null,
+            email: "",
+            branch: this.props.userBranch
+        });
+    }
 
+    isParmasChanged = () => {
+        return !(this.props.startDate === this.state.startDate
+            && this.props.endDate === this.state.endDate
+            && this.props.email === this.state.email
+            && this.props.branch === this.state.branch);
     }
 
     render(){
@@ -115,27 +147,37 @@ class Transaction extends React.Component {
                                                 startDate={this.state.startDate}
                                                 endDate={this.state.endDate}
                                                 minDate={this.state.startDate}
+                                                maxDate={new Date()}
                                                 className="form-control"
                                             />
                                         </Form.Group>
-                                        <Form.Group className="select-box-fix">
-                                            <Form.Label>Branch</Form.Label>
-                                            <Select className="basic-single" classNamePrefix="select" value={getSelectedItem(this.props.branchDropDownArr, this.state.branch)}
-                                                options={this.props.branchDropDownArr} onChange={(e)=>{this.handleDropDown('branch', e)}}
-                                                isSearchable placeholder="Select Branch" styles={customStyles}/>
-                                        </Form.Group>
+                                        {this.props.role !== ROLE_BRANCH &&
+                                            <Form.Group className="select-box-fix">
+                                                <Form.Label>Branch</Form.Label>
+                                                <Select className="basic-single" classNamePrefix="select" value={getSelectedItem(this.props.branchDropDownArr, this.state.branch)}
+                                                    options={this.props.branchDropDownArr} onChange={(e)=>{this.handleDropDown('branch', e)}}
+                                                    isSearchable placeholder="Select Branch" styles={customStyles}/>
+                                            </Form.Group>
+                                        }
                                         <Form.Group>
                                             <Form.Label>Email</Form.Label>
                                             <Form.Control type="text" className="form-control" name="email" placeholder="User Email" value={this.state.email} onChange={this.handleChange}/>
                                         </Form.Group>
                                         <Form.Group>
-                                            <input type="submit" value="Search" className="btn btn-primary"/>
+                                            <input type="submit" value="Search" className="btn btn-primary mr-4"/>
+                                            <input type="button" value="Reset" className="btn btn-secondary" onClick={this.resetFilter}/>
                                         </Form.Group>
                                 </Form>
-                                {this.state.error ? <p className="text-warning">Please select both start and end date</p> : null}
-                                <ul className="timeline">
-                                    {this.props.data.map((txn, id) => <TransactionListItem txn={txn} key={id} />)}
-                                </ul>
+                                {this.state.errorMsg.trim() ? <p className="text-warning">{this.state.errorMsg}</p> : null}
+                                {this.props.data.length ?
+                                    <ul className="timeline">
+                                        {this.props.data.map(txn => <TransactionListItem txn={txn} key={txn.id} />)}
+                                    </ul>
+                                : <p className="text-center text-info">No Transactions logs found, try changing the filter.</p> }
+                                <div className="text-center">
+                                    {<button className="btn btn-primary active mr-4" disabled={!this.props.prevPageToken} onClick={() => this.loadData("prev")}><i className="mr-1 fa fa-chevron-left"></i>Previous</button>}
+                                    {<button className="btn btn-primary active" disabled={!this.props.nextPageToken} onClick={() => this.loadData("next")}>Next <i className="ml-1 fa fa-chevron-right"></i></button>}
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -148,7 +190,9 @@ const mapStateToProps = state => {
     const branchDropDownArr = dropDownResponseFromMap(state.BRANCHES.allRecords);
     return {
         branchDropDownArr,
-        ...state["TRANSACTION"]
+        ...state["TRANSACTION"],
+        role: state.USER.loggedInUser.role,
+        userBranch: state.USER.loggedInUser.branch
     }
 };
 

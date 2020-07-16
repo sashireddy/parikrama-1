@@ -5,6 +5,7 @@ import {Button, Form} from "react-bootstrap";
 import Spinner from "../../shared/Spinner";
 import Pagination from "../../shared/Pagination";
 import Modal from "../../shared/Modal";
+import isAllowed, {ACTION_MANAGE} from "../../utils/accessControl";
 
 class CrudSkeleton extends Component {
 
@@ -36,7 +37,7 @@ class CrudSkeleton extends Component {
                 search: this.props.search,
                 currentPage: this.props.currentPage
             },
-            this.loadData()
+            this.loadData
         );
     }
 
@@ -144,9 +145,7 @@ class CrudSkeleton extends Component {
                                                     )
                                             })}
                                         </Form.Group>
-                                        {
-                                         !this.props.DontShowButon  && <Button onClick={() => this.openActionMaodal(null, "add")} className="btn btn-primary ml-2 search-btn">Add Record</Button>
-                                        }
+                                        {isAllowed(ACTION_MANAGE, this.props.moduleName) && AddModal && <Button onClick={() => this.openActionMaodal(null, "add")} className="btn btn-primary ml-2 search-btn">Add Record</Button>}
                                     </Form>
                                 </div>
                                 <div className="table-responsive">
@@ -189,31 +188,28 @@ class CrudSkeleton extends Component {
                             type={this.state.actionType}
                             show={this.state.showModal}
                             closeModal={this.closeModal}>
-
-                            {this.state.actionType === "add" && (
-
+                            {AddModal && this.state.actionType === "add" && (
                                 <AddModal
                                 closeModal={this.closeModal}
                                 addData={this.addData}
                                 state = {this.props.state}
                                 />
                             )}
-                            {this.state.actionType === "view" && (
+                            {ViewModal && this.state.actionType === "view" && (
                                 <ViewModal
                                 record={this.state.currentRecord}
                                 closeModal={this.closeModal}
                                 state = {this.props.state}
                                 />
                             )}
-                            {this.state.actionType === "edit" && (
+                            {EditModal && this.state.actionType === "edit" && (
                                 <EditModal
                                 record={this.state.currentRecord}
                                 closeModal={this.closeModal}
                                 updateData={this.updateData}
                                 />
                             )}
-                            {this.state.actionType === "del" && (
-
+                            {DeleteModal && this.state.actionType === "del" && (
                                 <DeleteModal
                                 record={this.state.currentRecord}
                                 closeModal={this.closeModal}

@@ -7,6 +7,8 @@ import DeleteBranch from './DeleteBranch'
 import AddBranch from './AddBranch'
 import BranchListItem from './BranchListItem'
 import branchesAction from '../../actions/branchActions'
+import {MODULE_BRANCH} from "../../utils/accessControl";
+
 const mapStateToProps = state => ({
     ...state['BRANCHES']
 });
@@ -58,11 +60,12 @@ class Products extends React.Component {
             ]
 
         return (
-            <ProductSkeleton 
+            <ProductSkeleton
              content={{pageTitle:'Branches'}} AddModal={AddBranch}
              EditModal={EditBranch} ViewModal={ViewBranch} DeleteModal={DeleteBranch}
              tableRowRenderFunc ={BranchListItem}
              headerArr = {headerArr} getTitle={getTitle}
+             moduleName={MODULE_BRANCH} pk="id"
             />
         )
     }

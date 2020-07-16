@@ -7,6 +7,7 @@ import EditUser from "./EditUser";
 import AddUser from "./AddUser";
 import DeleteUser from "./DeleteUser";
 import {connect} from "react-redux";
+import {MODULE_USER} from "../../utils/accessControl";
 
 const mapStateToProps = state => ({
     ...state["USER"]
@@ -64,7 +65,7 @@ class User extends React.Component {
             <UserSkeleton key="user" content={{pageTitle:'User'}} AddModal={AddUser}
                 EditModal={EditUser} ViewModal={ViewUser} DeleteModal={DeleteUser}
                 tableRowRenderFunc ={UserListItem} pk="id"
-                headerArr = {headerArr} getTitle={getTitle}/>
+                headerArr = {headerArr} getTitle={getTitle} moduleName={MODULE_USER}/>
         )
     }
 }
