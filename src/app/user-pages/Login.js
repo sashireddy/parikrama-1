@@ -18,6 +18,7 @@ export class Login extends Component {
       password : '',
       loading : false,
       authError: false,
+      validated: false
     }
   }
 
@@ -29,11 +30,19 @@ export class Login extends Component {
   }
 
   submit = (e)=>{
-    e.preventDefault()
-    this.setState({ 
+    const form = e.currentTarget;
+    e.preventDefault();
+    this.setState({validated: true});
+    if (form.checkValidity() === false) {
+      e.preventDefault();
+      e.stopPropagation();
+      return;
+    }
+
+    this.setState({
       loading:true,
       password:''
-     })
+     });
     this.props.firebase.doSignInWithEmailAndPassword(this.state.username,this.state.password)
     .then(resp=> {
       this.props.firebase.auth.currentUser.getIdToken(/* forceRefresh */ true).then((idToken) => {
@@ -45,7 +54,7 @@ export class Login extends Component {
         })
       }).catch(function(error) {
         throw error
-      });      
+      });
     })
     .catch(err => {
       this.setState({
@@ -59,26 +68,27 @@ export class Login extends Component {
     if(this.state.loading) return <Spinner/>
     return (
       <div>
-        <div className="d-flex align-items-center auth px-0">
+        <div className="d-flex align-items-center justify-content-center login-wrapper auth px-0">
           <div className="row w-100 mx-0 login-half-bg">
-            <div className="col-lg-4 mx-auto">
+            <div className="col-xl-4 col-lg-5 col-md-6 mx-auto login-box p-0">
               <div className="auth-form-light text-left py-5 px-4 px-sm-5">
-                <div className="brand-logo">
-                  <img src='http://www.parikrma.in/wp-content/uploads/2020/03/Parikrma-button-logo-with-words-Black-e1583919187330.png' alt="logo" />
+                <div className="brand-logo text-center">
+                  <img src={require("../../assets/images/parikrama-logo.png")} alt="Parikrama Logo" />
                 </div>
                 <h4>Inventory Management</h4>
                 <h6 className="font-weight-light">Sign in to continue.</h6>
                 {this.state.authError && <Alert variant="danger">Please check your Password</Alert>}
-                <Form className="pt-3" onSubmit={this.submit}>
-                  <Form.Group className="d-flex search-field">
-                    <Form.Control name="username" type="email" placeholder="Username" size="lg" className="h-auto" onChange={this.handleChange}/>
+                <Form className="pt-3" noValidate validated={this.state.validated} onSubmit={this.submit}>
+                  <Form.Group className="search-field">
+                    <Form.Control required pattern="[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}" name="username" type="text" placeholder="Username" size="lg" className="h-auto" onChange={this.handleChange}/>
+                    <Form.Control.Feedback type="invalid">Please enter valid email id</Form.Control.Feedback>
                   </Form.Group>
-                  <Form.Group className="d-flex search-field">
-                    <Form.Control name="password" type="password" placeholder="Password" size="lg" className="h-auto" onChange={this.handleChange}/>
+                  <Form.Group className="search-field">
+                    <Form.Control required minlength="1" name="password" type="password" placeholder="Password" size="lg" className="h-auto" onChange={this.handleChange}/>
+                    <Form.Control.Feedback type="invalid">Please enter password</Form.Control.Feedback>
                   </Form.Group>
                   <div className="mt-3">
                     <Button className="btn btn-block btn-primary btn-lg font-weight-medium auth-form-btn" type="submit" >Sign IN</Button>
-                    {/* <Link className="btn btn-block btn-primary btn-lg font-weight-medium auth-form-btn" to="/dashboard">SIGN IN</Link> */}
                   </div>
                 </Form>
               </div>

@@ -3,7 +3,7 @@ import {Button} from 'react-bootstrap';
 import {connect } from 'react-redux';
 import BranchActions from '../../actions/branchActions'
 import {MODULE_BRANCH} from "../../utils/accessControl";
-import isAllowed, {ACTION_VIEW, ACTION_MANAGE} from "../../utils/accessControl";
+import isAllowed, {ACTION_VIEW, ACTION_MANAGE, ACTION_DELETE} from "../../utils/accessControl";
 
 const enableActionPayload = (record) => {
   record.isActive = true
@@ -44,6 +44,7 @@ class BranchListRender extends Component {
               }
               {isAllowed(ACTION_MANAGE, MODULE_BRANCH) &&
                   <Button onClick={() => this.props.openActionMaodal(this.props.record, "del")} className="btn btn-danger ml-2">
+
                       Delete
                   </Button>
               }
