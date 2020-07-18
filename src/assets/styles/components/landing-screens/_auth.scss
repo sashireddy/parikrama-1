@@ -86,3 +86,16 @@
 		}
 	}
 }
+
+.login-wrapper {
+	height: 100vh;
+	background-color:#e5e7ed;
+
+	.login-box {
+		background-color:#fff;
+		-webkit-box-shadow:0 3px 50px 0 rgba(0,0,0,.1);
+		box-shadow:0 3px 50px 0 rgba(0,0,0,.1);
+		text-align:center;
+		border-radius:5px;
+	}
+}
