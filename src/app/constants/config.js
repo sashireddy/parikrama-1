@@ -23,14 +23,14 @@ export default {
             "PENDING_TRANSACTIONS": "https://local-parikrama.web.app/api/pendingRequests/branches/",
             "GET_BRANCH_INVENTORY": "https://local-parikrama.web.app/api/inventories/",  
             "RAISE_REQUEST" : "https://local-parikrama.web.app/api/actions/requestProduct",
-            "TRANSFER_REQUEST":"",
+            "TRANSFER_REQUEST":"https://local-parikrama.web.app/api/actions/transferproduct",
             "GET_ALL_INVENTORY": "https://local-parikrama.web.app/api/inventories/",
             // "GET_ALL_INVENTORY":"/data/inventory.json",
             "CACHING": true,
             "PAGE_LIMIT": 10
         },
         "INVENTORY_SUMMARY":{
-            "GET_REPORT_SUMMARY": "/data/reports.json",
+            "GET_REPORT_SUMMARY": "https://local-parikrama.web.app/api/reports/",
             "PAGE_LIMIT": 25,
             "CACHING": true
         },

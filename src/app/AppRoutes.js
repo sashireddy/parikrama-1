@@ -61,6 +61,7 @@ class AppRoutes extends Component {
           {isAllowed(ACTION_VIEW, MODULE_INVENTORY) && <Route path="/products" component={ Products } />}
           {isAllowed(ACTION_VIEW, MODULE_INVENTORY) && <Route path="/inventory/move" component={Move} />}
           {isAllowed(ACTION_VIEW, MODULE_INVENTORY) && <Route path="/inventory" component={Inventory} />}
+          {isAllowed(ACTION_VIEW, MODULE_INVENTORY) && <Route path="/inventoryreports" component={InventoryReports} />}
           {isAllowed(ACTION_GENERATE, MODULE_REPORT) && <Route path="/reports" component ={ Reports } />}
           {isAllowed(ACTION_VIEW, MODULE_TRANSACTION) && <Route path="/transactions" component ={ Transaction } />}
           {isAllowed(ACTION_VIEW, MODULE_BRANCH) && <Route path="/branches/" component={ Branch } />}

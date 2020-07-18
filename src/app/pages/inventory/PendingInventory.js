@@ -1,14 +1,13 @@
 import React from 'react'
-import {Table,Button, Col,Row,Form} from 'react-bootstrap'
-import Select from 'react-select'
+import {Table,Button, Col,Row} from 'react-bootstrap'
 import {connect} from 'react-redux'
-import {dropDownResponseFromMap} from '../../utils/dropDownUtils'
-import Modal from '../../shared/Modal'
-import {getLoggedInUserInfo,getBranchInfo} from '../../utils/dataUtils'
+import {Link} from 'react-router-dom'
+import {getLoggedInUserInfo} from '../../utils/dataUtils'
 import InventoryActions from '../../actions/inventoryActions'
 import Spinner from "../../shared/Spinner";
 import Accept from './viewInventory'
 import dateFormat from "dateformat";
+
 class PendingTransactions extends React.Component {
     constructor(props){
         super(props)
@@ -37,7 +36,7 @@ class PendingTransactions extends React.Component {
             <tr key={idx}>
                 <td>{dateFormat(request.date, "yyyy-mm-dd") }</td>
                 <td>{request.user}</td>
-                <td>{request.fromBranchName}</td>
+                <td>{request.toBranchName}</td>
                 <td>{request.productName}</td>
                 <td>{request.operationalQuantity}</td>
                 <td>{request.note}</td>
@@ -45,7 +44,8 @@ class PendingTransactions extends React.Component {
             </tr>)
        let requests = this.props.inventory.pendingTransactions || []
         return (
-        <>
+            <>
+            <Link className="nav-link" to="/inventoryreports" >Inventory Summary Report</Link>
             <Spinner loading={this.props.inventory.pendingTransactionsLoading} />
             <Row>
             <div className="col-lg-12 grid-margin stretch-card">
@@ -70,7 +70,7 @@ class PendingTransactions extends React.Component {
                             <tbody>
                                 {requests.length ?
                                             requests.map((record,idx)=> rowRender(record,idx))
-                                            : <tr><td colSpan={6} className="text-center">No Records found!</td></tr>
+                                            : <tr><td colSpan={7} className="text-center">No Records found!</td></tr>
                                 }
                             </tbody>
                         </Table>

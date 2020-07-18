@@ -5,10 +5,10 @@ import {Form} from 'react-bootstrap'
 import DatePicker from "react-datepicker"
 import Select from 'react-select';
 import { Card } from 'react-bootstrap'
-import dateFormat from "dateformat";
 import {getSelectedItem, dropDownResponseFromMap} from '../../utils/dropDownUtils';
 import InventorySummaryAction from '../../actions/InventoryView'
-
+import {getUnit,getCategory,getProduct,getLoggedInUserInfo} from '../../utils/dataUtils'
+import dateFormat from "dateformat";
 
 const customStyles = {
     control: base => ({
@@ -21,18 +21,33 @@ class InventorySummary extends React.Component {
 
     constructor(props){
         super()
+        const endDate = new Date()
+        const startDate = new Date().setMonth(endDate.getMonth()-1)
         this.state = {
-            branch: "MxoS2K8t8jT7MATniD4x",
-            startDate: "",
-            endDate: "",
-            email: "",
+            branch: getLoggedInUserInfo().branch,
+            startDate,
+            endDate,
+            // startDate: dateFormat(startDate, "yyyy-MM-dd"),
+            // endDate: dateFormat(endDate, "yyyy-MM-dd"),
             error: false
         }
     }
     getData = (crudParams) => {
         console.log(crudParams)
-        this.props.loadData(crudParams)
+        this.props.loadData({
+            ...crudParams,
+            startDate: dateFormat(this.state.startDate, "yyyy-mm-dd"),
+            endDate: dateFormat(this.state.endDate, "yyyy-mm-dd"),
+            branch : this.state.branch
+            })
     }
+
+    setDate = (field, date) => {
+        this.setState({
+            [field]: date
+        });
+    }
+
 
     onSubmit = evt => {
         evt.preventDefault();
@@ -40,7 +55,12 @@ class InventorySummary extends React.Component {
         // Both are present or both are empty then only search
         if((startDate && endDate) || (!startDate && !endDate)){
             this.setState({error: false});
-            this.loadData();
+            this.loadData({
+                currentPage : this.props.stateData.currentPage,
+                pageLimit : this.props.stateData.pageLimit,
+                search : this.props.stateData.search,
+                sort : this.props.stateData.sort,
+            });
         } else {
             this.setState({error: true});
         }
@@ -63,8 +83,8 @@ class InventorySummary extends React.Component {
         }
         const headerArr = [
                 {
-                    value : 'Name',
-                    key : 'name',
+                    value : 'Product',
+                    key : 'product',
                     sortable : true,
                     searchable: true
                 },{
@@ -73,30 +93,32 @@ class InventorySummary extends React.Component {
                 },{
                     value : 'Threshold',
                     key : 'threshold'
-                },{
-                    value : 'units',
-                    key : 'units'
-                },{
-                    value : 'Actions',
-                    key : 'actions'
-                }
+                },
             ]
-        const EmptyRender = () => <></>
+        
+        const getQuantityWithUnit = (quantity, product) => {
+            return quantity+" "+getUnit(product.unit).name
+        }
         const tableRowRenderFunc = (props)=> {
-            return(
-            <tr>
-                <td>{props.record.name}</td>
-                <td>{props.record.category}</td>
-                <td>{props.record.product}</td>
-                <td>{props.record.addedQuantity}</td>
-            </tr>
+            const product = getProduct(props.record.product)
+            return (
+                <tr>
+                    <td>{product.name}</td>
+                    <td>{getCategory(product.category).name}</td>
+                    <td>{props.record.threshold}</td>
+
+                    <td> { props.record.closingQuantity > props.record.threshold ? 
+                        <label className="badge badge-success">{getQuantityWithUnit(props.record.closingQuantity,product)}</label> :
+                        <label className="badge badge-warning">{getQuantityWithUnit(props.record.closingQuantity,product)}</label>
+                        }   
+                    </td>
+                </tr>
             )
         }
-        console.log(this.props.stateData)
+        console.log(this.props)
         return(
             <Skeleton 
-             content={{pageTitle:'Inventory Summary'}} AddModal={EmptyRender}
-             EditModal={EmptyRender} ViewModal={EmptyRender} DeleteModal={EmptyRender}
+             content={{pageTitle:'Inventory Summary'}}
              tableRowRenderFunc ={tableRowRenderFunc}
              headerArr = {headerArr} getTitle={getTitle}
              getData = {this.getData} {...this.props.stateData}
@@ -104,34 +126,34 @@ class InventorySummary extends React.Component {
             >
                 <Card>
                     <Card.Body>
-                <Form className="custom-page-filter" onSubmit={this.onSubmit}>
+                    <Form className="custom-page-filter" onSubmit={this.onSubmit}>
                     <Form.Group>
                         <Form.Label>Date</Form.Label>
                         <DatePicker
                             dateFormat="yyyy-MM-dd"
                             selected={this.state.startDate}
                             onChange={date => this.setDate('startDate', date)}
-                            // selectsStart
+                            selectsStart
                             startDate={this.state.startDate}
-                            // endDate={this.state.endDate}
-                            // maxDate={this.state.endDate}
+                            endDate={this.state.endDate}
+                            maxDate={this.state.endDate}
                             className="form-control"
                         />
                     </Form.Group>
-                                        {/* <Form.Group>
-                                            <Form.Label>End Date</Form.Label>
-                                            <DatePicker
-                                                dateFormat="yyyy-MM-dd"
-                                                selected={this.state.endDate}
-                                                onChange={date => this.setDate('endDate', date)}
-                                                selectsEnd
-                                                startDate={this.state.startDate}
-                                                endDate={this.state.endDate}
-                                                minDate={this.state.startDate}
-                                                className="form-control"
-                                            />
-                                        </Form.Group> */}
-                    <Form.Group className="select-box-fix">
+                    <Form.Group>
+                        <Form.Label>End Date</Form.Label>
+                        <DatePicker
+                            dateFormat="yyyy-MM-dd"
+                            selected={this.state.endDate}
+                            onChange={date => this.setDate('endDate', date)}
+                            selectsEnd
+                            startDate={this.state.startDate}
+                            endDate={this.state.endDate}
+                            minDate={this.state.startDate}
+                            className="form-control"
+                        />
+                        </Form.Group>
+                        <Form.Group className="select-box-fix">
                         <Form.Label>Branch</Form.Label>
                         <Select className="basic-single" classNamePrefix="select" value={getSelectedItem(this.props.branchDropDownArr, this.state.branch)}
                         options={this.props.branchDropDownArr} onChange={(e)=>{this.handleDropDown('branch', e)}}

@@ -42,5 +42,16 @@ export const isAdmin = () => {
     return true
 }
 export const getThreshold = (productId,branchId) => {
-    return store.getState()['PRODUCTS'].allRecords[productId][branchId];
+    try{
+        return store.getState()['PRODUCTS'].allRecords[productId][branchId] || 0;
+    }catch(err) {
+        return undefined
+    }
+}
+export const transformInventoryRow = data => {
+    const product = getProduct(data.product)
+    data.productName = product.name
+    data.categoryName = getCategory(product.category).name
+    data.unitName = getUnit(product.unit).name
+    return data
 }

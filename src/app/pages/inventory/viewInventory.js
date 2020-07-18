@@ -1,25 +1,22 @@
 import React from "react"
 import {Form, Row,Col,Alert} from 'react-bootstrap'
-import {connect} from 'react-redux'
 import inventoryActions from '../../actions/inventoryActions'
 import Modal from '../../shared/Modal'
 import {getBranchInfo,getProduct,getCategory} from '../../utils/dataUtils'
-
-const mapStateToProps = state => ({
-    THRESHOLD : state['THRESHOLD']
-})
-const mapActionToProps = () => {
-    return {
-        ...inventoryActions
-    }
-}
 
 
 class ApproveOrRejectView extends React.Component {
     constructor(props){
         super(props)
+        let toBranch;
+        Object.keys(props.branches.allRecords).forEach(x => {
+            if(props.branches.allRecords[x].name === props.record.toBranchName) {
+                toBranch = x
+            } 
+        })
         this.state = {
             ...props.record,
+            toBranch,
             quantityMap : {
 
             }
@@ -42,6 +39,19 @@ class ApproveOrRejectView extends React.Component {
         })
         }
     }
+    
+    onSubmit = event => {
+        const form = event.currentTarget;
+        if (form.checkValidity() === false && !this.state.currentProduct) {
+            event.preventDefault();
+            event.stopPropagation();
+        }else {
+            event.preventDefault();
+            // console.log(this.state)
+            this.props.acceptOrRejectTransaction({...this.state});
+            this.props.closeModal();
+        }
+    }
     render(){
         console.log(this.props)
         console.log(this.state)
@@ -53,9 +63,13 @@ class ApproveOrRejectView extends React.Component {
             sum += this.state.quantityMap[entry]
         })
     return (
-        <Modal show={true} title="Accept Or Reject Request" closeModal={this.props.closeModal}>
+        <Modal
+        dialogClassName = "AcceptClass"
+        size ="lg"
+         show={true} title="Accept Or Reject Request" closeModal={this.props.closeModal}>
         <form className="forms-sample" onSubmit={this.onSubmit} >
            <div className="pl-3 pr-3">
+               <div className="formData">
                <Row>
                    <Col>
                         <h6>
@@ -80,9 +94,11 @@ class ApproveOrRejectView extends React.Component {
                         </h6>
                    </Col>
                </Row>
+               </div>
                 { keys.map((key,idx)=>{
                     const val = this.props.inventory.summaryCache[product.id][key]
                     console.log(key,val)
+                    if(this.state.toBranch === key) return <></>
                     return (
                         <Row key={idx}>
                             <Col>
@@ -189,6 +205,4 @@ class ViewCategory extends React.Component {
     }
 }
 
-
-// export default connect(mapStateToProps, mapActionToProps)(ViewCategory);
 export default ApproveOrRejectView;

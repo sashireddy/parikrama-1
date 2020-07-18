@@ -3,23 +3,14 @@ import CrudSkeleton from '../CrudSkeleton/index'
 import InventoryActions from '../../actions/inventoryActions'
 import AddInventory from './AddInventory'
 import ViewInventory from './IssueRecord'
-import {Table,Button, Col,Row, Card} from 'react-bootstrap'
+import {Button, Col,Row, Card} from 'react-bootstrap'
 import PendingTransactions from './PendingInventory'
 import {connect,} from "react-redux";
 import {getLoggedInUserInfo,getBranchInfo} from '../../utils/dataUtils'
 import {getDropdownItem,dropDownResponseFromMap} from '../../utils/dropDownUtils'
 import {getUnit,getCategory,getProduct} from '../../utils/dataUtils'
 import Select from 'react-select'
-
-
-const requests = [{
-    id:'requestId-1',
-    branch:'Kormangla',
-    currentInventory : 300,
-    note: 'need this to distribute this month',
-    requestedInventory : 30,
-
-}]
+import isAllowed,{MODULE_INVENTORY,ACTION_VIEW} from '../../utils/accessControl'
 
 const mapStateToProps = state => ({
     stateData: {
@@ -45,7 +36,8 @@ class Inventory extends React.Component {
             showModal: false,
             currentCategory: null,
             actionType: null,
-            branch : getLoggedInUserInfo().branch
+            branch : getLoggedInUserInfo().branch,
+            branchName : getBranchInfo(getLoggedInUserInfo().branch).name
         }
     }
 
@@ -89,8 +81,15 @@ class Inventory extends React.Component {
         }
         const headerArr = [
             {
-                value: 'category',
-                key: 'category',
+                value: 'Category',
+                key: 'Category',
+            },{
+                value: 'Branch',
+                key: 'branch'
+            },{
+                value: 'Threshold',
+                key: 'threshold'
+
             },{
                 value: 'product',
                 key: 'product',
@@ -108,6 +107,8 @@ class Inventory extends React.Component {
             return (
                 <tr>
                     <td>{getCategory(product.category).name}</td>
+                    <td>{this.state.branchName}</td>
+                    <td>{props.record.threshold}</td>
                     <td>{product.name}</td>
                     <td> { props.record.availableQuantity > props.record.threshold ? 
                         <label className="badge badge-success">{props.record.availableQuantity}  {getUnit(product.unit).name}</label> :
@@ -134,6 +135,7 @@ class Inventory extends React.Component {
                     getTitle={getTitle}
                     getData = {this.getData} {...this.props.stateData}
                     addData = {this.props.addData}
+                    moduleName = {MODULE_INVENTORY}
                     DontShowButon = {getLoggedInUserInfo().branch !== this.state.branch}
               >
                 <PendingTransactions />
@@ -141,7 +143,7 @@ class Inventory extends React.Component {
                     <Card.Body>
                         <Row>
                             <Col>
-                            <Select className="basic-single" classNamePrefix="select" defaultValue = {getDropdownItem(getBranchInfo(loggedInUserInfo.branch).name,loggedInUserInfo.branch)}
+                            <Select className="basic-single" classNamePrefix="select" defaultValue = {getDropdownItem(this.state.branchName,this.state.branch)}
                                 isSearchable={true}  options={branchOptions} onChange={(e)=>{this.handleBranchDropDown(e)}}/>
                             </Col>
                             <Col>

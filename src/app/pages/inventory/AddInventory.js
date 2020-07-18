@@ -95,7 +95,7 @@ class AddCategory extends React.Component {
     render() {
         console.log(this.state)
         const productDropdownArr = dropDownResponseFromMap(this.props.products.allRecords)
-        const branchDropdownArr = dropDownResponseFromMap(this.props.branches.allRecords)
+        const branchDropdownArr = dropDownResponseFromMap(this.props.branches.allRecords).filter(e => e.value !== this.state.fromBranch)
         return (
             <form className="forms-sample" onSubmit={this.onSubmit} >
                 <div className="pl-3 pr-3">

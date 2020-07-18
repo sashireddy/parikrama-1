@@ -1,8 +1,8 @@
 import config from "../constants/config";
 import axios from 'axios';
 import {handleResponse} from './util'
-import {getProduct,getUnit,getCategory} from '../utils/dataUtils'
-// import inventory from "../pages/inventory";
+import {getProduct,getUnit,getCategory, getBranch} from '../utils/dataUtils'
+import { getThreshold} from '../utils/dataUtils'
 import {arrayToCsvContent,download} from '../utils/csvUtils'
 const pageConfig = config.API.INVENTORY;
 
@@ -40,8 +40,8 @@ export const getPendingTransactions = (params) => {
     return new Promise(async (resolve, reject) => {
         try {
             if(!pendingTransactions){
-                const [response,err]= handleResponse(await axios.get(pageConfig.PENDING_TRANSACTIONS+'R1vTnxSLWByLa7NocDDX'))
-                // const [response,err]= handleResponse(await axios.get(pageConfig.PENDING_TRANSACTIONS+params.branch))
+                // const [response,err]= handleResponse(await axios.get(pageConfig.PENDING_TRANSACTIONS+'R1vTnxSLWByLa7NocDDX'))
+                const [response,err]= handleResponse(await axios.get(pageConfig.PENDING_TRANSACTIONS+params.branch))
                 pendingTransactions = response.data.pendingTransactions
                 if(err){return reject(err)}
             }
@@ -53,10 +53,38 @@ export const getPendingTransactions = (params) => {
 }
 
 export const respondToTransferRequest = async params => {
+    try{
+        const list = []
+        Object.keys(params.quantityMap).forEach(entry => {
+            list.push({
+                operationalQuantity : params.quantityMap[entry],
+                productId: params.product,
+                productName: params.productName,
+                pendingRequestsId : params.id,
+                fromBranch: entry,
+                fromBranchName : getBranch(entry).name,
+                toBranch: params.toBranch,
+                toBranchName: params.toBranchName,
+            })     
+        })
+        await Promise.all(list.map(async params=>{
+            return await axios.post(pageConfig.TRANSFER_REQUEST,params)
+        }))
+        let sum =0 
+        Object.keys(params.quantityMap).forEach(entry => {
+            const quantity = parseInt(params.quantityMap[entry])
+            sum +=quantity
+            updateQuantity(quantity,entry,params.product,"sub")
+        })
+        updateQuantity(sum,params.toBranch,params.product,"add")
+        pendingTransactions = pendingTransactions.filter(entry => entry.id === params.id)
+        return pendingTransactions
+    }catch (err) {
+        throw new Error(err) 
+    }
     // const [, err ] = handleResponse(await axios.post(pageConfig.TRANSFER_REQUEST,params))
     // if(err){ throw new Error(err) }
-    pendingTransactions = pendingTransactions.filter(entry => entry.id === params.id)
-    return pendingTransactions
+    
 }
 
 export const createTransaction = ({type,...otherParams}) => {
@@ -164,8 +192,6 @@ const parseInventoryResp = (inventory) => {
         })
     })
 }
-
-const getThreshold = (productId,branchId) => 10
 
 const makeEntry = (productId,branchId) => {
     summaryCache[productId] = summaryCache[productId] || {}

@@ -33,10 +33,11 @@ export const getData = params => {
     return new Promise(async (resolve, reject) => {
         if(!validateParams(cachedParams,params) || cachedData === null){
             // Logic can be applied to generate URL using params
-            const url = `${apiConfig.GET_REPORT_SUMMARY}`;
+            // http://localhost:5001/local-parikrama/us-central1/api/api/reports/nmnpHFEB45FtMLQzqEBj?fromDate=2020-05-05&toDate=2020-07-15
+            let url = `${apiConfig.GET_REPORT_SUMMARY}${params.branch}?fromDate=${params.startDate}&toDate=${params.endDate}`;
             console.log("API calling...", url);
             try {
-                const res = await axios.get(url);
+                const res = await axios.get(url,);
                 res.flashMessage = {
                     "type": "success",
                     "message": "Data Loaded Successfully!"
@@ -54,6 +55,9 @@ export const getData = params => {
 }
 
 const validateParams = (params1,params2) => {
+    if(!params1 && !params2 && params1.startDate ===params2.startDate && params1.endDate === params2.endDate && params1.branch === params2.branch ){
+        return false;
+    }
     return true;
 }
 const getCurrentStateData = params => {
