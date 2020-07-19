@@ -48,11 +48,7 @@ class Unit extends React.Component {
                  return <tr>
                             <td>{props.record.name}</td>
                             <td>{props.record.description}</td>
-<<<<<<< HEAD
                             {/* <td>{isAllowed(ACTION_MANAGE, MODULE_INVENTORY) ? <Button>Delete</Button> : '--'}</td> */}
-=======
-                            <td>{isAllowed(ACTION_DELETE, MODULE_INVENTORY) ? <Button>Delete</Button> : '--'}</td>
->>>>>>> 5b13984428336de59837457de0a8b8285ef80edf
                         </tr>
              }} pk="id"
              headerArr = {headerArr} getTitle={getTitle} moduleName={MODULE_INVENTORY}/>
