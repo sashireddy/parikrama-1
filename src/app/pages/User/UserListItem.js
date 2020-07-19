@@ -2,7 +2,7 @@ import React from 'react';
 import {Button} from 'react-bootstrap';
 import {getBranch, getRole} from '../../utils/dataUtils';
 import {MODULE_USER} from "../../utils/accessControl";
-import isAllowed, {ACTION_VIEW, ACTION_MANAGE} from "../../utils/accessControl";
+import isAllowed, {ACTION_VIEW, ACTION_MANAGE, ACTION_DELETE} from "../../utils/accessControl";
 
 const UserListItem = props => {
     let {record} = props;
@@ -32,7 +32,7 @@ const UserListItem = props => {
                             Edit
                         </Button>
                     }
-                    {isAllowed(ACTION_MANAGE, MODULE_USER) &&
+                    {isAllowed(ACTION_MANAGE, ACTION_DELETE) &&
                         <Button onClick={() => props.openActionMaodal(record, "del")} className="btn btn-danger ml-2">
                             Delete
                         </Button>

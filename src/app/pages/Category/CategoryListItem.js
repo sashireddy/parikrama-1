@@ -4,7 +4,7 @@ import Store from '../../store'
 import CategoryActions from '../../actions/categoryActions'
 import {getActivePayload} from '../../utils/dataUtils'
 import {MODULE_INVENTORY} from "../../utils/accessControl";
-import isAllowed, {ACTION_VIEW, ACTION_MANAGE} from "../../utils/accessControl";
+import isAllowed, {ACTION_VIEW, ACTION_MANAGE, ACTION_DELETE} from "../../utils/accessControl";
 
 export default props => {
   const category = props.record;
