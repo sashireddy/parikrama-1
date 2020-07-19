@@ -21,7 +21,7 @@ const getSelectedItem = (arr, value) => {
 const dropDownResponseFromMap = map => {
     let resp = []
     Object.keys(map).forEach(key => {
-        resp.push(getDropdownItem(map[key].name,key))
+        map[key].isActive && resp.push(getDropdownItem(map[key].name,key))
     })
     return resp
 }

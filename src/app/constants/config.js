@@ -20,11 +20,19 @@ export default {
             "ISSUE_PRODUCT":"https://local-parikrama.web.app/api/actions/issueproduct",
             "ADJUSTMENT":"",
             "ADD_PRODUCT":"https://local-parikrama.web.app/api/actions/addproduct",
-            "PENDING_TRANSACTIONS": "https://local-parikrama.web.app/api/pendingTransactions/branches/",
-            "GET_BRANCH_INVENTORY": "https://local-parikrama.web.app/api/inventories/",
-            "GET_ALL_INVENTORY":"/data/allInventory.json",
+            "PENDING_TRANSACTIONS": "https://local-parikrama.web.app/api/pendingRequests/branches/",
+            "GET_BRANCH_INVENTORY": "https://local-parikrama.web.app/api/inventories/",  
+            "RAISE_REQUEST" : "https://local-parikrama.web.app/api/actions/requestProduct",
+            "TRANSFER_REQUEST":"https://local-parikrama.web.app/api/actions/transferproduct",
+            "GET_ALL_INVENTORY": "https://local-parikrama.web.app/api/inventories/",
+            // "GET_ALL_INVENTORY":"/data/inventory.json",
             "CACHING": true,
             "PAGE_LIMIT": 10
+        },
+        "INVENTORY_SUMMARY":{
+            "GET_REPORT_SUMMARY": "https://local-parikrama.web.app/api/reports/",
+            "PAGE_LIMIT": 25,
+            "CACHING": true
         },
         "ROLE": {
             "GET_ROLES": "https://local-parikrama.web.app/api/roles",

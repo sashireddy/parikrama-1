@@ -47,8 +47,7 @@ const User = lazy(()=> import('./pages/User'));
 const Move = lazy(()=> import ('./pages/Move'));
 const Unit = lazy(()=> import('./pages/Units'));
 const Transaction = lazy(()=> import ('./pages/Transaction'));
-
-
+const InventoryReports = lazy(()=> import('./pages/InventorySummary'));
 class AppRoutes extends Component {
   render () {
     return (
@@ -62,6 +61,7 @@ class AppRoutes extends Component {
           {isAllowed(ACTION_VIEW, MODULE_INVENTORY) && <Route path="/products" component={ Products } />}
           {isAllowed(ACTION_VIEW, MODULE_INVENTORY) && <Route path="/inventory/move" component={Move} />}
           {isAllowed(ACTION_VIEW, MODULE_INVENTORY) && <Route path="/inventory" component={Inventory} />}
+          {isAllowed(ACTION_VIEW, MODULE_INVENTORY) && <Route path="/inventoryreports" component={InventoryReports} />}
           {isAllowed(ACTION_GENERATE, MODULE_REPORT) && <Route path="/reports" component ={ Reports } />}
           {isAllowed(ACTION_VIEW, MODULE_TRANSACTION) && <Route path="/transactions" component ={ Transaction } />}
           {isAllowed(ACTION_VIEW, MODULE_BRANCH) && <Route path="/branches/" component={ Branch } />}
@@ -80,7 +80,6 @@ class AppRoutes extends Component {
           <Route path="/charts/chart-js" component={ ChartJs } />
 
           <Redirect to="/dashboard" />
-
         </Switch>
       </Suspense>
     );

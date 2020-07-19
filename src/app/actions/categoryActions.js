@@ -5,7 +5,7 @@ import pageConstants from '../constants/pages'
 
 const actions = (()=>{
   const updateAllRecords = async (dispatch) => {
-    const allData = updateData();
+    const allData = await updateData();
     dispatch({
       type: GET_ALL_CATEGORIES,
       payload: allData,

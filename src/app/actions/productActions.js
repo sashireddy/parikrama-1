@@ -5,7 +5,7 @@ import pageConstants from '../constants/pages'
 
 const actions = (()=>{
   const updateAllRecords = async (dispatch) => {
-    const allData = refreshStateData();
+    const allData =await refreshStateData();
     dispatch({
       type: GET_ALL_PRODUCTS,
       payload: allData,

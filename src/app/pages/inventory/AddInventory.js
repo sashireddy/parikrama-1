@@ -3,22 +3,28 @@ import {Form} from 'react-bootstrap'
 import Select from 'react-select'
 import {connect} from 'react-redux'
 import {dropDownResponseFromMap} from '../../utils/dropDownUtils'
-import {getLoggedInUserInfo} from '../../utils/dataUtils'
+import {getLoggedInUserInfo,getBranchInfo} from '../../utils/dataUtils'
 import InventoryActions from '../../actions/inventoryActions'
 
 const mapStateToProps = state => ({
-    products: state['PRODUCTS']
+    products: state['PRODUCTS'],
+    branches : state['BRANCHES'],
 })
 
+const LocalRequest = "ADD_PRODUCT"
+const TransferRequest = "RAISE_REQUEST"
+const Adjustment = "ADJUSTMENT"
 class AddCategory extends React.Component {
     
     constructor(){
         super();
+        const userInfo = getLoggedInUserInfo();
+        const branchInfo = getBranchInfo(userInfo.branch)
         this.state = {
-            branch: getLoggedInUserInfo().branch,
+            fromBranch: userInfo.branch,
+            fromBranchName: branchInfo.name,
            type:"ADD_PRODUCT",
            operationalQuantity : 0,
-
         }
     }
 
@@ -42,12 +48,20 @@ class AddCategory extends React.Component {
         })
     }
 
-    handleDropDown = (evt) => {
-            this.setState({
-                ...this.state,
-                product: evt && evt.value,
-                productName: evt && evt.label
-            })
+    handleProductDropDown = (evt) => {
+        this.setState({
+            ...this.state,
+            product: evt && evt.value,
+            productName: evt && evt.label
+        })
+}
+
+    handleBranchDropDown =evt => {
+        this.setState({
+        ...this.state,
+        toBranch: evt && evt.value,
+        toBranchName: evt && evt.label
+        })
     }
 
     onSubmit = event => {
@@ -63,23 +77,50 @@ class AddCategory extends React.Component {
        
     }
 
-    // handleProductDropDown = evt => {
-    //     this.setState({
-    //         currentProduct: evt.this.props.products..filter(product =>evt[0]===product.name)[0],
-    //     })
-    // }
+    onStatusChange = label => {
+        // if(label === LocalRequest){
+            this.setState({
+                ...this.state,
+                type:label,
+            })
+        // }else{
+        //     this.setState({
+        //         ...this.state,
+        //         type:TransferRequest,
+        //     })
+        // }
+    }
+
 
     render() {
         console.log(this.state)
         const productDropdownArr = dropDownResponseFromMap(this.props.products.allRecords)
+        const branchDropdownArr = dropDownResponseFromMap(this.props.branches.allRecords).filter(e => e.value !== this.state.fromBranch)
         return (
             <form className="forms-sample" onSubmit={this.onSubmit} >
                 <div className="pl-3 pr-3">
                     <Form.Group>
+                        <label htmlFor="isHeadOffice">Request Type</label>
+                        <Form.Check type="radio" id={LocalRequest} name={LocalRequest} value={LocalRequest} 
+                            label="Add Inventory Locally" checked={this.state.type === LocalRequest}
+                            onChange={e=>this.onStatusChange(LocalRequest)} />
+                        <Form.Check type="radio" id={TransferRequest} name={TransferRequest} value={TransferRequest} 
+                            label="Request from Head Office" checked={this.state.type===TransferRequest} 
+                            onChange={e=>this.onStatusChange(TransferRequest)} />
+                        <Form.Check type="radio" id={Adjustment} name={Adjustment} value={Adjustment} 
+                            label="Add Adjustment transaction" checked={this.state.type===Adjustment} 
+                            onChange={e=>this.onStatusChange(Adjustment)} />
+                    </Form.Group>
+                    <Form.Group>
                         <label htmlFor="exampleInputEmail1">Product</label>
                         <Select className="basic-single" classNamePrefix="select"
-                            isClearable={true} isSearchable={true}  options={productDropdownArr} onChange={(e)=>{this.handleDropDown(e)}}/>
+                            isClearable={true} isSearchable={true}  options={productDropdownArr} onChange={(e)=>{this.handleProductDropDown(e)}}/>
                     </Form.Group>
+                    {this.state.type === TransferRequest &&<Form.Group>
+                        <label htmlFor="exampleInputEmail1">From Branch(Head Offices)</label>
+                        <Select className="basic-single" classNamePrefix="select"
+                            isClearable={true} isSearchable={true}  options={branchDropdownArr} onChange={(e)=>{this.handleBranchDropDown(e)}}/>
+                    </Form.Group>}
                     {   this.state.currentProduct && (<>
                         <dt>Category</dt>
                         <dd>{this.state.currentProduct.category}</dd>
