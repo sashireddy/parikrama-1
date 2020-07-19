@@ -10,6 +10,8 @@ import productsReducer from './productReducer';
 import thresholdReducer from './thresholdReducer';
 import unitsReducer from './unitsReducer';
 import transactionReducer from './transactionReducer';
+import dashboardReducer from './dashboardReducer';
+import auditReducer from './auditReducer';
 
 export default combineReducers({
     CATEGORY: categoryReducer,
@@ -22,5 +24,7 @@ export default combineReducers({
     PRODUCTS : productsReducer,
     THRESHOLD : thresholdReducer,
     UNITS : unitsReducer,
-    TRANSACTION: transactionReducer
+    TRANSACTION: transactionReducer,
+    DASHBOARD: dashboardReducer,
+    AUDIT: auditReducer
 });

@@ -12,7 +12,7 @@ export const CATEGORY_LOAD_ERROR = "CATEGORY_LOAD_ERROR";
 
 //user
 export const GET_LOGGEDIN_USER = "GET_LOGGEDIN_USER"
-// export const 
+// export const
 export const GET_USER = "GET_USER";
 export const USER_LOADING = "USER_LOADING";
 export const FILTER_USERS = "FILTER_USERS";
@@ -45,8 +45,15 @@ export const TRANSACTION_LOADING = "TRANSACTION_LOADING";
 export const TRANSACTION_LOAD_ERROR = "TRANSACTION_LOAD_ERROR";
 // End Transactions
 
+// Audits
+export const GET_AUDITS = "GET_AUDITS";
+export const AUDIT_LOADING = "AUDIT_LOADING";
+
 //Branches
 export const GET_ALL_BRANCHES = "GET_ALL_BRANCHES";
 
 //PRODUCTS
 export const GET_ALL_PRODUCTS = "GET_ALL_PRODUCTS";
+
+// Dashboard
+export const GET_DASHBOARD_DATA = "GET_DASHBOARD_DATA";
