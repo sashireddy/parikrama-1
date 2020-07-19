@@ -7,7 +7,7 @@ function ViewCategory(props) {
     return (
       <React.Fragment>
         <div className="pl-3 pr-3">
-            <p>Are you sure you want to delete this Record?</p>
+            <p>Are you sure you want to Disable this Record?</p>
             <dl className="dl-horizontal">
               <dt>Product Name</dt>
               <dd>{props.record.name}</dd>

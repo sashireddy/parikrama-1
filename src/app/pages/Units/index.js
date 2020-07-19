@@ -3,9 +3,9 @@ import Skeleton from '../CrudSkeleton/index'
 import unitActions from "../../actions/units";
 import Add from "./add";
 import {connect} from "react-redux";
-import {Button} from "react-bootstrap"
+// import {Button} from "react-bootstrap"
 import {MODULE_INVENTORY} from "../../utils/accessControl";
-import isAllowed, {ACTION_MANAGE} from "../../utils/accessControl";
+// import isAllowed, {ACTION_MANAGE} from "../../utils/accessControl";
 
 const mapStateToProps = state => ({
     ...state["UNITS"]
@@ -48,7 +48,7 @@ class Unit extends React.Component {
                  return <tr>
                             <td>{props.record.name}</td>
                             <td>{props.record.description}</td>
-                            <td>{isAllowed(ACTION_MANAGE, MODULE_INVENTORY) ? <Button>Delete</Button> : '--'}</td>
+                            {/* <td>{isAllowed(ACTION_MANAGE, MODULE_INVENTORY) ? <Button>Delete</Button> : '--'}</td> */}
                         </tr>
              }} pk="id"
              headerArr = {headerArr} getTitle={getTitle} moduleName={MODULE_INVENTORY}/>

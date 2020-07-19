@@ -23,15 +23,15 @@ class Products extends React.Component {
         const getTitle = (actionType) => {
             switch (actionType) {
                 case "add":
-                    return "Add Branch";
+                    return "Add Product";
                 case "view":
-                    return "View Branch";
+                    return "View Product";
                 case "edit":
-                    return "Edit Branch";
+                    return "Edit Product";
                 case "del":
-                    return "Delete Branch";
+                    return "Delete Product";
                 default:
-                    return "Manage Branch";
+                    return "Manage Product";
             }
         }
         const headerArr = [

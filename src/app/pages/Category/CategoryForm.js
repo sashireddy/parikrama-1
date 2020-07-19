@@ -22,11 +22,6 @@ class CategoryForm extends React.Component {
         });
     }
 
-    onStatusChange = evt => {
-        this.setState({
-            isActive: evt.target.value === "active"
-        });
-    }
 
     onSubmit = event => {
         const form = event.currentTarget;
@@ -52,11 +47,6 @@ class CategoryForm extends React.Component {
                         <label htmlFor="description">Category Description</label>
                         <Form.Control type="text" className="form-control" id="categoryDesc" name="description" placeholder="Category Description" value={this.state.description} onChange={this.handleChange} />
                         <Form.Control.Feedback type="invalid">Provide description of the category</Form.Control.Feedback>
-                    </Form.Group>
-                    <Form.Group>
-                        <label htmlFor="isActive">Category Status</label>
-                        <Form.Check type="radio" id="categoryIsActive" name="isActive" value="active" label="Active" checked={this.state.isActive} onChange={this.onStatusChange} />
-                        <Form.Check type="radio" id="categoryIsInActive" name="isActive" value="inActive" label="In Active" checked={!this.state.isActive} onChange={this.onStatusChange} />
                     </Form.Group>
                 </div>
                 <hr className="modal-footer-ruler" />

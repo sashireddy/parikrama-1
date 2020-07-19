@@ -44,7 +44,7 @@ class BranchListRender extends Component {
               }
               {isAllowed(ACTION_MANAGE, MODULE_BRANCH) &&
                   <Button onClick={() => this.props.openActionMaodal(this.props.record, "del")} className="btn btn-danger ml-2">
-                      Delete
+                      Disable
                   </Button>
               }
             </>)}
