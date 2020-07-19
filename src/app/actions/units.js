@@ -10,7 +10,7 @@ const actions = (()=>{
         })
     }
     const updateAllRecords = async (dispatch) => {
-      const allData = refreshStateData();
+      const allData =await refreshStateData();
       dispatch({
         type: GET_ALL_UNITS,
         payload: allData,

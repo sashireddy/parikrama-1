@@ -1,3 +1,5 @@
+import InventorySummary from "../reducers/InventorySummary";
+
 export default {
     pages : {
         user : 'USER',
@@ -7,6 +9,7 @@ export default {
         role: 'ROLE',
         product : 'PRODUCT',
         UNITS : "UNITS",
-        transaction: 'TRANSACTION'
+        transaction: 'TRANSACTION',
+        InventorySummary : 'INVENTORY_SUMMARY' 
     }
 }

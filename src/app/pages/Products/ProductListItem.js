@@ -1,7 +1,10 @@
 import React from 'react';
 import {Button} from 'react-bootstrap';
-import {connect} from 'react-redux';
-import {getCategory,getUnit} from '../../utils/dataUtils';
+import {connect} from 'react-redux'
+import {getCategory,getUnit} from '../../utils/dataUtils'
+import {getActivePayload} from '../../utils/dataUtils'
+import ProductActions from '../../actions/productActions'
+import Store from '../../store'
 import {MODULE_INVENTORY} from "../../utils/accessControl";
 import isAllowed, {ACTION_VIEW, ACTION_MANAGE, ACTION_DELETE} from "../../utils/accessControl";
 
@@ -21,7 +24,8 @@ class RowRender extends React.Component {
         <td>{threshold}</td>
         <td>{getUnit(this.props.record.unit).name}</td>
         <td>
-          <nav>
+          <nav className="text-center">
+          {this.props.record.isActive && (<>
             {isAllowed(ACTION_VIEW, MODULE_INVENTORY) &&
                 <Button className="btn btn-primary" onClick={() => this.props.openActionMaodal(this.props.record, "view")}>
                     View
@@ -37,6 +41,13 @@ class RowRender extends React.Component {
                     Delete
                 </Button>
             }
+            </>)}
+            {!this.props.record.isActive && (
+              <>
+                <Button className="btn btn-primary" onClick={() => Store.dispatch(ProductActions.updateData(getActivePayload(this.props.record)))}>Enable</Button>
+              </>
+            )}
+
           </nav>
         </td>
     </tr>

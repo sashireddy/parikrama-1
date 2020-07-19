@@ -17,6 +17,18 @@ export const getProduct = productId => {
 export const getLoggedInUserInfo = () => {
     return store.getState()['USER'].loggedInUser;
 }
+export const getBranchInfo = branchId => {
+    return store.getState()['BRANCHES'].allRecords[branchId]
+}
+
+export const getDisabledPayload = (record) => {
+    record.isActive = false
+    return record
+}
+export const getActivePayload = (record) => {
+    record.isActive = true
+    return record
+}
 
 export const getBranch = branchId => {
     return store.getState()['BRANCHES'].allRecords[branchId];
@@ -24,4 +36,22 @@ export const getBranch = branchId => {
 
 export const getRole = roleId => {
     return store.getState()['ROLE'].allRecords[roleId];
+}
+
+export const isAdmin = () => {
+    return true
+}
+export const getThreshold = (productId,branchId) => {
+    try{
+        return store.getState()['PRODUCTS'].allRecords[productId][branchId] || 0;
+    }catch(err) {
+        return undefined
+    }
+}
+export const transformInventoryRow = data => {
+    const product = getProduct(data.product)
+    data.productName = product.name
+    data.categoryName = getCategory(product.category).name
+    data.unitName = getUnit(product.unit).name
+    return data
 }

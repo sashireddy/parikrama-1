@@ -3,26 +3,20 @@ import CrudSkeleton from '../CrudSkeleton/index'
 import InventoryActions from '../../actions/inventoryActions'
 import AddInventory from './AddInventory'
 import ViewInventory from './IssueRecord'
-import {Table,Button, Col,Row} from 'react-bootstrap'
-import {
-    connect,
-    // dispatch
-} from "react-redux";
+import {Button, Col,Row, Card} from 'react-bootstrap'
+import PendingTransactions from './PendingInventory'
+import {connect,} from "react-redux";
+import {getLoggedInUserInfo,getBranchInfo} from '../../utils/dataUtils'
+import {getDropdownItem,dropDownResponseFromMap} from '../../utils/dropDownUtils'
 import {getUnit,getCategory,getProduct} from '../../utils/dataUtils'
-
-
-const requests = [{
-    id:'requestId-1',
-    branch:'Kormangla',
-    currentInventory : 300,
-    note: 'need this to distribute this month',
-    requestedInventory : 30,
-
-}]
+import Select from 'react-select'
+import isAllowed,{MODULE_INVENTORY,ACTION_VIEW} from '../../utils/accessControl'
 
 const mapStateToProps = state => ({
-    state:{...state},
+    stateData: {
+        state,
     ...state['INVENTORY']
+    }
 });
 
 console.log(InventoryActions)
@@ -30,6 +24,7 @@ console.log(InventoryActions)
 const mapActionToProps = {
     getData : InventoryActions.getData,
     addData : InventoryActions.addData,
+    download : InventoryActions.downloadCSV
 };
 const InventorySkeleton = CrudSkeleton
 
@@ -41,12 +36,32 @@ class Inventory extends React.Component {
             showModal: false,
             currentCategory: null,
             actionType: null,
+            branch : getLoggedInUserInfo().branch,
+            branchName : getBranchInfo(getLoggedInUserInfo().branch).name
         }
     }
 
-    componentDidMount(){
-        //add other dependencies here 
-        // dispatch(loadBranchData())        
+    componentDidMount(){ 
+    }
+
+    getData= (crudParams) => {
+        this.props.getData({
+            branch:this.state.branch,
+            ...crudParams
+        })
+    }
+
+    handleBranchDropDown = (evt) => {
+        this.setState({
+            ...this.state,
+            branch : evt.value,
+            branchName : evt.label
+        },()=>{
+            this.getData({
+                ...this.props.stateData
+            })
+        })
+        
     }
 
     render() {
@@ -66,8 +81,15 @@ class Inventory extends React.Component {
         }
         const headerArr = [
             {
-                value: 'category',
-                key: 'category',
+                value: 'Category',
+                key: 'Category',
+            },{
+                value: 'Branch',
+                key: 'branch'
+            },{
+                value: 'Threshold',
+                key: 'threshold'
+
             },{
                 value: 'product',
                 key: 'product',
@@ -85,81 +107,25 @@ class Inventory extends React.Component {
             return (
                 <tr>
                     <td>{getCategory(product.category).name}</td>
+                    <td>{this.state.branchName}</td>
+                    <td>{props.record.threshold}</td>
                     <td>{product.name}</td>
                     <td> { props.record.availableQuantity > props.record.threshold ? 
                         <label className="badge badge-success">{props.record.availableQuantity}  {getUnit(product.unit).name}</label> :
                         <label className="badge badge-warning">{props.record.availableQuantity}  {getUnit(product.unit).name}</label>
                         }   
                     </td>
-                    <td><Button onClick={() =>{props.openActionMaodal(props.record,'view')}}>Disburse Inventory</Button></td>
+                    <td>{ this.state.branch === getLoggedInUserInfo().branch && <Button onClick={() =>{props.openActionMaodal(props.record,'view')}}>Disburse Inventory</Button>}</td>
                 </tr>
             )
         }    
-        const TransactionView = (props)=>{
-            return (
-            <>
-                <Row>
-                <div className="col-lg-12 grid-margin stretch-card">
-                    <div className="card">
-                        <div className="card-body">
-                            <h3>Transaction Requests by other Branches</h3>
-                            <Table>
-                                <thead>
-                                    <tr>
-                                        <th>Branch</th>
-                                        <th>current Inventory</th>
-                                        <th>requested Inventory</th>
-                                        <th>note</th>
-                                        <th>After Transaction</th>
-                                        <th>Actions</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {requests.map((request,idx)=>(
-                                        <tr key={idx}>
-                                            <td>{request.branch}</td>
-                                            <td>{request.currentInventory}</td>
-                                            <td>{request.requestedInventory}</td>
-                                            <td>{request.note}</td>
-                                            <td>{request.currentInventory - request.requestedInventory}</td>
-                                            <td><Row><Col><Button>Approve Request</Button></Col><Col><Button>Reject Request</Button></Col></Row></td>
-                                        </tr>)
-                                    )}
-                                </tbody>
-                            </Table>
-                            <br />
-                            {/* <h3>Transaction Request raised by You</h3>
-                            <Table>
-                                <thead>
-                                    <tr>
-                                        <th>Branch</th>
-                                        <th>requested Inventory</th>
-                                        <th>note</th>
-                                        <th>Actions</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {requests.map((request,idx)=>(
-                                        <tr key={idx}>
-                                            <td>{request.branch}</td>
-                                            <td>{request.requestedInventory}</td>
-                                            <td>{request.note}</td>
-                                            <td><Row><Col><Button>Cancel Request</Button></Col></Row></td>
-                                        </tr>)
-                                    )}
-                                </tbody>
-                            </Table> */}
-                        </div>
-                    </div>
-                </div>
-                </Row>
-            </>
-            )
-        }
+        console.log(this.props)
+        const loggedInUserInfo = getLoggedInUserInfo()
+        const branchOptions = dropDownResponseFromMap(this.props.stateData.state.BRANCHES.allRecords)
+        branchOptions.push(getDropdownItem("All branches","GET_ALL_BRANCHES"))
         return (
             <div>
                 <InventorySkeleton key="Inventory" content={{pageTitle:'Inventory'}} 
-                    OptionalTabel = {TransactionView}
                     AddModal={AddInventory}
                     EditModal={()=><></>}
                     ViewModal={ViewInventory}
@@ -167,9 +133,25 @@ class Inventory extends React.Component {
                     tableRowRenderFunc ={RowRender}
                     headerArr = {headerArr}
                     getTitle={getTitle}
-                    {...this.props}
+                    getData = {this.getData} {...this.props.stateData}
+                    addData = {this.props.addData}
+                    moduleName = {MODULE_INVENTORY}
+                    DontShowButon = {getLoggedInUserInfo().branch !== this.state.branch}
               >
-                  <TransactionView /> 
+                <PendingTransactions />
+                <Card>
+                    <Card.Body>
+                        <Row>
+                            <Col>
+                            <Select className="basic-single" classNamePrefix="select" defaultValue = {getDropdownItem(this.state.branchName,this.state.branch)}
+                                isSearchable={true}  options={branchOptions} onChange={(e)=>{this.handleBranchDropDown(e)}}/>
+                            </Col>
+                            <Col>
+                                <Button onClick={()=>{this.props.download({...this.state})}}>Download</Button>
+                            </Col>
+                        </Row>
+                    </Card.Body>
+                </Card>
               </InventorySkeleton>
             </div>
         )

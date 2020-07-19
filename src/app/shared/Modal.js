@@ -4,9 +4,10 @@ import {Modal} from "react-bootstrap";
 function ModalComponent(props) {
 	return (
 		<Modal
-      size="md"
+      size={props.size || "md"}
       show={props.show}
       onHide={props.closeModal}
+      dialogClassName ={props.dialogClassName}
 			aria-labelledby="example-modal-sizes-title-sm"
 	  >
       <Modal.Header closeButton>

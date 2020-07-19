@@ -3,6 +3,12 @@ import {Form, Row,Col,Alert} from 'react-bootstrap'
 import {connect} from 'react-redux'
 import {getLoggedInUserInfo,getProduct} from '../../utils/dataUtils'
 import InventoryActions from '../../actions/inventoryActions'
+import Select from 'react-select'
+import {dropDownResponseFromMap} from '../../utils/dropDownUtils'
+
+const LocalRequest = "ISSUE_PRODUCT"
+const TransferOperation = "TransferOperation"
+
 class IssueProduct extends React.Component {
     
     constructor(props){
@@ -11,9 +17,8 @@ class IssueProduct extends React.Component {
         this.state = {
             ...this.props.record,
             productName:getProduct(this.props.record.product).name,
-            branch :getLoggedInUserInfo().branch,
-
-           type:"ISSUE_PRODUCT",
+            fromBranch :getLoggedInUserInfo().branch,
+           type:LocalRequest,
            operationalQuantity : 0,
            note : ""
         }
@@ -21,13 +26,29 @@ class IssueProduct extends React.Component {
 
     handleChange = evt => {
         const operationalQuantity = evt.target.value
-        if(operationalQuantity >= 0 && operationalQuantity < this.props.record.availableQuantity){
+        if(operationalQuantity >= 0 && operationalQuantity <= this.props.record.availableQuantity){
             this.setState({
                 ...this.state,
                 operationalQuantity
             });
         }
     }
+
+    handleBranchDropDown =evt => {
+        this.setState({
+        ...this.state,
+        toBranch: evt && evt.value,
+        toBranchName: evt && evt.label
+        })
+    }
+
+    onStatusChange = label => {
+            this.setState({
+                ...this.state,
+                type:label,
+            })
+    }
+
     handleNote = evt => {
         this.setState({
             ...this.state,
@@ -49,25 +70,53 @@ class IssueProduct extends React.Component {
 
     render() {
         console.log(this.state)
+        const branchDropdownArr = dropDownResponseFromMap(this.props.branches.allRecords)
         const stockAfter = this.props.record.availableQuantity-this.state.operationalQuantity
         return (
             <form className="forms-sample" onSubmit={this.onSubmit} >
                 <div className="pl-3 pr-3">
+                    <Form.Group>
+                        <label htmlFor="isHeadOffice">Request Type</label>
+                        <Form.Check type="radio" id={LocalRequest} name={LocalRequest} value={LocalRequest} 
+                            label="Disburse Inventory Locally" checked={this.state.type === LocalRequest}
+                            onChange={()=>this.onStatusChange(LocalRequest)} />
+                        <Form.Check type="radio" id={TransferOperation} name ={TransferOperation} value={TransferOperation} 
+                            label="Move Inventory To Another Branch" checked={this.state.type === TransferOperation}
+                            onChange={()=>this.onStatusChange(TransferOperation)}
+                            />
+                    </Form.Group>
+                    {this.state.type === TransferOperation &&<Form.Group>
+                        <label htmlFor="exampleInputEmail1">To Branch</label>
+                        <Select className="basic-single" classNamePrefix="select"
+                            isClearable={true} isSearchable={true}  options={branchDropdownArr} onChange={(e)=>{this.handleBranchDropDown(e)}}/>
+                    </Form.Group>}
                     <Row>
                         <Col>
                             <h6>Current Stock: {this.props.record.availableQuantity}</h6> 
                         </Col>
                         <Col>
+                            <h6>Threshold : {this.props.record.threshold}</h6>
+                        </Col>
+                        <Col>
                             <h6>Stock left after transaction: {stockAfter}</h6>
                         </Col>
                     </Row>
-                    <Col>
+                    <Row>
+                        <Col>
+                            <h6>
+                                Product : {this.props.record.productName}
+                            </h6>
+                        </Col>
+                    </Row>
+                    <Row><Col>
                     <Form.Group>
                         <label htmlFor="exampleInputEmail1">Quantity</label>
                         <Form.Control required type="number" className="form-control" id="operationalQuantity" name="operationalQuantity" placeholder="" value={this.state.operationalQuantity} onChange={this.handleChange} />
                         <Form.Control.Feedback type="invalid">Please enter a valid quantity</Form.Control.Feedback>
                     </Form.Group>
                     </Col>
+                    </Row>
+                    <Row>
                     <Col>
                     <Form.Group>
                         <label htmlFor="">Note</label>
@@ -77,11 +126,14 @@ class IssueProduct extends React.Component {
                         <Form.Control.Feedback type="invalid">Please enter a note about the transaction</Form.Control.Feedback>
                     </Form.Group>
                     </Col>
+                    </Row>
                     { stockAfter < this.props.record.threshold && (
                     <Row>
+                        <Col>
                         <Alert variant={'danger'}>
                         your stock will fall below threshold after this transaction
                         </Alert>
+                        </Col>
                     </Row>
                     )}
                 </div>
@@ -95,4 +147,4 @@ class IssueProduct extends React.Component {
     }
 }
 
-export default connect(()=>({}),{createTransaction :InventoryActions.createInventoryTransaction})(IssueProduct);
+export default connect((state)=>({branches : state['BRANCHES']}),{createTransaction :InventoryActions.createInventoryTransaction})(IssueProduct);

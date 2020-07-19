@@ -37,10 +37,6 @@ class Unit extends React.Component {
                 },{
                     value : 'Description',
                     key : 'description'
-                },
-                {
-                    value : 'Actions',
-                    key : 'actions'
                 }
             ]
 

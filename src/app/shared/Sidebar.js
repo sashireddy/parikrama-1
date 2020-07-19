@@ -157,13 +157,21 @@ class Sidebar extends Component {
             </Link>
           </li>
           }
-          {isAllowed(ACTION_VIEW, MODULE_INVENTORY) &&
+          {isAllowed(ACTION_VIEW, MODULE_INVENTORY) && (
+            <>
           <li className={ this.isPathActive('/units') ? 'nav-item active' : 'nav-item' }>
             <Link className="nav-link" to="/units">
               <i className="mdi mdi-table-large menu-icon"></i>
               <span className="menu-title">Units</span>
             </Link>
           </li>
+          <li className={ this.isPathActive('/units') ? 'nav-item active' : 'nav-item' }>
+            <Link className="nav-link" to="/units">
+              <i className="mdi mdi-table-large menu-icon"></i>
+              <span className="menu-title">Units</span>
+            </Link>
+          </li>
+          </>)
           }
           {isAllowed(ACTION_VIEW, MODULE_INVENTORY) &&
             <li className={ this.isPathActive('/products') ? 'nav-item active' : 'nav-item' }>
