@@ -1,0 +1,40 @@
+{
+    "PendingRequest": [
+        {
+            "id":"requestId-1",
+            "branch":"Kormangla",
+            "currentInventory" : 300,
+            "note": "need this to distribute this month",
+            "requestedInventory" : 30
+        }
+    ],
+    "PendingTransfers": [
+      {
+
+      }
+    ],
+    "RecentActivity": {
+      "branch1" : [
+        {
+
+        }
+      ],
+      "branch2" : [
+        {
+
+        }
+      ]
+    },
+    "ProductsUnderThreashold": {
+      "branch1" : [
+        {
+
+        }
+      ],
+      "branch2" : [
+        {
+
+        }
+      ]
+    }
+  }

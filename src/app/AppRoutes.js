@@ -13,7 +13,7 @@ import {
         MODULE_TRANSACTION,
         MODULE_REPORT } from "./utils/accessControl";
 
-const Dashboard = lazy(() => import('./dashboard/Dashboard'));
+// const Dashboard = lazy(() => import('./dashboard/Dashboard'));
 
 const Buttons = lazy(() => import('./basic-ui/Buttons'));
 const Dropdowns = lazy(() => import('./basic-ui/Dropdowns'));
@@ -47,7 +47,10 @@ const User = lazy(()=> import('./pages/User'));
 const Move = lazy(()=> import ('./pages/Move'));
 const Unit = lazy(()=> import('./pages/Units'));
 const Transaction = lazy(()=> import ('./pages/Transaction'));
+const Dashboard = lazy(()=> import ('./pages/Dashboard'));
+const Audit = lazy(()=> import ('./pages/Audit'));
 const InventoryReports = lazy(()=> import('./pages/InventorySummary'));
+
 class AppRoutes extends Component {
   render () {
     return (
@@ -65,6 +68,7 @@ class AppRoutes extends Component {
           {isAllowed(ACTION_GENERATE, MODULE_REPORT) && <Route path="/reports" component ={ Reports } />}
           {isAllowed(ACTION_VIEW, MODULE_TRANSACTION) && <Route path="/transactions" component ={ Transaction } />}
           {isAllowed(ACTION_VIEW, MODULE_BRANCH) && <Route path="/branches/" component={ Branch } />}
+          <Route path="/audits" component={ Audit } />
 
           <Route path="/basic-ui/buttons" component={ Buttons } />
           <Route path="/basic-ui/dropdowns" component={ Dropdowns } />

@@ -10,7 +10,7 @@ import {
         MODULE_ROLE,
         //MODULE_TRANSFER,
         MODULE_INVENTORY,
-        //MODULE_AUDITLOG,
+        MODULE_AUDITLOG,
         MODULE_TRANSACTION } from "../utils/accessControl";
 
 class Sidebar extends Component {
@@ -178,6 +178,14 @@ class Sidebar extends Component {
               <Link className="nav-link" to="/transactions">
                 <i className="mdi mdi-table-large menu-icon"></i>
                 <span className="menu-title">Transactions</span>
+              </Link>
+            </li>
+          }
+          {isAllowed(ACTION_VIEW, MODULE_AUDITLOG) &&
+            <li className={ this.isPathActive('/audits') ? 'nav-item active' : 'nav-item' }>
+              <Link className="nav-link" to="/audits">
+                <i className="mdi mdi-table-large menu-icon"></i>
+                <span className="menu-title">Audits</span>
               </Link>
             </li>
           }

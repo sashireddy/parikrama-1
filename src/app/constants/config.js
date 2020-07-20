@@ -76,6 +76,15 @@ export default {
             "GET_TRANSACTIONS": "https://local-parikrama.web.app/api/transactions",
             "CACHING": false,
             "PAGE_LIMIT": 10
+        },
+        "AUDITS" : {
+            "GET_AUDITS": "https://local-parikrama.web.app/api/audits",
+            "CACHING": false,
+            "PAGE_LIMIT": 10
+        },
+        "DASHBOARD" : {
+            "GET_DASHBOARD_DATA": "/data/dashboard.json",
+            "CACHING": true
         }
     }
 };

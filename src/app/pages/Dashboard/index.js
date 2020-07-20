@@ -1,6 +1,12 @@
 import React from "react";
+import {connect} from "react-redux";
+
+import dashboardAction from "../../actions/dashboardActions";
 
 class Dashboard extends React.PureComponent {
+    componentDidMount(){
+        this.props.getDashboardData();
+    }
 
     render(){
         return(
@@ -10,6 +16,7 @@ class Dashboard extends React.PureComponent {
                         <div className="card">
                             <div className="card-body">
                                 <div className="row">
+                                    <h1>HELLO Kitty!</h1>
                                 </div>
                             </div>
                         </div>
@@ -18,7 +25,14 @@ class Dashboard extends React.PureComponent {
             </div>
         );
     }
-
 }
 
-export default Dashboard;
+const mapStateToProps = state => ({
+    ...state["DASHBOARD"]
+});
+
+const mapActionToProps = {
+    ...dashboardAction
+};
+
+export default connect(mapStateToProps, mapActionToProps)(Dashboard);
