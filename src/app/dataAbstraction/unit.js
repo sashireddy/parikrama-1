@@ -22,15 +22,23 @@ const apiResponse = {
     sort: {}
 };
 
+export const setCachedData = data => {
+    cachedData = data;
+}
+
 // Function to load all the data as part for the initial load
 export const loadInitialData = () => {
     return new Promise(async (resolve, reject) => {
-        const url = `${config.API.BASE_URL}${apiConfig.GET_ALL_UNITS}`;
-        const res = await axios.get(url);
-        if(apiConfig.CACHING){
-            cachedData = res.data.units;
+        if(cachedData !== null){
+            resolve(arrayToMapWithId(cachedData));
+        } else {
+            const url = `${config.API.BASE_URL}${apiConfig.GET_ALL_UNITS}`;
+            const res = await axios.get(url);
+            if(apiConfig.CACHING){
+                cachedData = res.data.units;
+            }
+            resolve(arrayToMapWithId(res.data.units));
         }
-        resolve(arrayToMapWithId(res.data.units));
     });
 }
 

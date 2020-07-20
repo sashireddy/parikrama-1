@@ -41,7 +41,7 @@ export const getAuditsData = params => {
                 if(apiConfig.CACHING){
                     cachedData = res.data.transactions;
                 } else {
-                    apiResponse.data = res.data.transactions;
+                    apiResponse.data = res.data.audit;
                     apiResponse.startDate = params.startDate;
                     apiResponse.endDate = params.endDate;
                     apiResponse.email = params.email;

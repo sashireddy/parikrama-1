@@ -18,6 +18,7 @@ import {addNotification} from './actions/notification'
 import branchesActions from './actions/branchActions';
 import {validateIntialLoad} from './utils/dataUtils'
 import productActions from './actions/productActions';
+// import metadataAction from './actions/metadataAction';
 const mapStateToProps = state => ({
   auth : state['AUTH'],
   state
@@ -32,9 +33,10 @@ class App extends Component {
     }
   }
   componentDidMount() {
-    // store.dispatch(permissionActions.getAllPermissions());
-    store.dispatch(roleActions.getAllRoles());
     store.dispatch(userActions.getUserInfo());
+    // store.dispatch(metadataAction.getAllMetadata());
+    store.dispatch(userActions.getUserInfo());
+    store.dispatch(roleActions.getAllRoles());
     store.dispatch(UnitActions.initialData());
     store.dispatch(categoryActions.getAllCategories());
     store.dispatch(productActions.getAllProducts());

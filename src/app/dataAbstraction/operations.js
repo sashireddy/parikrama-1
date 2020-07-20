@@ -22,26 +22,22 @@ let cachedData = null;
 //     sort: {}
 // };
 
-
+export const setCachedData = data => {
+    cachedData = data;
+}
 
 // All the method will return promise, which will hold good for doing
 // async operations, we don't have to make changes for the cached vs live data
 // State params passed which will be used to pass to live api or
 // for static data to get proper data as per the params
-export const getData = () => {
+export const loadInitialData = data => {
     return new Promise(async (resolve, reject) => {
-        if(cachedData === null){
-            // Logic can be applied to generate URL using params
-            const url = `${config.API.BASE_URL}${apiConfig.GET_PERMISSIONS}`;
-            const res = await axios.get(url);
-            res.flashMessage = {
-                "type": "success",
-                "message": "Data Loaded Successfully!"
-            };
-            if(apiConfig.CACHING){
-                cachedData = res.data.permissions;
-            }
-            resolve(res.data.permissions);
+        // Logic can be applied to generate URL using params
+        // const url = `${config.API.BASE_URL}${apiConfig.GET_PERMISSIONS}`;
+        // const res = await axios.get(url);
+        if(apiConfig.CACHING){
+            cachedData = data;
         }
+        resolve(data);
     });
 }
