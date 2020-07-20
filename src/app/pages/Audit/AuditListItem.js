@@ -32,9 +32,9 @@ const DiffView = (props) => {
     return (
         <li>
             <div>
-            <span class="badge badge-info">{props.property}</span> :
-            <span class="badge badge-secondary">{JSON.stringify(props.before[props.property])}</span> <i className="fa fa-long-arrow-right ml-1 mr-2"></i>
-            <span class="badge badge-primary">{JSON.stringify(props.after[props.property])}</span></div>
+            <span className="badge badge-info">{props.property}</span> :
+            <span className="badge badge-secondary">{JSON.stringify(props.before[props.property])}</span> <i className="fa fa-long-arrow-right ml-1 mr-2"></i>
+            <span className="badge badge-primary">{JSON.stringify(props.after[props.property])}</span></div>
         </li>
     );
 }

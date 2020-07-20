@@ -53,6 +53,15 @@ class BranchForm extends React.Component {
             }
         })
     }
+    handleAddressChangeNumber = event => {
+        this.setState({
+            ...this.state,
+            address: {
+                ...this.state.address,
+                [event.target.name]: parseInt(event.target.value)
+            }
+        })
+    }
     render() {
         console.log(this.state)
         return(
@@ -85,7 +94,7 @@ class BranchForm extends React.Component {
                     </Form.Group>
                     <Form.Group>
                         <label htmlFor="exampleInputEmail1">Zip</label>
-                        <Form.Control required type="text" className="form-control" id="Zip" name="zipcode" placeholder="Zip Code" value={getFallbackIfEmpty(this.state.address.zipcode)} onChange={this.handleAddressChange} />
+                        <Form.Control required type="number" className="form-control" id="Zip" name="zipcode" placeholder="Zip Code" value={getFallbackIfEmpty(this.state.address.zipcode)} onChange={this.handleAddressChangeNumber} />
                         <Form.Control.Feedback type="invalid">Please provide street name</Form.Control.Feedback>
                     </Form.Group>
                     <Form.Group>

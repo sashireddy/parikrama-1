@@ -1,5 +1,3 @@
-import InventorySummary from "../reducers/InventorySummary";
-
 export default {
     pages : {
         user : 'USER',

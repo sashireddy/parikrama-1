@@ -69,16 +69,8 @@ class InventorySummary extends React.Component {
     render(){
         const getTitle = (actionType) => {
             switch (actionType) {
-                case "add":
-                    return "Add Branch";
-                case "view":
-                    return "View Branch";
-                case "edit":
-                    return "Edit Branch";
-                case "del":
-                    return "Delete Branch";
                 default:
-                    return "Manage Branch";
+                    return "Inventory";
             }
         }
         const headerArr = [
@@ -93,12 +85,30 @@ class InventorySummary extends React.Component {
                 },{
                     value : 'Threshold',
                     key : 'threshold'
-                },
+                },{
+                    value : 'Initial Quantity',
+                    key : 'Initial Quantity'
+                },{
+                    value : 'Consumed Quantity',
+                    key : 'Consumed Quantity'
+                },{
+                    value : 'Transfered Quantity',
+                    key : 'Transfered Quantity'
+                },{
+                    value : 'Added Quantity',
+                    key : 'Added Quantity'
+                },{
+                    value : 'Closing Quantity',
+                    key : 'Closing Quantity'
+                }
             ]
         
         const getQuantityWithUnit = (quantity, product) => {
             return quantity+" "+getUnit(product.unit).name
         }
+        const getQuantityLabel = (quantity,threshold,product) =>  quantity > threshold ? 
+            <label className="badge badge-success">{getQuantityWithUnit(quantity,product)}</label> :
+            <label className="badge badge-warning">{getQuantityWithUnit(quantity,product)}</label>
         const tableRowRenderFunc = (props)=> {
             const product = getProduct(props.record.product)
             return (
@@ -106,16 +116,14 @@ class InventorySummary extends React.Component {
                     <td>{product.name}</td>
                     <td>{getCategory(product.category).name}</td>
                     <td>{props.record.threshold}</td>
-
-                    <td> { props.record.closingQuantity > props.record.threshold ? 
-                        <label className="badge badge-success">{getQuantityWithUnit(props.record.closingQuantity,product)}</label> :
-                        <label className="badge badge-warning">{getQuantityWithUnit(props.record.closingQuantity,product)}</label>
-                        }   
-                    </td>
+                    <td>{getQuantityLabel(props.record.initialQuantity,props.record.threshold,product)}</td>
+                    <td>{getQuantityWithUnit(props.record.consumedQuantity,product)}</td>
+                    <td>{getQuantityWithUnit(props.record.transferredQuantity,product)}</td>
+                    <td>{getQuantityWithUnit(props.record.addedQuantity,product)}</td>
+                    <td>{getQuantityLabel(props.record.closingQuantity,props.record.threshold,product)}</td>  
                 </tr>
             )
         }
-        console.log(this.props)
         return(
             <Skeleton 
              content={{pageTitle:'Inventory Summary'}}

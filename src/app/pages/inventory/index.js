@@ -3,7 +3,7 @@ import CrudSkeleton from '../CrudSkeleton/index'
 import InventoryActions from '../../actions/inventoryActions'
 import AddInventory from './AddInventory'
 import ViewInventory from './IssueRecord'
-import {Button, Col,Row, Card} from 'react-bootstrap'
+import {Button, Col,Row, Card, Form} from 'react-bootstrap'
 import PendingTransactions from './PendingInventory'
 import {connect,} from "react-redux";
 import {getLoggedInUserInfo,getBranchInfo} from '../../utils/dataUtils'
@@ -120,7 +120,7 @@ class Inventory extends React.Component {
             )
         }    
         console.log(this.props)
-        const loggedInUserInfo = getLoggedInUserInfo()
+        // const loggedInUserInfo = getLoggedInUserInfo()
         const branchOptions = dropDownResponseFromMap(this.props.stateData.state.BRANCHES.allRecords)
         branchOptions.push(getDropdownItem("All branches","GET_ALL_BRANCHES"))
         return (
@@ -139,15 +139,18 @@ class Inventory extends React.Component {
                     DontShowButon = {getLoggedInUserInfo().branch !== this.state.branch}
               >
                 <PendingTransactions />
-                <Card>
+                <Card className="marginBottom">
                     <Card.Body>
                         <Row>
                             <Col>
-                            <Select className="basic-single" classNamePrefix="select" defaultValue = {getDropdownItem(this.state.branchName,this.state.branch)}
-                                isSearchable={true}  options={branchOptions} onChange={(e)=>{this.handleBranchDropDown(e)}}/>
+                            <Form.Group className="select-box-fix">
+                                <Form.Label>Branch</Form.Label>
+                                <Select className="basic-single" classNamePrefix="select" defaultValue = {getDropdownItem(this.state.branchName,this.state.branch)}
+                                    isSearchable={true}  options={branchOptions} onChange={(e)=>{this.handleBranchDropDown(e)}}/>
+                            </Form.Group>
                             </Col>
-                            <Col>
-                                <Button onClick={()=>{this.props.download({...this.state})}}>Download</Button>
+                            <Col className="justify-content-end flex">
+                                <Button className="buttonNormal" onClick={()=>{this.props.download({...this.state})}}>Download</Button>
                             </Col>
                         </Row>
                     </Card.Body>
