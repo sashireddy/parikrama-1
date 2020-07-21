@@ -181,6 +181,15 @@ class Sidebar extends Component {
               </Link>
             </li>
           }
+          {
+            isAllowed(ACTION_VIEW,MODULE_INVENTORY) && 
+            <li className={ this.isPathActive('/inventoryreports') ? 'nav-item active' : 'nav-item' }>
+              <Link className="nav-link" to="/inventoryreports">
+                <i className="mdi mdi-table-large menu-icon"></i>
+                <span className="menu-title">Inventory Summary Report</span>
+              </Link>
+            </li>
+          }
           {isAllowed(ACTION_VIEW, MODULE_AUDITLOG) &&
             <li className={ this.isPathActive('/audits') ? 'nav-item active' : 'nav-item' }>
               <Link className="nav-link" to="/audits">

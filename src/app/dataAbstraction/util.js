@@ -59,6 +59,18 @@ export const filterData = (params, records) => {
     }
     return result;
 }
+export const genericFilter = (params,records) => {
+    let result = records;
+    Object.keys(params.search).forEach(entry => {
+        if(params.search[entry]){
+            result = records.filter(item => item[entry].toLowerCase().includes(params.search[entry].toLowerCase()))
+        }
+    })
+    if(params.sort.key) {
+        return result.sort(getSortFunction(params.sort));
+    }
+    return result;
+}
 
 export const handleResponse = res => {
     if(!res) return [null,new Error("Response is empty")]

@@ -1,7 +1,5 @@
 import React from "react";
-import UnitAction from '../../actions/units'
-import Store from '../../store'
-import {getDisabledPayload} from '../../utils/dataUtils'
+
 function ViewCategory(props) {
     return (
       <React.Fragment>
@@ -23,10 +21,6 @@ function ViewCategory(props) {
         <hr className="modal-footer-ruler" />
         <div className="text-right">
           <button className="btn btn-light mr-2" onClick={() => {props.closeModal()}}>Close</button>
-          <button className="btn btn-light mr-2" onClick={() => {
-              Store.dispatch(UnitAction.updateData(getDisabledPayload(props.record)))
-              props.closeModal()
-          }} > Disable</button>
         </div>
       </React.Fragment>
     );

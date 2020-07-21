@@ -1,6 +1,6 @@
 import axios from 'axios';
 import config from "../constants/config";
-import {validateCurrentPage, arrayToMapWithId, filterData} from "./util";
+import {validateCurrentPage, arrayToMapWithId,handleResponse, filterData} from "./util";
 
 const apiConfig = config.API.UNITS;
 
@@ -108,6 +108,48 @@ export const addUnitData = data => {
             // Needs to handle API or DB data updates.
             console.log("Need to implement API based data insertion");
         }
+    });
+}
+
+
+// Update category implementation
+export const updateUnitData = data => {
+    return new Promise(async (resolve, reject) => {
+        let response;
+        try{
+            response = await axios.put(apiConfig.ADD_UNIT,data)
+        }catch(err) {
+            reject(err);
+        }const [,err] = handleResponse(response);
+        if(apiConfig.CACHING && !err) {
+            cachedData = cachedData.map(item => {
+                if(item.id === data.id) {
+                    return {
+                        ...item,
+                        ...data
+                    }
+                }
+                return item;
+            });
+        }
+            const params = {
+                currentPage: apiResponse.currentPage,
+                pageLimit: apiResponse.pageLimit,
+                search: apiResponse.search,
+                sort: apiResponse.sort
+            }
+            // Need to Update the actual data to the source
+            // Get the data back from source for the above params
+            try {
+                const res = await getPageData(params);
+                res.flashMessage = {
+                    "type": "success",
+                    "message": "Branch Updated Successfully!"
+                };
+                resolve(res);
+            } catch(err) {
+                reject(err);
+            }
     });
 }
 

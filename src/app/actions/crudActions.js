@@ -4,6 +4,7 @@ const actions = (pageId,getEntityData,updateEntityData,addEntityData,deleteEntit
 
   const getData = 'GET_'+pageId;
   const loading = pageId+'_LOADING';
+  const removeLoading = pageId+'_REMOVE_LOADING'
   const setLoading = () => {
     return {
         type: loading,
@@ -32,6 +33,9 @@ const actions = (pageId,getEntityData,updateEntityData,addEntityData,deleteEntit
           payload: res,
         });
       } catch (err) {
+        dispatch({
+          title:removeLoading
+        })
         addNotification({
           title: getData,
           type: "danger",
@@ -55,6 +59,9 @@ const actions = (pageId,getEntityData,updateEntityData,addEntityData,deleteEntit
         });
         if(updateData) { updateData(dispatch)}
       } catch (err) {
+        dispatch({
+          title:removeLoading
+        })
         addNotification({
           title: getData,
           type: "danger",
@@ -75,6 +82,9 @@ const actions = (pageId,getEntityData,updateEntityData,addEntityData,deleteEntit
         });
         if(updateData) { updateData(dispatch)}
       } catch (err) {
+        dispatch({
+          title:removeLoading
+        })
         addNotification({
           title: getData,
           type: "danger",
@@ -95,6 +105,9 @@ const actions = (pageId,getEntityData,updateEntityData,addEntityData,deleteEntit
         })
         if(updateData) { updateData(dispatch)}
       } catch (err) {
+        dispatch({
+          title:removeLoading
+        })
         addNotification({
           title: getData,
           type: "danger",

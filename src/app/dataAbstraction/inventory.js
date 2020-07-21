@@ -1,9 +1,10 @@
 import config from "../constants/config";
 import axios from 'axios';
 import {handleResponse} from './util'
-import {getProduct,getUnit,getCategory, getBranch} from '../utils/dataUtils'
-import { getThreshold} from '../utils/dataUtils'
+// import {getProduct,getUnit,getCategory, getBranch} from '../utils/dataUtils'
+import {getUnit,getCategory,getProduct,getBranch,getThreshold} from '../utils/dataUtils'
 import {arrayToCsvContent,download} from '../utils/csvUtils'
+import {genericFilter,validateCurrentPage} from './util'
 const pageConfig = config.API.INVENTORY;
 
 // Null indicates we need to fetch the data from the source
@@ -58,7 +59,7 @@ export const respondToTransferRequest = async params => {
         Object.keys(params.quantityMap).forEach(entry => {
             list.push({
                 operationalQuantity : params.quantityMap[entry],
-                productId: params.product,
+                product: params.product,
                 productName: params.productName,
                 pendingRequestsId : params.id,
                 fromBranch: entry,
@@ -82,9 +83,6 @@ export const respondToTransferRequest = async params => {
     }catch (err) {
         throw new Error(err) 
     }
-    // const [, err ] = handleResponse(await axios.post(pageConfig.TRANSFER_REQUEST,params))
-    // if(err){ throw new Error(err) }
-    
 }
 
 export const createTransaction = ({type,...otherParams}) => {
@@ -247,36 +245,6 @@ export const getData = params => {
 
 // Add category implementaion
 export const addData = data => {
-    return new Promise(async (resolve, reject) => {
-        if(pageConfig.CACHING){
-            data._id = create_UUID();
-            cachedData = [
-                ...cachedData,
-                data
-            ];
-            const params = {
-                currentPage: output.currentPage,
-                pageLimit: output.pageLimit,
-                search: output.search,
-                sort: output.sort
-            }
-            // Need to Add the actual data to the source
-            // Get the data back from source for the above params
-            try {
-                const res = await getData(params);
-                res.flashMessage = {
-                    "type": "success",
-                    "message": "Category Added Successfully!"
-                };
-                resolve(res);
-            } catch(err) {
-                reject(err);
-            }
-        } else {
-            // Needs to handle API or DB data updates.
-            console.log("Need to implement API based data insertion");
-        }
-    });
 }
 
 // Update category implementation
@@ -360,6 +328,14 @@ const getCurrentStateData = params => {
     // After search total records may vary, reset pagination to 1st page.
     // let records = filterData(params);
     let records = cache[params.branch] || cache[0]
+    records.map(entry => {
+        const product = getProduct(entry.product)
+        entry.productName = product.name
+        entry.categoryName = getCategory(product.category).name
+        entry.unitName = getUnit(product.unit).name
+        return entry
+    })
+    records = genericFilter(params,records)
     let currentPage = validateCurrentPage(params, records);
     output.totalRecords = records.length;
     const offset = (currentPage - 1) * params.pageLimit;
@@ -370,78 +346,20 @@ const getCurrentStateData = params => {
     output.summaryCache = summaryCache
 }
 
-// Validate current page, Might change due to delete, search operation
-// This is only required for the cached data
-const validateCurrentPage = (params, records) => {
-    const offset = (params.currentPage - 1) * params.pageLimit;
-    if(offset >= records.length && params.currentPage > 1){
-        // Set to last page.
-        return Math.ceil(records.length / params.pageLimit);
-    }
-    return params.currentPage;
-}
-
-// Need to filter and sort the data
-const filterData = params => {
-    // More complex search need to handle as needed
-    let result = cachedData;
-    let searchText = params.search.name && params.search.name.toLowerCase();
-    if(searchText) {
-        result = cachedData.filter(item => item.name.toLowerCase().includes(searchText));
-    }
-    if(params.sort.key) {
-        return result.sort(getSortFunction(params.sort));
-    }
-    return result;
-}
-
-// Used locally for demonstration
-const create_UUID = () => {
-    let dt = new Date().getTime();
-    const uuid = "xxxxxxxxxxxx4xxxyxxx".replace(/[xy]/g, function(c) {
-        const r = (dt + Math.random()*16)%16 | 0;
-        dt = Math.floor(dt/16);
-        // eslint-disable-next-line
-        return (c==='x' ? r :(r&0x3|0x8)).toString(16);
-    });
-    return uuid;
-}
-
-// Function currying to return dynamic compare function
-const getSortFunction = sort => {
-    let sortOrder = sort.direction || "asc";
-    if(sortOrder === "asc"){
-        return (a, b) => {
-            if(a[sort.key] > b[sort.key]){
-                return 1;
-            } else if(a[sort.key] < b[sort.key]) {
-                return -1;
-            }
-            return 0;
-        }
-    } else {
-        return (a, b) => {
-            if(a[sort.key] > b[sort.key]){
-                return -1;
-            } else if(a[sort.key] < b[sort.key]) {
-                return 1;
-            }
-            return 0;
-        }
-    }
-}
-
 export const generateCsv = (params) => {
+    const branchName = getBranch(params.branch).name
+    const headerArr = ['Category','Branch','Threshold','Product','Available Quantity']
     const arr = cache[params.branch] || []
     const outArr = []
+    outArr.push(headerArr)
     arr.forEach(row=> {
         const tempRow = []
-        const product = getProduct(row.product)
-        tempRow.push(product.name)
-        tempRow.push(getCategory(product.category).name)
-        tempRow.push(`${row.availableQuantity} `+getUnit(product.unit).name)
+        tempRow.push(row.categoryName)
+        tempRow.push(branchName)
         tempRow.push(row.threshold)
+        tempRow.push(row.productName)
+        tempRow.push(`${row.availableQuantity} `+row.unitName)
         outArr.push(tempRow)
     })
-    download(arrayToCsvContent(outArr),"Inventory.csv",)
+    download(arrayToCsvContent(outArr),`AvailableQuantity${branchName}.csv`,)
 }

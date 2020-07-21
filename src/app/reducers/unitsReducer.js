@@ -1,4 +1,4 @@
-import {GET_ALL_UNITS , ADD_UNIT,GET_UNITS} from '../actions/types'
+import {GET_ALL_UNITS , ADD_UNIT,GET_UNITS,UNITS_LOADING,} from '../actions/types'
 import config from '../constants/config'
 const initialState = {
     data: [],
@@ -12,16 +12,17 @@ const initialState = {
 }
 export default function(state = initialState, action){
     switch(action.type){
+        case UNITS_LOADING : 
+            return {
+                ...state,
+                loading : true
+            }
         case GET_ALL_UNITS:
             return {
                 ...state,
                 allRecords : action.payload,
                 initialLoad : true,
                 loading : false
-            }
-        case ADD_UNIT:
-            return {
-                data : [...state.data , action.unit]
             }
         case GET_UNITS:
             console.log(GET_UNITS, action.payload);
@@ -30,6 +31,11 @@ export default function(state = initialState, action){
                     ...action.payload,
                     loading: false
                 }
+        case "UNITS_PAGELOAD_ERROR":
+            return {
+                ...state,
+                loading : false
+            }
         default:
             return state
 

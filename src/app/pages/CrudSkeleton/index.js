@@ -124,12 +124,12 @@ class CrudSkeleton extends Component {
                         <div className="card">
                             <div className="card-body">
                                 <div className="table-responsive">
-                                    <Form className="form-inline justify-content-end" onSubmit={this.onSearch}>
+                                    <Form className="form-inline justify-content-end paddedLine" onSubmit={this.onSearch}>
                                         <Form.Group>
                                             {this.props.headerArr.map((entry,idx)=>{
                                                 if(!entry.searchable) return null
                                                     return(
-                                                        <div className="input-group" key={`search-${idx}`}>
+                                                        <div className="input-group paddedSearchBox" key={`search-${idx}`}>
                                                         <Form.Control type="text" name="search" data-field={entry.key}
                                                             onChange={this.handleChange}
                                                             className="form-control"
@@ -145,7 +145,7 @@ class CrudSkeleton extends Component {
                                                     )
                                             })}
                                         </Form.Group>
-                                        {isAllowed(ACTION_MANAGE, this.props.moduleName) && AddModal && <Button onClick={() => this.openActionMaodal(null, "add")} className="btn btn-primary ml-2 search-btn">Add Record</Button>}
+                                        {isAllowed(ACTION_MANAGE, this.props.moduleName) && AddModal && <Button onClick={() => this.openActionMaodal(null, "add")} className="btn btn-primary ml-2 search-btn">{this.props.content.addButton || 'Add Record'}</Button>}
                                     </Form>
                                 </div>
                                 <div className="table-responsive">

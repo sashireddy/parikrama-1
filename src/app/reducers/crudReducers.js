@@ -14,6 +14,7 @@ const initialState = {
 const reducer = (pageId) => {
     const getData = 'GET_'+pageId
     const loading = pageId+'_LOADING'
+    const removeLoading = pageId+'_REMOVE_LOADING'
     return function(state = initialState, action){
         switch(action.type){
             case loading:
@@ -28,7 +29,11 @@ const reducer = (pageId) => {
                     ...action.payload,
                     loading: false
                 }
-
+            case removeLoading:
+                return{
+                    ...state,
+                    loading: false,
+                }
             default:
                 return state;
         }

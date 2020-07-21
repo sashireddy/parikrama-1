@@ -8,7 +8,6 @@ import PendingTransactions from './PendingInventory'
 import {connect,} from "react-redux";
 import {getLoggedInUserInfo,getBranchInfo} from '../../utils/dataUtils'
 import {getDropdownItem,dropDownResponseFromMap} from '../../utils/dropDownUtils'
-import {getUnit,getCategory,getProduct} from '../../utils/dataUtils'
 import Select from 'react-select'
 import isAllowed,{MODULE_INVENTORY,ACTION_VIEW} from '../../utils/accessControl'
 
@@ -82,7 +81,9 @@ class Inventory extends React.Component {
         const headerArr = [
             {
                 value: 'Category',
-                key: 'Category',
+                key: 'categoryName',
+                sortable : true,
+                searchable: true
             },{
                 value: 'Branch',
                 key: 'branch'
@@ -91,28 +92,29 @@ class Inventory extends React.Component {
                 key: 'threshold'
 
             },{
-                value: 'product',
-                key: 'product',
+                value: 'Product',
+                key: 'productName',
+                sortable : true,
+                searchable: true
             },{
                 value: 'Available Quantity',
                 key: 'availableQuantity',
             },
             {
-                value:'actions',
+                value:'Actions',
                 key:'actions'
             }
             ]
         const RowRender = (props) => {
-            const product = getProduct(props.record.product)
             return (
                 <tr>
-                    <td>{getCategory(product.category).name}</td>
+                    <td>{props.record.categoryName}</td>
                     <td>{this.state.branchName}</td>
                     <td>{props.record.threshold}</td>
-                    <td>{product.name}</td>
+                    <td>{props.record.productName}</td>
                     <td> { props.record.availableQuantity > props.record.threshold ? 
-                        <label className="badge badge-success">{props.record.availableQuantity}  {getUnit(product.unit).name}</label> :
-                        <label className="badge badge-warning">{props.record.availableQuantity}  {getUnit(product.unit).name}</label>
+                        <label className="badge badge-success">{props.record.availableQuantity}  {props.record.unitName}</label> :
+                        <label className="badge badge-warning">{props.record.availableQuantity}  {props.record.unitName}</label>
                         }   
                     </td>
                     <td>{ this.state.branch === getLoggedInUserInfo().branch && <Button onClick={() =>{props.openActionMaodal(props.record,'view')}}>Disburse Inventory</Button>}</td>
@@ -125,7 +127,10 @@ class Inventory extends React.Component {
         branchOptions.push(getDropdownItem("All branches","GET_ALL_BRANCHES"))
         return (
             <div>
-                <InventorySkeleton key="Inventory" content={{pageTitle:'Inventory'}} 
+                <InventorySkeleton key="Inventory" content={{
+                    pageTitle:'Inventory',
+                    addButton : 'Manage Inventory'
+                }} 
                     AddModal={AddInventory}
                     EditModal={()=><></>}
                     ViewModal={ViewInventory}
