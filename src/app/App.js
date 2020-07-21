@@ -9,16 +9,11 @@ import Navbar from './shared/Navbar';
 import Sidebar from './shared/Sidebar';
 import Footer from './shared/Footer';
 import store from './store';
-import categoryActions from './actions/categoryActions';
-import roleActions from './actions/roleActions';
 import userActions from './actions/userActions';
-import UnitActions from './actions/units';
 import {connect} from 'react-redux'
 import {addNotification} from './actions/notification'
-import branchesActions from './actions/branchActions';
 import {validateIntialLoad} from './utils/dataUtils'
-import productActions from './actions/productActions';
-// import metadataAction from './actions/metadataAction';
+import metadataAction from './actions/metadataAction';
 const mapStateToProps = state => ({
   auth : state['AUTH'],
   state
@@ -34,12 +29,12 @@ class App extends Component {
   }
   componentDidMount() {
     store.dispatch(userActions.getUserInfo());
-    // store.dispatch(metadataAction.getAllMetadata());
-    store.dispatch(roleActions.getAllRoles());
-    store.dispatch(UnitActions.initialData());
-    store.dispatch(categoryActions.getAllCategories());
-    store.dispatch(productActions.getAllProducts());
-    store.dispatch(branchesActions.getAllBranches());
+    store.dispatch(metadataAction.getAllMetadata());
+    // store.dispatch(roleActions.getAllRoles());
+    // store.dispatch(UnitActions.initialData());
+    // store.dispatch(categoryActions.getAllCategories());
+    // store.dispatch(productActions.getAllProducts());
+    // store.dispatch(branchesActions.getAllBranches());
     addNotification({
       title:'Welcome',
       message : 'Welcome to parikrama Inventory Management ',

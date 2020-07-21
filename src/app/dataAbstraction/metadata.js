@@ -36,12 +36,12 @@ export const getData = () => {
             console.log("GET ALL Metadata ", url);
             const res = await axios.get(url);
             console.log(res);
-            console.log("Branches", res.data.metadata.branches);
-            loadBranches(res.data.metadata[0].branches);
-            loadRoles(res.data.metadata[3].roles);
-            loadUnits(res.data.metadata[5].units);
-            loadCategories(res.data.metadata[1].categories);
-            loadProducts(res.data.metadata[2].products);
+            console.log("Branches", res.data.branches);
+            loadBranches(res.data.branches);
+            loadRoles(res.data.roles);
+            loadUnits(res.data.units);
+            loadCategories(res.data.categories);
+            loadProducts(res.data.products);
 
             resolve(res);
         } catch(err){

@@ -112,14 +112,14 @@ class Sidebar extends Component {
           </li>
           <li className={ this.isPathActive('/dashboard') ? 'nav-item active' : 'nav-item' }>
             <Link className="nav-link" to="/dashboard">
-              <i className="mdi mdi-television menu-icon"></i>
+              <i className="mdi mdi-television-guide menu-icon"></i>
               <span className="menu-title">Dashboard</span>
             </Link>
           </li>
           {isAllowed(ACTION_VIEW, MODULE_INVENTORY) &&
           <li className={ this.isPathActive('/categories') ? 'nav-item active' : 'nav-item' }>
             <Link className="nav-link" to="/categories">
-              <i className="mdi mdi-table-large menu-icon"></i>
+              <i className="mdi mdi-shape-plus menu-icon"></i>
               <span className="menu-title">Categories</span>
             </Link>
           </li>
@@ -143,7 +143,7 @@ class Sidebar extends Component {
           {isAllowed(ACTION_VIEW, MODULE_INVENTORY) &&
           <li className={ this.isPathActive('/inventory') ? 'nav-item active' : 'nav-item' }>
             <Link className="nav-link" to="/inventory">
-              <i className="mdi mdi-table-large menu-icon"></i>
+              <i className="mdi mdi-barley menu-icon"></i>
               <span className="menu-title">Inventory</span>
             </Link>
           </li>
@@ -159,7 +159,7 @@ class Sidebar extends Component {
           {isAllowed(ACTION_VIEW, MODULE_INVENTORY) &&
             <li className={ this.isPathActive('/units') ? 'nav-item active' : 'nav-item' }>
               <Link className="nav-link" to="/units">
-                <i className="mdi mdi-table-large menu-icon"></i>
+                <i className="mdi mdi-unity menu-icon"></i>
                 <span className="menu-title">Units</span>
               </Link>
             </li>
@@ -167,7 +167,7 @@ class Sidebar extends Component {
           {isAllowed(ACTION_VIEW, MODULE_INVENTORY) &&
             <li className={ this.isPathActive('/products') ? 'nav-item active' : 'nav-item' }>
               <Link className="nav-link" to="/products">
-                <i className="mdi mdi-table-large menu-icon"></i>
+                <i className="mdi mdi-flower menu-icon"></i>
                 <span className="menu-title">Products</span>
               </Link>
             </li>
