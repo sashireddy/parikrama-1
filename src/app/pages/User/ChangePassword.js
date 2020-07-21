@@ -24,7 +24,6 @@ class ChangePassword extends React.PureComponent{
         if(["password", "confirmPassword"].includes(evt.target.name)){
             let password = this.password.current.value;
             let confirmPassword = this.confirmPassword.current.value;
-            console.log(password, confirmPassword);
             if (password !== confirmPassword) {
                 this.confirmPassword.current.setCustomValidity("Passwords do not match.");
             } else {

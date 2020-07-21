@@ -172,20 +172,20 @@ class Sidebar extends Component {
               </Link>
             </li>
           }
+          {
+            isAllowed(ACTION_VIEW,MODULE_INVENTORY) &&
+            <li className={ this.isPathActive('/inventoryreports') ? 'nav-item active' : 'nav-item' }>
+              <Link className="nav-link" to="/inventoryreports">
+                <i className="mdi mdi-attachment menu-icon"></i>
+                <span className="menu-title">Inventory Summary Report</span>
+              </Link>
+            </li>
+          }
           {isAllowed(ACTION_VIEW, MODULE_TRANSACTION) &&
             <li className={ this.isPathActive('/transactions') ? 'nav-item active' : 'nav-item' }>
               <Link className="nav-link" to="/transactions">
                 <i className="mdi mdi-message-text menu-icon"></i>
                 <span className="menu-title">Transactions</span>
-              </Link>
-            </li>
-          }
-          {
-            isAllowed(ACTION_VIEW,MODULE_INVENTORY) && 
-            <li className={ this.isPathActive('/inventoryreports') ? 'nav-item active' : 'nav-item' }>
-              <Link className="nav-link" to="/inventoryreports">
-                <i className="mdi mdi-table-large menu-icon"></i>
-                <span className="menu-title">Inventory Summary Report</span>
               </Link>
             </li>
           }
@@ -203,7 +203,7 @@ class Sidebar extends Component {
   }
 
   isPathActive(path) {
-    return this.props.location.pathname.startsWith(path);
+    return this.props.location.pathname === path
   }
 
   componentDidMount() {
