@@ -1,46 +1,65 @@
 import React from 'react';
 import {Button} from 'react-bootstrap';
+import {connect } from 'react-redux';
 import {getBranch, getRole} from '../../utils/dataUtils';
+import userActions from '../../actions/userActions'
 import {MODULE_USER} from "../../utils/accessControl";
-import isAllowed, {ACTION_VIEW, ACTION_MANAGE, ACTION_DELETE} from "../../utils/accessControl";
+import isAllowed, {ACTION_VIEW, ACTION_MANAGE} from "../../utils/accessControl";
 
-const UserListItem = props => {
-    let {record} = props;
-    return (
-        <tr>
-            <td>{`${record.firstName} ${record.lastName}`}</td>
-            <td className="d-none d-sm-table-cell">{record.email}</td>
-            <td>{getRole(record.role).name}</td>
-            <td>{getBranch(record.branch).name}</td>
-            <td>{record.contact}</td>
-            <td>
-                {record.isActive
-                ? <label className="badge badge-success">Active</label>
-                : <label className="badge badge-warning">In Active</label>
-                }
-            </td>
+class UserListItem extends React.PureComponent {
 
-            <td>
-                <nav>
-                    {isAllowed(ACTION_VIEW, MODULE_USER) &&
-                        <Button className="btn btn-primary" onClick={() => props.openActionMaodal(record, "view")}>
-                            View
-                        </Button>
+    enableRecord = () => {
+        let {record} = this.props;
+        this.props.updateData({...record, isActive:true});
+    }
+
+    render() {
+        let {record} = this.props;
+        return (
+            <tr>
+                <td>{`${record.firstName} ${record.lastName}`}</td>
+                <td className="d-none d-sm-table-cell">{record.email}</td>
+                <td>{getRole(record.role).name}</td>
+                <td>{getBranch(record.branch).name}</td>
+                <td>{record.contact}</td>
+                <td>
+                    {record.isActive
+                    ? <label className="badge badge-success">Active</label>
+                    : <label className="badge badge-warning">In Active</label>
                     }
-                    {isAllowed(ACTION_MANAGE, MODULE_USER) &&
-                        <Button onClick={() => props.openActionMaodal(record, "edit")} className="btn btn-primary ml-2">
-                            Edit
-                        </Button>
-                    }
-                    {isAllowed(ACTION_MANAGE, ACTION_DELETE) &&
-                        <Button onClick={() => props.openActionMaodal(record, "del")} className="btn btn-danger ml-2">
-                            Delete
-                        </Button>
-                    }
-                </nav>
-            </td>
-        </tr>
-    );
+                </td>
+
+                <td>
+                    <nav>
+                        {isAllowed(ACTION_VIEW, MODULE_USER) &&
+                            <Button className="btn btn-primary" onClick={() => this.props.openActionMaodal(record, "view")}>
+                                View
+                            </Button>
+                        }
+                        {this.props.record.isActive && isAllowed(ACTION_MANAGE, MODULE_USER) &&
+                            <Button onClick={() => this.props.openActionMaodal(record, "edit")} className="btn btn-primary ml-2">
+                                Edit
+                            </Button>
+                        }
+                        {this.props.record.isActive && isAllowed(ACTION_MANAGE, MODULE_USER) &&
+                            <Button onClick={() => this.props.openActionMaodal(record, "del")} className="btn btn-danger ml-2">
+                                Disable
+                            </Button>
+                        }
+                        {!this.props.record.isActive && isAllowed(ACTION_MANAGE, MODULE_USER) &&
+                            <Button onClick={this.enableRecord} className="btn btn-primary ml-2">
+                                Enable
+                            </Button>
+                        }
+                    </nav>
+                </td>
+            </tr>
+        );
+    }
 };
 
-export default UserListItem;
+const mapActionToProps = {
+    updateData : userActions.updateData
+};
+
+export default connect(null, mapActionToProps)(UserListItem);
