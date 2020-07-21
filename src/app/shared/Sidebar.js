@@ -127,7 +127,7 @@ class Sidebar extends Component {
           {isAllowed(ACTION_VIEW, MODULE_BRANCH) &&
           <li className={ this.isPathActive('/branches') ? 'nav-item active' : 'nav-item' }>
             <Link className="nav-link" to="/branches">
-              <i className="mdi mdi-table-large menu-icon"></i>
+              <i className="mdi mdi-source-branch menu-icon"></i>
               <span className="menu-title">Branches</span>
             </Link>
           </li>
@@ -135,7 +135,7 @@ class Sidebar extends Component {
           {isAllowed(ACTION_VIEW, MODULE_USER) &&
           <li className={ this.isPathActive('/roles') ? 'nav-item active' : 'nav-item' }>
             <Link className="nav-link" to="/roles">
-              <i className="mdi mdi-table-large menu-icon"></i>
+              <i className="mdi mdi-format-paint menu-icon"></i>
               <span className="menu-title">Roles</span>
             </Link>
           </li>
@@ -151,7 +151,7 @@ class Sidebar extends Component {
           {isAllowed(ACTION_VIEW, MODULE_USER) &&
           <li className={ this.isPathActive('/users') ? 'nav-item active' : 'nav-item' }>
             <Link className="nav-link" to="/users">
-              <i className="mdi mdi-table-large menu-icon"></i>
+              <i className="mdi mdi-account-multiple menu-icon"></i>
               <span className="menu-title">Users</span>
             </Link>
           </li>
@@ -175,7 +175,7 @@ class Sidebar extends Component {
           {isAllowed(ACTION_VIEW, MODULE_TRANSACTION) &&
             <li className={ this.isPathActive('/transactions') ? 'nav-item active' : 'nav-item' }>
               <Link className="nav-link" to="/transactions">
-                <i className="mdi mdi-table-large menu-icon"></i>
+                <i className="mdi mdi-message-text menu-icon"></i>
                 <span className="menu-title">Transactions</span>
               </Link>
             </li>
@@ -183,7 +183,7 @@ class Sidebar extends Component {
           {isAllowed(ACTION_VIEW, MODULE_AUDITLOG) &&
             <li className={ this.isPathActive('/audits') ? 'nav-item active' : 'nav-item' }>
               <Link className="nav-link" to="/audits">
-                <i className="mdi mdi-table-large menu-icon"></i>
+                <i className="mdi mdi-message-alert menu-icon"></i>
                 <span className="menu-title">Audits</span>
               </Link>
             </li>

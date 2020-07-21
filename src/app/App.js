@@ -35,7 +35,6 @@ class App extends Component {
   componentDidMount() {
     store.dispatch(userActions.getUserInfo());
     // store.dispatch(metadataAction.getAllMetadata());
-    store.dispatch(userActions.getUserInfo());
     store.dispatch(roleActions.getAllRoles());
     store.dispatch(UnitActions.initialData());
     store.dispatch(categoryActions.getAllCategories());

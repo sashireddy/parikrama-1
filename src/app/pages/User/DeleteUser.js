@@ -1,10 +1,12 @@
 import React from "react";
 import {connect} from "react-redux";
+import {getBranch, getRole} from '../../utils/dataUtils';
 
 class DeleteUser extends React.Component {
-    getRoleLable = role => {
-      let roleObj = this.props.allRoles.find(item => item.id === role);
-      return roleObj ? roleObj.label : role;
+    disableUser = () => {
+      const {record} = this.props;
+      this.props.updateData({...record, isActive:false});
+      this.props.closeModal();
     }
 
     render() {
@@ -12,21 +14,22 @@ class DeleteUser extends React.Component {
       return (
         <React.Fragment>
           <div className="pl-3 pr-3">
-              <p>Are you sure you want to delete this Record?</p>
+              <p>Are you sure you want to Disable this User?</p>
               <dl className="dl-horizontal">
-                <dt>User Id</dt>
-                <dd>{record.id}</dd>
                 <dt>User Name</dt>
                 <dd>{`${record.firstName} ${record.lastName}`}</dd>
                 <dt>Role</dt>
-                <dd>{this.getRoleLable(record.role)}</dd>
+                <dd>{getRole(record.role).name}</dd>
+                <dt>Branch</dt>
+                <dd>{getBranch(record.branch).name}</dd>
+                <dt>Phone Number</dt>
+                <dd>{record.contact}</dd>
               </dl>
-              <p className="text-warning">This action cannot be undone</p>
           </div>
           <hr className="modal-footer-ruler" />
           <div className="text-right">
             <button className="btn btn-light mr-2" onClick={this.props.closeModal}>Cancle</button>
-            <button className="btn btn-danger" onClick={this.props.deleteData}>Delete</button>
+            <button className="btn btn-danger" onClick={this.disableUser}>Disable</button>
           </div>
         </React.Fragment>
       );
