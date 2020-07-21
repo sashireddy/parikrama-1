@@ -2,7 +2,8 @@ import React from "react";
 import {Form} from "react-bootstrap";
 import Select from 'react-select'
 import {getDropdownItem,dropDownResponseFromMap} from '../../utils/dropDownUtils'
-import {getCategory,getUnit} from '../../utils/dataUtils'
+import {getCategory,getUnit,isAdmin} from '../../utils/dataUtils'
+import isAllowed, {ACTION_VIEW, ACTION_MANAGE,MODULE_INVENTORY} from "../../utils/accessControl";
 import {connect} from 'react-redux'
 import ProductActions from '../../actions/productActions'
 
@@ -11,6 +12,7 @@ const mapStateToProps = state => ({
         category : state["CATEGORY"],
         unit : state["UNITS"],
         user : state["USER"].loggedInUser,
+        branches: state["BRANCHES"]
     } 
 });
 
@@ -79,6 +81,8 @@ class ProductForm extends React.Component {
         const defaultUnit = (this.props.record && this.props.record.unit)
         const defaultUnitName = defaultUnit && getUnit(defaultUnit) && getUnit(defaultUnit).name
         const defaulCategoryName =  defaultCategory && getCategory(defaultCategory) && getCategory(defaultCategory).name
+        const branchesMap = this.props.stateData.branches.allRecords
+        const branchesArr = Object.keys(branchesMap) 
         const thresoldValue = this.state.thresholds && this.state.thresholds[this.props.stateData.user.branch]
         return(
             <form className="forms-sample" onSubmit={this.onSubmit} >
@@ -103,8 +107,23 @@ class ProductForm extends React.Component {
                     <Form.Group>
                         <label htmlFor="exampleInputEmail1">Product Threshold at your branch</label>
                         <Form.Control type="number" className="form-control" id="productName" name="name" placeholder="Product Name" value={thresoldValue} onChange={e=>this.handleThresholdChange(e,this.props.stateData.user.branch)} />
-                        <Form.Control.Feedback type="invalid">Please provide a Product name</Form.Control.Feedback>
+                        <Form.Control.Feedback type="invalid">Please provide Product Threshold</Form.Control.Feedback>
                     </Form.Group>
+                    {isAllowed(ACTION_MANAGE, MODULE_INVENTORY)  && (
+                        <>
+                            {branchesArr.map(branchId=> {
+                                if(branchId !== this.props.stateData.user.branch){
+                                    const threshold = (this.state.thresholds && this.state.thresholds[branchId]) || 0
+                                 return (<Form.Group>
+                                    <label htmlFor="exampleInputEmail1">Product Threshold at {branchesMap[branchId].name} branch</label>
+                                    <Form.Control type="number" className="form-control" id="productName" name="name" placeholder="threshold Name" value={threshold} onChange={e=>this.handleThresholdChange(e,branchId)} />
+                                    <Form.Control.Feedback type="invalid">Please provide Product Threshold</Form.Control.Feedback>
+                                </Form.Group>)
+                                }
+                                return <></>
+                            })}
+                        </>
+                    )}
                 </div>
                 <hr className="modal-footer-ruler" />
                 <div className="text-right">

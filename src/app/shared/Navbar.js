@@ -28,8 +28,11 @@ class Navbar extends Component {
   toggleOffcanvas() {
     document.querySelector('.sidebar-offcanvas').classList.toggle('active');
   }
-
-  render () {
+  logout = async () => {
+    await Firebase.auth.signOut()
+    document.location.reload()
+  }
+  render () { 
     return (
       <nav className="navbar col-lg-12 col-12 p-lg-0 fixed-top d-flex flex-row">
         <div className="navbar-menu-wrapper d-flex align-items-center justify-content-between">
@@ -166,9 +169,7 @@ class Navbar extends Component {
                   <Dropdown.Item className="dropdown-item preview-item d-flex align-items-center border-0" onClick={evt =>evt.preventDefault()}>
                     Check Inbox
                   </Dropdown.Item>
-                  <Dropdown.Item className="dropdown-item preview-item d-flex align-items-center border-0" onClick={()=>{
-                    Firebase.auth.signOut()
-                  }}>
+                  <Dropdown.Item className="dropdown-item preview-item d-flex align-items-center border-0" onClick={this.logout}>
                     Sign Out
                   </Dropdown.Item>
                 </Dropdown.Menu>

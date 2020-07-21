@@ -42,13 +42,15 @@ class Products extends React.Component {
                     searchable: true
                 },{
                     value : 'Category',
-                    key : 'category'
+                    key : 'categoryName',
+                    sortable : true,
+                    searchable: true
                 },{
                     value : 'Threshold',
                     key : 'threshold'
                 },{
-                    value : 'units',
-                    key : 'units'
+                    value : 'Units',
+                    key : 'unitName'
                 },{
                     value : 'Actions',
                     key : 'actions'
@@ -56,7 +58,10 @@ class Products extends React.Component {
             ]
         return (
             <ProductSkeleton
-             content={{pageTitle:'Product'}} AddModal={AddProduct}
+             content={{
+                 pageTitle:'Product',
+                 addButton: 'New Product'
+                }} AddModal={AddProduct}
              EditModal={EditProduct} ViewModal={ViewProduct} DeleteModal={DeleteProduct}
              tableRowRenderFunc ={ProductListItem}
              headerArr = {headerArr} getTitle={getTitle}

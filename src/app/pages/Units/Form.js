@@ -16,7 +16,7 @@ class AddCategory extends React.Component {
             event.stopPropagation();
         }else {
             event.preventDefault();
-            this.props.addData({...this.state});
+            this.props.onSubmit({...this.state});
             this.props.closeModal();
         }
         

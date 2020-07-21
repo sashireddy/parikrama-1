@@ -1,6 +1,7 @@
 import axios from 'axios';
 import config from "../constants/config";
-import {filterData, validateCurrentPage, handleResponse,arrayToMapWithId} from "./util";
+import {genericFilter, validateCurrentPage, handleResponse,arrayToMapWithId} from "./util";
+import {getCategory,getUnit} from '../utils/dataUtils'
 
 const apiConfig = config.API.PRODUCTS;
 
@@ -49,7 +50,7 @@ export const loadInitialData = () => {
 export const refreshStateData = () => {
     return new Promise((resolve, reject) => {
         if(cachedData)
-            resolve((cachedData))
+            resolve(arrayToMapWithId(cachedData))
         else
             reject(new Error("CacheData not present"))
     })
@@ -218,7 +219,12 @@ const getCurrentStateData = params => {
     console.log(params);
     // Need to implement search and sort functionality here
     // After search total records may vary, reset pagination to 1st page.
-    let records = filterData(params, cachedData);
+    cachedData.map(entry => {
+        entry.categoryName = getCategory(entry.category).name
+        entry.unitName = getUnit(entry.unit).name
+        return entry
+    })
+    let records = genericFilter(params, cachedData);
     let currentPage = validateCurrentPage(params, records);
     apiResponse.totalRecords = records.length;
     const offset = (currentPage - 1) * params.pageLimit;

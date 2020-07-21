@@ -7,7 +7,7 @@ import Select from 'react-select';
 import { Card } from 'react-bootstrap'
 import {getSelectedItem, dropDownResponseFromMap} from '../../utils/dropDownUtils';
 import InventorySummaryAction from '../../actions/InventoryView'
-import {getUnit,getCategory,getProduct,getLoggedInUserInfo} from '../../utils/dataUtils'
+import {getLoggedInUserInfo} from '../../utils/dataUtils'
 import dateFormat from "dateformat";
 
 const customStyles = {
@@ -55,7 +55,7 @@ class InventorySummary extends React.Component {
         // Both are present or both are empty then only search
         if((startDate && endDate) || (!startDate && !endDate)){
             this.setState({error: false});
-            this.loadData({
+            this.getData({
                 currentPage : this.props.stateData.currentPage,
                 pageLimit : this.props.stateData.pageLimit,
                 search : this.props.stateData.search,
@@ -76,12 +76,14 @@ class InventorySummary extends React.Component {
         const headerArr = [
                 {
                     value : 'Product',
-                    key : 'product',
+                    key : 'productName',
                     sortable : true,
                     searchable: true
                 },{
                     value : 'Category',
-                    key : 'category'
+                    key : 'categoryName',
+                    sortable : true,
+                    searchable: true
                 },{
                     value : 'Threshold',
                     key : 'threshold'
@@ -103,24 +105,23 @@ class InventorySummary extends React.Component {
                 }
             ]
         
-        const getQuantityWithUnit = (quantity, product) => {
-            return quantity+" "+getUnit(product.unit).name
+        const getQuantityWithUnit = (quantity, unit) => {
+            return quantity+" "+unit
         }
-        const getQuantityLabel = (quantity,threshold,product) =>  quantity > threshold ? 
-            <label className="badge badge-success">{getQuantityWithUnit(quantity,product)}</label> :
-            <label className="badge badge-warning">{getQuantityWithUnit(quantity,product)}</label>
+        const getQuantityLabel = (quantity,threshold,unit) =>  quantity > threshold ? 
+            <label className="badge badge-success">{getQuantityWithUnit(quantity,unit)}</label> :
+            <label className="badge badge-warning">{getQuantityWithUnit(quantity,unit)}</label>
         const tableRowRenderFunc = (props)=> {
-            const product = getProduct(props.record.product)
             return (
                 <tr>
-                    <td>{product.name}</td>
-                    <td>{getCategory(product.category).name}</td>
+                    <td>{props.record.productName}</td>
+                    <td>{props.record.categoryName}</td>
                     <td>{props.record.threshold}</td>
-                    <td>{getQuantityLabel(props.record.initialQuantity,props.record.threshold,product)}</td>
-                    <td>{getQuantityWithUnit(props.record.consumedQuantity,product)}</td>
-                    <td>{getQuantityWithUnit(props.record.transferredQuantity,product)}</td>
-                    <td>{getQuantityWithUnit(props.record.addedQuantity,product)}</td>
-                    <td>{getQuantityLabel(props.record.closingQuantity,props.record.threshold,product)}</td>  
+                    <td>{getQuantityLabel(props.record.initialQuantity,props.record.threshold,props.record.unitName)}</td>
+                    <td>{getQuantityWithUnit(props.record.consumedQuantity,props.record.unitName)}</td>
+                    <td>{getQuantityWithUnit(props.record.transferredQuantity,props.record.unitName)}</td>
+                    <td>{getQuantityWithUnit(props.record.addedQuantity,props.record.unitName)}</td>
+                    <td>{getQuantityLabel(props.record.closingQuantity,props.record.threshold,props.record.unitName)}</td>  
                 </tr>
             )
         }

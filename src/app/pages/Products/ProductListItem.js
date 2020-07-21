@@ -1,12 +1,11 @@
 import React from 'react';
 import {Button} from 'react-bootstrap';
 import {connect} from 'react-redux'
-import {getCategory,getUnit} from '../../utils/dataUtils'
 import {getActivePayload} from '../../utils/dataUtils'
 import ProductActions from '../../actions/productActions'
 import Store from '../../store'
 import {MODULE_INVENTORY} from "../../utils/accessControl";
-import isAllowed, {ACTION_VIEW, ACTION_MANAGE, ACTION_DELETE} from "../../utils/accessControl";
+import isAllowed, {ACTION_VIEW, ACTION_MANAGE} from "../../utils/accessControl";
 
 const mapStateToProps = state => ({
   userInfo:state['USER'].loggedInUser,
@@ -20,9 +19,9 @@ class RowRender extends React.Component {
     return (
       <tr>
         <td className="d-none d-sm-table-cell">{this.props.record.name}</td>
-        <td>{getCategory(this.props.record.category).name}</td>
+        <td>{this.props.record.categoryName}</td>
         <td>{threshold}</td>
-        <td>{getUnit(this.props.record.unit).name}</td>
+        <td>{this.props.record.unitName}</td>
         <td>
           <nav className="text-center">
           {this.props.record.isActive && (<>
@@ -36,7 +35,7 @@ class RowRender extends React.Component {
                     Edit
                 </Button>
             }
-            {isAllowed(ACTION_DELETE, MODULE_INVENTORY) &&
+            {isAllowed(ACTION_MANAGE, MODULE_INVENTORY) &&
                 <Button onClick={() => this.props.openActionMaodal(this.props.record, "del")} className="btn btn-danger ml-2">
                     Disable
                 </Button>
