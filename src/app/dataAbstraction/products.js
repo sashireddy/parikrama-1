@@ -23,19 +23,27 @@ const apiResponse = { // pMapping => Parameter Mapping
     sort: {}
 };
 
+export const setCachedData = data => {
+    cachedData = data;
+}
+
 // Function to load all the data as part for the initial load
 export const loadInitialData = () => {
     return new Promise(async (resolve, reject) => {
-        try{
-        const url = `${config.API.BASE_URL}${apiConfig.GET_PRODUCTS}`;
-        const res = await axios.get(url);
-        if(apiConfig.CACHING){
-            cachedData = res.data.products;
+        if(cachedData !== null){
+            resolve(arrayToMapWithId(cachedData));
+        } else {
+            try{
+                const url = `${config.API.BASE_URL}${apiConfig.GET_PRODUCTS}`;
+                const res = await axios.get(url);
+                if(apiConfig.CACHING){
+                    cachedData = res.data.products;
+                }
+                resolve(arrayToMapWithId(res.data.products));
+            }catch(err){
+                reject(err);
+            }
         }
-        resolve(arrayToMapWithId(res.data.products));
-    }catch(err){
-        reject(err);
-    }
     });
 }
 

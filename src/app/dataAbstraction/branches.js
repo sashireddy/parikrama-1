@@ -22,17 +22,24 @@ const apiResponse = { // pMapping => Parameter Mapping
     sort: {}
 };
 
+export const setCachedData = data => {
+    cachedData = data;
+}
 
 // Function to load all the data as part for the initial load
 export const loadInitialData = () => {
     return new Promise(async (resolve, reject) => {
-        const url = `${apiConfig.GET_BRANCHES}`;
-        console.log("API calling for Branches...", url);
-        const res = await axios.get(url);
-        if(apiConfig.CACHING){
-            cachedData = res.data.branches;
+        if(cachedData !== null){
+            resolve(arrayToMapWithId(cachedData));
+        } else {
+            const url = `${apiConfig.GET_BRANCHES}`;
+            console.log("API calling for Branches...", url);
+            const res = await axios.get(url);
+            if(apiConfig.CACHING){
+                cachedData = res.data.branches;
+            }
+            resolve(arrayToMapWithId(res.data.branches));
         }
-        resolve(arrayToMapWithId(res.data.branches));
     });
 }
 

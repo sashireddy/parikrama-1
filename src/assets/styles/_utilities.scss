@@ -329,3 +329,9 @@ ul.timeline > li:before {
   padding: 5px 0;
   border-radius: 0;
 }
+
+.audit-list-item{
+  .badge-secondary{
+    background-color: #6c757d;
+  }
+}

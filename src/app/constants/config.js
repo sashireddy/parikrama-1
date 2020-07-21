@@ -21,7 +21,7 @@ export default {
             "ADJUSTMENT":"https://local-parikrama.web.app/api/actions/adjustment",
             "ADD_PRODUCT":"https://local-parikrama.web.app/api/actions/addproduct",
             "PENDING_TRANSACTIONS": "https://local-parikrama.web.app/api/pendingRequests/branches/",
-            "GET_BRANCH_INVENTORY": "https://local-parikrama.web.app/api/inventories/",  
+            "GET_BRANCH_INVENTORY": "https://local-parikrama.web.app/api/inventories/",
             "RAISE_REQUEST" : "https://local-parikrama.web.app/api/actions/requestProduct",
             "TRANSFER_REQUEST":"https://local-parikrama.web.app/api/actions/transferproduct",
             "GET_ALL_INVENTORY": "https://local-parikrama.web.app/api/inventories/",
@@ -84,6 +84,10 @@ export default {
         },
         "DASHBOARD" : {
             "GET_DASHBOARD_DATA": "/data/dashboard.json",
+            "CACHING": true
+        },
+        "METADATA" : {
+            "GET_METADATA": "https://local-parikrama.web.app/api/metadata",
             "CACHING": true
         }
     }

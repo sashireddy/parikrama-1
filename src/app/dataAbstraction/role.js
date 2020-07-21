@@ -24,18 +24,28 @@ const apiResponse = {
     sort: {}
 };
 
+export const setCachedData = data => {
+    cachedData = data;
+}
+
 // Function to load all the data as part for the initial load
 export const loadInitialData = () => {
     return new Promise(async (resolve, reject) => {
-        const url = `${apiConfig.GET_ROLES}`;
-        try {
-            const res = await axios.get(url);
-            if(apiConfig.CACHING){
-                cachedData = res.data.roles;
+        if(cachedData !== null){
+            resolve(arrayToMapWithId(cachedData));
+        } else {
+            const url = `${apiConfig.GET_ROLES}`;
+            console.log("Loading Roels : ", url);
+            try {
+                const res = await axios.get(url);
+                if(apiConfig.CACHING){
+                    cachedData = res.data.roles;
+                }
+                console.log(res.data, arrayToMapWithId(res.data.roles));
+                resolve(arrayToMapWithId(res.data.roles));
+            } catch(err){
+                console.log(err);
             }
-            resolve(arrayToMapWithId(res.data.roles));
-        } catch(err){
-            console.log(err);
         }
     });
 }

@@ -1,7 +1,30 @@
 import React, { Component } from 'react';
 import { Dropdown } from 'react-bootstrap';
-import Firebase from '../Firebase/firebase'
+import Firebase from '../Firebase/firebase';
+import Modal from "./Modal";
+import ChangePassword from "../pages/User/ChangePassword";
+
 class Navbar extends Component {
+
+  constructor(){
+    super();
+    this.state = {
+      showModal: false
+    }
+  }
+
+  changePassword = () => {
+    this.setState({
+      showModal: true
+    });
+  }
+
+  closeModal = () => {
+    this.setState({
+      showModal: false
+    });
+  }
+
   toggleOffcanvas() {
     document.querySelector('.sidebar-offcanvas').classList.toggle('active');
   }
@@ -140,8 +163,8 @@ class Navbar extends Component {
                   <Dropdown.Item className="dropdown-item preview-item d-flex align-items-center border-0 mt-2" onClick={evt =>evt.preventDefault()}>
                     Manage Accounts
                   </Dropdown.Item>
-                  <Dropdown.Item className="dropdown-item preview-item d-flex align-items-center border-0" onClick={evt =>evt.preventDefault()}>
-                   Change Password 
+                  <Dropdown.Item className="dropdown-item preview-item d-flex align-items-center border-0" onClick={this.changePassword}>
+                   Change Password
                   </Dropdown.Item>
                   <Dropdown.Item className="dropdown-item preview-item d-flex align-items-center border-0" onClick={evt =>evt.preventDefault()}>
                     Check Inbox
@@ -157,6 +180,11 @@ class Navbar extends Component {
             <span className="mdi mdi-menu"></span>
           </button>
         </div>
+          <Modal title="Change Password"
+              show={this.state.showModal}
+              closeModal={this.closeModal}>
+              <ChangePassword closeModal={this.closeModal}/>
+          </Modal>
       </nav>
     );
   }

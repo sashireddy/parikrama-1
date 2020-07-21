@@ -214,6 +214,7 @@ class CrudSkeleton extends Component {
                                 record={this.state.currentRecord}
                                 closeModal={this.closeModal}
                                 deleteData={this.deleteData}
+                                updateData={this.updateData}
                                 />
                             )}
                         </Modal>

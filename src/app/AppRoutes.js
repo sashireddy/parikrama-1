@@ -6,7 +6,6 @@ import isAllowed, {ACTION_VIEW, ACTION_GENERATE} from "./utils/accessControl";
 import {
         MODULE_BRANCH,
         MODULE_USER,
-        MODULE_ROLE,
         //MODULE_TRANSFER,
         MODULE_INVENTORY,
         //MODULE_AUDITLOG,
@@ -57,7 +56,7 @@ class AppRoutes extends Component {
       <Suspense fallback={<Spinner/>}>
         <Switch>
           <Route exact path="/dashboard" component={ Dashboard } />
-          {isAllowed(ACTION_VIEW, MODULE_ROLE) && <Route path="/roles" component={ Role } />}
+          {isAllowed(ACTION_VIEW, MODULE_USER) && <Route path="/roles" component={ Role } />}
           {isAllowed(ACTION_VIEW, MODULE_USER) && <Route path="/users" component={ User } />}
           {isAllowed(ACTION_VIEW, MODULE_INVENTORY) && <Route path="/units" component={ Unit } />}
           {isAllowed(ACTION_VIEW, MODULE_INVENTORY) && <Route path="/categories" component={ Category } />}

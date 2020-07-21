@@ -7,7 +7,6 @@ import {ACTION_VIEW } from "../utils/accessControl";
 import {
         MODULE_BRANCH,
         MODULE_USER,
-        MODULE_ROLE,
         //MODULE_TRANSFER,
         MODULE_INVENTORY,
         MODULE_AUDITLOG,
@@ -61,8 +60,8 @@ class Sidebar extends Component {
     return (
       <nav className="sidebar sidebar-offcanvas" id="sidebar">
         <div className="text-center sidebar-brand-wrapper d-flex align-items-center">
-          <a className="sidebar-brand brand-logo" href="/"><img src={require("../../assets/images/logo.svg")} alt="logo" /></a>
-          <a className="sidebar-brand brand-logo-mini pt-3" href="/"><img src={require("../../assets/images/logo-mini.svg" )} alt="logo" /></a>
+          <a className="sidebar-brand brand-logo" href="/"><img src={require("../../assets/images/parikrama-logo.png")} alt="logo" /></a>
+          <a className="sidebar-brand brand-logo-mini pt-3" href="/"><img src={require("../../assets/images/parikrama-logo-mini.png" )} alt="logo" /></a>
         </div>
         <ul className="nav">
           <li className="nav-item nav-profile not-navigation-link">
@@ -128,15 +127,15 @@ class Sidebar extends Component {
           {isAllowed(ACTION_VIEW, MODULE_BRANCH) &&
           <li className={ this.isPathActive('/branches') ? 'nav-item active' : 'nav-item' }>
             <Link className="nav-link" to="/branches">
-              <i className="mdi mdi-table-large menu-icon"></i>
+              <i className="mdi mdi-source-branch menu-icon"></i>
               <span className="menu-title">Branches</span>
             </Link>
           </li>
           }
-          {isAllowed(ACTION_VIEW, MODULE_ROLE) &&
+          {isAllowed(ACTION_VIEW, MODULE_USER) &&
           <li className={ this.isPathActive('/roles') ? 'nav-item active' : 'nav-item' }>
             <Link className="nav-link" to="/roles">
-              <i className="mdi mdi-table-large menu-icon"></i>
+              <i className="mdi mdi-format-paint menu-icon"></i>
               <span className="menu-title">Roles</span>
             </Link>
           </li>
@@ -152,19 +151,19 @@ class Sidebar extends Component {
           {isAllowed(ACTION_VIEW, MODULE_USER) &&
           <li className={ this.isPathActive('/users') ? 'nav-item active' : 'nav-item' }>
             <Link className="nav-link" to="/users">
-              <i className="mdi mdi-table-large menu-icon"></i>
+              <i className="mdi mdi-account-multiple menu-icon"></i>
               <span className="menu-title">Users</span>
             </Link>
           </li>
           }
-          {isAllowed(ACTION_VIEW, MODULE_INVENTORY) && (
-          <li className={ this.isPathActive('/units') ? 'nav-item active' : 'nav-item' }>
-            <Link className="nav-link" to="/units">
-              <i className="mdi mdi-table-large menu-icon"></i>
-              <span className="menu-title">Units</span>
-            </Link>
-          </li>
-          )}
+          {isAllowed(ACTION_VIEW, MODULE_INVENTORY) &&
+            <li className={ this.isPathActive('/units') ? 'nav-item active' : 'nav-item' }>
+              <Link className="nav-link" to="/units">
+                <i className="mdi mdi-table-large menu-icon"></i>
+                <span className="menu-title">Units</span>
+              </Link>
+            </li>
+          }
           {isAllowed(ACTION_VIEW, MODULE_INVENTORY) &&
             <li className={ this.isPathActive('/products') ? 'nav-item active' : 'nav-item' }>
               <Link className="nav-link" to="/products">
@@ -176,7 +175,7 @@ class Sidebar extends Component {
           {isAllowed(ACTION_VIEW, MODULE_TRANSACTION) &&
             <li className={ this.isPathActive('/transactions') ? 'nav-item active' : 'nav-item' }>
               <Link className="nav-link" to="/transactions">
-                <i className="mdi mdi-table-large menu-icon"></i>
+                <i className="mdi mdi-message-text menu-icon"></i>
                 <span className="menu-title">Transactions</span>
               </Link>
             </li>
@@ -193,7 +192,7 @@ class Sidebar extends Component {
           {isAllowed(ACTION_VIEW, MODULE_AUDITLOG) &&
             <li className={ this.isPathActive('/audits') ? 'nav-item active' : 'nav-item' }>
               <Link className="nav-link" to="/audits">
-                <i className="mdi mdi-table-large menu-icon"></i>
+                <i className="mdi mdi-message-alert menu-icon"></i>
                 <span className="menu-title">Audits</span>
               </Link>
             </li>

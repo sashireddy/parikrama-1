@@ -95,7 +95,7 @@ class UserForm extends React.Component {
                             <label htmlFor="name">User Password</label>
                             <em className="d-block"><small>Create a password for user to login for the first time.</small></em>
                             <div className="input-group">
-                                <Form.Control required type={this.state.showPassword ? "text" : "password"} className="form-control" id="userPassword" name="password" placeholder="User Password" value={this.state.password} onChange={this.handleChange} minlength="6" />
+                                <Form.Control required type={this.state.showPassword ? "text" : "password"} className="form-control" id="userPassword" name="password" placeholder="User Password" value={this.state.password} onChange={this.handleChange} minLength="6" />
                                 <div className="input-group-append">
                                     <button className="btn btn-sm btn-primary" type="button" onClick={this.toggleShowPassword}>
                                         {this.state.showPassword ? <i className="fa fa-eye" /> : <i className="fa fa-eye-slash" /> }
@@ -107,7 +107,7 @@ class UserForm extends React.Component {
                     : null }
                     <Form.Group>
                         <Form.Label>Role</Form.Label>
-                        <Form.Control required type="text" value={this.state.role} className="d-none"/>
+                        <Form.Control required type="text" value={this.state.role} className="d-none" onChange={()=>{}}/>
                         <Select required className="basic-single" classNamePrefix="select" value={getSelectedItem(this.props.roleDropDownArr, this.state.role)}
                             options={this.props.roleDropDownArr} onChange={(e)=>{this.handleDropDown('role', e)}}
                             isClearable isSearchable placeholder="Select Role"/>
@@ -115,7 +115,7 @@ class UserForm extends React.Component {
                     </Form.Group>
                     <Form.Group>
                         <Form.Label>Branch</Form.Label>
-                        <Form.Control required type="text" value={this.state.branch} className="d-none"/>
+                        <Form.Control required type="text" value={this.state.branch} className="d-none" onChange={()=>{}}/>
                         <Select className="basic-single" classNamePrefix="select" value={getSelectedItem(this.props.branchDropDownArr, this.state.branch)}
                             options={this.props.branchDropDownArr} onChange={(e)=>{this.handleDropDown('branch', e)}}
                             isClearable isSearchable placeholder="Select Branch"/>
