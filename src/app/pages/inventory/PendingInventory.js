@@ -2,11 +2,12 @@ import React from 'react'
 import {Table,Button, Col,Row} from 'react-bootstrap'
 import {connect} from 'react-redux'
 import {Link} from 'react-router-dom'
-import {getLoggedInUserInfo} from '../../utils/dataUtils'
+import {getBranch, getLoggedInUserInfo} from '../../utils/dataUtils'
 import InventoryActions from '../../actions/inventoryActions'
 import Spinner from "../../shared/Spinner";
 import Accept from './viewInventory'
 import dateFormat from "dateformat";
+import isAllowed,{MODULE_INVENTORY,ACTION_MANAGE} from '../../utils/accessControl'
 
 class PendingTransactions extends React.Component {
     constructor(props){
@@ -25,6 +26,24 @@ class PendingTransactions extends React.Component {
             showModal : true
         })
     }
+    rejectCall = (record) => {
+        let toBranch
+        Object.keys(this.props.branches.allRecords).forEach(x => {
+            if(this.props.branches.allRecords[x].name === record.toBranchName) {
+                toBranch = x
+            } 
+        })
+        this.props.rejectRequest({
+            "fromBranch": getLoggedInUserInfo().branch,
+	        "toBranch": toBranch,
+	        "fromBranchName": getBranch(getLoggedInUserInfo().branch).name,
+	        "toBranchName": record.toBranchName,
+	        "product": record.product,
+	        "productName": record.productName,
+            // "operationalQuantity": record.operationalQuantity,  
+	        "pendingRequestsId": record.id
+        })
+    }
     closeModalAndDeleteRecord = () => {
         this.setState({
             showModal : false,
@@ -40,9 +59,11 @@ class PendingTransactions extends React.Component {
                 <td>{request.productName}</td>
                 <td>{request.operationalQuantity}</td>
                 <td>{request.note}</td>
-                <td><Row><Col><Button onClick={()=>this.updateRecordAndOpenModal(request)}>Respond</Button></Col></Row></td>
+                <td><Row><Col><Button onClick={()=>this.updateRecordAndOpenModal(request)}>Respond</Button></Col>
+                         <Col><Button onClick={()=>this.rejectCall(request)}>Reject</Button></Col></Row></td>
             </tr>)
        let requests = this.props.inventory.pendingTransactions || []
+       if(!isAllowed(ACTION_MANAGE,MODULE_INVENTORY)) return <></>
         return (
             <>
             <Spinner loading={this.props.inventory.pendingTransactionsLoading} />
@@ -97,5 +118,6 @@ export default connect(state=>({
      inventory : state['INVENTORY']
     }),{
         loadPendingTransactions : InventoryActions.loadPendingTransactions,
-        acceptOrRejectTransaction : InventoryActions.acceptOrRejectExtRequest
+        acceptOrRejectTransaction : InventoryActions.acceptOrRejectExtRequest,
+        rejectRequest : InventoryActions.rejectInventoryRequest
     })(PendingTransactions)

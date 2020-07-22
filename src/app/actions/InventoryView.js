@@ -1,4 +1,4 @@
-import {getData} from "../dataAbstraction/inventorySummary";
+import {getData,downloadReport} from "../dataAbstraction/inventorySummary";
 import {GET_INVENTORY_VIEW_SUMMARY,INVENTORY_VIEW_LOADING_ERROR,INVENTORY_VIEW_LOADING} from './types'
 
 const inventoryLoading = () => {
@@ -23,7 +23,15 @@ const getInventory = params => async dispatch => {
     }
 }
 
+const generateCSV = params => async dispatch => {
+    try{
+        await downloadReport(params)
+    }catch(err){
+        console.log(err)
+    }
+}
 
 export default {
-    getInventory
+    getInventory,
+    generateCSV
 }

@@ -25,6 +25,8 @@ export default {
             "RAISE_REQUEST" : "https://local-parikrama.web.app/api/actions/requestProduct",
             "TRANSFER_REQUEST":"https://local-parikrama.web.app/api/actions/transferproduct",
             "GET_ALL_INVENTORY": "https://local-parikrama.web.app/api/inventories/",
+            "REJECT_REQUEST" :   "https://local-parikrama.web.app/api/actions/rejectRequest",
+            "TransferOperation" : "https://local-parikrama.web.app/api/actions/moveProduct",
             // "GET_ALL_INVENTORY":"/data/inventory.json",
             "CACHING": true,
             "PAGE_LIMIT": 10
