@@ -24,7 +24,6 @@ class ChangePassword extends React.PureComponent{
         if(["password", "confirmPassword"].includes(evt.target.name)){
             let password = this.password.current.value;
             let confirmPassword = this.confirmPassword.current.value;
-            console.log(password, confirmPassword);
             if (password !== confirmPassword) {
                 this.confirmPassword.current.setCustomValidity("Passwords do not match.");
             } else {
@@ -105,7 +104,7 @@ class ChangePassword extends React.PureComponent{
                         <Form.Control.Feedback type="invalid">Please minimum 6 character password</Form.Control.Feedback>
                     </Form.Group>
                     <Form.Group>
-                        <Form.Label>Last Name</Form.Label>
+                        <Form.Label>Confirm Password</Form.Label>
                         <Form.Control ref={this.confirmPassword} required type="password" id="confirmPassword" name="confirmPassword" placeholder="Confirm Password" value={this.state.confirmPassword} onChange={this.handleChange} minLength="6" />
                         <Form.Control.Feedback type="invalid">Confirm password doesnot match.</Form.Control.Feedback>
                     </Form.Group>
