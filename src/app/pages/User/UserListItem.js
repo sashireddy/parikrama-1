@@ -25,7 +25,7 @@ class UserListItem extends React.PureComponent {
                 <td>
                     {record.isActive
                     ? <label className="badge badge-success">Active</label>
-                    : <label className="badge badge-warning">In Active</label>
+                    : <label className="badge badge-secondary">Inactive</label>
                     }
                 </td>
 
@@ -36,8 +36,8 @@ class UserListItem extends React.PureComponent {
                                 View
                             </Button>
                         }
-                        {this.props.record.isActive && isAllowed(ACTION_MANAGE, MODULE_USER) &&
-                            <Button onClick={() => this.props.openActionMaodal(record, "edit")} className="btn btn-primary ml-2">
+                        {isAllowed(ACTION_MANAGE, MODULE_USER) &&
+                            <Button disabled={!record.isActive} onClick={record.isActive ? () => this.props.openActionMaodal(record, "edit") : undefined} className="btn btn-primary ml-2">
                                 Edit
                             </Button>
                         }

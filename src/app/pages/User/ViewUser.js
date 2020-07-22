@@ -19,7 +19,7 @@ const ViewUser = props => {
             <dd>
               {record.isActive
                 ? <label className="badge badge-success">Active</label>
-                : <label className="badge badge-warning">In Active</label>
+                : <label className="badge badge-secondary">In Active</label>
               }
             </dd>
             <dt>Email</dt>

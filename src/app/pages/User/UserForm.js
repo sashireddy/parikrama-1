@@ -122,11 +122,6 @@ class UserForm extends React.Component {
                         <Form.Control.Feedback type="invalid">Please select branch for the user</Form.Control.Feedback>
                     </Form.Group>
                     <Form.Group>
-                        <Form.Label>User Status</Form.Label>
-                        <Form.Check type="radio" id="categoryIsActive" name="isActive" value="active" label="Active" checked={this.state.isActive} onChange={this.onStatusChange} />
-                        <Form.Check type="radio" id="categoryIsInActive" name="isActive" value="inActive" label="In Active" checked={!this.state.isActive} onChange={this.onStatusChange} />
-                    </Form.Group>
-                    <Form.Group>
                         <Form.Label>User Contact</Form.Label>
                         <Form.Control required type="text" className="form-control" id="userContact" name="contact" placeholder="Contact" value={this.state.contact} onChange={this.handleChange}
                         pattern="\d{10}" title="Please enter 10 digits mobile number" />

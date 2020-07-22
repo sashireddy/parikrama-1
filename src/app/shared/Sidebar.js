@@ -1,7 +1,9 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { Link, withRouter } from 'react-router-dom';
 // import { Collapse } from 'react-bootstrap';
 import { Dropdown } from 'react-bootstrap';
+import {connect} from "react-redux";
+import {getRole} from '../utils/dataUtils';
 import isAllowed from "../utils/accessControl";
 import {ACTION_VIEW } from "../utils/accessControl";
 import {
@@ -12,7 +14,7 @@ import {
         MODULE_AUDITLOG,
         MODULE_TRANSACTION } from "../utils/accessControl";
 
-class Sidebar extends Component {
+class Sidebar extends React.Component {
   state = {};
 
   toggleMenuState(menuState) {
@@ -57,6 +59,8 @@ class Sidebar extends Component {
 
   }
   render () {
+    const user = this.props.loggedInUser ? this.props.loggedInUser : null;
+    const role = user && getRole(user.role) ? getRole(user.role).name : "";
     return (
       <nav className="sidebar sidebar-offcanvas" id="sidebar">
         <div className="text-center sidebar-brand-wrapper d-flex align-items-center">
@@ -68,46 +72,21 @@ class Sidebar extends Component {
             <div className="nav-link">
               <Dropdown>
                 <Dropdown.Toggle className="nav-link user-switch-dropdown-toggler p-0 toggle-arrow-hide bg-transparent border-0 w-100">
-                  <div className="d-flex justify-content-between align-items-start">
+                  <div className="d-flex justify-content-between align-items-start mb-0">
                     <div className="profile-image">
-                      <img src={ require("../../assets/images/faces/face8.jpg")} alt="profile" />
+                      <img src={ require("../../assets/images/faces/face8.png")} alt="profile" />
                     </div>
                     <div className="text-left ml-3">
-                      <p className="profile-name">Vinayak Phal</p>
-                      <small className="designation text-muted text-small">Manager</small>
-                      <span className="status-indicator online"></span>
+                      {user && (
+                        <React.Fragment>
+                        <p className="profile-name">{`${user.firstName} ${user.lastName}`}</p>
+                        <small className="designation text-muted text-small">{role}</small>
+                        </React.Fragment>
+                      )}
                     </div>
                   </div>
                 </Dropdown.Toggle>
-                <Dropdown.Menu className="preview-list navbar-dropdown">
-                  <Dropdown.Item className="dropdown-item p-0 preview-item d-flex align-items-center" href="!#" onClick={evt =>evt.preventDefault()}>
-                    <div className="d-flex">
-                      <div className="py-3 px-4 d-flex align-items-center justify-content-center">
-                        <i className="mdi mdi-bookmark-plus-outline mr-0"></i>
-                      </div>
-                      <div className="py-3 px-4 d-flex align-items-center justify-content-center border-left border-right">
-                        <i className="mdi mdi-account-outline mr-0"></i>
-                      </div>
-                      <div className="py-3 px-4 d-flex align-items-center justify-content-center">
-                        <i className="mdi mdi-alarm-check mr-0"></i>
-                      </div>
-                    </div>
-                  </Dropdown.Item>
-                  <Dropdown.Item className="dropdown-item preview-item d-flex align-items-center text-small" onClick={evt =>evt.preventDefault()}>
-                    Manage Accounts
-                  </Dropdown.Item>
-                  <Dropdown.Item className="dropdown-item preview-item d-flex align-items-center text-small" onClick={evt =>evt.preventDefault()}>
-                  Change Password
-                  </Dropdown.Item>
-                  <Dropdown.Item className="dropdown-item preview-item d-flex align-items-center text-small" onClick={evt =>evt.preventDefault()}>
-                    Check Inbox
-                  </Dropdown.Item>
-                  <Dropdown.Item className="dropdown-item preview-item d-flex align-items-center text-small" onClick={evt =>evt.preventDefault()}>
-                    Sign Out
-                  </Dropdown.Item>
-                </Dropdown.Menu>
               </Dropdown>
-              <button className="btn btn-success btn-block">New Project <i className="mdi mdi-plus"></i></button>
             </div>
           </li>
           <li className={ this.isPathActive('/dashboard') ? 'nav-item active' : 'nav-item' }>
@@ -226,5 +205,10 @@ class Sidebar extends Component {
   }
 
 }
+const mapStateToProps = state => {
+  return {
+      loggedInUser: state.USER.loggedInUser
+  }
+};
 
-export default withRouter(Sidebar);
+export default connect(mapStateToProps)(withRouter(Sidebar));

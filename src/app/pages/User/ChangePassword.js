@@ -90,7 +90,7 @@ class ChangePassword extends React.PureComponent{
                     {this.state.changeSuccess &&
                         <div className="alert alert-success text-center" role="alert">
                             <i className="mdi mdi-account-key  mr-3"></i>
-                            Successfully changed then password
+                            Successfully changed the password
                         </div>
                     }
                     <Form.Group>

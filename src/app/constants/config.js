@@ -83,7 +83,7 @@ export default {
             "PAGE_LIMIT": 10
         },
         "DASHBOARD" : {
-            "GET_DASHBOARD_DATA": "/data/dashboard.json",
+            "GET_DASHBOARD_DATA": "https://local-parikrama.web.app/api/dashboard",
             "CACHING": true
         },
         "METADATA" : {
