@@ -96,10 +96,18 @@ export const addData = data => {
     return new Promise(async (resolve, reject) => {
         let response;
         try{
-            response= await axios.post(apiConfig.GET_BRANCHES,data)
+            delete data.validated;
+            response= await axios.post(apiConfig.GET_BRANCHES, data)
 
         } catch(err){
-
+            let response = {
+                "flashMessage": {
+                    "type": "danger",
+                    "message": "Unable to save the data!"
+                }
+            };
+            resolve(response);
+            return;
         }
         const [resp,error] =  handleResponse(response)
         if(apiConfig.CACHING && !error){
@@ -132,15 +140,20 @@ export const addData = data => {
 // Update category implementation
 export const updateData = data => {
     return new Promise(async (resolve, reject) => {
-        let response;
         try{
-            response= await axios.put(apiConfig.GET_BRANCHES,data)
-
+            await axios.put(apiConfig.GET_BRANCHES, data);
         } catch(err){
-
+            let response = {
+                "flashMessage": {
+                    "type": "danger",
+                    "message": "Unable to update the data!"
+                }
+            };
+            console.log("Update Branch Error", err);
+            resolve(response);
+            return;
         }
-        const [,error] =  handleResponse(response)
-        if(apiConfig.CACHING && !error){
+        if(apiConfig.CACHING){
             cachedData = cachedData.map(item => {
                 if(item.id === data.id) {
                     return {

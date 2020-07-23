@@ -35,12 +35,12 @@ class UserListItem extends React.PureComponent {
                                 Edit
                             </Button>
                         }
-                        {this.props.record.isActive && isAllowed(ACTION_MANAGE, MODULE_USER) &&
+                        {record.isActive && isAllowed(ACTION_MANAGE, MODULE_USER) &&
                             <Button onClick={() => this.props.openActionMaodal(record, "del")} className="btn btn-danger ml-2">
                                 Disable
                             </Button>
                         }
-                        {!this.props.record.isActive && isAllowed(ACTION_MANAGE, MODULE_USER) &&
+                        {!record.isActive && isAllowed(ACTION_MANAGE, MODULE_USER) &&
                             <Button onClick={this.enableRecord} className="btn btn-primary ml-2">
                                 Enable
                             </Button>

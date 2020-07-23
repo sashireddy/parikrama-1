@@ -29,7 +29,7 @@ class User extends React.Component {
                 case "edit":
                     return "Update User";
                 case "del":
-                    return "Delete User";
+                    return "Disable User";
                 default:
                     return "Manage User";
             }

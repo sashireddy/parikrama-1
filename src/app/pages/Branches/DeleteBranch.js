@@ -1,46 +1,44 @@
 import React from "react";
-import {connect} from "react-redux";
-import BranchActions from "../../actions/branchActions";
-
-const disableActionPayload = (record) => {
-  record.isActive = false
-  return record;
-}
-
 class ViewCategory extends React.Component{
+
+  disableRecord = () => {
+    let {record} = this.props;
+    this.props.updateData({...record, isActive: false});
+    this.props.closeModal();
+  }
+
   render(){
+    let {record} = this.props;
     return (
       <React.Fragment>
         <div className="pl-3 pr-3">
             <p>Are you sure you want to Disable this Record?</p>
             <dl className="dl-horizontal">
             <dt>Branch</dt>
-              <dd>{this.props.record.name}</dd>
-              <dt>Street</dt>  
-              <dd>{this.props.record.address.street}</dd>
+              <dd>{record.name}</dd>
+              <dt>Street</dt>
+              <dd>{record.address.street}</dd>
               <dt>City</dt>
-              <dd>{this.props.record.address.city}</dd>
+              <dd>{record.address.city}</dd>
               <dt>State</dt>
-              <dd>{this.props.record.address.state}</dd>
+              <dd>{record.address.state}</dd>
               <dt>Country</dt>
-              <dd>{this.props.record.address.country}</dd>
+              <dd>{record.address.country}</dd>
               <dt>Zip</dt>
-              <dd>{this.props.record.address.zipcode}</dd>
+              <dd>{record.address.zipcode}</dd>
             </dl>
-            <p className="text-warning">This action cannot be undone</p>
         </div>
         <hr className="modal-footer-ruler" />
         <div className="text-right">
           <button className="btn btn-light mr-2" onClick={this.props.closeModal}>Cancel</button>
-          <button className="btn btn-danger" onClick={()=>{
-            this.props.updateData(disableActionPayload(this.props.record))}}>Disable</button>
+          <button className="btn btn-danger" onClick={this.disableRecord}>Disable</button>
         </div>
       </React.Fragment>
     );
   }
 }
 
-export default connect(()=>({}),{updateData : BranchActions.updateData})(ViewCategory);
+export default ViewCategory;
 
 
 

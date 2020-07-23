@@ -89,7 +89,6 @@ export const addData = data => {
                 await Firebase.doCreateUserWithEmailAndPassword(data.email, data.password);
                 delete data.password;
                 response = await axios.post(apiConfig.GET_USERS, data);
-                console.log("Create User response: ", response);
             } catch(err) {
                 let response = {
                     "flashMessage": {
@@ -97,7 +96,6 @@ export const addData = data => {
                         "message": "Unable to save the data!"
                     }
                 };
-                console.log(err);
                 resolve(response);
                 return;
             }
@@ -139,13 +137,10 @@ export const addData = data => {
 // Update category implementation
 export const updateData = data => {
     return new Promise(async (resolve, reject) => {
-        let user;
         try{
             delete data.password;
             delete data.showPassword;
-            let response = await axios.put(apiConfig.GET_USERS, data);
-            user = JSON.parse(response.config.data);
-            console.log("Updated User", user);
+            await axios.put(apiConfig.GET_USERS, data);
         } catch(err) {
             let response = {
                 "flashMessage": {
@@ -160,10 +155,10 @@ export const updateData = data => {
         if(apiConfig.CACHING){
             console.log("Updating now");
             cachedData = cachedData.map(item => {
-                if(item.id === user.id) {
+                if(item.id === data.id) {
                     return {
                         ...item,
-                        ...user
+                        ...data
                     }
                 }
                 return item;
