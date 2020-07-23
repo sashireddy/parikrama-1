@@ -1,6 +1,6 @@
 import React from "react";
 import {Form} from "react-bootstrap";
-
+import {parseInteger} from '../../utils/commonUtil'
 class BranchForm extends React.Component {
     constructor(props){
         super(props);
@@ -58,7 +58,7 @@ class BranchForm extends React.Component {
             ...this.state,
             address: {
                 ...this.state.address,
-                [event.target.name]: parseInt(event.target.value)
+                [event.target.name]: parseInteger(event.target.value)
             }
         })
     }

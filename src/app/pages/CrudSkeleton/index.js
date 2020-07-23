@@ -145,7 +145,7 @@ class CrudSkeleton extends Component {
                                                     )
                                             })}
                                         </Form.Group>
-                                        {isAllowed(ACTION_MANAGE, this.props.moduleName) && AddModal && <Button onClick={() => this.openActionMaodal(null, "add")} className="btn btn-primary ml-2 search-btn">{this.props.content.addButton || 'Add Record'}</Button>}
+                                        {((isAllowed(ACTION_MANAGE, this.props.moduleName) && AddModal)||this.props.addOverride) && <Button onClick={() => this.openActionMaodal(null, "add")} className="btn btn-primary ml-2 search-btn">{this.props.content.addButton || 'Add Record'}</Button>}
                                     </Form>
                                 </div>
                                 <div className="table-responsive">

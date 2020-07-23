@@ -94,12 +94,23 @@ export const getData = params => {
     });
 }
 
+const getParams = (params) =>{
+    return {
+        category: params.category,
+        id : params.id,
+        isActive : params.isActive,
+        name : params.name,
+        thresholds: params.thresholds,
+        unit : params.unit
+    }
+}
+
 // Add category implementaion
 export const addData = data => {
     return new Promise(async (resolve, reject) => {
         let response;
         try{
-            response= await axios.post(apiConfig.GET_PRODUCTS,data)
+            response= await axios.post(apiConfig.GET_PRODUCTS,getParams(data))
         } catch(err){
 
         }
@@ -135,7 +146,7 @@ export const updateData = data => {
     return new Promise(async (resolve, reject) => {
         let response;
         try{
-            response = await axios.put(apiConfig.GET_PRODUCTS,data)
+            response = await axios.put(apiConfig.GET_PRODUCTS,getParams(data))
         }catch(err) {
             reject(err);
         }const [,err] = handleResponse(response);

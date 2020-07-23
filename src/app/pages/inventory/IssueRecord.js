@@ -1,11 +1,12 @@
 import React from "react"
 import {Form, Row,Col,Alert} from 'react-bootstrap'
 import {connect} from 'react-redux'
-import {getBranch, getLoggedInUserInfo,getProduct} from '../../utils/dataUtils'
+import {getBranchInfo, getLoggedInUserInfo,getProduct} from '../../utils/dataUtils'
 import InventoryActions from '../../actions/inventoryActions'
 import Select from 'react-select'
 import {dropDownResponseFromMap} from '../../utils/dropDownUtils'
-
+import {addNotification} from '../../actions/notification'
+import {parseInteger} from '../../utils/commonUtil'
 const LocalRequest = "ISSUE_PRODUCT"
 const TransferOperation = "TransferOperation"
 
@@ -18,21 +19,50 @@ class IssueProduct extends React.Component {
             ...this.props.record,
             productName:getProduct(this.props.record.product).name,
             fromBranch :getLoggedInUserInfo().branch,
-            fromBranchName : getBranch(getLoggedInUserInfo().branch).name,
+            fromBranchName : getBranchInfo(getLoggedInUserInfo().branch).name,
             type:LocalRequest,
             operationalQuantity : 0,
             note : ""
         }
     }
+    validateParams = () => {
+        const operationalQuantity = parseInteger(this.state.operationalQuantity)
+        if(operationalQuantity > 0 && operationalQuantity <= this.props.record.availableQuantity){
+            return true
+        }else if(operationalQuantity === 0){
+            addNotification({
+                title : "Please Check Quantity Parameter",
+                message: "Quantity can't be 0",
+                type : "warning"
+                
+            })
+        }else if(operationalQuantity > this.props.record.availableQuantity){
+            addNotification({
+                title : "Please Check Quantity Parameter",
+                message: "Quantity can't be greater than available Quantity",
+                type : "warning"
+            })
+        }else if( operationalQuantity < 0){
+            addNotification({
+                title : "Please Check Quantity Parameter",
+                message: "Quantity can't be negative",
+                type : "warning"
+            })
+        }
+    }
+
+    transformParamas = () => {
+        return {
+            ...this.state,
+            operationalQuantity : parseInteger(this.state.operationalQuantity)
+        }
+    }
 
     handleChange = evt => {
-        const operationalQuantity = evt.target.value
-        if(operationalQuantity >= 0 && operationalQuantity <= this.props.record.availableQuantity){
-            this.setState({
-                ...this.state,
-                operationalQuantity
-            });
-        }
+        this.setState({
+            ...this.state,
+            operationalQuantity: evt.target.value
+        });
     }
 
     handleBranchDropDown =evt => {
@@ -59,32 +89,34 @@ class IssueProduct extends React.Component {
 
     onSubmit = event => {
         const form = event.currentTarget;
-        if (form.checkValidity() === false) {
+        if (form.checkValidity() === false || !this.validateParams()) {
             event.preventDefault();
             event.stopPropagation();
         }else {
             event.preventDefault();
-            this.props.createTransaction({...this.state});
+            this.props.createTransaction(this.transformParamas());
         }
         this.props.closeModal();
     }
 
     render() {
         console.log(this.state)
-        const branchDropdownArr = dropDownResponseFromMap(this.props.branches.allRecords)
+        const branchDropdownArr = dropDownResponseFromMap(this.props.branches.allRecords).filter(x=>x.label !== this.state.fromBranchName)
         const stockAfter = this.props.record.availableQuantity-this.state.operationalQuantity
+        let isAdminBranch = getBranchInfo(getLoggedInUserInfo().branch).isHeadOffice
         return (
             <form className="forms-sample" onSubmit={this.onSubmit} >
                 <div className="pl-3 pr-3">
+                    <div>
                     <Form.Group>
                         <label htmlFor="isHeadOffice">Request Type</label>
                         <Form.Check type="radio" id={LocalRequest} name={LocalRequest} value={LocalRequest} 
                             label="Disburse Inventory Locally" checked={this.state.type === LocalRequest}
                             onChange={()=>this.onStatusChange(LocalRequest)} />
-                        <Form.Check type="radio" id={TransferOperation} name ={TransferOperation} value={TransferOperation} 
+                        {isAdminBranch && <Form.Check type="radio" id={TransferOperation} name ={TransferOperation} value={TransferOperation} 
                             label="Move Inventory To Another Branch" checked={this.state.type === TransferOperation}
                             onChange={()=>this.onStatusChange(TransferOperation)}
-                            />
+                            />}
                     </Form.Group>
                     {this.state.type === TransferOperation &&<Form.Group>
                         <label htmlFor="exampleInputEmail1">To Branch</label>
@@ -93,24 +125,30 @@ class IssueProduct extends React.Component {
                     </Form.Group>}
                     <Row>
                         <Col>
-                            <h6>Current Stock: {this.props.record.availableQuantity}</h6> 
+                            <h6 className="headerValue">Current Stock</h6> 
+                            <h6 className="Value">{this.props.record.availableQuantity}</h6>
                         </Col>
                         <Col>
-                            <h6>Threshold : {this.props.record.threshold}</h6>
-                        </Col>
-                        <Col>
-                            <h6>Stock left after transaction: {stockAfter}</h6>
+                        <h6 className="headerValue">Stock left after transaction</h6>
+                            <h6 className="Value">{stockAfter}</h6>
                         </Col>
                     </Row>
                     <Row>
                         <Col>
-                            <h6>
-                                Product : {this.props.record.productName}
+                        <h6 className="headerValue">
+                                Product
                             </h6>
+                            <h6 className="Value">{this.props.record.productName}</h6>
+                        </Col>
+                        <Col>
+                        <h6 className="headerValue">Threshold</h6>
+                            <h6 className="Value">{this.props.record.threshold}</h6>
                         </Col>
                     </Row>
-                    <Row><Col>
-                    <Form.Group>
+                    </div>
+                    <Row>
+                        <Col>
+                        <Form.Group>
                         <label htmlFor="exampleInputEmail1">Quantity</label>
                         <Form.Control required type="number" className="form-control" id="operationalQuantity" name="operationalQuantity" placeholder="" value={this.state.operationalQuantity} onChange={this.handleChange} />
                         <Form.Control.Feedback type="invalid">Please enter a valid quantity</Form.Control.Feedback>

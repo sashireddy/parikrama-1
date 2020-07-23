@@ -140,14 +140,6 @@ class Sidebar extends Component {
             </Link>
           </li>
           }
-          {isAllowed(ACTION_VIEW, MODULE_INVENTORY) &&
-          <li className={ this.isPathActive('/inventory') ? 'nav-item active' : 'nav-item' }>
-            <Link className="nav-link" to="/inventory">
-              <i className="mdi mdi-barley menu-icon"></i>
-              <span className="menu-title">Inventory</span>
-            </Link>
-          </li>
-          }
           {isAllowed(ACTION_VIEW, MODULE_USER) &&
           <li className={ this.isPathActive('/users') ? 'nav-item active' : 'nav-item' }>
             <Link className="nav-link" to="/users">
@@ -172,8 +164,15 @@ class Sidebar extends Component {
               </Link>
             </li>
           }
-          {
-            isAllowed(ACTION_VIEW,MODULE_INVENTORY) &&
+          {/* {isAllowed(ACTION_VIEW, MODULE_INVENTORY) && */}
+          <li className={ this.isPathActive('/inventory') ? 'nav-item active' : 'nav-item' }>
+            <Link className="nav-link" to="/inventory">
+              <i className="mdi mdi-barley menu-icon"></i>
+              <span className="menu-title">Inventory</span>
+            </Link>
+          </li>
+          {/* } */}
+          { isAllowed(ACTION_VIEW,MODULE_INVENTORY) &&
             <li className={ this.isPathActive('/inventoryreports') ? 'nav-item active' : 'nav-item' }>
               <Link className="nav-link" to="/inventoryreports">
                 <i className="mdi mdi-attachment menu-icon"></i>

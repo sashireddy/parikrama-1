@@ -2,6 +2,42 @@ import { addData,deleteData,getData,updateData,createTransaction,getPendingTrans
 import skeletonActions from './crudActions'
 import pageConstants from '../constants/pages'
 import {GET_PENDING_TRANSACTIONS} from './types'
+import {addNotification} from "./notification";
+
+const sendNotification = (params,error) => {
+  let message = ""
+  let tittle = ""
+  let type = error ? "danger" : "success"
+  switch(params.type){
+    case "RAISE_REQUEST":
+      tittle = "Request Raised"
+      message = `Inventory request Raised successfully ${params.productName}`
+      break
+    case "TransferOperation":
+      tittle = "Inventory Transfered"
+      message = `${params.operationalQuantity} ${params.unitName} of ${params.productName} transfered from ${params.fromBranchName} to ${params.toBranchName}`
+      break
+    case "ISSUE_PRODUCT":
+      tittle = "Issue Product"
+      message = `${params.operationalQuantity} ${params.unitName} of ${params.productName} issued sucessfully`
+      break
+    case "ADD_PRODUCT":
+      tittle = "Add Product"
+      message = `${params.operationalQuantity} ${params.unitName} of ${params.productName} added sucessfully `
+      break
+    default :
+
+  }
+  message = error ? "We encountered an error while processing your request" : message
+  if(message.length !== 0){
+    addNotification({
+      title: tittle,
+      type: type,
+      message,
+    })
+  }
+  
+}
 
 const actions = (()=>{
   const defaultSkeletonActions = skeletonActions(pageConstants.pages.inventory,
@@ -9,43 +45,62 @@ const actions = (()=>{
     const acceptOrRejectExtRequest = params => async dispatch => {
       // dispatch(defaultSkeletonActions.setLoading())
       try{
+        dispatch(defaultSkeletonActions.setLoading())
         const resp = await respondToTransferRequest(params)
         dispatch({
         type: GET_PENDING_TRANSACTIONS,
         payload : resp
         })
+        sendNotification(params)
       }catch (err) {
-
+        dispatch(defaultSkeletonActions.removeLoadingIcon())
+        sendNotification(params,true)
+        
       }
     }
     const createInventoryTransaction = params => async dispatch => {
-      const resp = await createTransaction(params)
-      dispatch({
-        type: "GET_INVENTORY",
-        payload: resp,
-      });
+      try{
+        dispatch(defaultSkeletonActions.setLoading())
+        const resp = await createTransaction(params)
+        dispatch({
+          type: "GET_INVENTORY",
+          payload: resp,
+        });
+        sendNotification(params)
+      }catch(err){
+        dispatch(defaultSkeletonActions.removeLoadingIcon())
+        sendNotification(params,true)
+      }
+      
     }
     const loadPendingTransactions = params => async dispatch => {
       try{
+        dispatch(defaultSkeletonActions.setLoading())
         const resp = await getPendingTransactions(params)
         dispatch({
           type: GET_PENDING_TRANSACTIONS,
           payload : resp
         })
+        sendNotification(params)
       }catch(err){
-
+        dispatch(defaultSkeletonActions.removeLoadingIcon())
+        sendNotification(params,true)
       }
     }
     const rejectInventoryRequest = params => async dispatch => {
       try{
+        dispatch(defaultSkeletonActions.setLoading())
         const resp = await rejectRequest(params)
         dispatch({
           type: GET_PENDING_TRANSACTIONS,
           payload : resp
         })
+        sendNotification(params)
       }catch(err){
-
+        dispatch(defaultSkeletonActions.removeLoadingIcon())
+        sendNotification(params,true)
       }
+        
     }
     const downloadCSV = params => async () => {
       generateCsv(params)

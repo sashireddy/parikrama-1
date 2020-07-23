@@ -2,10 +2,11 @@ import React from "react"
 import {Form} from 'react-bootstrap'
 import Select from 'react-select'
 import {connect} from 'react-redux'
-import {dropDownResponseFromMap} from '../../utils/dropDownUtils'
+import {dropDownResponseFromMap,getHeadOfficeDropDown} from '../../utils/dropDownUtils'
 import {getLoggedInUserInfo,getBranchInfo} from '../../utils/dataUtils'
 import InventoryActions from '../../actions/inventoryActions'
-
+import {parseInteger} from '../../utils/commonUtil'
+import {addNotification} from '../../actions/notification'
 const mapStateToProps = state => ({
     products: state['PRODUCTS'],
     branches : state['BRANCHES'],
@@ -33,13 +34,11 @@ class AddCategory extends React.Component {
     }
 
     handleChange = evt => {
-        const operationalQuantity = parseInt(evt.target.value)
-        if(operationalQuantity){
-            this.setState({
-                ...this.state,
-                operationalQuantity
-            });
-        }
+        this.setState({
+            ...this.state,
+            operationalQuantity : evt.target.value
+        })
+        
     }
     handleNote = evt => {
         this.setState({
@@ -63,39 +62,64 @@ class AddCategory extends React.Component {
         toBranchName: evt && evt.label
         })
     }
+    validateParams = () => {
+        const operationalQuantity = parseInteger(this.state.operationalQuantity)
+        if( operationalQuantity!== 0 && (this.state.type === Adjustment ||
+            (this.state.type !== Adjustment && operationalQuantity >=0))){
+            return true
+        }else if(operationalQuantity === 0){
+            //error
+            addNotification({
+                title : "Please Check Quantity Parameter",
+                message: "Quantity can't be 0",
+                type : "warning"
+                
+            })
+        }if(this.state.type !== Adjustment && operationalQuantity < 0){
+            //error 
+            addNotification({
+                title : "Please Check Quantity Parameter",
+                message: "Quantity can't be negative",
+                type : "warning"
+                
+            })
+        }
+        return false
+    }
+    transformParamas = () => {
+        return {
+            ...this.state,
+            operationalQuantity : parseInteger(this.state.operationalQuantity)
+        }
+    }
 
     onSubmit = event => {
         const form = event.currentTarget;
-        if (form.checkValidity() === false && !this.state.currentProduct) {
+        const validParamsflag = this.validateParams()
+        if (form.checkValidity() === false || !this.state.currentProduct || !validParamsflag) {
             event.preventDefault();
             event.stopPropagation();
         }else {
             event.preventDefault();
-            this.props.createTransaction({...this.state});
+            this.props.createTransaction(this.transformParamas());
             this.props.closeModal();
         }
        
     }
 
     onStatusChange = label => {
-        // if(label === LocalRequest){
             this.setState({
                 ...this.state,
                 type:label,
             })
-        // }else{
-        //     this.setState({
-        //         ...this.state,
-        //         type:TransferRequest,
-        //     })
-        // }
     }
 
 
     render() {
         console.log(this.state)
         const productDropdownArr = dropDownResponseFromMap(this.props.products.allRecords)
-        const branchDropdownArr = dropDownResponseFromMap(this.props.branches.allRecords).filter(e => e.value !== this.state.fromBranch)
+        const branchDropdownArr = getHeadOfficeDropDown()
+        let isNotAdminBranch = !getBranchInfo(getLoggedInUserInfo().branch).isHeadOffice
         return (
             <form className="forms-sample" onSubmit={this.onSubmit} >
                 <div className="pl-3 pr-3">
@@ -104,9 +128,9 @@ class AddCategory extends React.Component {
                         <Form.Check type="radio" id={LocalRequest} name={LocalRequest} value={LocalRequest} 
                             label="Add Inventory Locally" checked={this.state.type === LocalRequest}
                             onChange={e=>this.onStatusChange(LocalRequest)} />
-                        <Form.Check type="radio" id={TransferRequest} name={TransferRequest} value={TransferRequest} 
+                        { isNotAdminBranch &&<Form.Check type="radio" id={TransferRequest} name={TransferRequest} value={TransferRequest} 
                             label="Request from Head Office" checked={this.state.type===TransferRequest} 
-                            onChange={e=>this.onStatusChange(TransferRequest)} />
+                            onChange={e=>this.onStatusChange(TransferRequest)} />}
                         <Form.Check type="radio" id={Adjustment} name={Adjustment} value={Adjustment} 
                             label="Add Adjustment transaction" checked={this.state.type===Adjustment} 
                             onChange={e=>this.onStatusChange(Adjustment)} />

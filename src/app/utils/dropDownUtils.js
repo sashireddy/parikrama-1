@@ -1,3 +1,5 @@
+import store from "../store"
+
 const ValToDropDownEntry = (entry) => {
     return {
         value:entry,
@@ -29,5 +31,13 @@ const dropDownResponseFromMap = map => {
     })
     return resp
 }
+const getHeadOfficeDropDown = () => {
+    let resp = []
+    const state = store.getState()
+    Object.keys(state['BRANCHES'].allRecords).forEach(key => {
+        state['BRANCHES'].allRecords[key].isHeadOffice && state['BRANCHES'].allRecords[key].isActive && resp.push(getDropdownItem(state['BRANCHES'].allRecords[key].name,key));
+    })
+    return resp
+}
 
-export {ValToDropDownEntry,arrToDropDownArr, getDropdownItem, getSelectedItem,dropDownResponseFromMap}
+export {ValToDropDownEntry,arrToDropDownArr, getDropdownItem, getSelectedItem,dropDownResponseFromMap,getHeadOfficeDropDown}
