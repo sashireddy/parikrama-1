@@ -24,7 +24,7 @@ export default props => {
           <nav>
             {props.record.isActive && (
               <>
-              {isAllowed(ACTION_VIEW, MODULE_INVENTORY) &&
+              {isAllowed(ACTION_MANAGE, MODULE_INVENTORY) &&
                   <Button className="btn btn-primary" onClick={() => props.openActionMaodal(category, "view")}>
                       View
                   </Button>

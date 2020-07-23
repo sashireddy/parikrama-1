@@ -2,7 +2,7 @@ import React, { Component,Suspense, lazy } from 'react';
 import { Switch, Route, Redirect } from 'react-router-dom';
 
 import Spinner from '../app/shared/Spinner';
-import isAllowed, {ACTION_VIEW, ACTION_GENERATE} from "./utils/accessControl";
+import isAllowed, {ACTION_VIEW, ACTION_GENERATE, ACTION_MANAGE} from "./utils/accessControl";
 import {
         MODULE_BRANCH,
         MODULE_USER,
@@ -58,10 +58,9 @@ class AppRoutes extends Component {
           <Route exact path="/dashboard" component={ Dashboard } />
           {isAllowed(ACTION_VIEW, MODULE_USER) && <Route path="/roles" component={ Role } />}
           {isAllowed(ACTION_VIEW, MODULE_USER) && <Route path="/users" component={ User } />}
-          {isAllowed(ACTION_VIEW, MODULE_INVENTORY) && <Route path="/units" component={ Unit } />}
-          {isAllowed(ACTION_VIEW, MODULE_INVENTORY) && <Route path="/categories" component={ Category } />}
-          {isAllowed(ACTION_VIEW, MODULE_INVENTORY) && <Route path="/products" component={ Products } />}
-          {isAllowed(ACTION_VIEW, MODULE_INVENTORY) && <Route path="/inventory/move" component={Move} />}
+          {isAllowed(ACTION_MANAGE, MODULE_INVENTORY) && <Route path="/units" component={ Unit } />}
+          {isAllowed(ACTION_MANAGE, MODULE_INVENTORY) && <Route path="/categories" component={ Category } />}
+          {isAllowed(ACTION_MANAGE, MODULE_INVENTORY) && <Route path="/products" component={ Products } />}
           {/* {isAllowed(ACTION_VIEW, MODULE_INVENTORY) && <Route path="/inventory" component={Inventory} />} */}
           {isAllowed(ACTION_VIEW, MODULE_INVENTORY) && <Route path="/inventoryreports" component={InventoryReports} />}
           {isAllowed(ACTION_GENERATE, MODULE_REPORT) && <Route path="/reports" component ={ Reports } />}

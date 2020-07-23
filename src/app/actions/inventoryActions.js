@@ -15,15 +15,15 @@ const sendNotification = (params,error) => {
       break
     case "TransferOperation":
       tittle = "Inventory Transfered"
-      message = `${params.operationalQuantity} ${params.unitName} of ${params.productName} transfered from ${params.fromBranchName} to ${params.toBranchName}`
+      message = `${params.operationalQuantity}  ${params.productName} transfered from ${params.fromBranchName} to ${params.toBranchName}`
       break
     case "ISSUE_PRODUCT":
       tittle = "Issue Product"
-      message = `${params.operationalQuantity} ${params.unitName} of ${params.productName} issued sucessfully`
+      message = `${params.operationalQuantity}  ${params.productName} issued sucessfully`
       break
     case "ADD_PRODUCT":
       tittle = "Add Product"
-      message = `${params.operationalQuantity} ${params.unitName} of ${params.productName} added sucessfully `
+      message = `${params.operationalQuantity} ${params.productName} added sucessfully `
       break
     default :
 
