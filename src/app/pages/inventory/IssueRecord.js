@@ -1,7 +1,7 @@
 import React from "react"
 import {Form, Row,Col,Alert} from 'react-bootstrap'
 import {connect} from 'react-redux'
-import {getLoggedInUserInfo,getProduct} from '../../utils/dataUtils'
+import {getBranch, getLoggedInUserInfo,getProduct} from '../../utils/dataUtils'
 import InventoryActions from '../../actions/inventoryActions'
 import Select from 'react-select'
 import {dropDownResponseFromMap} from '../../utils/dropDownUtils'
@@ -18,9 +18,10 @@ class IssueProduct extends React.Component {
             ...this.props.record,
             productName:getProduct(this.props.record.product).name,
             fromBranch :getLoggedInUserInfo().branch,
-           type:LocalRequest,
-           operationalQuantity : 0,
-           note : ""
+            fromBranchName : getBranch(getLoggedInUserInfo().branch).name,
+            type:LocalRequest,
+            operationalQuantity : 0,
+            note : ""
         }
     }
 

@@ -3,7 +3,8 @@ import config from "../constants/config";
 import {validateCurrentPage,genericFilter} from "./util";
 import Firebase from "../Firebase";
 import {getBranch,getCategory,getUnit,getProduct } from '../utils/dataUtils'
-
+import {arrayToCsvContent,download} from '../utils/csvUtils'
+import dateformat from 'dateformat'
 console.log('Firebase =>', typeof(Firebase));
 
 const apiConfig = config.API.INVENTORY_SUMMARY;
@@ -81,4 +82,25 @@ const getCurrentStateData = params => {
     apiResponse.search = params.search;
     apiResponse.sort = params.sort;
     apiResponse.currentPage = currentPage;
+}
+export const downloadReport = async params => {
+    const branchName = getBranch(params.branch).name    
+    const headerArr = ['Category','Branch','Threshold','Product','Initial Quantity','Consumed Quantity','Transfered Quantity','Added Quantity','Closing Quantity',]
+    const arr = cachedData || []
+    const outArr = []
+    outArr.push(headerArr)
+    arr.forEach(row=> {
+        const tempRow = []
+        tempRow.push(row.categoryName)
+        tempRow.push(branchName)
+        tempRow.push(row.threshold)
+        tempRow.push(row.productName)
+        tempRow.push(`${row.initialQuantity} `+row.unitName)
+        tempRow.push(`${row.consumedQuantity} `+row.unitName)
+        tempRow.push(`${row.transferredQuantity} `+row.unitName)
+        tempRow.push(`${row.addedQuantity} `+row.unitName)
+        tempRow.push(`${row.closingQuantity} `+row.unitName) 
+        outArr.push(tempRow)
+    })
+    download(arrayToCsvContent(outArr),`${branchName}_${dateformat(params.startDate,'yyyy-mm-dd')}_${dateformat(params.endDate,'yyyy-mm-dd')}.csv`,)
 }

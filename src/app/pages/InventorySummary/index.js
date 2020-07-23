@@ -1,7 +1,7 @@
 import React from 'react'
 import Skeleton from '../CrudSkeleton/index'
 import { connect } from 'react-redux'
-import {Form} from 'react-bootstrap'
+import {Form,Button} from 'react-bootstrap'
 import DatePicker from "react-datepicker"
 import Select from 'react-select';
 import { Card } from 'react-bootstrap'
@@ -171,6 +171,11 @@ class InventorySummary extends React.Component {
                     <Form.Group>
                         <input type="submit" value="Search" className="btn btn-primary"/>
                     </Form.Group>
+                    <Button onClick={()=>{
+                        this.props.download({...this.state})
+                    }}>
+                        Download
+                    </Button>
                 </Form>
                 {this.state.error ? <p className="text-warning">Please select both start and end date</p> : null}
                                         
@@ -185,6 +190,8 @@ const mapStateToProps = (state) => ({
     stateData : state['INVENTORYSUMMARY']
 })
 const actionsToProps = {
-    loadData : InventorySummaryAction.getInventory
+    loadData : InventorySummaryAction.getInventory,
+    download: InventorySummaryAction.generateCSV
+
 }
 export default connect(mapStateToProps,actionsToProps)(InventorySummary)

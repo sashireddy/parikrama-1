@@ -9,7 +9,7 @@ import {connect,} from "react-redux";
 import {getLoggedInUserInfo,getBranchInfo} from '../../utils/dataUtils'
 import {getDropdownItem,dropDownResponseFromMap} from '../../utils/dropDownUtils'
 import Select from 'react-select'
-import isAllowed,{MODULE_INVENTORY,ACTION_VIEW} from '../../utils/accessControl'
+import isAllowed,{MODULE_INVENTORY,ACTION_MANAGE} from '../../utils/accessControl'
 
 const mapStateToProps = state => ({
     stateData: {
@@ -124,7 +124,7 @@ class Inventory extends React.Component {
         console.log(this.props)
         // const loggedInUserInfo = getLoggedInUserInfo()
         const branchOptions = dropDownResponseFromMap(this.props.stateData.state.BRANCHES.allRecords)
-        branchOptions.push(getDropdownItem("All branches","GET_ALL_BRANCHES"))
+        // branchOptions.push(getDropdownItem("All branches","GET_ALL_BRANCHES"))
         return (
             <div>
                 <InventorySkeleton key="Inventory" content={{
@@ -148,11 +148,14 @@ class Inventory extends React.Component {
                     <Card.Body>
                         <Row>
                             <Col>
-                            <Form.Group className="select-box-fix">
+                            {isAllowed(ACTION_MANAGE,MODULE_INVENTORY) && (
+                                <Form.Group className="select-box-fix">
                                 <Form.Label>Branch</Form.Label>
                                 <Select className="basic-single" classNamePrefix="select" defaultValue = {getDropdownItem(this.state.branchName,this.state.branch)}
                                     isSearchable={true}  options={branchOptions} onChange={(e)=>{this.handleBranchDropDown(e)}}/>
-                            </Form.Group>
+                                </Form.Group>
+                            )}
+                            
                             </Col>
                             <Col className="justify-content-end flex">
                                 <Button className="buttonNormal" onClick={()=>{this.props.download({...this.state})}}>Download</Button>

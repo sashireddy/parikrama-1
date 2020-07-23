@@ -52,7 +52,16 @@ export const getPendingTransactions = (params) => {
         }
     })
 }
-
+export const rejectRequest = async params => {
+    try {
+        const [,err]=handleResponse(axios.post(pageConfig.REJECT_REQUEST,params));
+        if(err) throw new Error(err)
+        pendingTransactions = pendingTransactions.filter(entry => entry.id === params.id)
+        return pendingTransactions
+    }catch(err){
+        throw new Error(err)
+    }
+}
 export const respondToTransferRequest = async params => {
     try{
         const list = []
@@ -109,9 +118,8 @@ export const createTransaction = ({type,...otherParams}) => {
 	                "toBranch": otherParams.toBranch, //always headoffice
                 	"fromBranchName": otherParams.fromBranchName,
 	                "toBranchName": otherParams.toBranchName,
-                    "branch": otherParams.fromBranch,
                     "productName":otherParams.productName,
-                    "productId": otherParams.product,
+                    "product": otherParams.product,
                     "operationalQuantity": parseInt(otherParams.operationalQuantity),
                     "note": otherParams.note
                 }

@@ -1,4 +1,4 @@
-import { addData,deleteData,getData,updateData,createTransaction,getPendingTransactions,generateCsv,respondToTransferRequest } from '../dataAbstraction/inventory'
+import { addData,deleteData,getData,updateData,createTransaction,getPendingTransactions,generateCsv,respondToTransferRequest,rejectRequest } from '../dataAbstraction/inventory'
 import skeletonActions from './crudActions'
 import pageConstants from '../constants/pages'
 import {GET_PENDING_TRANSACTIONS} from './types'
@@ -26,11 +26,26 @@ const actions = (()=>{
       });
     }
     const loadPendingTransactions = params => async dispatch => {
-      const resp = await getPendingTransactions(params)
-      dispatch({
-        type: GET_PENDING_TRANSACTIONS,
-        payload : resp
-      })
+      try{
+        const resp = await getPendingTransactions(params)
+        dispatch({
+          type: GET_PENDING_TRANSACTIONS,
+          payload : resp
+        })
+      }catch(err){
+
+      }
+    }
+    const rejectInventoryRequest = params => async dispatch => {
+      try{
+        const resp = await rejectRequest(params)
+        dispatch({
+          type: GET_PENDING_TRANSACTIONS,
+          payload : resp
+        })
+      }catch(err){
+
+      }
     }
     const downloadCSV = params => async () => {
       generateCsv(params)
@@ -41,6 +56,7 @@ const actions = (()=>{
     loadPendingTransactions,
     acceptOrRejectExtRequest,
     createInventoryTransaction,
+    rejectInventoryRequest,
     downloadCSV
   }
 
