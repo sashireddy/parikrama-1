@@ -24,9 +24,10 @@ export const ROLE_ADMIN = "admin";
 export const ROLE_SUPERADMIN = "superadmin";
 export const ROLE_BRANCH = "branch";
 
-let user = null;
-let permissions = [];
+
 const isAllowed = (action, module) => {
+    let user = null;
+    let permissions = [];
     if(!permissions.length) {
         user = getLoggedInUserInfo();
         let role = user ? getRole(user.role) : null;

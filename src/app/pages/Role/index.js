@@ -40,8 +40,7 @@ class Role extends React.Component {
                     value : 'Description',
                     key : 'description'
                 },{
-                    value : 'Status',
-                    key : 'isActive'
+                    value : 'Action'
                 }
             ]
 

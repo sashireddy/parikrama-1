@@ -32,7 +32,7 @@ const actions = (pageId,getEntityData,updateEntityData,addEntityData,deleteEntit
       dispatch(setLoading());
       try {
         const res = await getEntityData(data);
-        notifyStatus(res, `LOAD ${pageId}`);
+        // notifyStatus(res, `LOAD ${pageId}`);
         dispatch({
           type: getData,
           payload: res,

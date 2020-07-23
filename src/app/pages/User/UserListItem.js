@@ -22,13 +22,7 @@ class UserListItem extends React.PureComponent {
                 <td>{getRole(record.role).name}</td>
                 <td>{getBranch(record.branch).name}</td>
                 <td>{record.contact}</td>
-                <td>
-                    {record.isActive
-                    ? <label className="badge badge-success">Active</label>
-                    : <label className="badge badge-warning">In Active</label>
-                    }
-                </td>
-
+                <td>{record.isActive ? "Active" : "InActive"}</td>
                 <td>
                     <nav>
                         {isAllowed(ACTION_VIEW, MODULE_USER) &&
@@ -36,8 +30,8 @@ class UserListItem extends React.PureComponent {
                                 View
                             </Button>
                         }
-                        {this.props.record.isActive && isAllowed(ACTION_MANAGE, MODULE_USER) &&
-                            <Button onClick={() => this.props.openActionMaodal(record, "edit")} className="btn btn-primary ml-2">
+                        {isAllowed(ACTION_MANAGE, MODULE_USER) &&
+                            <Button disabled={!record.isActive} onClick={record.isActive ? () => this.props.openActionMaodal(record, "edit") : undefined} className="btn btn-primary ml-2">
                                 Edit
                             </Button>
                         }

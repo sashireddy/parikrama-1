@@ -1,6 +1,7 @@
 import { getData } from "../dataAbstraction/metadata";
 import branchActions from "./branchActions";
 import roleActions from "./roleActions";
+import operationActions from "./operationsActions";
 import unitActions from "./units";
 import categoryActions from "./categoryActions";
 import productActions from "./productActions";
@@ -14,6 +15,7 @@ const getAllMetadata = () => async (dispatch) => {
         dispatch(unitActions.initialData());
         dispatch(categoryActions.getAllCategories());
         dispatch(productActions.getAllProducts());
+        dispatch(operationActions.getAllOperations());
 
         addNotification({
             title: "APPLICATION BOOT",
