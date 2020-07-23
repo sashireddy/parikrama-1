@@ -22,13 +22,7 @@ class UserListItem extends React.PureComponent {
                 <td>{getRole(record.role).name}</td>
                 <td>{getBranch(record.branch).name}</td>
                 <td>{record.contact}</td>
-                <td>
-                    {record.isActive
-                    ? <label className="badge badge-success">Active</label>
-                    : <label className="badge badge-secondary">Inactive</label>
-                    }
-                </td>
-
+                <td>{record.isActive ? "Active" : "InActive"}</td>
                 <td>
                     <nav>
                         {isAllowed(ACTION_VIEW, MODULE_USER) &&

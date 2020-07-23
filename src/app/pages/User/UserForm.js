@@ -92,8 +92,8 @@ class UserForm extends React.Component {
                     </Form.Group>
                     {!isUpdate ?
                         <Form.Group>
-                            <label htmlFor="name">User Password</label>
-                            <em className="d-block"><small>Create a password for user to login for the first time.</small></em>
+                            <label htmlFor="name">Password</label>
+
                             <div className="input-group">
                                 <Form.Control required type={this.state.showPassword ? "text" : "password"} className="form-control" id="userPassword" name="password" placeholder="User Password" value={this.state.password} onChange={this.handleChange} minLength="6" />
                                 <div className="input-group-append">
@@ -101,6 +101,7 @@ class UserForm extends React.Component {
                                         {this.state.showPassword ? <i className="fa fa-eye" /> : <i className="fa fa-eye-slash" /> }
                                     </button>
                                 </div>
+                                <em className="d-block w-100"><small>Create a password for user to login for the first time.</small></em>
                                 <Form.Control.Feedback type="invalid">Please enter minimum 6 character password</Form.Control.Feedback>
                             </div>
                         </Form.Group>
@@ -122,7 +123,7 @@ class UserForm extends React.Component {
                         <Form.Control.Feedback type="invalid">Please select branch for the user</Form.Control.Feedback>
                     </Form.Group>
                     <Form.Group>
-                        <Form.Label>User Contact</Form.Label>
+                        <Form.Label>Contact</Form.Label>
                         <Form.Control required type="text" className="form-control" id="userContact" name="contact" placeholder="Contact" value={this.state.contact} onChange={this.handleChange}
                         pattern="\d{10}" title="Please enter 10 digits mobile number" />
                         <em><small>Please enter 10 digits mobile number</small></em>

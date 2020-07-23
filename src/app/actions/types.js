@@ -29,7 +29,7 @@ export const GET_ALL_ROLES = "GET_ALL_ROLES";
 export const ROLES_LOADING = "ROLES_LOADING";
 export const FILTER_ROLES = "FILTER_ROLES";
 
-export const GET_ALL_PERMISSIONS = "GET_ALL_PERMISSIONS";
+export const GET_ALL_OPERATIONS = "GET_ALL_OPERATIONS";
 // export const
 
 

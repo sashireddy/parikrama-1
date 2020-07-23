@@ -1,16 +1,16 @@
-import {GET_ALL_PERMISSIONS} from "../actions/types";
+import {GET_ALL_OPERATIONS} from "../actions/types";
 
 const initialState = {
-    allPermissions: []
+    allRecords: []
 }
 
 export default function(state = initialState, action){
     switch (action.type){
-        case GET_ALL_PERMISSIONS:
+        case GET_ALL_OPERATIONS:
             return {
                 ...state,
                 initialLoad : true,
-                "allPermissions": action.payload
+                allRecords: action.payload
             }
         default:
             return state

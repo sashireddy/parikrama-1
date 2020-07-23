@@ -1,4 +1,5 @@
 import React from "react";
+import dateFormat from "dateformat";
 import {getBranch, getRole} from '../../utils/dataUtils';
 
 const ViewUser = props => {
@@ -16,18 +17,13 @@ const ViewUser = props => {
             <dt>Phone Number</dt>
             <dd>{record.contact}</dd>
             <dt>Status</dt>
-            <dd>
-              {record.isActive
-                ? <label className="badge badge-success">Active</label>
-                : <label className="badge badge-secondary">In Active</label>
-              }
-            </dd>
+            <dd>{record.isActive ? "Active" : "InActive"}</dd>
             <dt>Email</dt>
             <dd>{record.email}</dd>
             <dt>Created on</dt>
-            <dd>{record.createdDate}</dd>
+            <dd>{dateFormat(record.createdDate, "yyyy-mm-dd HH:MM:ss")}</dd>
             <dt>Updated on</dt>
-            <dd>{record.lastUpdatedDate}</dd>
+            <dd>{dateFormat(record.lastUpdatedDate, "yyyy-mm-dd HH:MM:ss")}</dd>
           </dl>
       </div>
       <hr className="modal-footer-ruler" />

@@ -1,13 +1,9 @@
-import axios from 'axios';
-import config from "../constants/config";
-axios.defaults.headers.common['Authorization'] = "Bearer TOKEN";
-
-const apiConfig = config.API.PERMISSION;
+// const apiConfig = config.API.PERMISSION;
 
 // Null indicates we need to fetch the data from the source
 // Incase of caching ON, need to fetch the data for first time
 // Incase of Live interaction we'll never set cached data, forcing it to fetch all the time
-let cachedData = null;
+let cachedData = [];
 
 // Mimiking Starndard API response structure
 // can be used to map from any API response to below object
@@ -30,14 +26,12 @@ export const setCachedData = data => {
 // async operations, we don't have to make changes for the cached vs live data
 // State params passed which will be used to pass to live api or
 // for static data to get proper data as per the params
-export const loadInitialData = data => {
+export const loadInitialData = () => {
     return new Promise(async (resolve, reject) => {
-        // Logic can be applied to generate URL using params
-        // const url = `${config.API.BASE_URL}${apiConfig.GET_PERMISSIONS}`;
-        // const res = await axios.get(url);
-        if(apiConfig.CACHING){
-            cachedData = data;
-        }
-        resolve(data);
+        let result = {}
+        cachedData.forEach(item => {
+            result[item.name.toUpperCase()] = item
+        });
+        resolve(result);
     });
 }

@@ -99,7 +99,7 @@ const formAuditsUrl = params => {
     }
 
     if(params.email.trim()){
-        urlParams.user = params.email.trim()
+        urlParams.email = params.email.trim()
     }
 
     let queryParams = "?";

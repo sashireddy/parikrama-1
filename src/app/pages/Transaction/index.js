@@ -78,7 +78,7 @@ class Transaction extends React.Component {
                 this.setState({errorMsg: ""});
                 this.loadData();
             } else {
-                this.setState({errorMsg: "Both Start date and End date are needs to be selected or removed."});
+                this.setState({errorMsg: "Both Start Date and End Date are needed to be selected or removed."});
             }
         } else {
             this.setState({errorMsg: "Filter parameters not changed"});
@@ -91,7 +91,8 @@ class Transaction extends React.Component {
             endDate: null,
             email: "",
             branch: this.props.userBranch
-        });
+        }, this.loadData);
+
     }
 
     isParmasChanged = () => {
@@ -133,7 +134,7 @@ class Transaction extends React.Component {
                                                 selectsStart
                                                 startDate={this.state.startDate}
                                                 endDate={this.state.endDate}
-                                                maxDate={this.state.endDate}
+                                                maxDate={this.state.endDate || new Date()}
                                                 className="form-control"
                                             />
                                         </Form.Group>
