@@ -207,7 +207,8 @@ class Sidebar extends React.Component {
 }
 const mapStateToProps = state => {
   return {
-      loggedInUser: state.USER.loggedInUser
+      loggedInUser: state.USER.loggedInUser,
+      roles: state.ROLE
   }
 };
 

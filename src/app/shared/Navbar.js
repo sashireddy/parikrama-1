@@ -31,7 +31,7 @@ class Navbar extends Component {
   }
   logout = async () => {
     await Firebase.auth.signOut()
-    document.location.reload()
+    window.location.href="/";
   }
   render () {
     const user = this.props.loggedInUser ? this.props.loggedInUser : null;

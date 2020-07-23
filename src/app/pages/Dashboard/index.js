@@ -23,14 +23,15 @@ class Dashboard extends React.PureComponent {
         const {dashboardData} = this.props;
         return(
             <div>
-                <p>{this.state.activeBranch} -> {Object.keys(dashboardData).map(key => <span key={key}>{key} | </span>)}</p>
+                <h4 className="text-center">Dashboard coming soon...</h4>
+                {/* <p>{this.state.activeBranch} -> {Object.keys(dashboardData).map(key => <span key={key}>{key} | </span>)}</p>
                 <Tabs defaultActiveKey={this.state.activeBranch}>
                     {Object.keys(dashboardData).map(branch => (
                         <Tab eventKey={branch} title={getBranch(branch).name} key={branch}>
                             <BranchDashboard dashboardData={dashboardData[branch]}/>
                         </Tab>
                     ))}
-                </Tabs>
+                </Tabs> */}
             </div>
         );
     }
