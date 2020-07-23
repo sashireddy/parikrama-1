@@ -23,11 +23,11 @@ class User extends React.Component {
         const getTitle = (actionType) => {
             switch (actionType) {
                 case "add":
-                    return "Add User";
+                    return "Create User";
                 case "view":
                     return "View User";
                 case "edit":
-                    return "Edit User";
+                    return "Update User";
                 case "del":
                     return "Delete User";
                 default:
@@ -62,7 +62,7 @@ class User extends React.Component {
             ]
 
         return (
-            <UserSkeleton key="user" content={{pageTitle:'User'}} AddModal={AddUser}
+            <UserSkeleton key="user" content={{pageTitle:'Users'}} AddModal={AddUser}
                 EditModal={EditUser} ViewModal={ViewUser} DeleteModal={DeleteUser}
                 tableRowRenderFunc ={UserListItem} pk="id"
                 headerArr = {headerArr} getTitle={getTitle} moduleName={MODULE_USER}/>

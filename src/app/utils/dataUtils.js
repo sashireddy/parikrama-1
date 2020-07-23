@@ -31,11 +31,16 @@ export const getActivePayload = (record) => {
 }
 
 export const getBranch = branchId => {
-    return store.getState()['BRANCHES'].allRecords[branchId];
+    const branch = store.getState()['BRANCHES'].allRecords[branchId];
+    return branch ? branch : {};
 }
 
 export const getRole = roleId => {
     return store.getState()['ROLE'].allRecords[roleId];
+}
+
+export const getOperation = operationId => {
+    return store.getState()['OPERATION'].allRecords[operationId.toUpperCase()];
 }
 
 export const isAdmin = () => {

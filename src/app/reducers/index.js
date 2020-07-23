@@ -5,7 +5,7 @@ import branchesReducer from './branchesReducer';
 import inventoryReducer from './inventoryReducer';
 import authReducer from './authReducer';
 import roleReducer from './roleReducer';
-import permissionReducer from './permissionReducer';
+import operationReducer from './operationReducer';
 import productsReducer from './productReducer';
 import thresholdReducer from './thresholdReducer';
 import unitsReducer from './unitsReducer';
@@ -21,7 +21,7 @@ export default combineReducers({
     INVENTORY : inventoryReducer,
     AUTH : authReducer,
     ROLE: roleReducer,
-    PERMISSION: permissionReducer,
+    OPERATION: operationReducer,
     PRODUCTS : productsReducer,
     THRESHOLD : thresholdReducer,
     UNITS : unitsReducer,

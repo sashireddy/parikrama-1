@@ -94,7 +94,6 @@ export const handleResponse = res => {
 }
 
 export const arrayToMapWithId = array => {
-    console.log("Data Abstraction Util ", array);
     let result = {}
     array.forEach(item => {
         result[item.id] = item

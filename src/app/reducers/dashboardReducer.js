@@ -1,7 +1,7 @@
 import {GET_DASHBOARD_DATA} from "../actions/types";
 
 const initialState = {
-    dashboardData: []
+    dashboardData: {}
 }
 
 export default function(state = initialState, action){

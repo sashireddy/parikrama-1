@@ -65,9 +65,9 @@ export class Login extends Component {
   }
 
   render() {
-    if(this.state.loading) return <Spinner/>
     return (
       <div>
+        <Spinner loading={this.state.loading}/>
         <div className="d-flex align-items-center justify-content-center login-wrapper auth px-0">
           <div className="row w-100 mx-0 login-half-bg">
             <div className="col-xl-4 col-lg-5 col-md-6 mx-auto login-box p-0">
@@ -77,7 +77,7 @@ export class Login extends Component {
                 </div>
                 <h4>Inventory Management</h4>
                 <h6 className="font-weight-light">Sign in to continue.</h6>
-                {this.state.authError && <Alert variant="danger">Please check your Password</Alert>}
+                {this.state.authError && <Alert variant="danger">Invalid username or password</Alert>}
                 <Form className="pt-3" noValidate validated={this.state.validated} onSubmit={this.submit}>
                   <Form.Group className="search-field">
                     <Form.Control required pattern="[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}" name="username" type="text" placeholder="Username" size="lg" className="h-auto" onChange={this.handleChange}/>
@@ -88,7 +88,7 @@ export class Login extends Component {
                     <Form.Control.Feedback type="invalid">Please enter password</Form.Control.Feedback>
                   </Form.Group>
                   <div className="mt-3">
-                    <Button className="btn btn-block btn-primary btn-lg font-weight-medium auth-form-btn" type="submit" >Sign IN</Button>
+                    <Button className="btn btn-block btn-primary btn-lg font-weight-medium auth-form-btn" type="submit" >Sign In</Button>
                   </div>
                 </Form>
               </div>
