@@ -115,7 +115,7 @@ export const addData = data => {
                 const res = await getData(params);
                 res.flashMessage = {
                     "type": "success",
-                    "message": "Role Added Successfully!"
+                    "message": "User Added Successfully!"
                 };
                 resolve(res);
             } catch(err) {
