@@ -1,6 +1,7 @@
 import React from "react";
 import {Form} from "react-bootstrap";
-import {parseInteger} from '../../utils/commonUtil'
+import {connect} from "react-redux";
+
 class BranchForm extends React.Component {
     constructor(props){
         super(props);
@@ -16,6 +17,21 @@ class BranchForm extends React.Component {
 
     componentDidMount(){
         this.setState({...this.props.record});
+    }
+
+    handleBranchChange = evt => {
+        const input = evt.target;
+        const value = input.value;
+        if(this.props.branches.includes(value.toUpperCase())){
+            input.setCustomValidity("Branch already exists");
+        } else {
+            input.setCustomValidity("");
+        }
+        this.setState({
+            ...this.state,
+            name: value
+        });
+
     }
 
     handleChange = evt => {
@@ -34,8 +50,7 @@ class BranchForm extends React.Component {
             event.preventDefault();
             this.props.onSubmit({...this.state});
         }
-
-        
+        this.setState({validated: true});
     }
 
     onStatusChange = (evt,attr) => {
@@ -53,73 +68,65 @@ class BranchForm extends React.Component {
             }
         })
     }
-    handleAddressChangeNumber = event => {
-        this.setState({
-            ...this.state,
-            address: {
-                ...this.state.address,
-                [event.target.name]: parseInteger(event.target.value)
-            }
-        })
-    }
+
     render() {
         console.log(this.state)
         return(
-            <form className="forms-sample" onSubmit={this.onSubmit} >
+            <Form className="forms-sample" noValidate validated={this.state.validated} onSubmit={this.onSubmit} >
                 <div className="pl-3 pr-3">
                     <Form.Group>
                         <label htmlFor="exampleInputEmail1">Branch Name</label>
-                        <Form.Control required type="text" className="form-control" id="branchName" name="name" placeholder="Branch Name" value={this.state.name} onChange={this.handleChange} />
-                        <Form.Control.Feedback type="invalid">Please enter a branch name</Form.Control.Feedback>
+                        <Form.Control required type="text" className="form-control" id="branchName" name="name" placeholder="Branch Name" value={this.state.name} onChange={this.handleBranchChange} />
+                        <Form.Control.Feedback type="invalid">Please enter unique branch name</Form.Control.Feedback>
+                    </Form.Group>
+                    <Form.Group>
+                        <label htmlFor="isHeadOffice">Branch Type</label>
+                        <Form.Check type="radio" id="isHeadOffice" name="isHeadOffice" value="active" label="Head Office" checked={this.state.isHeadOffice} onChange={e=>this.onStatusChange(e,"isHeadOffice")} />
+                        <Form.Check type="radio" id="isBranchOffice" name="isHeadOffice" value="inActive" label="Branch Office" checked={!this.state.isHeadOffice} onChange={e=>this.onStatusChange(e,"isHeadOffice")} />
                     </Form.Group>
                     <Form.Group>
                         <label htmlFor="exampleInputEmail1">Street</label>
                         <Form.Control required type="text" className="form-control" id="Street" name="street" placeholder="Street Name" value={getFallbackIfEmpty(this.state.address.street)} onChange={this.handleAddressChange} />
-                        <Form.Control.Feedback type="invalid">Please provide street name</Form.Control.Feedback>
+                        <Form.Control.Feedback type="invalid">Please enter street name</Form.Control.Feedback>
                     </Form.Group>
                     <Form.Group>
                         <label htmlFor="exampleInputEmail1">City</label>
                         <Form.Control required type="text" className="form-control" id="City" name="city" placeholder="City Name" value={getFallbackIfEmpty(this.state.address.city)} onChange={this.handleAddressChange} />
-                        <Form.Control.Feedback type="invalid">Please provide street name</Form.Control.Feedback>
+                        <Form.Control.Feedback type="invalid">Please enter street name</Form.Control.Feedback>
                     </Form.Group>
                     <Form.Group>
                         <label htmlFor="exampleInputEmail1">State</label>
                         <Form.Control required type="text" className="form-control" id="State" name="state" placeholder="State Name" value={getFallbackIfEmpty(this.state.address.state)} onChange={this.handleAddressChange} />
-                        <Form.Control.Feedback type="invalid">Please provide State name</Form.Control.Feedback>
+                        <Form.Control.Feedback type="invalid">Please enter state name</Form.Control.Feedback>
                     </Form.Group>
                     <Form.Group>
                         <label htmlFor="exampleInputEmail1">Country</label>
                         <Form.Control required type="text" className="form-control" id="Country" name="country" placeholder="Country Name" value={getFallbackIfEmpty(this.state.address.country)} onChange={this.handleAddressChange} />
-                        <Form.Control.Feedback type="invalid">Please provide country name</Form.Control.Feedback>
+                        <Form.Control.Feedback type="invalid">Please enter country name</Form.Control.Feedback>
                     </Form.Group>
                     <Form.Group>
                         <label htmlFor="exampleInputEmail1">Zip</label>
-                        <Form.Control required type="number" className="form-control" id="Zip" name="zipcode" placeholder="Zip Code" value={getFallbackIfEmpty(this.state.address.zipcode)} onChange={this.handleAddressChangeNumber} />
-                        <Form.Control.Feedback type="invalid">Please provide street name</Form.Control.Feedback>
-                    </Form.Group>
-                    <Form.Group>
-                        <label >Contact Number</label>
-                        <Form.Control type="text" className="form-control" id="contact" name="contact" placeholder="contact Number" value={this.state.contact} onChange={this.handleChange} />
-                        <Form.Control.Feedback type="invalid">Please enter the contact Number</Form.Control.Feedback>
+                        <Form.Control required type="text" className="form-control" id="Zip" name="zipcode" pattern="\d{5,6}" placeholder="Zip Code" value={getFallbackIfEmpty(this.state.address.zipcode)} onChange={this.handleAddressChange} />
+                        <Form.Control.Feedback type="invalid">Please enter valid 5-6 digit zipcode</Form.Control.Feedback>
                     </Form.Group>
                     <Form.Group>
                         <label >Contact Person</label>
-                        <Form.Control type="text" className="form-control" id="contactPerson" name="contactPerson" placeholder="Contact Person" value={this.state.contactPerson} onChange={this.handleChange} />
-                        <Form.Control.Feedback type="invalid">Please enter the contact Person</Form.Control.Feedback>
+                        <Form.Control required type="text" className="form-control" id="contactPerson" name="contactPerson" placeholder="Contact Person" value={this.state.contactPerson} onChange={this.handleChange} />
+                        <Form.Control.Feedback type="invalid">Please enter name of the contact person</Form.Control.Feedback>
                     </Form.Group>
                     <Form.Group>
-                        <label htmlFor="isHeadOffice">Head Office</label>
-                        <Form.Check type="radio" id="HeadOfficeIsActive" name="isActive" value="active" label="Head Office" checked={this.state.isHeadOffice} onChange={e=>this.onStatusChange(e,"isHeadOffice")} />
-                        <Form.Check type="radio" id="HeadOfficeIsActive" name="isActive" value="inActive" label="Branch office" checked={!this.state.isHeadOffice} onChange={e=>this.onStatusChange(e,"isHeadOffice")} />
+                        <label >Contact Number</label>
+                        <Form.Control required type="text" className="form-control" id="contact" name="contact" pattern="\d{10}" placeholder="Contact Number" value={this.state.contact} onChange={this.handleChange} />
+                        <Form.Control.Feedback type="invalid">Please enter 10 digit contact number</Form.Control.Feedback>
                     </Form.Group>
-                    
+
                 </div>
                 <hr className="modal-footer-ruler" />
                 <div className="text-right">
                     <button type="button" className="btn btn-light mr-2" onClick={this.props.closeModal}>Cancel</button>
                     <button type="submit" className="btn btn-primary">{this.props.label}</button>
                 </div>
-            </form>
+            </Form>
         );
     }
 }
@@ -128,4 +135,13 @@ const getFallbackIfEmpty = (val , fallback="") => {
     if(val) return val;
     return fallback
 }
-export default BranchForm;
+
+const mapStateToProps = state => {
+    const branches = Object.keys(state.BRANCHES.allRecords).map(branch => {
+        return state.BRANCHES.allRecords[branch].name.toUpperCase();
+    });
+    return {
+        branches
+    }
+};
+export default connect(mapStateToProps)(BranchForm);

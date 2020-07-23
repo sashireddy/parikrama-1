@@ -1,5 +1,4 @@
 import React from "react";
-import {connect} from "react-redux";
 import {getBranch, getRole} from '../../utils/dataUtils';
 
 class DeleteUser extends React.Component {
@@ -35,11 +34,8 @@ class DeleteUser extends React.Component {
       );
     }
 }
-const mapStateToProps = state => ({
-  ...state["ROLE"]
-});
 
-export default connect(mapStateToProps, null)(DeleteUser);
+export default DeleteUser;
 
 
 

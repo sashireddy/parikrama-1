@@ -29,13 +29,13 @@ class Products extends React.Component {
         const getTitle = (actionType) => {
             switch (actionType) {
                 case "add":
-                    return "Add Branch";
+                    return "Create Branch";
                 case "view":
                     return "View Branch";
                 case "edit":
-                    return "Edit Branch";
+                    return "Update Branch";
                 case "del":
-                    return "Delete Branch";
+                    return "Disable Branch";
                 default:
                     return "Manage Branch";
             }
@@ -46,13 +46,26 @@ class Products extends React.Component {
                     key : 'name',
                     sortable : true,
                     searchable: true
-                },{
+                },
+                {
                     value : 'Address',
                     key : 'Address'
                 },
                 {
-                    value : 'Tag',
-                    key:'tag'
+                    value : 'Contact Person',
+                    key : 'contactPerson'
+                },
+                {
+                    value : 'Contact',
+                    key : 'contact'
+                },
+                {
+                    value : 'Address',
+                    key : 'Address'
+                },
+                {
+                    value : 'Status',
+                    key:'isActive'
                 },{
                     value : 'Actions',
                     key : 'actions'

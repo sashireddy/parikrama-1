@@ -11,7 +11,7 @@ class EditBranch extends React.Component {
         console.log(this.props)
         return (
             <BranchForm
-                label='Add'
+                label='Update'
                 onSubmit={this.onSubmit}
                 closeModal={this.props.closeModal}
                 record={this.props.record}
