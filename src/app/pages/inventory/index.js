@@ -67,9 +67,9 @@ class Inventory extends React.Component {
         const getTitle = (actionType) => {
             switch (actionType) {
                 case "add":
-                    return "Add Inventory Locally";
+                    return "Add Inventory";
                 case "view":
-                    return "Dispurse Inventory";
+                    return "Disburse Inventory";
                 case "edit":
                     return "Edit Inventory";
                 case "del":
@@ -117,20 +117,19 @@ class Inventory extends React.Component {
                         <label className="badge badge-warning">{props.record.availableQuantity}  {props.record.unitName}</label>
                         }   
                     </td>
-                    <td>{ this.state.branch === getLoggedInUserInfo().branch && <Button onClick={() =>{props.openActionMaodal(props.record,'view')}}>Disburse Inventory</Button>}</td>
+                    <td>{ this.state.branch === getLoggedInUserInfo().branch && <Button onClick={() =>{props.openActionMaodal(props.record,'view')}}>Disburse</Button>}</td>
                 </tr>
             )
         }    
         console.log(this.props)
-        // const loggedInUserInfo = getLoggedInUserInfo()
         const branchOptions = dropDownResponseFromMap(this.props.stateData.state.BRANCHES.allRecords)
-        // branchOptions.push(getDropdownItem("All branches","GET_ALL_BRANCHES"))
         return (
             <div>
                 <InventorySkeleton key="Inventory" content={{
                     pageTitle:'Inventory',
-                    addButton : 'Manage Inventory'
+                    addButton : 'Add Inventory'
                 }} 
+                    addOverride = {true}
                     AddModal={AddInventory}
                     EditModal={()=><></>}
                     ViewModal={ViewInventory}

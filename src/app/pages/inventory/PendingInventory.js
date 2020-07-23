@@ -59,7 +59,7 @@ class PendingTransactions extends React.Component {
                 <td>{request.productName}</td>
                 <td>{request.operationalQuantity}</td>
                 <td>{request.note}</td>
-                <td><Row><Col><Button onClick={()=>this.updateRecordAndOpenModal(request)}>Respond</Button></Col>
+                <td><Row><Col><Button onClick={()=>this.updateRecordAndOpenModal(request)}>Accept</Button></Col>
                          <Col><Button onClick={()=>this.rejectCall(request)}>Reject</Button></Col></Row></td>
             </tr>)
        let requests = this.props.inventory.pendingTransactions || []
@@ -72,9 +72,9 @@ class PendingTransactions extends React.Component {
                 <div className="card">
                     <div className="card-body">
                         <Row>
-                            <Col><h3>Transaction Requests by other Branches</h3></Col>
+                            <Col><h3 className="page-title paddedLine">Transaction Requests by other Branches</h3></Col>
                         </Row>
-                        <Table>
+                        <Table className="table table-striped table-hover">
                             <thead>
                                 <tr>
                                     <th>Date</th>
@@ -82,7 +82,7 @@ class PendingTransactions extends React.Component {
                                     <th>Branch</th>
                                     <th>Product</th>
                                     <th>Requested Quantity</th>
-                                    <th>note</th>
+                                    <th>Note</th>
                                     <th>Actions</th>
                                 </tr>
                             </thead>

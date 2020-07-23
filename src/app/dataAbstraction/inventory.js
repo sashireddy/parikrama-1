@@ -171,7 +171,7 @@ const changeValue = (type,quantity,change) => {
 }
 
 const updateQuantity = (quantity,branch,product,type) => {
-    if(!summaryCache[product][branch]){
+    if(!(summaryCache[product]&& summaryCache[product][branch])){
         makeEntry(product,branch)
     }
     cache[branch].map(entry => {
@@ -356,7 +356,7 @@ const getCurrentStateData = params => {
 
 export const generateCsv = (params) => {
     const branchName = getBranch(params.branch).name
-    const headerArr = ['Category','Branch','Threshold','Product','Available Quantity']
+    const headerArr = ['Category','Branch','Threshold','Product','Available Quantity','Unit']
     const arr = cache[params.branch] || []
     const outArr = []
     outArr.push(headerArr)
@@ -366,7 +366,8 @@ export const generateCsv = (params) => {
         tempRow.push(branchName)
         tempRow.push(row.threshold)
         tempRow.push(row.productName)
-        tempRow.push(`${row.availableQuantity} `+row.unitName)
+        tempRow.push(row.availableQuantity)
+        tempRow.push(row.unitName)
         outArr.push(tempRow)
     })
     download(arrayToCsvContent(outArr),`AvailableQuantity${branchName}.csv`,)

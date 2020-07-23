@@ -1,7 +1,8 @@
 import React from "react"
 import {Form, Row,Col,Alert} from 'react-bootstrap'
-// import inventoryActions from '../../actions/inventoryActions'
+import {addNotification} from '../../actions/notification'
 import Modal from '../../shared/Modal'
+import {parseInteger} from '../../utils/commonUtil'
 import {getBranchInfo,getProduct,getCategory} from '../../utils/dataUtils'
 
 
@@ -26,41 +27,77 @@ class ApproveOrRejectView extends React.Component {
         return this.props.inventory.summaryCache[this.props.record.product][branchId].availableQuantity
     }
 
+    validateParams = () => {
+        let valid = true
+        Object.keys(this.state.quantityMap).forEach(key=>{
+            const operationalQuantity = parseInteger(this.state.quantityMap[key])
+            if(operationalQuantity > this.getCurrentValForBranch(key)){
+                valid = false
+                addNotification({
+                    title : "Please Check Quantity Parameter",
+                    message: `Quantity can't be greater than available Quantity for ${getBranchInfo(key).name} branch`,
+                    type : "warning"
+                })
+            }if(operationalQuantity < 0) {
+                valid = false
+                addNotification({
+                    title : "Please Check Quantity Parameter",
+                    message: "Quantity can't be negative",
+                    type : "warning"
+                })
+            }
+        })
+        return valid;
+    }
+
+    transformParamas = () => {
+        let map = {}
+        Object.keys(this.state.quantityMap).forEach(key=>{
+            const operationalQuantity = parseInteger(this.state.quantityMap[key])
+            if(operationalQuantity > 0) {
+                map[key] = operationalQuantity
+            }
+        })
+        return {
+            ...this.state,
+            quantityMap : map
+        }
+    }
+
     handleQuantityChange = (branchId,evt) => {
-        console.log(evt.target.value)
-        const val = parseInt(evt.target.value) || 0
-        if(val >=0 && val <= this.getCurrentValForBranch(branchId) ){
+        // console.log(evt.target.value)
+        // const val = parseInteger(evt.target.value) || 0
+        // if(val >=0 && val <= this.getCurrentValForBranch(branchId) ){
         this.setState({
             ...this.state,
             quantityMap : {
                 ...this.state.quantityMap,
-                [branchId]:val
+                [branchId]:evt.target.value
             }
         })
-        }
+        // }
     }
     
     onSubmit = event => {
         const form = event.currentTarget;
-        if (form.checkValidity() === false && !this.state.currentProduct) {
+        if (!this.validateParams()) {
             event.preventDefault();
             event.stopPropagation();
         }else {
             event.preventDefault();
             // console.log(this.state)
-            this.props.acceptOrRejectTransaction({...this.state});
+            this.props.acceptOrRejectTransaction(this.transformParamas());
             this.props.closeModal();
         }
     }
     render(){
-        console.log(this.props)
-        console.log(this.state)
+
         const product = getProduct(this.props.record.product);
         const category = getCategory(product.category)
         const keys = Object.keys(this.props.inventory.summaryCache[product.id])
         let sum = 0
         Object.keys(this.state.quantityMap).forEach(entry => {
-            sum += this.state.quantityMap[entry]
+            sum += parseInteger(this.state.quantityMap[entry])
         })
     return (
         <Modal
@@ -108,7 +145,7 @@ class ApproveOrRejectView extends React.Component {
                                 
                             </Col>
                             <Col>
-                                <Form.Control required type="number" id={"Branch"+idx} className="form-control" 
+                                <Form.Control type="number" id={"Branch"+idx} className="form-control" 
                                     name="note" placeholder="Select Quantity" value={this.state.quantityMap[key]}
                                 onChange={e=>this.handleQuantityChange(key,e)} />
                             </Col>

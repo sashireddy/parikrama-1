@@ -10,6 +10,11 @@ const actions = (pageId,getEntityData,updateEntityData,addEntityData,deleteEntit
         type: loading,
       }
   }
+  const removeLoadingIcon = () => {
+    return{
+        type:removeLoading
+    }
+  }
 
   const notifyStatus = (res, title) => {
     if(res.flashMessage){
@@ -34,7 +39,7 @@ const actions = (pageId,getEntityData,updateEntityData,addEntityData,deleteEntit
         });
       } catch (err) {
         dispatch({
-          title:removeLoading
+          type:removeLoading
         })
         addNotification({
           title: getData,
@@ -46,6 +51,7 @@ const actions = (pageId,getEntityData,updateEntityData,addEntityData,deleteEntit
 
     //loading operation
     setLoading,
+    removeLoadingIcon,
 
     // Add Entity Unit
     addData: (data) => async (dispatch) => {
@@ -60,7 +66,7 @@ const actions = (pageId,getEntityData,updateEntityData,addEntityData,deleteEntit
         if(updateData) { updateData(dispatch)}
       } catch (err) {
         dispatch({
-          title:removeLoading
+          type:removeLoading
         })
         addNotification({
           title: getData,
@@ -83,7 +89,7 @@ const actions = (pageId,getEntityData,updateEntityData,addEntityData,deleteEntit
         if(updateData) { updateData(dispatch)}
       } catch (err) {
         dispatch({
-          title:removeLoading
+          type:removeLoading
         })
         addNotification({
           title: getData,
@@ -106,7 +112,7 @@ const actions = (pageId,getEntityData,updateEntityData,addEntityData,deleteEntit
         if(updateData) { updateData(dispatch)}
       } catch (err) {
         dispatch({
-          title:removeLoading
+          type:removeLoading
         })
         addNotification({
           title: getData,
