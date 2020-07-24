@@ -51,18 +51,32 @@ class PendingTransactions extends React.Component {
         })
     }
    render(){
-       const rowRender = (request,idx)=>(
+        const isHeadOffice = getBranch(getLoggedInUserInfo().branch).isHeadOffice
+        const rowRender = (request,idx)=>{
+           
+           return (
             <tr key={idx}>
                 <td>{dateFormat(request.date, "yyyy-mm-dd") }</td>
                 <td>{request.user}</td>
-                <td>{request.toBranchName}</td>
+                {isHeadOffice && <td>{request.fromBranchName}</td>}
+                {!isHeadOffice && <td>{request.toBranchName}</td>}
                 <td>{request.productName}</td>
                 <td>{request.operationalQuantity}</td>
                 <td>{request.note}</td>
-                <td><Row><Col><Button onClick={()=>this.updateRecordAndOpenModal(request)}>Accept</Button></Col>
-                         <Col><Button onClick={()=>this.rejectCall(request)}>Reject</Button></Col></Row></td>
-            </tr>)
+                {isHeadOffice &&<td>
+                    <Row>
+                        <Col><Button onClick={()=>this.updateRecordAndOpenModal(request)}>Accept</Button></Col>
+                        <Col><Button onClick={()=>this.rejectCall(request)}>Reject</Button></Col>
+                    </Row>
+                </td>}
+                {!isHeadOffice && 
+                    <Row>
+                        <Button onClick={()=>{}}>Cancel</Button>
+                    </Row>
+                }
+            </tr>)}
        let requests = this.props.inventory.pendingTransactions || []
+       
        if(!isAllowed(ACTION_MANAGE,MODULE_INVENTORY)) return <></>
         return (
             <>
@@ -72,7 +86,8 @@ class PendingTransactions extends React.Component {
                 <div className="card">
                     <div className="card-body">
                         <Row>
-                            <Col><h3 className="page-title paddedLine">Transaction Requests by other Branches</h3></Col>
+                            {isHeadOffice &&<Col><h3 className="page-title paddedLine">Transaction Requests by other Branches</h3></Col>}
+                            {!isHeadOffice &&<Col><h3 className="page-title paddedLine">Pending transactions</h3></Col>}
                         </Row>
                         <Table className="table table-striped table-hover">
                             <thead>

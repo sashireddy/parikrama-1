@@ -7,24 +7,23 @@ import {getBranchInfo,getProduct,getCategory} from '../../utils/dataUtils'
 
 
 class ApproveOrRejectView extends React.Component {
+    
     constructor(props){
         super(props)
-        let toBranch;
-        Object.keys(props.branches.allRecords).forEach(x => {
-            if(props.branches.allRecords[x].name === props.record.toBranchName) {
-                toBranch = x
-            } 
-        })
         this.state = {
-            ...props.record,
-            toBranch,
-            quantityMap : {
-
-            }
-         }
+            quantityMap : {}
+        }
     }
     getCurrentValForBranch = (branchId) => {
         return this.props.inventory.summaryCache[this.props.record.product][branchId].availableQuantity
+    }
+    componentDidMount(){
+        this.setState({
+            ...this.props.record,
+            quantityMap : {
+
+            }
+         })
     }
 
     validateParams = () => {
@@ -65,9 +64,6 @@ class ApproveOrRejectView extends React.Component {
     }
 
     handleQuantityChange = (branchId,evt) => {
-        // console.log(evt.target.value)
-        // const val = parseInteger(evt.target.value) || 0
-        // if(val >=0 && val <= this.getCurrentValForBranch(branchId) ){
         this.setState({
             ...this.state,
             quantityMap : {
@@ -75,17 +71,14 @@ class ApproveOrRejectView extends React.Component {
                 [branchId]:evt.target.value
             }
         })
-        // }
     }
     
     onSubmit = event => {
-        const form = event.currentTarget;
         if (!this.validateParams()) {
             event.preventDefault();
             event.stopPropagation();
         }else {
             event.preventDefault();
-            // console.log(this.state)
             this.props.acceptOrRejectTransaction(this.transformParamas());
             this.props.closeModal();
         }
@@ -93,17 +86,18 @@ class ApproveOrRejectView extends React.Component {
     render(){
 
         const product = getProduct(this.props.record.product);
-        const category = getCategory(product.category)
         const keys = Object.keys(this.props.inventory.summaryCache[product.id])
         let sum = 0
-        Object.keys(this.state.quantityMap).forEach(entry => {
-            sum += parseInteger(this.state.quantityMap[entry])
-        })
+        if(this.state.quantityMap){
+            Object.keys(this.state.quantityMap).forEach(entry => {
+                sum += parseInteger(this.state.quantityMap[entry])
+            })
+        }
     return (
         <Modal
         dialogClassName = "AcceptClass"
         size ="lg"
-         show={true} title="Accept Or Reject Request" closeModal={this.props.closeModal}>
+         show={true} title="Accept" closeModal={this.props.closeModal}>
         <form className="forms-sample" onSubmit={this.onSubmit} >
            <div className="pl-3 pr-3">
                <div className="formData">
@@ -115,7 +109,7 @@ class ApproveOrRejectView extends React.Component {
                    </Col>
                    <Col>
                         <h6>
-                            category : {category.name}
+                            Branch : {this.props.toBranchName}
                         </h6>
                    </Col>
                </Row>
@@ -137,6 +131,7 @@ class ApproveOrRejectView extends React.Component {
                     console.log(key,val)
                     if(this.state.toBranch === key) return <></>
                     return (
+                        <>
                         <Row key={idx}>
                             <Col>
                                 <h6>{getBranchInfo(key).name}</h6> 
@@ -150,6 +145,8 @@ class ApproveOrRejectView extends React.Component {
                                 onChange={e=>this.handleQuantityChange(key,e)} />
                             </Col>
                         </Row>
+                        <hr />
+                        </>
                     )
 
                 })}
@@ -165,7 +162,7 @@ class ApproveOrRejectView extends React.Component {
                <hr className="modal-footer-ruler" />
                <div className="text-right">
                    <button type="button" className="btn btn-light mr-2" onClick={this.props.closeModal}>Cancel</button>
-                   <button type="submit" className="btn btn-primary">Add Inventory</button>
+                   <button type="submit" className="btn btn-primary">Accept</button>
                </div>
            </div>
        </form>
@@ -174,72 +171,5 @@ class ApproveOrRejectView extends React.Component {
 }
 }
 
-
-
-// class ViewCategory extends React.Component {
-    
-//     constructor(){
-//         super();
-//         this.state = {
-//         }
-//     }
-
-//     handleChange = evt => {
-//             this.setState({
-//                 ...this.state,
-//                 note: evt.target.value
-//             });
-//         // }
-//     }
-
-//     onSubmit = event => {
-//         const form = event.currentTarget;
-//         if (form.checkValidity() === false) {
-//             event.preventDefault();
-//             event.stopPropagation();
-//         }else {
-//             event.preventDefault();
-//             this.props.onSubmit({...this.state});
-//         }
-//         this.props.closeModal();
-//     }
-
-//     render() {
-//         console.log(this.props)
-//         return (
-//             <form className="forms-sample" onSubmit={this.onSubmit} >
-//                 <div className="pl-3 pr-3">
-                    
-//                     <Row>
-//                         <Col>
-//                             <h6>Current Stock : {this.props.record.balance}</h6> 
-//                         </Col>                        
-//                     </Row>
-//                     <Row>
-//                         <Alert variant={'danger'}>
-//                         your stock will fall below threshold after this transaction
-//                         </Alert>
-//                     </Row>
-//                     <Row>
-//                         <Col>
-//                             <Form.Group>
-//                                 <label htmlFor="exampleInputEmail1">Quantity</label>
-//                                 <Form.Control required type="number" className="form-control" id="categoryName" name="name" placeholder="" value={this.state.inputQuantity} onChange={this.handleChange} />
-//                                 <Form.Control.Feedback type="invalid">Please enter a valid quantity</Form.Control.Feedback>
-//                             </Form.Group>
-//                         </Col>
-//                     </Row>
-//                     <Col>
-//                     </Col>
-//                     <hr className="modal-footer-ruler" />
-//                     <div className="text-right">
-//                         <button type="button" className="btn btn-light mr-2" onClick={this.props.closeModal}>Cancel</button>
-//                         <button type="submit" className="btn btn-primary">Add Inventory</button>
-//                     </div>
-//                 </div>
-//             </form>
-//         );
-//     }
-// }
 
 export default ApproveOrRejectView;

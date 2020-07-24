@@ -6,7 +6,6 @@ import {getCategory,getUnit,isAdmin} from '../../utils/dataUtils'
 import isAllowed, {ACTION_VIEW, ACTION_MANAGE,MODULE_INVENTORY} from "../../utils/accessControl";
 import {connect} from 'react-redux'
 import ProductActions from '../../actions/productActions'
-import {parseInteger} from '../../utils/commonUtil'
 
 const mapStateToProps = state => ({
     stateData :{
@@ -29,7 +28,7 @@ class ProductForm extends React.Component {
             isActive: true
         }
         if(this.state.thresholds){
-            Object.keys(this.state.thresholds).forEach(key => this.state.thresholds[key] = parseInteger(this.state.thresholds[key]))
+            Object.keys(this.state.thresholds).forEach(key => this.state.thresholds[key] = parseInt(this.state.thresholds[key]))
         }
     }
 
@@ -48,7 +47,7 @@ class ProductForm extends React.Component {
             ...this.state,
             thresholds :{
                 ...this.state.thresholds,
-                [branch] : parseInteger(evt.target.value)
+                [branch] : parseInt(evt.target.value)
             }
         })
     }

@@ -6,7 +6,7 @@ import ViewInventory from './IssueRecord'
 import {Button, Col,Row, Card, Form} from 'react-bootstrap'
 import PendingTransactions from './PendingInventory'
 import {connect,} from "react-redux";
-import {getLoggedInUserInfo,getBranchInfo} from '../../utils/dataUtils'
+import {getLoggedInUserInfo,getBranchInfo, isAdmin} from '../../utils/dataUtils'
 import {getDropdownItem,dropDownResponseFromMap} from '../../utils/dropDownUtils'
 import Select from 'react-select'
 import isAllowed,{MODULE_INVENTORY,ACTION_MANAGE} from '../../utils/accessControl'
@@ -69,7 +69,7 @@ class Inventory extends React.Component {
                 case "add":
                     return "Add Inventory";
                 case "view":
-                    return "Disburse Inventory";
+                    return "Disburse";
                 case "edit":
                     return "Edit Inventory";
                 case "del":
@@ -80,6 +80,11 @@ class Inventory extends React.Component {
         }
         const headerArr = [
             {
+                value: 'Product',
+                key: 'productName',
+                sortable : true,
+                searchable: true
+            },{
                 value: 'Category',
                 key: 'categoryName',
                 sortable : true,
@@ -92,11 +97,6 @@ class Inventory extends React.Component {
                 key: 'threshold'
 
             },{
-                value: 'Product',
-                key: 'productName',
-                sortable : true,
-                searchable: true
-            },{
                 value: 'Available Quantity',
                 key: 'availableQuantity',
             },
@@ -108,16 +108,16 @@ class Inventory extends React.Component {
         const RowRender = (props) => {
             return (
                 <tr>
+                    <td>{props.record.productName}</td>
                     <td>{props.record.categoryName}</td>
                     <td>{this.state.branchName}</td>
                     <td>{props.record.threshold}</td>
-                    <td>{props.record.productName}</td>
                     <td> { props.record.availableQuantity > props.record.threshold ? 
                         <label className="badge badge-success">{props.record.availableQuantity}  {props.record.unitName}</label> :
                         <label className="badge badge-warning">{props.record.availableQuantity}  {props.record.unitName}</label>
                         }   
                     </td>
-                    <td>{ this.state.branch === getLoggedInUserInfo().branch && <Button onClick={() =>{props.openActionMaodal(props.record,'view')}}>Disburse</Button>}</td>
+                    <td>{ (this.state.branch === getLoggedInUserInfo().branch||isAdmin) && <Button onClick={() =>{props.openActionMaodal(props.record,'view')}}>Disburse</Button>}</td>
                 </tr>
             )
         }    
@@ -127,9 +127,9 @@ class Inventory extends React.Component {
             <div>
                 <InventorySkeleton key="Inventory" content={{
                     pageTitle:'Inventory',
-                    addButton : 'Add Inventory'
+                    addButton : 'Manage Inventory'
                 }} 
-                    addOverride = {true}
+                    addOverride = {getLoggedInUserInfo().branch === this.state.branch}
                     AddModal={AddInventory}
                     EditModal={()=><></>}
                     ViewModal={ViewInventory}
@@ -140,11 +140,13 @@ class Inventory extends React.Component {
                     getData = {this.getData} {...this.props.stateData}
                     addData = {this.props.addData}
                     moduleName = {MODULE_INVENTORY}
-                    DontShowButon = {getLoggedInUserInfo().branch !== this.state.branch}
               >
                 <PendingTransactions />
                 <Card className="marginBottom">
                     <Card.Body>
+                        <Row>
+                            <Col><h3 className="page-title paddedLine">Manage inventory</h3></Col>
+                        </Row>
                         <Row>
                             <Col>
                             {isAllowed(ACTION_MANAGE,MODULE_INVENTORY) && (

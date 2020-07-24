@@ -43,7 +43,7 @@ export const getPendingTransactions = (params) => {
             if(!pendingTransactions){
                 // const [response,err]= handleResponse(await axios.get(pageConfig.PENDING_TRANSACTIONS+'R1vTnxSLWByLa7NocDDX'))
                 const [response,err]= handleResponse(await axios.get(pageConfig.PENDING_TRANSACTIONS+params.branch))
-                pendingTransactions = response.data.pendingTransactions
+                pendingTransactions = response.data.pendingRequests
                 if(err){return reject(err)}
             }
             resolve(pendingTransactions)
@@ -356,16 +356,16 @@ const getCurrentStateData = params => {
 
 export const generateCsv = (params) => {
     const branchName = getBranch(params.branch).name
-    const headerArr = ['Category','Branch','Threshold','Product','Available Quantity','Unit']
+    const headerArr = ['Product','Category','Branch','Threshold','Available Quantity','Unit']
     const arr = cache[params.branch] || []
     const outArr = []
     outArr.push(headerArr)
     arr.forEach(row=> {
         const tempRow = []
+        tempRow.push(row.productName)
         tempRow.push(row.categoryName)
         tempRow.push(branchName)
         tempRow.push(row.threshold)
-        tempRow.push(row.productName)
         tempRow.push(row.availableQuantity)
         tempRow.push(row.unitName)
         outArr.push(tempRow)
