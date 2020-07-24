@@ -89,7 +89,7 @@ class IssueProduct extends React.Component {
 
     onSubmit = event => {
         const form = event.currentTarget;
-        if (form.checkValidity() === false || !this.validateParams()) {
+        if (!this.validateParams()) {
             event.preventDefault();
             event.stopPropagation();
         }else {
@@ -107,7 +107,7 @@ class IssueProduct extends React.Component {
         return (
             <form className="forms-sample" onSubmit={this.onSubmit} >
                 <div className="pl-3 pr-3">
-                    <div>
+                    <div className="IssueForm">
                     <Form.Group>
                         <label htmlFor="isHeadOffice">Request Type</label>
                         <Form.Check type="radio" id={LocalRequest} name={LocalRequest} value={LocalRequest} 

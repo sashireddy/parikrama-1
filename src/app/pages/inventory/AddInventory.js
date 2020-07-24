@@ -96,7 +96,7 @@ class AddCategory extends React.Component {
     onSubmit = event => {
         const form = event.currentTarget;
         const validParamsflag = this.validateParams()
-        if (form.checkValidity() === false || !this.state.currentProduct || !validParamsflag) {
+        if (!validParamsflag) {
             event.preventDefault();
             event.stopPropagation();
         }else {
