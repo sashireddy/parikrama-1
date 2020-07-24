@@ -53,7 +53,6 @@ class PendingTransactions extends React.Component {
    render(){
         const isHeadOffice = getBranch(getLoggedInUserInfo().branch).isHeadOffice
         const rowRender = (request,idx)=>{
-           
            return (
             <tr key={idx}>
                 <td>{dateFormat(request.date, "yyyy-mm-dd") }</td>
