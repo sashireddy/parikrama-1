@@ -165,7 +165,7 @@ class CrudSkeleton extends Component {
                                         </thead>
                                         <tbody>
                                         {this.props.data.length ?
-                                            this.props.data.map((record)=> <TableRowFunc record={record} key={record[this.props.pk]} openActionMaodal={this.openActionMaodal} {...this.props}/>)
+                                            this.props.data.map((record)=> <TableRowFunc record={record} key={record[this.props.pk]} openActionMaodal={this.openActionMaodal} {...this.props} updateData={this.updateData}/>)
                                             : <tr><td colSpan={this.props.headerArr.length} className="text-center">No Records found!</td></tr>
                                         }
                                         </tbody>

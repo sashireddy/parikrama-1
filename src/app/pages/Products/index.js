@@ -66,6 +66,7 @@ class Products extends React.Component {
              tableRowRenderFunc ={ProductListItem}
              headerArr = {headerArr} getTitle={getTitle}
              moduleName={MODULE_INVENTORY}
+             pk="id"
             />
         )
     }

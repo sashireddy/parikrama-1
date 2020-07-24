@@ -23,7 +23,7 @@ class RowRender extends React.Component {
         <td>{threshold}</td>
         <td>{this.props.record.unitName}</td>
         <td>
-          <nav className="text-center">
+          <nav>
           {this.props.record.isActive && (<>
             {isAllowed(ACTION_VIEW, MODULE_INVENTORY) &&
                 <Button className="btn btn-primary" onClick={() => this.props.openActionMaodal(this.props.record, "view")}>

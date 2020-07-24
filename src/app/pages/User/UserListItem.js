@@ -1,8 +1,5 @@
 import React from 'react';
 import {Button} from 'react-bootstrap';
-import {connect } from 'react-redux';
-import {getBranch, getRole} from '../../utils/dataUtils';
-import userActions from '../../actions/userActions'
 import {MODULE_USER} from "../../utils/accessControl";
 import isAllowed, {ACTION_VIEW, ACTION_MANAGE} from "../../utils/accessControl";
 
@@ -19,8 +16,8 @@ class UserListItem extends React.PureComponent {
             <tr>
                 <td>{`${record.firstName} ${record.lastName}`}</td>
                 <td className="d-none d-sm-table-cell">{record.email}</td>
-                <td>{getRole(record.role).name}</td>
-                <td>{getBranch(record.branch).name}</td>
+                <td>{record.roleName}</td>
+                <td>{record.branchName}</td>
                 <td>{record.contact}</td>
                 <td>{record.isActive ? "Active" : "InActive"}</td>
                 <td>
@@ -52,8 +49,4 @@ class UserListItem extends React.PureComponent {
     }
 };
 
-const mapActionToProps = {
-    updateData : userActions.updateData
-};
-
-export default connect(null, mapActionToProps)(UserListItem);
+export default UserListItem;

@@ -132,7 +132,7 @@ export const addData = data => {
                 const res = await getData(params);
                 res.flashMessage = {
                     "type": "success",
-                    "message": "Branch Added Successfully!"
+                    "message": "Product Added Successfully!"
                 };
                 resolve(res);
             } catch(err) {
@@ -173,7 +173,7 @@ export const updateData = data => {
                 const res = await getData(params);
                 res.flashMessage = {
                     "type": "success",
-                    "message": "Branch Updated Successfully!"
+                    "message": "Product Updated Successfully!"
                 };
                 resolve(res);
             } catch(err) {
@@ -212,7 +212,7 @@ export const deleteData = data => {
                 const res = await getData(params);
                 res.flashMessage = {
                     "type": "success",
-                    "message": "Branch Deleted Successfully!"
+                    "message": "Product Deleted Successfully!"
                 };
                 resolve(res);
             } catch(err) {

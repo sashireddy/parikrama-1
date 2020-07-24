@@ -1,6 +1,7 @@
 import axios from 'axios';
 import config from "../constants/config";
-import {validateCurrentPage, getSortFunction} from "./util";
+import {validateCurrentPage, genericFilter} from "./util";
+import {getRole,getBranch} from '../utils/dataUtils'
 import Firebase from "../Firebase";
 
 console.log('Firebase =>', typeof(Firebase));
@@ -61,7 +62,13 @@ export const getData = params => {
                     "message": "Data Loaded Successfully!"
                 };
                 if(apiConfig.CACHING){
-                    cachedData = res.data.users;
+                    let records = res.data.users;
+                    records.map(entry => {
+                        entry.roleName = getRole(entry.role).name;
+                        entry.branchName = getBranch(entry.branch).name;
+                        return entry
+                    });
+                    cachedData = records;
                 }
             } catch(err){
                 reject(err);
@@ -240,7 +247,7 @@ export const deleteData = data => {
 const getCurrentStateData = params => {
     // Need to implement search and sort functionality here
     // After search total records may vary, reset pagination to 1st page.
-    let records = filterData(params, cachedData);
+    let records = genericFilter(params, cachedData);
     let currentPage = validateCurrentPage(params, records);
     apiResponse.totalRecords = records.length;
     const offset = (currentPage - 1) * params.pageLimit;
@@ -248,18 +255,4 @@ const getCurrentStateData = params => {
     apiResponse.search = params.search;
     apiResponse.sort = params.sort;
     apiResponse.currentPage = currentPage;
-}
-
-// Need to filter and sort the data
-const filterData = (params, records) => {
-    // More complex search need to handle as needed
-    let result = records;
-    let searchText = params.search.firstName && params.search.firstName.toLowerCase();
-    if(searchText) {
-        result = records.filter(item => item.firstName.toLowerCase().includes(searchText) || item.lastName.toLowerCase().includes(searchText));
-    }
-    if(params.sort.key) {
-        return result.sort(getSortFunction(params.sort));
-    }
-    return result;
 }

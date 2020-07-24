@@ -75,12 +75,12 @@ export const respondToTransferRequest = async params => {
                 fromBranchName : getBranch(entry).name,
                 toBranch: params.toBranch,
                 toBranchName: params.toBranchName,
-            })     
+            })
         })
         await Promise.all(list.map(async params=>{
             return await axios.post(pageConfig.TRANSFER_REQUEST,params)
         }))
-        let sum =0 
+        let sum =0
         Object.keys(params.quantityMap).forEach(entry => {
             const quantity = parseInt(params.quantityMap[entry])
             sum +=quantity
@@ -90,7 +90,7 @@ export const respondToTransferRequest = async params => {
         pendingTransactions = pendingTransactions.filter(entry => entry.id === params.id)
         return pendingTransactions
     }catch (err) {
-        throw new Error(err) 
+        throw new Error(err)
     }
 }
 
@@ -342,7 +342,7 @@ const getCurrentStateData = params => {
         entry.categoryName = getCategory(product.category).name
         entry.unitName = getUnit(product.unit).name
         return entry
-    })
+    });
     records = genericFilter(params,records)
     let currentPage = validateCurrentPage(params, records);
     output.totalRecords = records.length;
