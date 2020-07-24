@@ -48,7 +48,9 @@ class BranchForm extends React.Component {
             event.stopPropagation();
         }else {
             event.preventDefault();
-            this.props.onSubmit({...this.state});
+            let payload = {...this.state}
+            payload.address.zipcode = parseInt(payload.address.zipcode);
+            this.props.onSubmit(payload);
         }
         this.setState({validated: true});
     }

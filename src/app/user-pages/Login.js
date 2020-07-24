@@ -84,7 +84,7 @@ export class Login extends Component {
                     <Form.Control.Feedback type="invalid">Please enter valid email id</Form.Control.Feedback>
                   </Form.Group>
                   <Form.Group className="search-field">
-                    <Form.Control required minlength="1" name="password" type="password" placeholder="Password" size="lg" className="h-auto" onChange={this.handleChange}/>
+                    <Form.Control required minLength="1" name="password" type="password" placeholder="Password" size="lg" className="h-auto" onChange={this.handleChange}/>
                     <Form.Control.Feedback type="invalid">Please enter password</Form.Control.Feedback>
                   </Form.Group>
                   <div className="mt-3">

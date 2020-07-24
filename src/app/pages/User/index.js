@@ -45,10 +45,14 @@ class User extends React.Component {
                     key : 'email'
                 },{
                     value : 'Role',
-                    key : 'role'
+                    key : 'roleName',
+                    sortable : true,
+                    searchable: true
                 },{
                     value : 'Branch',
-                    key : 'branch'
+                    key : 'branchName',
+                    sortable : true,
+                    searchable: true
                 },{
                     value : 'Contact',
                     key : 'contact'

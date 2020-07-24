@@ -63,7 +63,7 @@ export const genericFilter = (params,records) => {
     let result = records;
     Object.keys(params.search).forEach(entry => {
         if(params.search[entry]){
-            result = records.filter(item => item[entry].toLowerCase().includes(params.search[entry].toLowerCase()))
+            result = records.filter(item => item[entry] && item[entry].toLowerCase().includes(params.search[entry].toLowerCase()))
         }
     })
     if(params.sort.key) {
