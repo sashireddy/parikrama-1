@@ -28,7 +28,7 @@ class DeleteUser extends React.Component {
           <hr className="modal-footer-ruler" />
           <div className="text-right">
             <button className="btn btn-light mr-2" onClick={this.props.closeModal}>Cancle</button>
-            <button className="btn btn-danger" onClick={this.disableUser}>Disable</button>
+            <button className="btn btn-primary" onClick={this.disableUser}>Disable</button>
           </div>
         </React.Fragment>
       );

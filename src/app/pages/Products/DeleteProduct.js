@@ -23,7 +23,7 @@ function ViewCategory(props) {
         <hr className="modal-footer-ruler" />
         <div className="text-right">
           <button className="btn btn-light mr-2" onClick={props.closeModal}>Cancel</button>
-          <button className="btn btn-danger" onClick={()=>{
+          <button className="btn btn-primary" onClick={()=>{
             props.closeModal()
             Store.dispatch(ProductActions.updateData(getDisabledPayload(props.record)))}}>Delete</button>
         </div>

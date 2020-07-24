@@ -52,7 +52,7 @@ class Unit extends React.Component {
 
         return (
             <RoleSkeleton key="Unit" content={{pageTitle:'Unit'}} AddModal={Add}
-             
+
             EditModal={Edit}
             ViewModal={View}
             DeleteModal={Del}
@@ -81,7 +81,7 @@ class Unit extends React.Component {
                                       </Button>
                                       }
                                   {isAllowed(ACTION_MANAGE, MODULE_INVENTORY) &&
-                                      <Button onClick={() => props.openActionMaodal(props.record, "del")} className="btn btn-danger ml-2">
+                                      <Button onClick={() => props.openActionMaodal(props.record, "del")} className="btn btn-primary ml-2">
                                           Disable
                                       </Button>
                                     }
@@ -92,7 +92,7 @@ class Unit extends React.Component {
                         </tr>
              }} pk="id"
              headerArr = {headerArr} getTitle={getTitle} moduleName={MODULE_INVENTORY}
-             
+
              />
         )
     }

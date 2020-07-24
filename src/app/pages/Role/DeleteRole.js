@@ -19,7 +19,7 @@ function ViewCategory(props) {
         <hr className="modal-footer-ruler" />
         <div className="text-right">
           <button className="btn btn-light mr-2" onClick={props.closeModal}>Cancle</button>
-          <button className="btn btn-danger" onClick={props.deleteData}>Delete</button>
+          <button className="btn btn-primary" onClick={props.deleteData}>Delete</button>
         </div>
       </React.Fragment>
     );

@@ -35,7 +35,7 @@ export default props => {
                   </Button>
               }
               {isAllowed(ACTION_MANAGE, MODULE_INVENTORY) &&
-                  <Button onClick={() => props.openActionMaodal(category, "del")} className="btn btn-danger ml-2">
+                  <Button onClick={() => props.openActionMaodal(category, "del")} className="btn btn-primary ml-2">
                       Disable
                   </Button>
               }

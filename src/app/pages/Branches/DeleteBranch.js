@@ -31,7 +31,7 @@ class ViewCategory extends React.Component{
         <hr className="modal-footer-ruler" />
         <div className="text-right">
           <button className="btn btn-light mr-2" onClick={this.props.closeModal}>Cancel</button>
-          <button className="btn btn-danger" onClick={this.disableRecord}>Disable</button>
+          <button className="btn btn-primary" onClick={this.disableRecord}>Disable</button>
         </div>
       </React.Fragment>
     );
