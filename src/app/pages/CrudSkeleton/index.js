@@ -17,7 +17,8 @@ class CrudSkeleton extends Component {
             actionType: null,
             sort:{},
             search: {},
-            currentPage: 1
+            currentPage: 1,
+            totalRecords: null
         }
     }
 
@@ -35,7 +36,8 @@ class CrudSkeleton extends Component {
         this.setState({
                 sort: this.props.sort,
                 search: this.props.search,
-                currentPage: this.props.currentPage
+                currentPage: this.props.currentPage,
+                totalRecords: this.props.totalRecords
             },
             this.loadData
         );
@@ -96,11 +98,11 @@ class CrudSkeleton extends Component {
     }
 
     render() {
-        const AddModal = this.props.AddModal
-        const EditModal = this.props.EditModal
-        const ViewModal = this.props.ViewModal
-        const DeleteModal = this.props.DeleteModal
-        const TableRowFunc = this.props.tableRowRenderFunc
+        const AddModal = this.props.AddModal;
+        const EditModal = this.props.EditModal;
+        const ViewModal = this.props.ViewModal;
+        const DeleteModal = this.props.DeleteModal;
+        const TableRowFunc = this.props.tableRowRenderFunc;
         return (
             <div>
                 <Spinner loading={this.props.loading} />
@@ -128,22 +130,30 @@ class CrudSkeleton extends Component {
                                         <Form.Group>
                                             {this.props.headerArr.map((entry,idx)=>{
                                                 if(!entry.searchable) return null
-                                                    return(
-                                                        <div className="input-group paddedSearchBox" key={`search-${idx}`}>
-                                                        <Form.Control type="text" name="search" data-field={entry.key}
-                                                            onChange={this.handleChange}
-                                                            className="form-control"
-                                                            placeholder={'Search '+entry.value}
-                                                            value={this.state.search[entry.key] || ""}
-                                                            aria-label={'Search '+entry.value}/>
-                                                            <div className="input-group-append">
-                                                                <button className="btn btn-sm btn-primary" type="submit">
-                                                                    <i className="fa fa-search"></i>
-                                                                </button>
-                                                            </div>
+                                                return(
+                                                    <div className="input-group paddedSearchBox" key={`search-${idx}`}>
+                                                    <Form.Control type="text" name="search" data-field={entry.key}
+                                                        onChange={this.handleChange}
+                                                        className="form-control"
+                                                        placeholder={'Search '+entry.value}
+                                                        value={this.state.search[entry.key] || ""}
+                                                        aria-label={'Search '+entry.value}/>
+                                                        <div className="input-group-append">
+                                                            <button className="btn btn-sm btn-primary" type="submit">
+                                                                <i className="fa fa-search"></i>
+                                                            </button>
                                                         </div>
-                                                    )
+                                                    </div>
+                                                )
                                             })}
+                                        </Form.Group>
+                                        <Form.Group>
+                                            <select name="search" className="ml-2 form-control" id="status-filter" data-field="isActive"
+                                                value={this.state.search.isActive || ""} onChange={this.handleChange} >
+                                                <option value="">All</option>
+                                                <option value={true}>Active</option>
+                                                <option value={false}>Inactive</option>
+                                            </select>
                                         </Form.Group>
                                         {((isAllowed(ACTION_MANAGE, this.props.moduleName) && AddModal)||this.props.addOverride) && <Button onClick={() => this.openActionMaodal(null, "add")} className="btn btn-primary ml-2 search-btn">{this.props.content.addButton || 'Add Record'}</Button>}
                                     </Form>
@@ -171,7 +181,7 @@ class CrudSkeleton extends Component {
                                         </tbody>
                                     </table>
                                 </div>
-                                {this.props.data.length ? (
+                                {this.props.data.length && (
                                     <div className="mt-4">
                                         <Pagination
                                             totalRecords={this.props.totalRecords}
@@ -181,7 +191,7 @@ class CrudSkeleton extends Component {
                                             onPageChanged={this.onPageChanged}
                                         />
                                     </div>
-                                ) : null}
+                                )}
                             </div>
                         </div>
                         <Modal title={this.props.getTitle(this.state.actionType)}

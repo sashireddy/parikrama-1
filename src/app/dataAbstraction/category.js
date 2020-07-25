@@ -1,6 +1,6 @@
 import config from "../constants/config";
 import axios from 'axios';
-import {arrayToMapWithId} from './util'
+import {validateCurrentPage, arrayToMapWithId, handleResponse, genericFilter} from "./util";
 const apiConfig = config.API.CATEGORY;
 
 // Null indicates we need to fetch the data from the source
@@ -215,7 +215,7 @@ export const deleteCategoryData = data => {
 const getCurrentStateData = params => {
     // Need to implement search and sort functionality here
     // After search total records may vary, reset pagination to 1st page.
-    let records = filterData(params);
+    let records = genericFilter(params, cachedData);
     let currentPage = validateCurrentPage(params, records);
     apiResponse.totalRecords = records.length;
     const offset = (currentPage - 1) * params.pageLimit;
@@ -223,53 +223,4 @@ const getCurrentStateData = params => {
     apiResponse.search = params.search;
     apiResponse.sort = params.sort;
     apiResponse.currentPage = currentPage;
-}
-
-// Validate current page, Might change due to delete, search operation
-// This is only required for the cached data
-const validateCurrentPage = (params, records) => {
-    const offset = (params.currentPage - 1) * params.pageLimit;
-    if(offset >= records.length && params.currentPage > 1){
-        // Set to last page.
-        return Math.ceil(records.length / params.pageLimit);
-    }
-    return params.currentPage;
-}
-
-// Need to filter and sort the data
-const filterData = params => {
-    // More complex search need to handle as needed
-    let result = cachedData;
-    let searchText = params.search.name && params.search.name.toLowerCase();
-    if(searchText) {
-        result = cachedData.filter(item => item.name.toLowerCase().includes(searchText));
-    }
-    if(params.sort.key) {
-        return result.sort(getSortFunction(params.sort));
-    }
-    return result;
-}
-
-// Function currying to return dynamic compare function
-const getSortFunction = sort => {
-    let sortOrder = sort.direction || "asc";
-    if(sortOrder === "asc"){
-        return (a, b) => {
-            if(a[sort.key] > b[sort.key]){
-                return 1;
-            } else if(a[sort.key] < b[sort.key]) {
-                return -1;
-            }
-            return 0;
-        }
-    } else {
-        return (a, b) => {
-            if(a[sort.key] > b[sort.key]){
-                return -1;
-            } else if(a[sort.key] < b[sort.key]) {
-                return 1;
-            }
-            return 0;
-        }
-    }
 }
