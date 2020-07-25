@@ -1,5 +1,6 @@
-import {GET_ALL_UNITS , ADD_UNIT,GET_UNITS,UNITS_LOADING,} from '../actions/types'
+import {GET_ALL_UNITS, GET_UNITS,UNITS_LOADING,} from '../actions/types'
 import config from '../constants/config'
+
 const initialState = {
     data: [],
     currentPage: 1,
@@ -12,7 +13,7 @@ const initialState = {
 }
 export default function(state = initialState, action){
     switch(action.type){
-        case UNITS_LOADING : 
+        case UNITS_LOADING :
             return {
                 ...state,
                 loading : true

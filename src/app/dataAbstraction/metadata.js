@@ -36,8 +36,6 @@ export const getData = () => {
             const url = `${apiConfig.GET_METADATA}`;
             console.log("GET ALL Metadata ", url);
             const res = await axios.get(url);
-            console.log(res);
-            console.log("Branches", res.data.branches);
             loadBranches(res.data.branches);
             loadRoles(res.data.roles);
             loadUnits(res.data.units);

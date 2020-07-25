@@ -2,7 +2,7 @@ import { getData } from "../dataAbstraction/metadata";
 import branchActions from "./branchActions";
 import roleActions from "./roleActions";
 import operationActions from "./operationsActions";
-import unitActions from "./units";
+import unitActions from "./unitActions";
 import categoryActions from "./categoryActions";
 import productActions from "./productActions";
 import {addNotification} from "./notification";
@@ -12,7 +12,7 @@ const getAllMetadata = () => async (dispatch) => {
         await getData();
         dispatch(branchActions.getAllBranches());
         dispatch(roleActions.getAllRoles());
-        dispatch(unitActions.initialData());
+        dispatch(unitActions.getAllUnits());
         dispatch(categoryActions.getAllCategories());
         dispatch(productActions.getAllProducts());
         dispatch(operationActions.getAllOperations());

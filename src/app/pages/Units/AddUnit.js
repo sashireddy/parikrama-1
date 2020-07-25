@@ -1,5 +1,5 @@
 import React from "react";
-import UserForm from "./UserForm";
+import UnitForm from "./UnitForm";
 
 class AddCategory extends React.Component {
     onSubmit = data => {
@@ -9,7 +9,7 @@ class AddCategory extends React.Component {
 
     render() {
         return (
-            <UserForm
+            <UnitForm
                 label='Create'
                 onSubmit={this.onSubmit}
                 closeModal={this.props.closeModal}
@@ -17,5 +17,7 @@ class AddCategory extends React.Component {
         );
     }
 }
+
+
 
 export default AddCategory;

@@ -32,7 +32,7 @@ export const loadInitialData = () => {
         if(cachedData !== null){
             resolve(arrayToMapWithId(cachedData));
         } else {
-            const url = `${config.API.BASE_URL}${apiConfig.GET_ALL_UNITS}`;
+            const url = `${apiConfig.GET_ALL_UNITS}`;
             const res = await axios.get(url);
             if(apiConfig.CACHING){
                 cachedData = res.data.units;
@@ -51,7 +51,7 @@ export const refreshStateData = () => {
     })
 }
 
-export const getPageData = params => {
+export const getData = params => {
     return new Promise(async (resolve, reject) => {
         if(cachedData === null){
             // Logic can be applied to generate URL using params
@@ -79,38 +79,55 @@ export const getPageData = params => {
             // categories.search = res.search;
             // categories.currentPage = res.currentPage;
         }
+        console.log(apiResponse);
         resolve(apiResponse);
     });
 }
 
 
 // Add Unit implementaion
-export const addUnitData = data => {
+export const addData = data => {
     return new Promise(async (resolve, reject) => {
         if(apiConfig.CACHING){
-            console.log(data)
+            let response;
+            try {
+                const url = `${apiConfig.ADD_UNIT}`;
+                response = await axios.post(url, data);
+            } catch(err) {
+                let response = {
+                    "flashMessage": {
+                        "type": "danger",
+                        "message": "Unable to save the data!"
+                    }
+                };
+                resolve(response);
+                return;
+            }
             cachedData = [
                 ...cachedData,
-                data
+                response.data
             ];
-            // Need to Add the actual data to the source
-            // Get the data back from source for the above params
+            const params = {
+                currentPage: apiResponse.currentPage,
+                pageLimit: apiResponse.pageLimit,
+                search: apiResponse.search,
+                sort: apiResponse.sort
+            }
             try {
-                const url = `${config.API.BASE_URL}${apiConfig.ADD_UNIT}`;
-                const res = await axios.post(url,data);
+                const res = await getData(params);
                 res.flashMessage = {
                     "type": "success",
-                    "message": "Role Added Successfully!"
+                    "message": "Unit Added Successfully!"
                 };
-                const params = {
-                    currentPage: apiResponse.currentPage,
-                    pageLimit: apiResponse.pageLimit,
-                    search: apiResponse.search,
-                    sort: apiResponse.sort
-                }
-                 resolve(getPageData(params))
+                resolve(res);
             } catch(err) {
-                reject(err);
+                let response = {
+                    "flashMessage": {
+                        "type": "danger",
+                        "message": "Unable to load the data!"
+                    }
+                };
+                resolve(response);
             }
         } else {
             // Needs to handle API or DB data updates.
@@ -121,7 +138,7 @@ export const addUnitData = data => {
 
 
 // Update category implementation
-export const updateUnitData = data => {
+export const updateData = data => {
     return new Promise(async (resolve, reject) => {
         let response;
         try{
@@ -149,7 +166,7 @@ export const updateUnitData = data => {
             // Need to Update the actual data to the source
             // Get the data back from source for the above params
             try {
-                const res = await getPageData(params);
+                const res = await getData(params);
                 res.flashMessage = {
                     "type": "success",
                     "message": "Branch Updated Successfully!"
@@ -162,11 +179,9 @@ export const updateUnitData = data => {
 }
 
 
+export const deleteData = data => {}
+
 const getCurrentStateData = params => {
-    // Need to implement search and sort functionality here
-    // After search total records may vary, reset pagination to 1st page.
-    console.log(params)
-    console.log(cachedData)
     let records = filterData(params,cachedData);
     let currentPage = validateCurrentPage(params, records);
     apiResponse.totalRecords = records.length;
