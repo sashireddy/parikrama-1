@@ -129,7 +129,7 @@ export const addData = data => {
                 let response = {
                     "flashMessage": {
                         "type": "danger",
-                        "message": "Unable to save the data!"
+                        "message": "Unable to load the data!"
                     }
                 };
                 resolve(response);

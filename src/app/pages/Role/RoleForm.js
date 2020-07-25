@@ -74,7 +74,7 @@ class RoleForm extends React.Component {
                     <Form.Group>
                         <label htmlFor="isActive">Role Status</label>
                         <Form.Check type="radio" id="roleIsActive" name="isActive" value="active" label="Active" checked={this.state.isActive} onChange={this.onStatusChange} />
-                        <Form.Check type="radio" id="roleIsInActive" name="isActive" value="inActive" label="In Active" checked={!this.state.isActive} onChange={this.onStatusChange} />
+                        <Form.Check type="radio" id="roleIsInActive" name="isActive" value="inActive" label="Inactive" checked={!this.state.isActive} onChange={this.onStatusChange} />
                     </Form.Group>
                     <Form.Group id="formGridCheckbox">
                         <label htmlFor="permissions">Role Permissions</label>

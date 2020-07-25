@@ -30,7 +30,7 @@ class Category extends React.Component {
                 case "edit":
                     return "Edit Category";
                 case "del":
-                    return "Delete Category";
+                    return "Disable Category";
                 default:
                     return "Manage Category";
             }

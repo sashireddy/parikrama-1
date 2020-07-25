@@ -20,7 +20,7 @@ function ViewCategory(props) {
           <button className="btn btn-light mr-2" onClick={props.closeModal}>Cancel</button>
           <button className="btn btn-primary" onClick={()=>{
             props.closeModal()
-            Store.dispatch(CategoryActions.updateData(getDisabledPayload(props.record)))}}>Delete</button>
+            Store.dispatch(CategoryActions.updateData(getDisabledPayload(props.record)))}}>Disable</button>
         </div>
       </React.Fragment>
     );

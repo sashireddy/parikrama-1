@@ -17,7 +17,7 @@ export default props => {
         <td className="d-none d-sm-table-cell">
           {category.isActive
             ? <label className="badge badge-success">Active</label>
-            : <label className="badge badge-warning">In Active</label>
+            : <label className="badge badge-warning">Inactive</label>
           }
         </td>
         <td>

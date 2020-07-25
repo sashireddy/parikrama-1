@@ -1,7 +1,5 @@
 import React from "react";
-import ProductForm from "./Form";
-import UnitAction from '../../actions/units'
-import Store from '../../store'
+import ProductForm from "./UnitForm";
 
 class EditProduct extends React.Component {
     onSubmit = data => {
@@ -9,14 +7,14 @@ class EditProduct extends React.Component {
             ...this.props.record,
             ...data
         };
-        Store.dispatch(UnitAction.updateData(product));
+        this.props.updateData(product);
         this.props.closeModal();
     }
 
     render() {
         return (
             <ProductForm
-                label='update'
+                label='Update'
                 onSubmit={this.onSubmit}
                 closeModal={this.props.closeModal}
                 record = {this.props.record}

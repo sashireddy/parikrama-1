@@ -6,8 +6,8 @@ export default {
         branches : 'BRANCHES',
         role: 'ROLE',
         product : 'PRODUCT',
-        UNITS : "UNITS",
+        unit : "UNITS",
         transaction: 'TRANSACTION',
-        InventorySummary : 'INVENTORY_SUMMARY' 
+        InventorySummary : 'INVENTORY_SUMMARY'
     }
 }

@@ -10,12 +10,7 @@ function ViewCategory(props) {
               <dt>Description</dt>
               <dd>{props.record.description}</dd>
               <dt>Category Status</dt>
-              <dd>
-                {props.record.isActive
-                  ? <label className="badge badge-success">Active</label>
-                  : <label className="badge badge-warning">In Active</label>
-                }
-              </dd>
+              <dd>{props.record.isActive ? "Active" : "Inactive"}</dd>
             </dl>
         </div>
         <hr className="modal-footer-ruler" />
