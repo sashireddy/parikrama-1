@@ -1,6 +1,6 @@
 import axios from 'axios';
 import config from "../constants/config";
-import {validateCurrentPage, arrayToMapWithId,handleResponse, filterData} from "./util";
+import {validateCurrentPage, arrayToMapWithId,handleResponse, genericFilter} from "./util";
 
 const apiConfig = config.API.UNITS;
 
@@ -79,7 +79,6 @@ export const getData = params => {
             // categories.search = res.search;
             // categories.currentPage = res.currentPage;
         }
-        console.log(apiResponse);
         resolve(apiResponse);
     });
 }
@@ -182,7 +181,7 @@ export const updateData = data => {
 export const deleteData = data => {}
 
 const getCurrentStateData = params => {
-    let records = filterData(params,cachedData);
+    let records = genericFilter(params,cachedData);
     let currentPage = validateCurrentPage(params, records);
     apiResponse.totalRecords = records.length;
     const offset = (currentPage - 1) * params.pageLimit;

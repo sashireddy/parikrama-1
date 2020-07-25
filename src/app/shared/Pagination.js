@@ -1,4 +1,4 @@
-import React, { PureComponent, Fragment } from "react";
+import React, { Component, Fragment } from "react";
 
 const LEFT_PAGE = "LEFT";
 const RIGHT_PAGE = "RIGHT";
@@ -15,10 +15,9 @@ const range = (from, to, step = 1) => {
   return range;
 };
 
-class Pagination extends PureComponent {
-  constructor(props) {
-    super(props);
-    const { totalRecords = null, pageLimit = 30, pageNeighbours = 0 } = props;
+class Pagination extends Component {
+  updateState = () => {
+    const { totalRecords = null, pageLimit = 30, pageNeighbours = 0 } = this.props;
 
     this.pageLimit = typeof pageLimit === "number" ? pageLimit : 30;
     this.totalRecords = typeof totalRecords === "number" ? totalRecords : 0;
@@ -109,15 +108,16 @@ class Pagination extends PureComponent {
   };
 
   render() {
+    this.updateState();
     if (!this.totalRecords) return null;
     if (this.totalPages === 1) return null;
+    // if(this.props.totalRecords){ this.totalRecords = this.props.totalRecords; }
     const { currentPage } = this.state;
     const pages = this.fetchPageNumbers();
     let startRec = (currentPage - 1) * this.pageLimit;
     let endRec = startRec + this.pageLimit;
     startRec = startRec+1;
     endRec = this.totalRecords > endRec ? endRec : this.totalRecords;
-
     return (
       <Fragment>
         <nav aria-label="Pagination">

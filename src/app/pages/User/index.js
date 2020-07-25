@@ -9,9 +9,9 @@ import DeleteUser from "./DeleteUser";
 import {connect} from "react-redux";
 import {MODULE_USER} from "../../utils/accessControl";
 
-const mapStateToProps = state => ({
-    ...state["USER"]
-});
+const mapStateToProps = state => {
+    return {...state["USER"]}
+}
 
 const mapActionToProps = {
     ...userActions

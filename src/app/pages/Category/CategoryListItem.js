@@ -4,27 +4,20 @@ import Store from '../../store'
 import CategoryActions from '../../actions/categoryActions'
 import {getActivePayload} from '../../utils/dataUtils'
 import {MODULE_INVENTORY} from "../../utils/accessControl";
-import isAllowed, {ACTION_VIEW, ACTION_MANAGE, ACTION_DELETE} from "../../utils/accessControl";
+import isAllowed, {ACTION_VIEW, ACTION_MANAGE } from "../../utils/accessControl";
 
 export default props => {
   const category = props.record;
   return (
     <tr>
         <td>{category.name}</td>
-        <td className="d-none d-sm-table-cell">
-          <div className="text-truncate">{category.description}</div>
-        </td>
-        <td className="d-none d-sm-table-cell">
-          {category.isActive
-            ? <label className="badge badge-success">Active</label>
-            : <label className="badge badge-warning">Inactive</label>
-          }
-        </td>
+        <td>{category.description}</td>
+        <td>{category.isActive ? "Active" : "Inactive" }</td>
         <td>
           <nav>
             {props.record.isActive && (
               <>
-              {isAllowed(ACTION_MANAGE, MODULE_INVENTORY) &&
+              {isAllowed(ACTION_VIEW, MODULE_INVENTORY) &&
                   <Button className="btn btn-primary" onClick={() => props.openActionMaodal(category, "view")}>
                       View
                   </Button>
