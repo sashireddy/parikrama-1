@@ -60,10 +60,6 @@ class Products extends React.Component {
                     key : 'contact'
                 },
                 {
-                    value : 'Address',
-                    key : 'Address'
-                },
-                {
                     value : 'Status',
                     key:'isActive'
                 },{

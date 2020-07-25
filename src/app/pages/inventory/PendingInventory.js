@@ -1,13 +1,11 @@
 import React from 'react'
 import {Table,Button, Col,Row} from 'react-bootstrap'
 import {connect} from 'react-redux'
-import {Link} from 'react-router-dom'
 import {getBranch, getLoggedInUserInfo} from '../../utils/dataUtils'
 import InventoryActions from '../../actions/inventoryActions'
 import Spinner from "../../shared/Spinner";
 import Accept from './viewInventory'
 import dateFormat from "dateformat";
-import isAllowed,{MODULE_INVENTORY,ACTION_MANAGE} from '../../utils/accessControl'
 
 class PendingTransactions extends React.Component {
     constructor(props){
@@ -27,20 +25,24 @@ class PendingTransactions extends React.Component {
         })
     }
     rejectCall = (record) => {
-        let toBranch
-        Object.keys(this.props.branches.allRecords).forEach(x => {
-            if(this.props.branches.allRecords[x].name === record.toBranchName) {
-                toBranch = x
-            } 
-        })
         this.props.rejectRequest({
             "fromBranch": getLoggedInUserInfo().branch,
-	        "toBranch": toBranch,
+	        "toBranch": record.toBranch,
 	        "fromBranchName": getBranch(getLoggedInUserInfo().branch).name,
 	        "toBranchName": record.toBranchName,
 	        "product": record.product,
 	        "productName": record.productName,
-            // "operationalQuantity": record.operationalQuantity,  
+	        "pendingRequestsId": record.id
+        })
+    }
+    cancelCall = (record) => {
+        this.props.rejectRequest({
+            "fromBranch": record.fromBranch,
+            "fromBranchName":record.fromBranchName,
+	        "toBranch": getLoggedInUserInfo().branch,
+	        "toBranchName":getBranch(getLoggedInUserInfo().branch).name ,
+	        "product": record.product,
+	        "productName": record.productName,
 	        "pendingRequestsId": record.id
         })
     }
@@ -56,9 +58,9 @@ class PendingTransactions extends React.Component {
            return (
             <tr key={idx}>
                 <td>{dateFormat(request.date, "yyyy-mm-dd") }</td>
-                <td>{request.user}</td>
-                {isHeadOffice && <td>{request.fromBranchName}</td>}
-                {!isHeadOffice && <td>{request.toBranchName}</td>}
+                {isHeadOffice && <td>{request.user}</td> }
+                {isHeadOffice && <td>{request.toBranchName}</td>}
+                {!isHeadOffice && <td>{request.fromBranchName}</td>}
                 <td>{request.productName}</td>
                 <td>{request.operationalQuantity}</td>
                 <td>{request.note}</td>
@@ -70,13 +72,11 @@ class PendingTransactions extends React.Component {
                 </td>}
                 {!isHeadOffice && 
                     <Row>
-                        <Button onClick={()=>{}}>Cancel</Button>
+                        <Button onClick={()=>this.cancelCall(request)}>Cancel</Button>
                     </Row>
                 }
             </tr>)}
-       let requests = this.props.inventory.pendingTransactions || []
-       
-       if(!isAllowed(ACTION_MANAGE,MODULE_INVENTORY)) return <></>
+       let requests = this.props.inventory.pendingTransactions || []       
         return (
             <>
             <Spinner loading={this.props.inventory.pendingTransactionsLoading} />
@@ -92,7 +92,7 @@ class PendingTransactions extends React.Component {
                             <thead>
                                 <tr>
                                     <th>Date</th>
-                                    <th>User</th>
+                                    {isHeadOffice &&<th>User</th>}
                                     <th>Branch</th>
                                     <th>Product</th>
                                     <th>Requested Quantity</th>

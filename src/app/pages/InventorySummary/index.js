@@ -49,6 +49,12 @@ class InventorySummary extends React.Component {
         });
     }
 
+    handleDropDown = (e) => {
+        this.state({
+            ...this.state,
+            branch : e.value
+        })
+    }
 
     onSubmit = evt => {
         evt.preventDefault();
@@ -65,6 +71,13 @@ class InventorySummary extends React.Component {
         } else {
             this.setState({error: true});
         }
+    }
+    download = () => {
+        this.props.download({
+            ...this.state,
+            search : this.props.stateData.search,
+            sort : this.props.stateData.sort
+        })
     }
 
     render(){
@@ -92,37 +105,41 @@ class InventorySummary extends React.Component {
                     value : 'Initial Quantity',
                     key : 'Initial Quantity'
                 },{
+                    value : 'Added Quantity',
+                    key : 'Added Quantity'
+                },{
                     value : 'Consumed Quantity',
                     key : 'Consumed Quantity'
                 },{
                     value : 'Transfered Quantity',
                     key : 'Transfered Quantity'
                 },{
-                    value : 'Added Quantity',
-                    key : 'Added Quantity'
-                },{
                     value : 'Closing Quantity',
                     key : 'Closing Quantity'
+                },{
+                    value : 'Unit',
+                    key : 'Unit'
                 }
             ]
         
-        const getQuantityWithUnit = (quantity, unit) => {
-            return quantity+" "+unit
+        const getQuantityWithUnit = (quantity) => {
+            return quantity
         }
-        const getQuantityLabel = (quantity,threshold,unit) =>  quantity > threshold ? 
-            <label className="badge badge-success">{getQuantityWithUnit(quantity,unit)}</label> :
-            <label className="badge badge-warning">{getQuantityWithUnit(quantity,unit)}</label>
+        const getQuantityLabel = (quantity,threshold) =>  quantity > threshold ? 
+            <label className="badge badge-success QuantityBadge"> {getQuantityWithUnit(quantity)} </label> :
+            <label className="badge badge-warning QuantityBadge">{getQuantityWithUnit(quantity)}</label>
         const tableRowRenderFunc = (props)=> {
             return (
                 <tr>
                     <td>{props.record.productName}</td>
                     <td>{props.record.categoryName}</td>
                     <td>{props.record.threshold}</td>
-                    <td>{getQuantityLabel(props.record.initialQuantity,props.record.threshold,props.record.unitName)}</td>
-                    <td>{getQuantityWithUnit(props.record.consumedQuantity,props.record.unitName)}</td>
-                    <td>{getQuantityWithUnit(props.record.transferredQuantity,props.record.unitName)}</td>
-                    <td>{getQuantityWithUnit(props.record.addedQuantity,props.record.unitName)}</td>
-                    <td>{getQuantityLabel(props.record.closingQuantity,props.record.threshold,props.record.unitName)}</td>  
+                    <td>{getQuantityLabel(props.record.initialQuantity,props.record.threshold)}</td>
+                    <td>{getQuantityWithUnit(props.record.consumedQuantity)}</td>
+                    <td>{getQuantityWithUnit(props.record.transferredQuantity)}</td>
+                    <td>{getQuantityWithUnit(props.record.addedQuantity)}</td>
+                    <td>{getQuantityLabel(props.record.closingQuantity,props.record.threshold)}</td>  
+                    <td>{props.record.unitName}</td>
                 </tr>
             )
         }
@@ -175,7 +192,7 @@ class InventorySummary extends React.Component {
                         <input type="submit" value="Search" className="btn btn-primary"/>
                     </Form.Group>
                     <Button onClick={()=>{
-                        this.props.download({...this.state})
+                        this.download()
                     }}>
                         Download
                     </Button>

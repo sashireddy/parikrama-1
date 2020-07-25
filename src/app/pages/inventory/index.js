@@ -99,12 +99,21 @@ class Inventory extends React.Component {
             },{
                 value: 'Available Quantity',
                 key: 'availableQuantity',
-            },
-            {
+            },{
+                value : 'Units',
+                key : 'Units'
+            },{
                 value:'Actions',
                 key:'actions'
             }
             ]
+        const issueParams = (records) => {
+            return {
+                ...records,
+                fromBranch : this.state.branch,
+                fromBranchName : this.state.branchName,
+            }
+        }
         const RowRender = (props) => {
             return (
                 <tr>
@@ -113,11 +122,12 @@ class Inventory extends React.Component {
                     <td>{this.state.branchName}</td>
                     <td>{props.record.threshold}</td>
                     <td> { props.record.availableQuantity > props.record.threshold ? 
-                        <label className="badge badge-success">{props.record.availableQuantity}  {props.record.unitName}</label> :
-                        <label className="badge badge-warning">{props.record.availableQuantity}  {props.record.unitName}</label>
+                        <label className="badge badge-success QuantityBadge">{props.record.availableQuantity}  </label> :
+                        <label className="badge badge-warning QuantityBadge">{props.record.availableQuantity}  </label>
                         }   
                     </td>
-                    <td>{ (this.state.branch === getLoggedInUserInfo().branch||isAdmin) && <Button onClick={() =>{props.openActionMaodal(props.record,'view')}}>Disburse</Button>}</td>
+                    <td>{props.record.unitName}</td>
+                    <td>{ (this.state.branch === getLoggedInUserInfo().branch||isAdmin) && <Button onClick={() =>{props.openActionMaodal(issueParams(props.record),'view')}}>Disburse</Button>}</td>
                 </tr>
             )
         }    

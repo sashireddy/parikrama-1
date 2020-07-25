@@ -64,11 +64,18 @@ class AddCategory extends React.Component {
     }
     validateParams = () => {
         const operationalQuantity = parseInteger(this.state.operationalQuantity)
-        if( operationalQuantity!== 0 && (this.state.type === Adjustment ||
-            (this.state.type !== Adjustment && operationalQuantity >=0))){
+        if(!this.state.product){
+            addNotification({
+                title : "Please Select Product Field",
+                message : "Prooduct field can't be empty",
+                type : "warning"
+            })
+            return false
+        }
+        if( (this.state.type === Adjustment && operationalQuantity >= 0 )||
+            (this.state.type !== Adjustment && operationalQuantity > 0)){
             return true
-        }else if(operationalQuantity === 0){
-            //error
+        }else if(operationalQuantity === 0 && this.state.type !== Adjustment){
             addNotification({
                 title : "Please Check Quantity Parameter",
                 message: "Quantity can't be 0",
@@ -76,7 +83,6 @@ class AddCategory extends React.Component {
                 
             })
         }if(this.state.type !== Adjustment && operationalQuantity < 0){
-            //error 
             addNotification({
                 title : "Please Check Quantity Parameter",
                 message: "Quantity can't be negative",
@@ -94,7 +100,6 @@ class AddCategory extends React.Component {
     }
 
     onSubmit = event => {
-        const form = event.currentTarget;
         const validParamsflag = this.validateParams()
         if (!validParamsflag) {
             event.preventDefault();

@@ -14,6 +14,7 @@ export default function(state = inventoryInitialState, action){
         case GET_PENDING_TRANSACTIONS:
             return {
                 ...state,
+                loading : false,
                 pendingTransactionsLoading : false,
                 pendingTransactions : action.payload,
             }

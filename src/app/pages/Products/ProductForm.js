@@ -2,8 +2,8 @@ import React from "react";
 import {Form} from "react-bootstrap";
 import Select from 'react-select'
 import {getDropdownItem,dropDownResponseFromMap} from '../../utils/dropDownUtils'
-import {getCategory,getUnit,isAdmin} from '../../utils/dataUtils'
-import isAllowed, {ACTION_VIEW, ACTION_MANAGE,MODULE_INVENTORY} from "../../utils/accessControl";
+import {getCategory,getUnit} from '../../utils/dataUtils'
+import isAllowed, { ACTION_MANAGE,MODULE_INVENTORY} from "../../utils/accessControl";
 import {connect} from 'react-redux'
 import ProductActions from '../../actions/productActions'
 
@@ -113,7 +113,7 @@ class ProductForm extends React.Component {
                         <>
                             {branchesArr.map(branchId=> {
                                 if(branchId !== this.props.stateData.user.branch){
-                                    const threshold = (this.state.thresholds && this.state.thresholds[branchId]) || 0
+                                    const threshold = (this.state.thresholds && this.state.thresholds[branchId])
                                  return (<Form.Group>
                                     <label htmlFor="exampleInputEmail1">Product Threshold at {branchesMap[branchId].name} branch</label>
                                     <Form.Control type="number" className="form-control" id="productName" name="name" placeholder="threshold Name" value={threshold} onChange={e=>this.handleThresholdChange(e,branchId)} />

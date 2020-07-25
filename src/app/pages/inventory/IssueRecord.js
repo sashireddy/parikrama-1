@@ -16,14 +16,16 @@ class IssueProduct extends React.Component {
         super(props);
         console.log(props);
         this.state = {
+        }
+    }
+    componentDidMount(){
+        this.setState({
             ...this.props.record,
             productName:getProduct(this.props.record.product).name,
-            fromBranch :getLoggedInUserInfo().branch,
-            fromBranchName : getBranchInfo(getLoggedInUserInfo().branch).name,
             type:LocalRequest,
             operationalQuantity : 0,
             note : ""
-        }
+        })
     }
     validateParams = () => {
         const operationalQuantity = parseInteger(this.state.operationalQuantity)
@@ -88,7 +90,6 @@ class IssueProduct extends React.Component {
     }
 
     onSubmit = event => {
-        const form = event.currentTarget;
         if (!this.validateParams()) {
             event.preventDefault();
             event.stopPropagation();
@@ -100,7 +101,6 @@ class IssueProduct extends React.Component {
     }
 
     render() {
-        console.log(this.state)
         const branchDropdownArr = dropDownResponseFromMap(this.props.branches.allRecords).filter(x=>x.label !== this.state.fromBranchName)
         const stockAfter = this.props.record.availableQuantity-this.state.operationalQuantity
         let isAdminBranch = getBranchInfo(getLoggedInUserInfo().branch).isHeadOffice
@@ -118,11 +118,6 @@ class IssueProduct extends React.Component {
                             onChange={()=>this.onStatusChange(TransferOperation)}
                             />}
                     </Form.Group>
-                    {this.state.type === TransferOperation &&<Form.Group>
-                        <label htmlFor="exampleInputEmail1">To Branch</label>
-                        <Select className="basic-single" classNamePrefix="select"
-                            isClearable={true} isSearchable={true}  options={branchDropdownArr} onChange={(e)=>{this.handleBranchDropDown(e)}}/>
-                    </Form.Group>}
                     <Row>
                         <Col>
                             <h6 className="headerValue">Current Stock</h6> 
@@ -146,6 +141,15 @@ class IssueProduct extends React.Component {
                         </Col>
                     </Row>
                     </div>
+                    <Row>
+                        <Col>
+                            {this.state.type === TransferOperation &&<Form.Group>
+                            <label htmlFor="exampleInputEmail1">To Branch</label>
+                            <Select className="basic-single" classNamePrefix="select"
+                            isClearable={true} isSearchable={true}  options={branchDropdownArr} onChange={(e)=>{this.handleBranchDropDown(e)}}/>
+                            </Form.Group>}
+                        </Col>
+                    </Row>
                     <Row>
                         <Col>
                         <Form.Group>

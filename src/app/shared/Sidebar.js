@@ -150,7 +150,7 @@ class Sidebar extends React.Component {
             </Link>
           </li>
           {/* } */}
-          { isAllowed(ACTION_MANAGE,MODULE_INVENTORY) &&
+          { isAllowed(ACTION_GENERATE,MODULE_REPORT) &&
             <li className={ this.isPathActive('/inventoryreports') ? 'nav-item active' : 'nav-item' }>
               <Link className="nav-link" to="/inventoryreports">
                 <i className="mdi mdi-attachment menu-icon"></i>

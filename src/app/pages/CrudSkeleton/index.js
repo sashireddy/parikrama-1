@@ -101,6 +101,11 @@ class CrudSkeleton extends Component {
         const ViewModal = this.props.ViewModal
         const DeleteModal = this.props.DeleteModal
         const TableRowFunc = this.props.tableRowRenderFunc
+        let addFlag = isAllowed(ACTION_MANAGE, this.props.moduleName)
+        if(this.props.addOverride !== undefined ){
+            addFlag = this.props.addOverride
+        }
+        
         return (
             <div>
                 <Spinner loading={this.props.loading} />
@@ -145,7 +150,7 @@ class CrudSkeleton extends Component {
                                                     )
                                             })}
                                         </Form.Group>
-                                        {((isAllowed(ACTION_MANAGE, this.props.moduleName) && AddModal)||this.props.addOverride) && <Button onClick={() => this.openActionMaodal(null, "add")} className="btn btn-primary ml-2 search-btn">{this.props.content.addButton || 'Add Record'}</Button>}
+                                        {(addFlag && AddModal) && <Button onClick={() => this.openActionMaodal(null, "add")} className="btn btn-primary ml-2 search-btn">{this.props.content.addButton || 'Add Record'}</Button>}
                                     </Form>
                                 </div>
                                 <div className="table-responsive">

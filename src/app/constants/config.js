@@ -23,7 +23,7 @@ export default {
             "PENDING_TRANSACTIONS": "https://local-parikrama.web.app/api/pendingRequests/branches/",
             "GET_BRANCH_INVENTORY": "https://local-parikrama.web.app/api/inventories/",
             "RAISE_REQUEST" : "https://local-parikrama.web.app/api/actions/requestProduct",
-            "TRANSFER_REQUEST":"https://local-parikrama.web.app/api/actions/transferproduct",
+            "TRANSFER_REQUEST":"https://local-parikrama.web.app/api/actions/transferProduct",
             "GET_ALL_INVENTORY": "https://local-parikrama.web.app/api/inventories/",
             "REJECT_REQUEST" :   "https://local-parikrama.web.app/api/actions/rejectRequest",
             "TransferOperation" : "https://local-parikrama.web.app/api/actions/moveProduct",

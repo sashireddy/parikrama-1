@@ -1,6 +1,6 @@
 import {initialState as stateTemplate} from './crudReducers'
 import {GET_INVENTORY_VIEW_SUMMARY,
-    // INVENTORY_VIEW_LOADING_ERROR,
+    INVENTORY_VIEW_LOADING_ERROR,
     INVENTORY_VIEW_LOADING} from '../actions/types'
 let initialState = {...stateTemplate}
 
@@ -19,7 +19,11 @@ export default function(state = initialState, action) {
                 ...action.payload,
                 loading: false
             }
-
+        case INVENTORY_VIEW_LOADING_ERROR:
+            return { 
+                ...state,
+                loading : false
+            }
         default:
             return state;
     }

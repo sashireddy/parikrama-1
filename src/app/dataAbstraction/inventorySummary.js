@@ -66,7 +66,7 @@ const validateParams = (params1,params2) => {
 const getCurrentStateData = params => {
     // Need to implement search and sort functionality here
     // After search total records may vary, reset pagination to 1st page.
-    let records = cachedData
+    let records = cachedData || []
     records.map(entry => {
         const product = getProduct(entry.product)
         entry.productName = product.name
@@ -86,7 +86,7 @@ const getCurrentStateData = params => {
 export const downloadReport = async params => {
     const branchName = getBranch(params.branch).name    
     const headerArr = ['Product','Category','Branch','Threshold','Initial Quantity','Consumed Quantity','Transfered Quantity','Added Quantity','Closing Quantity',]
-    const arr = cachedData || []
+    const arr = genericFilter(params,cachedData || [])
     const outArr = []
     outArr.push(headerArr)
     arr.forEach(row=> {

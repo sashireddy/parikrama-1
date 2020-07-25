@@ -1,9 +1,9 @@
 import React from "react"
-import {Form, Row,Col,Alert} from 'react-bootstrap'
+import {Form, Row,Col} from 'react-bootstrap'
 import {addNotification} from '../../actions/notification'
 import Modal from '../../shared/Modal'
 import {parseInteger} from '../../utils/commonUtil'
-import {getBranchInfo,getProduct,getCategory} from '../../utils/dataUtils'
+import {getBranchInfo,getProduct} from '../../utils/dataUtils'
 
 
 class ApproveOrRejectView extends React.Component {
