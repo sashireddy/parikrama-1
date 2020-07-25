@@ -85,16 +85,17 @@ const getCurrentStateData = params => {
 }
 export const downloadReport = async params => {
     const branchName = getBranch(params.branch).name    
-    const headerArr = ['Category','Branch','Threshold','Product','Initial Quantity','Consumed Quantity','Transfered Quantity','Added Quantity','Closing Quantity',]
+    const headerArr = ['Product','Category','Branch','Threshold','Initial Quantity','Consumed Quantity','Transfered Quantity','Added Quantity','Closing Quantity',]
     const arr = cachedData || []
     const outArr = []
     outArr.push(headerArr)
     arr.forEach(row=> {
         const tempRow = []
+        tempRow.push(row.productName)
         tempRow.push(row.categoryName)
         tempRow.push(branchName)
         tempRow.push(row.threshold)
-        tempRow.push(row.productName)
+        
         tempRow.push(`${row.initialQuantity} `+row.unitName)
         tempRow.push(`${row.consumedQuantity} `+row.unitName)
         tempRow.push(`${row.transferredQuantity} `+row.unitName)
@@ -102,5 +103,5 @@ export const downloadReport = async params => {
         tempRow.push(`${row.closingQuantity} `+row.unitName) 
         outArr.push(tempRow)
     })
-    download(arrayToCsvContent(outArr),`${branchName}_${dateformat(params.startDate,'yyyy-mm-dd')}_${dateformat(params.endDate,'yyyy-mm-dd')}.csv`,)
+    download(arrayToCsvContent(outArr),`INVENTORY_${branchName}_${dateformat(params.startDate,'yyyy-mm-dd')}_${dateformat(params.endDate,'yyyy-mm-dd')}.csv`,)
 }

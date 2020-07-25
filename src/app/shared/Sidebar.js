@@ -4,7 +4,7 @@ import { Link, withRouter } from 'react-router-dom';
 import { Dropdown } from 'react-bootstrap';
 import {connect} from "react-redux";
 import {getRole} from '../utils/dataUtils';
-import isAllowed from "../utils/accessControl";
+import isAllowed, { ACTION_GENERATE,ACTION_MANAGE,MODULE_REPORT } from "../utils/accessControl";
 import {ACTION_VIEW } from "../utils/accessControl";
 import {
         MODULE_BRANCH,
@@ -143,7 +143,6 @@ class Sidebar extends React.Component {
               </Link>
             </li>
           }
-          {/* {isAllowed(ACTION_VIEW, MODULE_INVENTORY) && */}
           <li className={ this.isPathActive('/inventory') ? 'nav-item active' : 'nav-item' }>
             <Link className="nav-link" to="/inventory">
               <i className="mdi mdi-barley menu-icon"></i>
@@ -151,7 +150,7 @@ class Sidebar extends React.Component {
             </Link>
           </li>
           {/* } */}
-          { isAllowed(ACTION_VIEW,MODULE_INVENTORY) &&
+          { isAllowed(ACTION_MANAGE,MODULE_INVENTORY) &&
             <li className={ this.isPathActive('/inventoryreports') ? 'nav-item active' : 'nav-item' }>
               <Link className="nav-link" to="/inventoryreports">
                 <i className="mdi mdi-attachment menu-icon"></i>

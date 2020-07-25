@@ -9,6 +9,7 @@ import {getSelectedItem, dropDownResponseFromMap} from '../../utils/dropDownUtil
 import InventorySummaryAction from '../../actions/InventoryView'
 import {getLoggedInUserInfo} from '../../utils/dataUtils'
 import dateFormat from "dateformat";
+import isAllowed, { ACTION_MANAGE, MODULE_INVENTORY, MODULE_REPORT } from '../../utils/accessControl'
 
 const customStyles = {
     control: base => ({
@@ -131,7 +132,7 @@ class InventorySummary extends React.Component {
              tableRowRenderFunc ={tableRowRenderFunc}
              headerArr = {headerArr} getTitle={getTitle}
              getData = {this.getData} {...this.props.stateData}
-             DontShowButon 
+             module={MODULE_REPORT}
             >
                 <Card>
                     <Card.Body>
@@ -162,12 +163,14 @@ class InventorySummary extends React.Component {
                             className="form-control"
                         />
                         </Form.Group>
+                        {isAllowed(ACTION_MANAGE,MODULE_INVENTORY) && (
                         <Form.Group className="select-box-fix">
-                        <Form.Label>Branch</Form.Label>
-                        <Select className="basic-single" classNamePrefix="select" value={getSelectedItem(this.props.branchDropDownArr, this.state.branch)}
-                        options={this.props.branchDropDownArr} onChange={(e)=>{this.handleDropDown('branch', e)}}
-                        isSearchable placeholder="Select Branch" styles={customStyles}/>
-                    </Form.Group>
+                            <Form.Label>Branch</Form.Label>
+                            <Select className="basic-single" classNamePrefix="select" value={getSelectedItem(this.props.branchDropDownArr, this.state.branch)}
+                            options={this.props.branchDropDownArr} onChange={(e)=>{this.handleDropDown('branch', e)}}
+                            isSearchable placeholder="Select Branch" styles={customStyles}/>
+                        </Form.Group>
+                        )}
                     <Form.Group>
                         <input type="submit" value="Search" className="btn btn-primary"/>
                     </Form.Group>
