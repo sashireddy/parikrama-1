@@ -59,11 +59,16 @@ export const filterData = (params, records) => {
     }
     return result;
 }
-export const genericFilter = (params,records) => {
+export const genericFilter = (params, records) => {
     let result = records;
     Object.keys(params.search).forEach(entry => {
         if(params.search[entry]){
-            result = records.filter(item => item[entry] && item[entry].toLowerCase().includes(params.search[entry].toLowerCase()))
+            result = records.filter(item => {
+                if(item[entry] !== undefined && item[entry] !== null){
+                    return item[entry].toString().toLowerCase().includes(params.search[entry].toLowerCase());
+                }
+                return false;
+            });
         }
     })
     if(params.sort.key) {

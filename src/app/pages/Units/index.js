@@ -54,7 +54,7 @@ class Unit extends React.Component {
 
         return (
             <RoleSkeleton key="Unit"
-                content={{pageTitle:'Unit'}}
+                content={{pageTitle:'Unit of measure'}}
                 AddModal={AddUnit}
                 EditModal={EditUnit}
                 ViewModal={ViewUnit}

@@ -1,6 +1,6 @@
 import axios from 'axios';
 import config from "../constants/config";
-import {filterData, validateCurrentPage, handleResponse,arrayToMapWithId} from "./util";
+import {genericFilter, validateCurrentPage, handleResponse,arrayToMapWithId} from "./util";
 
 const apiConfig = config.API.BRANCHES;
 
@@ -236,7 +236,7 @@ export const deleteData = data => {
 const getCurrentStateData = params => {
     // Need to implement search and sort functionality here
     // After search total records may vary, reset pagination to 1st page.
-    let records = filterData(params, cachedData);
+    let records = genericFilter(params, cachedData);
     let currentPage = validateCurrentPage(params, records);
     apiResponse.totalRecords = records.length;
     const offset = (currentPage - 1) * params.pageLimit;
