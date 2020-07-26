@@ -106,6 +106,9 @@ export const addData = data => {
                 resolve(response);
                 return;
             }
+
+            response.data.roleName = getRole(data.role).name;
+            response.data.branchName = getBranch(data.branch).name;
             cachedData = [
                 ...cachedData,
                 response.data
@@ -159,8 +162,9 @@ export const updateData = data => {
             resolve(response);
             return;
         }
+        data.roleName = getRole(data.role).name;
+        data.branchName = getBranch(data.branch).name;
         if(apiConfig.CACHING){
-            console.log("Updating now");
             cachedData = cachedData.map(item => {
                 if(item.id === data.id) {
                     return {

@@ -1,42 +1,48 @@
 import React from 'react';
 import {Button} from 'react-bootstrap';
-import Store from '../../store'
-import CategoryActions from '../../actions/categoryActions'
-import {getActivePayload} from '../../utils/dataUtils'
 import {MODULE_INVENTORY} from "../../utils/accessControl";
 import isAllowed, {ACTION_VIEW, ACTION_MANAGE } from "../../utils/accessControl";
 
-export default props => {
-  const category = props.record;
-  return (
-    <tr>
-        <td>{category.name}</td>
-        <td>{category.description}</td>
-        <td>{category.isActive ? "Active" : "Inactive" }</td>
-        <td>
-          <nav>
-            {props.record.isActive && (
-              <>
-              {isAllowed(ACTION_VIEW, MODULE_INVENTORY) &&
-                  <Button className="btn btn-primary" onClick={() => props.openActionMaodal(category, "view")}>
-                      View
-                  </Button>
-              }
-              {isAllowed(ACTION_MANAGE, MODULE_INVENTORY) &&
-                  <Button onClick={() => props.openActionMaodal(category, "edit")} className="btn btn-primary ml-2">
-                      Edit
-                  </Button>
-              }
-              {isAllowed(ACTION_MANAGE, MODULE_INVENTORY) &&
-                  <Button onClick={() => props.openActionMaodal(category, "del")} className="btn btn-primary ml-2">
-                      Disable
-                  </Button>
-              }
-           </>)}
-            {!props.record.isActive && (<Button onClick={()=>Store.dispatch(CategoryActions.updateData(getActivePayload(props.record)))}>Activate</Button>)}
+class CategoryListItem extends React.Component {
+  enableRecord = () => {
+    let {record} = this.props;
+    this.props.updateData({...record, isActive:true});
+  }
 
-          </nav>
-        </td>
-    </tr>
-  );
-};
+  render() {
+    let {record} = this.props;
+    return (
+        <tr>
+            <td>{record.name}</td>
+            <td>{record.description}</td>
+            <td>{record.isActive ? "Active" : "Inactive" }</td>
+            <td>
+                <nav>
+                    {isAllowed(ACTION_VIEW, MODULE_INVENTORY) &&
+                        <Button className="btn btn-primary" onClick={() => this.props.openActionMaodal(record, "view")}>
+                            View
+                        </Button>
+                    }
+                    {isAllowed(ACTION_MANAGE, MODULE_INVENTORY) &&
+                        <Button disabled={!record.isActive} onClick={record.isActive ? () => this.props.openActionMaodal(record, "edit") : undefined} className="btn btn-primary ml-2">
+                            Edit
+                        </Button>
+                    }
+                    {record.isActive && isAllowed(ACTION_MANAGE, MODULE_INVENTORY) &&
+                        <Button onClick={() => this.props.openActionMaodal(record, "del")} className="btn btn-primary ml-2">
+                            Disable
+                        </Button>
+                    }
+                    {!record.isActive && isAllowed(ACTION_MANAGE, MODULE_INVENTORY) &&
+                        <Button onClick={this.enableRecord} className="btn btn-primary ml-2">
+                            Enable
+                        </Button>
+                    }
+                </nav>
+            </td>
+        </tr>
+      );
+  };
+}
+
+export default CategoryListItem;

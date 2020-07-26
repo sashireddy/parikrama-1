@@ -29,6 +29,7 @@ class Pagination extends Component {
 
     this.totalPages = Math.ceil(this.totalRecords / this.pageLimit);
 
+    // eslint-disable-next-line
     this.state = { currentPage: this.props.currentPage };
   }
 

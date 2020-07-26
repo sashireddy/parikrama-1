@@ -4,7 +4,7 @@ import RoleForm from "./UserForm";
 class EditRole extends React.Component {
     onSubmit = data => {
         const role = {
-            ...this.props.record,
+            id: this.props.record.id,
             ...data
         };
         this.props.updateData(role);

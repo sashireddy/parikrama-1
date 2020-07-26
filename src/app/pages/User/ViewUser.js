@@ -1,6 +1,5 @@
 import React from "react";
 import dateFormat from "dateformat";
-import {getBranch, getRole} from '../../utils/dataUtils';
 
 const ViewUser = props => {
   const {record} = props;
@@ -11,9 +10,9 @@ const ViewUser = props => {
             <dt>User Name</dt>
             <dd>{`${record.firstName} ${record.lastName}`}</dd>
             <dt>Role</dt>
-            <dd>{getRole(record.role).name}</dd>
+            <dd>{record.roleName}</dd>
             <dt>Branch</dt>
-            <dd>{getBranch(record.branch).name}</dd>
+            <dd>{record.branchName}</dd>
             <dt>Phone Number</dt>
             <dd>{record.contact}</dd>
             <dt>Status</dt>

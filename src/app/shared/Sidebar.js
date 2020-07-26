@@ -4,7 +4,7 @@ import { Link, withRouter } from 'react-router-dom';
 import { Dropdown } from 'react-bootstrap';
 import {connect} from "react-redux";
 import {getRole} from '../utils/dataUtils';
-import isAllowed, { ACTION_GENERATE,ACTION_MANAGE,MODULE_REPORT } from "../utils/accessControl";
+import isAllowed, { ACTION_MANAGE } from "../utils/accessControl";
 import {ACTION_VIEW } from "../utils/accessControl";
 import {
         MODULE_BRANCH,

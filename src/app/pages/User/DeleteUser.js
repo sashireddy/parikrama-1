@@ -23,6 +23,8 @@ class DeleteUser extends React.Component {
                 <dd>{getBranch(record.branch).name}</dd>
                 <dt>Phone Number</dt>
                 <dd>{record.contact}</dd>
+                <dt>Status</dt>
+                <dd>{this.props.record.isActive ? "Active" : "Inactive"}</dd>
               </dl>
           </div>
           <hr className="modal-footer-ruler" />
