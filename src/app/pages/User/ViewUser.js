@@ -16,7 +16,7 @@ const ViewUser = props => {
             <dt>Phone Number</dt>
             <dd>{record.contact}</dd>
             <dt>Status</dt>
-            <dd>{record.isActive ? "Active" : "InActive"}</dd>
+            <dd>{record.isActive ? "Active" : "Inactive"}</dd>
             <dt>Email</dt>
             <dd>{record.email}</dd>
             <dt>Created on</dt>
