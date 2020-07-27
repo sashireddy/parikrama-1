@@ -7,7 +7,7 @@ import {getBranchInfo,getProduct} from '../../utils/dataUtils'
 
 
 class ApproveOrRejectView extends React.Component {
-    
+
     constructor(props){
         super(props)
         this.state = {
@@ -56,7 +56,8 @@ class ApproveOrRejectView extends React.Component {
             if(operationalQuantity > 0) {
                 map[key] = operationalQuantity
             }
-        })
+        });
+        debugger;
         return {
             ...this.state,
             quantityMap : map
@@ -72,7 +73,7 @@ class ApproveOrRejectView extends React.Component {
             }
         })
     }
-    
+
     onSubmit = event => {
         if (!this.validateParams()) {
             event.preventDefault();
@@ -140,13 +141,13 @@ class ApproveOrRejectView extends React.Component {
                         <>
                         <Row key={idx}>
                             <Col>
-                                <h6>{getBranchInfo(key).name}</h6> 
+                                <h6>{getBranchInfo(key).name}</h6>
                                 <h6>Available Quantity : {val.availableQuantity}</h6>
                                 <h6>threshold : {val.threshold}</h6>
-                                
+
                             </Col>
                             <Col>
-                                <Form.Control type="number" id={"Branch"+idx} className="form-control" 
+                                <Form.Control type="number" id={"Branch"+idx} className="form-control"
                                     name="note" placeholder="Select Quantity" value={this.state.quantityMap[key]}
                                 onChange={e=>this.handleQuantityChange(key,e)} />
                             </Col>
@@ -164,7 +165,7 @@ class ApproveOrRejectView extends React.Component {
                <Row>
                 <Col>
                     <Form.Label>Note</Form.Label>
-                    <Form.Control type="text" id={"Note"} className="form-control" 
+                    <Form.Control type="text" id={"Note"} className="form-control"
                                     name="note" placeholder="Select Quantity" value={this.state.transactionNote}
                                 onChange={e=>this.handleNoteChange(e)} />
                 </Col>

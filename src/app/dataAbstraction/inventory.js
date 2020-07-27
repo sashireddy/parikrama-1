@@ -76,9 +76,10 @@ export const respondToTransferRequest = async params => {
                 fromBranch: entry,
                 fromBranchName : getBranch(entry).name,
                 toBranch: params.toBranch,
-                note : params.transactionNote,
+                note : params.note,
                 toBranchName: params.toBranchName,
-            })
+                user: params.user
+            });
         })
         await Promise.all(list.map(async params=>{
             return await axios.post(pageConfig.TRANSFER_REQUEST,params)
@@ -106,7 +107,7 @@ export const createTransaction = ({type,...otherParams}) => {
                 //raise request from branch to head office
                 queryParams = {
                     "toBranch": otherParams.fromBranch,//always headoffice
-                    "fromBranch": otherParams.toBranch, 
+                    "fromBranch": otherParams.toBranch,
                 	"toBranchName": otherParams.fromBranchName,
 	                "fromBranchName": otherParams.toBranchName,
                     "productName":otherParams.productName,
