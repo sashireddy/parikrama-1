@@ -96,22 +96,6 @@ class Sidebar extends React.Component {
               <span className="menu-title">Dashboard</span>
             </Link>
           </li>
-          {isAllowed(ACTION_VIEW, MODULE_INVENTORY) &&
-          <li className={ this.isPathActive('/categories') ? 'nav-item active' : 'nav-item' }>
-            <Link className="nav-link" to="/categories">
-              <i className="mdi mdi-shape-plus menu-icon"></i>
-              <span className="menu-title">Categories</span>
-            </Link>
-          </li>
-          }
-          {isAllowed(ACTION_VIEW, MODULE_BRANCH) &&
-          <li className={ this.isPathActive('/branches') ? 'nav-item active' : 'nav-item' }>
-            <Link className="nav-link" to="/branches">
-              <i className="mdi mdi-source-branch menu-icon"></i>
-              <span className="menu-title">Branches</span>
-            </Link>
-          </li>
-          }
           {isAllowed(ACTION_VIEW, MODULE_USER) &&
           <li className={ this.isPathActive('/roles') ? 'nav-item active' : 'nav-item' }>
             <Link className="nav-link" to="/roles">
@@ -128,7 +112,23 @@ class Sidebar extends React.Component {
             </Link>
           </li>
           }
-          {isAllowed(ACTION_VIEW, MODULE_INVENTORY) &&
+          {isAllowed(ACTION_VIEW, MODULE_BRANCH) &&
+          <li className={ this.isPathActive('/branches') ? 'nav-item active' : 'nav-item' }>
+            <Link className="nav-link" to="/branches">
+              <i className="mdi mdi-source-branch menu-icon"></i>
+              <span className="menu-title">Branches</span>
+            </Link>
+          </li>
+          }
+          {isAllowed(ACTION_MANAGE, MODULE_INVENTORY) &&
+          <li className={ this.isPathActive('/categories') ? 'nav-item active' : 'nav-item' }>
+            <Link className="nav-link" to="/categories">
+              <i className="mdi mdi-shape-plus menu-icon"></i>
+              <span className="menu-title">Categories</span>
+            </Link>
+          </li>
+          }
+          {isAllowed(ACTION_MANAGE, MODULE_INVENTORY) &&
             <li className={ this.isPathActive('/units') ? 'nav-item active' : 'nav-item' }>
               <Link className="nav-link" to="/units">
                 <i className="mdi mdi-unity menu-icon"></i>
