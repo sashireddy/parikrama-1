@@ -61,6 +61,7 @@ class Sidebar extends React.Component {
   render () {
     const user = this.props.loggedInUser ? this.props.loggedInUser : null;
     const role = user && getRole(user.role) ? getRole(user.role).name : "";
+    this.menuItemHover()
     return (
       <nav className="sidebar sidebar-offcanvas" id="sidebar">
         <div className="text-center sidebar-brand-wrapper d-flex align-items-center">
@@ -185,15 +186,20 @@ class Sidebar extends React.Component {
 
   componentDidMount() {
     this.onRouteChanged();
+  }
+
+  menuItemHover() {
     // add className 'hover-open' to sidebar navitem while hover in sidebar-icon-only menu
     const body = document.querySelector('body');
     document.querySelectorAll('.sidebar .nav-item').forEach((el) => {
 
+      el.removeEventListener("mouseover");
       el.addEventListener('mouseover', function() {
         if(body.classList.contains('sidebar-icon-only')) {
           el.classList.add('hover-open');
         }
       });
+      el.removeEventListener("mouseout");
       el.addEventListener('mouseout', function() {
         if(body.classList.contains('sidebar-icon-only')) {
           el.classList.remove('hover-open');
