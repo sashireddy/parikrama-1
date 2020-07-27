@@ -69,7 +69,10 @@ export const genericFilter = (params, records) => {
                 let field = searchKeys[i];
                 if(item[field] !== undefined && item[field] !== null){
                     isMatch = item[field].toString().toLowerCase().includes(params.search[field].toLowerCase());
+                } else {
+                    isMatch = false;
                 }
+
                 if(!isMatch){
                     break;
                 }

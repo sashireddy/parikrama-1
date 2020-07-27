@@ -8,7 +8,7 @@ export default props => {
     return (
         <li className="bg-icon audit-list-item">
             <p className="text-info"><i className="fa fa-clock-o mr-2" /><em>{dateFormat(txn.date, "yyyy-mm-dd HH:MM:ss")}</em> {txn.email && <span><i className="fa fa-user-o mr-2 ml-2" />{txn.email}</span>}</p>
-            <div>Event: {txn.event}
+            <div><em>Event:</em> {txn.event}
             {txn.before && txn.after && (
                 <React.Fragment>
                     <Button

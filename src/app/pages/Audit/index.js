@@ -96,7 +96,7 @@ class Audit extends React.Component {
 
     render(){
         return(
-            <div>
+            <div className="audits">
                 <Spinner loading={this.props.loading} />
                 <div className="page-header">
                     <h3 className="page-title"> Audits </h3>
