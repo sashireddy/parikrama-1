@@ -242,7 +242,7 @@ class Dashboard extends React.PureComponent {
                                         </React.Fragment>
                                     : null;
                                 })}
-                                {!this.props.loading && !pendingRequests && <p className="h6 text-center w-100 mb-5 mt-5">Hurrey!! No rending requests</p>}
+                                {!this.props.loading && !pendingRequests && <p className="h6 text-center w-100 mb-5 mt-5">Hurrey!! No pending requests</p>}
                             </div>
                         </div>
                     </div>
