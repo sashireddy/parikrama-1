@@ -24,11 +24,11 @@ class Category extends React.Component {
         const getTitle = (actionType) => {
             switch (actionType) {
                 case "add":
-                    return "Add Category";
+                    return "Create Category";
                 case "view":
                     return "View Category";
                 case "edit":
-                    return "Edit Category";
+                    return "Update Category";
                 case "del":
                     return "Disable Category";
                 default:
@@ -54,7 +54,7 @@ class Category extends React.Component {
             ]
 
         return (
-            <CategorySkeleton content={{pageTitle:'Category'}} AddModal={AddCategory}
+            <CategorySkeleton content={{pageTitle:'Categories', addButton: 'New Category'}} AddModal={AddCategory}
              EditModal={EditCategory} ViewModal={ViewCategory} DeleteModal={DeleteCategory}
              tableRowRenderFunc ={CategoryListItem} pk="id"
              headerArr = {headerArr} getTitle={getTitle} moduleName={MODULE_INVENTORY}>

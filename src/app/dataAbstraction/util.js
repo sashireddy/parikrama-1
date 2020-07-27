@@ -61,16 +61,22 @@ export const filterData = (params, records) => {
 }
 export const genericFilter = (params, records) => {
     let result = records;
-    Object.keys(params.search).forEach(entry => {
-        if(params.search[entry]){
-            result = records.filter(item => {
-                if(item[entry] !== undefined && item[entry] !== null){
-                    return item[entry].toString().toLowerCase().includes(params.search[entry].toLowerCase());
+    let searchKeys = Object.keys(params.search).filter(field => field.trim());
+    if(searchKeys.length){
+        result = records.filter(item => {
+            let isMatch = true;
+            for(let i=0; i<searchKeys.length; i++){
+                let field = searchKeys[i];
+                if(item[field] !== undefined && item[field] !== null){
+                    isMatch = item[field].toString().toLowerCase().includes(params.search[field].toLowerCase());
                 }
-                return false;
-            });
-        }
-    })
+                if(!isMatch){
+                    break;
+                }
+            }
+            return isMatch
+        });
+    }
     if(params.sort.key) {
         return result.sort(getSortFunction(params.sort));
     }

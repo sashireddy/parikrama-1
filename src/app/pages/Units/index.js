@@ -22,12 +22,12 @@ class Unit extends React.Component {
     render(){
         const getTitle = (actionType) => {
             switch (actionType) {
-                case "view":
-                    return "View Unit";
-                case "edit":
-                        return "Edit Unit";
                 case "add":
                     return "Create Unit";
+                case "edit":
+                    return "Update Unit";
+                case "view":
+                    return "View Unit";
                 case "del":
                     return "Disable Unit";
                 default:
@@ -54,7 +54,7 @@ class Unit extends React.Component {
 
         return (
             <RoleSkeleton key="Unit"
-                content={{pageTitle:'Unit of measure'}}
+                content={{pageTitle:'Unit of Measure', addButton: 'New Unit'}}
                 AddModal={AddUnit}
                 EditModal={EditUnit}
                 ViewModal={ViewUnit}

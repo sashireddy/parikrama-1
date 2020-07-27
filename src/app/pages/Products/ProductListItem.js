@@ -22,6 +22,7 @@ class RowRender extends React.Component {
         <td>{this.props.record.categoryName}</td>
         <td>{threshold}</td>
         <td>{this.props.record.unitName}</td>
+        <td>{this.props.record.isActive ? "Ative" : "Inactive"}</td>
         <td>
           <nav>
           {this.props.record.isActive && (<>

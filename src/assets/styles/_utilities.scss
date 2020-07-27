@@ -349,6 +349,18 @@ ul.timeline > li:before {
   padding-left: 0;
 }
 
+.transactions {
+  em {
+    font-weight: 600;
+  }
+}
+
+.roles_page, .inventory_page{
+  #status-filter{
+    display: none;
+  }
+}
+
 .dashboard .card-columns {
   @include media-breakpoint-only(xl) {
     column-count: 2;

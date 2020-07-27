@@ -14,7 +14,7 @@ class EditProduct extends React.Component {
     render() {
         return (
             <ProductForm
-                label='update'
+                label='Update'
                 onSubmit={this.onSubmit}
                 closeModal={this.props.closeModal}
                 record = {this.props.record}

@@ -19,11 +19,11 @@ class Role extends React.Component {
         const getTitle = (actionType) => {
             switch (actionType) {
                 case "add":
-                    return "Add Role";
+                    return "Create Role";
                 case "view":
                     return "View Role";
                 case "edit":
-                    return "Edit Role";
+                    return "Update Role";
                 case "del":
                     return "Delete Role";
                 default:
@@ -45,7 +45,7 @@ class Role extends React.Component {
             ]
 
         return (
-            <RoleSkeleton key="role" content={{pageTitle:'Role'}}
+            <RoleSkeleton key="role" customClass="roles_page" content={{pageTitle:'Roles', addButton: 'New User'}}
              ViewModal={ViewRole}
              tableRowRenderFunc ={RoleListItem} pk="id"
              headerArr = {headerArr} getTitle={getTitle}/>

@@ -93,8 +93,8 @@ export const addData = data => {
         if(apiConfig.CACHING){
             let response;
             try {
-                await Firebase.doCreateUserWithEmailAndPassword(data.email, data.password);
-                delete data.password;
+                // await Firebase.doCreateUserWithEmailAndPassword(data.email, data.password);
+                // delete data.password;
                 response = await axios.post(apiConfig.GET_USERS, data);
             } catch(err) {
                 let response = {

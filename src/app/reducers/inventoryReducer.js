@@ -5,6 +5,7 @@ import { GET_PENDING_TRANSACTIONS} from  '../actions/types'
 const categoryCrudReducers =  crudReducers(pageConstants.pages.inventory)
 const inventoryInitialState = {
     ...initialState,
+    search: {},
     pendingTransactions : [],
     pendingTransactionsLoading : false,
 }

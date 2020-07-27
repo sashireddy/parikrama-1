@@ -3,7 +3,7 @@ import pageConstants from '../constants/pages'
 import {GET_LOGGEDIN_USER} from '../actions/types'
 import {initialState as stateTemplate} from "./crudReducers"
 
-let initialState = {...stateTemplate}
+let initialState = {...stateTemplate }
 
 const reducerFunc = crudReducers(pageConstants.pages.user);
 
@@ -16,7 +16,7 @@ export default function(state = initialState, action) {
                 loggedInUser: {
                     ...action.payload
                 }
-            }            
+            }
         default:
             return reducerFunc(state, action);
     }

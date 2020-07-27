@@ -10,7 +10,7 @@ class AddCategory extends React.Component {
     render() {
         return (
             <ProductForm
-                label='Add'
+                label='Create'
                 onSubmit={this.onSubmit}
                 closeModal={this.props.closeModal}
             />

@@ -121,11 +121,11 @@ class InventorySummary extends React.Component {
                     key : 'Unit'
                 }
             ]
-        
+
         const getQuantityWithUnit = (quantity) => {
             return quantity
         }
-        const getQuantityLabel = (quantity,threshold) =>  quantity > threshold ? 
+        const getQuantityLabel = (quantity,threshold) =>  quantity > threshold ?
             <label className="badge badge-success QuantityBadge"> {getQuantityWithUnit(quantity)} </label> :
             <label className="badge badge-warning QuantityBadge">{getQuantityWithUnit(quantity)}</label>
         const tableRowRenderFunc = (props)=> {
@@ -138,14 +138,15 @@ class InventorySummary extends React.Component {
                     <td>{getQuantityWithUnit(props.record.consumedQuantity)}</td>
                     <td>{getQuantityWithUnit(props.record.transferredQuantity)}</td>
                     <td>{getQuantityWithUnit(props.record.addedQuantity)}</td>
-                    <td>{getQuantityLabel(props.record.closingQuantity,props.record.threshold)}</td>  
+                    <td>{getQuantityLabel(props.record.closingQuantity,props.record.threshold)}</td>
                     <td>{props.record.unitName}</td>
                 </tr>
             )
         }
         return(
-            <Skeleton 
-             content={{pageTitle:'Inventory Summary'}}
+            <Skeleton
+             customClass="inventory_page"
+             content={{pageTitle:'Inventory Summary Report'}}
              tableRowRenderFunc ={tableRowRenderFunc}
              headerArr = {headerArr} getTitle={getTitle}
              getData = {this.getData} {...this.props.stateData}
@@ -198,7 +199,7 @@ class InventorySummary extends React.Component {
                     </Button>
                 </Form>
                 {this.state.error ? <p className="text-warning">Please select both start and end date</p> : null}
-                                        
+
                 </Card.Body>
             </Card>
             </Skeleton>
