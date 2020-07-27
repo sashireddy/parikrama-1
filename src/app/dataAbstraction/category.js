@@ -1,6 +1,6 @@
 import config from "../constants/config";
 import axios from 'axios';
-import {validateCurrentPage, arrayToMapWithId, handleResponse, genericFilter} from "./util";
+import {validateCurrentPage, arrayToMapWithId, genericFilter} from "./util";
 const apiConfig = config.API.CATEGORY;
 
 // Null indicates we need to fetch the data from the source

@@ -83,6 +83,12 @@ class ApproveOrRejectView extends React.Component {
             this.props.closeModal();
         }
     }
+    handleNoteChange = e => {
+        this.setState({
+            ...this.state,
+            transactionNote : e.target.value
+        })
+    }
     render(){
 
         const product = getProduct(this.props.record.product);
@@ -109,7 +115,7 @@ class ApproveOrRejectView extends React.Component {
                    </Col>
                    <Col>
                         <h6>
-                            Branch : {this.props.toBranchName}
+                            Branch : {this.state.toBranchName}
                         </h6>
                    </Col>
                </Row>
@@ -157,6 +163,10 @@ class ApproveOrRejectView extends React.Component {
                </Row>
                <Row>
                 <Col>
+                    <Form.Label>Note</Form.Label>
+                    <Form.Control type="text" id={"Note"} className="form-control" 
+                                    name="note" placeholder="Select Quantity" value={this.state.transactionNote}
+                                onChange={e=>this.handleNoteChange(e)} />
                 </Col>
                </Row>
                <hr className="modal-footer-ruler" />

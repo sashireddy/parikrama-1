@@ -5,7 +5,7 @@ import {handleResponse} from './util'
 import {getUnit,getCategory,getProduct,getBranch,getThreshold} from '../utils/dataUtils'
 import {arrayToCsvContent,download} from '../utils/csvUtils'
 import {genericFilter,validateCurrentPage} from './util'
-import { updateCategoryData } from "./category";
+// import { updateCategoryData } from "./category";
 const pageConfig = config.API.INVENTORY;
 
 // Null indicates we need to fetch the data from the source
@@ -55,7 +55,7 @@ export const getPendingTransactions = (params) => {
 }
 export const rejectRequest = async params => {
     try {
-        const [resp,err]=handleResponse(await axios.post(pageConfig.REJECT_REQUEST,params));
+        const [,err]=handleResponse(await axios.post(pageConfig.REJECT_REQUEST,params));
         console.log(err)
         // if(err) throw new Error(err)
         pendingTransactions = pendingTransactions.filter(entry => entry.id !== params.pendingRequestsId)
@@ -76,7 +76,7 @@ export const respondToTransferRequest = async params => {
                 fromBranch: entry,
                 fromBranchName : getBranch(entry).name,
                 toBranch: params.toBranch,
-                note : "Blank Note",
+                note : params.transactionNote,
                 toBranchName: params.toBranchName,
             })
         })
