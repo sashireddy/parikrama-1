@@ -28,7 +28,7 @@ class BranchListRender extends Component {
           <td className="d-none d-sm-table-cell">{record.contactPerson}</td>
           <td className="d-none d-sm-table-cell">{record.contact}</td>
           <td>
-              {record.isActive ? "Active" : "InActive" }
+              {record.isActive ? "Active" : "Inactive" }
               {record.isHeadOffice && <span className="ml-2">Head Office</span>}
           </td>
           <td>

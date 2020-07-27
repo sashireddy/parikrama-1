@@ -19,7 +19,7 @@ class UserListItem extends React.PureComponent {
                 <td>{record.roleName}</td>
                 <td>{record.branchName}</td>
                 <td>{record.contact}</td>
-                <td>{record.isActive ? "Active" : "InActive"}</td>
+                <td>{record.isActive ? "Active" : "Inactive"}</td>
                 <td>
                     <nav>
                         {isAllowed(ACTION_VIEW, MODULE_USER) &&

@@ -74,7 +74,7 @@ export const genericFilter = (params, records) => {
     if(params.sort.key) {
         return result.sort(getSortFunction(params.sort));
     }
-    return result;
+    return result ? result : [];
 }
 
 export const handleResponse = res => {

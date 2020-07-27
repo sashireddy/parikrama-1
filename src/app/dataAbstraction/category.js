@@ -134,15 +134,22 @@ export const addCategoryData = data => {
 // Update category implementation
 export const updateCategoryData = data => {
     return new Promise(async (resolve, reject) => {
-        let response ;
         try{
-            response = await axios.put(apiConfig.GET_CTEGORIES,data)
+            await axios.put(apiConfig.GET_CTEGORIES,data)
         } catch(err){
-            // need to put an error message
+            let response = {
+                "flashMessage": {
+                    "type": "danger",
+                    "message": "Unable to update the data!"
+                }
+            };
+            console.log("Update User Category", err);
+            resolve(response);
+            return;
         }
-        if(apiConfig.CACHING && response.status === 204){
+        if(apiConfig.CACHING){
             cachedData = cachedData.map(item => {
-                if(item.name === data.name) {
+                if(item.id === data.id) {
                     return {
                         ...item,
                         ...data
@@ -150,7 +157,6 @@ export const updateCategoryData = data => {
                 }
                 return item;
             });
-        }
             const params = {
                 currentPage: apiResponse.currentPage,
                 pageLimit: apiResponse.pageLimit,
@@ -169,6 +175,7 @@ export const updateCategoryData = data => {
             } catch(err) {
                 reject(err);
             }
+        }
     });
 }
 

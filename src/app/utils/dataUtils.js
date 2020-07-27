@@ -6,12 +6,25 @@ export const validateIntialLoad = state =>{
 export const getCategory = categoryId => {
     return store.getState()["CATEGORY"].allCategories[categoryId];
 }
+
+export const getCategoryCount = () => {
+    return Object.keys(store.getState()["CATEGORY"].allCategories).length;
+}
+
 export const getUnit = unitId => {
     return store.getState()["UNITS"].allRecords[unitId];
 }
 
 export const getProduct = productId => {
     return store.getState()["PRODUCTS"].allRecords[productId];
+}
+
+export const getProductCount = () => {
+    return Object.keys(store.getState()["PRODUCTS"].allRecords).length;
+}
+
+export const getBranchCount = () => {
+    return Object.keys(store.getState()["BRANCHES"].allRecords).length;
 }
 
 export const getLoggedInUserInfo = () => {

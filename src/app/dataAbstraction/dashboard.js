@@ -13,10 +13,23 @@ export const getData = () => {
                 // Logic can be applied to generate URL using params
                 const url = `${apiConfig.GET_DASHBOARD_DATA}`;
                 res = await axios.get(url);
-                if(apiConfig.CACHING){
-                    cachedData = res.data;
+                let data = res.data;
+                let dashboardData;
+                if(data.branch){ // Branch User
+                    dashboardData = {
+                        [data.branch]: {
+                            productsBelowThreshold: data.productsBelowThreshold,
+                            recentActivity: data.recentActivity,
+                            pendingRequests: data.pendingRequests
+                        }
+                    }
+                } else {
+                    dashboardData = data;
                 }
-                resolve(res.data);
+                if(apiConfig.CACHING){
+                    cachedData = dashboardData;
+                }
+                resolve(dashboardData);
             } catch(error){
                 reject(error);
             }

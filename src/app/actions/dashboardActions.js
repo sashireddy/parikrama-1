@@ -1,9 +1,12 @@
 import { getData } from "../dataAbstraction/dashboard";
-import {GET_DASHBOARD_DATA} from "./types";
+import {GET_DASHBOARD_DATA, DASHBOARD_LOADING} from "./types";
 import {addNotification} from "./notification";
 
 const getDashboardData = () => async (dispatch) => {
     try {
+        dispatch({
+            type: DASHBOARD_LOADING
+        });
         const data = await getData();
         addNotification({
             title: "DASHBOARD LOAD DATA",

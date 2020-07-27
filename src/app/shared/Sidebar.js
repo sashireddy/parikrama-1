@@ -4,7 +4,7 @@ import { Link, withRouter } from 'react-router-dom';
 import { Dropdown } from 'react-bootstrap';
 import {connect} from "react-redux";
 import {getRole} from '../utils/dataUtils';
-import isAllowed, { ACTION_GENERATE,MODULE_REPORT } from "../utils/accessControl";
+import isAllowed, { ACTION_GENERATE,ACTION_MANAGE,MODULE_REPORT } from "../utils/accessControl";
 import {ACTION_VIEW } from "../utils/accessControl";
 import {
         MODULE_BRANCH,
@@ -61,6 +61,7 @@ class Sidebar extends React.Component {
   render () {
     const user = this.props.loggedInUser ? this.props.loggedInUser : null;
     const role = user && getRole(user.role) ? getRole(user.role).name : "";
+    this.menuItemHover()
     return (
       <nav className="sidebar sidebar-offcanvas" id="sidebar">
         <div className="text-center sidebar-brand-wrapper d-flex align-items-center">
@@ -95,22 +96,6 @@ class Sidebar extends React.Component {
               <span className="menu-title">Dashboard</span>
             </Link>
           </li>
-          {isAllowed(ACTION_VIEW, MODULE_INVENTORY) &&
-          <li className={ this.isPathActive('/categories') ? 'nav-item active' : 'nav-item' }>
-            <Link className="nav-link" to="/categories">
-              <i className="mdi mdi-shape-plus menu-icon"></i>
-              <span className="menu-title">Categories</span>
-            </Link>
-          </li>
-          }
-          {isAllowed(ACTION_VIEW, MODULE_BRANCH) &&
-          <li className={ this.isPathActive('/branches') ? 'nav-item active' : 'nav-item' }>
-            <Link className="nav-link" to="/branches">
-              <i className="mdi mdi-source-branch menu-icon"></i>
-              <span className="menu-title">Branches</span>
-            </Link>
-          </li>
-          }
           {isAllowed(ACTION_VIEW, MODULE_USER) &&
           <li className={ this.isPathActive('/roles') ? 'nav-item active' : 'nav-item' }>
             <Link className="nav-link" to="/roles">
@@ -127,7 +112,23 @@ class Sidebar extends React.Component {
             </Link>
           </li>
           }
-          {isAllowed(ACTION_VIEW, MODULE_INVENTORY) &&
+          {isAllowed(ACTION_VIEW, MODULE_BRANCH) &&
+          <li className={ this.isPathActive('/branches') ? 'nav-item active' : 'nav-item' }>
+            <Link className="nav-link" to="/branches">
+              <i className="mdi mdi-source-branch menu-icon"></i>
+              <span className="menu-title">Branches</span>
+            </Link>
+          </li>
+          }
+          {isAllowed(ACTION_MANAGE, MODULE_INVENTORY) &&
+          <li className={ this.isPathActive('/categories') ? 'nav-item active' : 'nav-item' }>
+            <Link className="nav-link" to="/categories">
+              <i className="mdi mdi-shape-plus menu-icon"></i>
+              <span className="menu-title">Categories</span>
+            </Link>
+          </li>
+          }
+          {isAllowed(ACTION_MANAGE, MODULE_INVENTORY) &&
             <li className={ this.isPathActive('/units') ? 'nav-item active' : 'nav-item' }>
               <Link className="nav-link" to="/units">
                 <i className="mdi mdi-unity menu-icon"></i>
@@ -185,15 +186,20 @@ class Sidebar extends React.Component {
 
   componentDidMount() {
     this.onRouteChanged();
+  }
+
+  menuItemHover() {
     // add className 'hover-open' to sidebar navitem while hover in sidebar-icon-only menu
     const body = document.querySelector('body');
     document.querySelectorAll('.sidebar .nav-item').forEach((el) => {
 
+      el.removeEventListener("mouseover");
       el.addEventListener('mouseover', function() {
         if(body.classList.contains('sidebar-icon-only')) {
           el.classList.add('hover-open');
         }
       });
+      el.removeEventListener("mouseout");
       el.addEventListener('mouseout', function() {
         if(body.classList.contains('sidebar-icon-only')) {
           el.classList.remove('hover-open');

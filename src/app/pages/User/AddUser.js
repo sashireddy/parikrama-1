@@ -3,6 +3,7 @@ import UserForm from "./UserForm";
 
 class AddCategory extends React.Component {
     onSubmit = data => {
+        console.log(data);
         this.props.addData(data);
         this.props.closeModal();
     }
