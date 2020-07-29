@@ -92,5 +92,6 @@ export default {
             "GET_METADATA": "https://local-parikrama.web.app/api/metadata",
             "CACHING": true
         }
-    }
+    },
+    "DATE_FORMAT" : "yyyy-mm-dd HH:MM:ss"
 };

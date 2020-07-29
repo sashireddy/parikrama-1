@@ -14,7 +14,6 @@ const mapStateToProps = state => ({
 })
 class RowRender extends React.Component {
   render() {
-    console.log(this.props)
     const threshold = (this.props.record.thresholds && this.props.record.thresholds[this.props.userInfo.branch])|| ''
     return (
       <tr>

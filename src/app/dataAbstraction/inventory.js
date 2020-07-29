@@ -368,10 +368,11 @@ const getCurrentStateData = params => {
     // let records = filterData(params);
     let records = cache[params.branch] || cache[0]
     records.map(entry => {
-        const product = getProduct(entry.product)
-        entry.productName = product.name
-        entry.categoryName = getCategory(product.category).name
-        entry.unitName = getUnit(product.unit).name
+        const product = getProduct(entry.product);
+        entry.productName = product.name;
+        entry.categoryName = getCategory(product.category).name;
+        entry.unitName = getUnit(product.unit).name;
+        entry.id = entry.product;
         return entry
     });
     records = genericFilter(params,records)

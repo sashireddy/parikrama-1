@@ -68,7 +68,6 @@ export const getAuditsData = params => {
             // categories.search = res.search;
             // categories.currentPage = res.currentPage;
         }
-        console.log(apiResponse);
         resolve(apiResponse);
     });
 }

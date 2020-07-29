@@ -143,7 +143,7 @@ class ApproveOrRejectView extends React.Component {
                             <Col>
                                 <h6>{getBranchInfo(key).name}</h6>
                                 <h6>Available Quantity : {val.availableQuantity}</h6>
-                                <h6>threshold : {val.threshold}</h6>
+                                <h6>Threshold : {val.threshold}</h6>
 
                             </Col>
                             <Col>

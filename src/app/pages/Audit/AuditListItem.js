@@ -1,6 +1,7 @@
 import React,{useState} from "react";
 import dateFormat from "dateformat";
 import {Button, Collapse} from "react-bootstrap";
+import config from "../../constants/config";
 import ObjectDiff from "../../utils/objectDiff";
 import {getName} from "../../utils/dataUtils";
 
@@ -8,10 +9,9 @@ export default props => {
     const [open, setOpen] = useState(false);
     const txn = props.txn;
     const changes = txn.before && txn.after ? ObjectDiff(txn.before, txn.after) : false;
-    console.log(changes);
     return (
         <li className="bg-icon audit-list-item">
-            <p className="text-info"><i className="fa fa-clock-o mr-2" /><em>{dateFormat(txn.date, "yyyy-mm-dd HH:MM:ss")}</em> {txn.email && <span><i className="fa fa-user-o mr-2 ml-2" />{txn.email}</span>}</p>
+            <p className="text-info"><i className="fa fa-clock-o mr-2" /><em>{dateFormat(txn.date, config.DATE_FORMAT)}</em> {txn.email && <span><i className="fa fa-user-o mr-2 ml-2" />{txn.email}</span>}</p>
             <div><em>Event:</em> {txn.event}
             {changes && (
                 <React.Fragment>
@@ -36,7 +36,6 @@ const possibleIds = ["branch", "thresholds", "category"];
 
 const DiffView = props => {
     let obj = props.obj;
-    console.log("Diff View", obj);
     return (
         <ul>
             {Object.keys(obj).map((key, i) => {
@@ -75,6 +74,9 @@ const DiffViewItem = props => {
     if(possibleIds.includes(props.property)){
         before = getName(props.property.toUpperCase(), props.before.toString());
         after = getName(props.property.toUpperCase(), props.after.toString());
+    } else if(props.property.toUpperCase() === "LASTUPDATEDDATE"){
+        before = dateFormat(props.before, config.DATE_FORMAT);
+        after = dateFormat(props.after, config.DATE_FORMAT);
     } else {
         before = props.before.toString().trim() ? props.before.toString() : <span>&nbsp;</span>;
         after = props.after.toString().trim() ? props.after.toString() : <span>&nbsp;</span>;

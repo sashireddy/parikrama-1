@@ -131,7 +131,7 @@ class Inventory extends React.Component {
                 </tr>
             )
         }
-        console.log(this.props)
+        //console.log(this.props)
         const branchOptions = dropDownResponseFromMap(this.props.stateData.state.BRANCHES.allRecords)
         return (
             <div className="inventory_page">
@@ -150,6 +150,7 @@ class Inventory extends React.Component {
                     getData = {this.getData} {...this.props.stateData}
                     addData = {this.props.addData}
                     moduleName = {MODULE_INVENTORY}
+                    pk="id"
               >
                 <PendingTransactions />
                 <Card className="marginBottom">

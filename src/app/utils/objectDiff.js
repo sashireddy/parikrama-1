@@ -143,6 +143,9 @@ var diff = function (obj1, obj2) {
         }
     }
     // Return the object of differences
+    if(Object.keys(diffs).length === 0){
+        return false;
+    }
     return diffs;
 
 };

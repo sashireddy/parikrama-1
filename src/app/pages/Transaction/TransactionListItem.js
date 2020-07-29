@@ -1,12 +1,13 @@
 import React from 'react';
 import dateFormat from "dateformat";
+import config from "../../constants/config";
 import {getOperation} from '../../utils/dataUtils';
 
 export default props => {
     const txn = props.txn;
     return (
         <li className="bg-icon">
-            <p className="text-info"><i className="fa fa-clock-o mr-2" /><em>{dateFormat(txn.date, "yyyy-mm-dd HH:MM:ss")}</em> <i className="fa fa-user-o mr-2 ml-2" />{txn.user}</p>
+            <p className="text-info"><i className="fa fa-clock-o mr-2" /><em>{dateFormat(txn.date, config.DATE_FORMAT)}</em> <i className="fa fa-user-o mr-2 ml-2" />{txn.user}</p>
             <ul className="list-inline">
                 <li><em>Product:</em> {txn.productName}</li>
                 <li><em>Operation:</em> {getOperation(txn.operation).label}</li>
