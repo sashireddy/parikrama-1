@@ -73,8 +73,6 @@ class ProductForm extends React.Component {
 
 
     render() {
-        console.log(this.state)
-        console.log(this.props)
         const categorydropDownArr = dropDownResponseFromMap(this.props.stateData.category.allCategories)
         const unitdropDownArr = dropDownResponseFromMap(this.props.stateData.unit.allRecords)
         const defaultCategory = (this.props.record && this.props.record.category)
@@ -111,13 +109,18 @@ class ProductForm extends React.Component {
                     </Form.Group>
                     {isAllowed(ACTION_MANAGE, MODULE_INVENTORY)  && (
                         <>
+                            <p className="h6">Other Branch Threshold</p>
                             {branchesArr.map(branchId=> {
                                 if(branchId !== this.props.stateData.user.branch){
-                                    const threshold = (this.state.thresholds && this.state.thresholds[branchId])
+                                    const threshold = (this.state.thresholds && this.state.thresholds[branchId]);
+                                    const branchName = branchesMap[branchId].name;
                                  return (<Form.Group>
-                                    <label htmlFor="exampleInputEmail1">Product Threshold at {branchesMap[branchId].name} branch</label>
-                                    <Form.Control type="number" className="form-control" id="productName" name="name" placeholder="Threshold" value={threshold} onChange={e=>this.handleThresholdChange(e,branchId)} />
-                                    <Form.Control.Feedback type="invalid">Please provide Product Threshold</Form.Control.Feedback>
+                                     <div className="clearfix">
+                                        <label htmlFor={`threshold-${branchName}`} className="w-50 pull-left mt-3">{branchName}</label>
+                                        <Form.Control type="number" className="form-control w-50 pull-right" id={`threshold-${branchName}`} name={`threshold-${branchName}`} placeholder={`Threshold at ${branchName}`} value={threshold} onChange={e=>this.handleThresholdChange(e,branchId)} />
+                                        <Form.Control.Feedback type="invalid">Please provide Product Threshold</Form.Control.Feedback>
+                                    </div>
+                                    <hr/>
                                 </Form.Group>)
                                 }
                                 return <></>
