@@ -57,7 +57,6 @@ class ApproveOrRejectView extends React.Component {
                 map[key] = operationalQuantity
             }
         });
-        debugger;
         return {
             ...this.state,
             quantityMap : map
@@ -134,8 +133,7 @@ class ApproveOrRejectView extends React.Component {
                </Row>
                </div>
                 { keys.map((key,idx)=>{
-                    const val = this.props.inventory.summaryCache[product.id][key]
-                    console.log(key,val)
+                    const val = this.props.inventory.summaryCache[product.id][key];
                     if(this.state.toBranch === key) return <></>
                     return (
                         <>

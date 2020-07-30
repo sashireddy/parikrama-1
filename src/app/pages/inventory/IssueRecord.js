@@ -11,10 +11,9 @@ const LocalRequest = "ISSUE_PRODUCT"
 const TransferOperation = "TransferOperation"
 
 class IssueProduct extends React.Component {
-    
+
     constructor(props){
         super(props);
-        console.log(props);
         this.state = {
         }
     }
@@ -36,7 +35,7 @@ class IssueProduct extends React.Component {
                 title : "Please Check Quantity Parameter",
                 message: "Quantity can't be 0",
                 type : "warning"
-                
+
             })
         }else if(operationalQuantity > this.props.record.availableQuantity){
             addNotification({
@@ -110,17 +109,17 @@ class IssueProduct extends React.Component {
                     <div className="IssueForm">
                     <Form.Group>
                         <label htmlFor="isHeadOffice">Request Type</label>
-                        <Form.Check type="radio" id={LocalRequest} name={LocalRequest} value={LocalRequest} 
+                        <Form.Check type="radio" id={LocalRequest} name={LocalRequest} value={LocalRequest}
                             label="Disburse Inventory Locally" checked={this.state.type === LocalRequest}
                             onChange={()=>this.onStatusChange(LocalRequest)} />
-                        {isAdminBranch && <Form.Check type="radio" id={TransferOperation} name ={TransferOperation} value={TransferOperation} 
+                        {isAdminBranch && <Form.Check type="radio" id={TransferOperation} name ={TransferOperation} value={TransferOperation}
                             label="Move Inventory To Another Branch" checked={this.state.type === TransferOperation}
                             onChange={()=>this.onStatusChange(TransferOperation)}
                             />}
                     </Form.Group>
                     <Row>
                         <Col>
-                            <h6 className="headerValue">Current Stock</h6> 
+                            <h6 className="headerValue">Current Stock</h6>
                             <h6 className="Value">{this.props.record.availableQuantity}</h6>
                         </Col>
                         <Col>
@@ -163,7 +162,7 @@ class IssueProduct extends React.Component {
                     <Col>
                     <Form.Group>
                         <label htmlFor="">Note</label>
-                        <Form.Control required type="text" id="Note" className="form-control" 
+                        <Form.Control required type="text" id="Note" className="form-control"
                             name="note" placeholder="Add info about the transaction" value={this.state.note}
                             onChange={this.handleNote} />
                         <Form.Control.Feedback type="invalid">Please enter a note about the transaction</Form.Control.Feedback>

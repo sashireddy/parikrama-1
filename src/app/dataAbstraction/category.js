@@ -65,7 +65,7 @@ export const getCategoriesData = params => {
         if(cachedData === null){
             // Logic can be applied to generate URL using params
             const url = `${config.API.BASE_URL}${apiConfig.GET_CTEGORIES}`;
-            console.log("API calling...", url);
+            // console.log("API calling...", url);
             try {
                 const res = await axios.get(url);
                 res.flashMessage = {

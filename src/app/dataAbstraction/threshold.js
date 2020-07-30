@@ -46,7 +46,7 @@ export const getData = params => {
         if(cachedData === null){
             // Logic can be applied to generate URL using params
             const url = `${config.API.BASE_URL}${apiConfig.GET_THRESHOLD}`;
-            console.log("API calling...", url);
+            // console.log("API calling...", url);
             try {
                 const res = await axios.get(url);
                 res.flashMessage = {

@@ -16,7 +16,7 @@ const LocalRequest = "ADD_PRODUCT"
 const TransferRequest = "RAISE_REQUEST"
 const Adjustment = "ADJUSTMENT"
 class AddCategory extends React.Component {
-    
+
     constructor(){
         super();
         const userInfo = getLoggedInUserInfo();
@@ -38,7 +38,7 @@ class AddCategory extends React.Component {
             ...this.state,
             operationalQuantity : evt.target.value
         })
-        
+
     }
     handleNote = evt => {
         this.setState({
@@ -80,14 +80,14 @@ class AddCategory extends React.Component {
                 title : "Please Check Quantity Parameter",
                 message: "Quantity can't be 0",
                 type : "warning"
-                
+
             })
         }if(this.state.type !== Adjustment && operationalQuantity < 0){
             addNotification({
                 title : "Please Check Quantity Parameter",
                 message: "Quantity can't be negative",
                 type : "warning"
-                
+
             })
         }
         return false
@@ -109,7 +109,7 @@ class AddCategory extends React.Component {
             this.props.createTransaction(this.transformParamas());
             this.props.closeModal();
         }
-       
+
     }
 
     onStatusChange = label => {
@@ -121,23 +121,22 @@ class AddCategory extends React.Component {
 
 
     render() {
-        console.log(this.state)
-        const productDropdownArr = dropDownResponseFromMap(this.props.products.allRecords)
-        const branchDropdownArr = getHeadOfficeDropDown()
-        let isNotAdminBranch = !getBranchInfo(getLoggedInUserInfo().branch).isHeadOffice
+        const productDropdownArr = dropDownResponseFromMap(this.props.products.allRecords);
+        const branchDropdownArr = getHeadOfficeDropDown();
+        let isNotAdminBranch = !getBranchInfo(getLoggedInUserInfo().branch).isHeadOffice;
         return (
             <form className="forms-sample" onSubmit={this.onSubmit} >
                 <div className="pl-3 pr-3">
                     <Form.Group>
                         <label htmlFor="isHeadOffice">Request Type</label>
-                        <Form.Check type="radio" id={LocalRequest} name={LocalRequest} value={LocalRequest} 
+                        <Form.Check type="radio" id={LocalRequest} name={LocalRequest} value={LocalRequest}
                             label="Add Inventory Locally" checked={this.state.type === LocalRequest}
                             onChange={e=>this.onStatusChange(LocalRequest)} />
-                        { isNotAdminBranch &&<Form.Check type="radio" id={TransferRequest} name={TransferRequest} value={TransferRequest} 
-                            label="Request from Head Office" checked={this.state.type===TransferRequest} 
+                        { isNotAdminBranch &&<Form.Check type="radio" id={TransferRequest} name={TransferRequest} value={TransferRequest}
+                            label="Request from Head Office" checked={this.state.type===TransferRequest}
                             onChange={e=>this.onStatusChange(TransferRequest)} />}
-                        <Form.Check type="radio" id={Adjustment} name={Adjustment} value={Adjustment} 
-                            label="Add Adjustment transaction" checked={this.state.type===Adjustment} 
+                        <Form.Check type="radio" id={Adjustment} name={Adjustment} value={Adjustment}
+                            label="Add Adjustment transaction" checked={this.state.type===Adjustment}
                             onChange={e=>this.onStatusChange(Adjustment)} />
                     </Form.Group>
                     <Form.Group>
@@ -163,7 +162,7 @@ class AddCategory extends React.Component {
                     </Form.Group>
                     <Form.Group>
                         <label htmlFor="">Note</label>
-                        <Form.Control required type="text" id="Note" className="form-control" 
+                        <Form.Control required type="text" id="Note" className="form-control"
                             name="note" placeholder="Add info about the transaction" value={this.state.note}
                             onChange={this.handleNote} />
                         <Form.Control.Feedback type="invalid">Please enter a note about the transaction</Form.Control.Feedback>

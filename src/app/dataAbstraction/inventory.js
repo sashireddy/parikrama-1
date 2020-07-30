@@ -250,12 +250,11 @@ const makeEntry = (productId,branchId) => {
 // State params passed which will be used to pass to live api or
 // for static data to get proper data as per the params
 export const getData = params => {
-    console.log(params);
     return new Promise(async (resolve, reject) => {
         if(cache === null){
             // Logic can be applied to generate URL using params
             const url = `${config.API.BASE_URL}${pageConfig.GET_ALL_INVENTORY}`;
-            console.log("API calling...", url);
+            // console.log("API calling...", url);
             try {
                 const res = await axios.get(url);
                 res.flashMessage = {
@@ -362,7 +361,6 @@ export const deleteData = data => {
 
 
 const getCurrentStateData = params => {
-    console.log(params);
     // Need to implement search and sort functionality here
     // After search total records may vary, reset pagination to 1st page.
     // let records = filterData(params);

@@ -58,12 +58,11 @@ export const refreshStateData = () => {
 // State params passed which will be used to pass to live api or
 // for static data to get proper data as per the params
 export const getData = params => {
-    console.log(params);
     return new Promise(async (resolve, reject) => {
         if(cachedData === null){
             // Logic can be applied to generate URL using params
             const url = `${apiConfig.GET_BRANCHES}`;
-            console.log("API calling...", url);
+            // console.log("API calling...", url);
             try {
                 const res = await axios.get(url);
                 console.log(res.data.branches)

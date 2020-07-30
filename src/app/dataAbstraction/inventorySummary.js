@@ -1,11 +1,9 @@
 import axios from 'axios';
 import config from "../constants/config";
 import {validateCurrentPage,genericFilter} from "./util";
-import Firebase from "../Firebase";
 import {getBranch,getCategory,getUnit,getProduct } from '../utils/dataUtils'
 import {arrayToCsvContent,download} from '../utils/csvUtils'
 import dateformat from 'dateformat'
-console.log('Firebase =>', typeof(Firebase));
 
 const apiConfig = config.API.INVENTORY_SUMMARY;
 
@@ -38,7 +36,7 @@ export const getData = params => {
             // Logic can be applied to generate URL using params
             // http://localhost:5001/local-parikrama/us-central1/api/api/reports/nmnpHFEB45FtMLQzqEBj?fromDate=2020-05-05&toDate=2020-07-15
             let url = `${apiConfig.GET_REPORT_SUMMARY}${params.branch}?fromDate=${params.startDate}&toDate=${params.endDate}`;
-            console.log("API calling...", url);
+            // console.log("API calling...", url);
             try {
                 const res = await axios.get(url,);
                 res.flashMessage = {
@@ -69,6 +67,7 @@ const getCurrentStateData = params => {
     let records = cachedData || []
     records.map(entry => {
         const product = getProduct(entry.product)
+        entry.id = entry.product
         entry.productName = product.name
         entry.categoryName = getCategory(product.category).name
         entry.unitName = getUnit(product.unit).name
@@ -84,7 +83,7 @@ const getCurrentStateData = params => {
     apiResponse.currentPage = currentPage;
 }
 export const downloadReport = async params => {
-    const branchName = getBranch(params.branch).name    
+    const branchName = getBranch(params.branch).name
     const headerArr = ['Product','Category','Branch','Threshold','Initial Quantity','Consumed Quantity','Transfered Quantity','Added Quantity','Closing Quantity',]
     const arr = genericFilter(params,cachedData || [])
     const outArr = []
@@ -95,12 +94,12 @@ export const downloadReport = async params => {
         tempRow.push(row.categoryName)
         tempRow.push(branchName)
         tempRow.push(row.threshold)
-        
+
         tempRow.push(`${row.initialQuantity} `+row.unitName)
         tempRow.push(`${row.consumedQuantity} `+row.unitName)
         tempRow.push(`${row.transferredQuantity} `+row.unitName)
         tempRow.push(`${row.addedQuantity} `+row.unitName)
-        tempRow.push(`${row.closingQuantity} `+row.unitName) 
+        tempRow.push(`${row.closingQuantity} `+row.unitName)
         outArr.push(tempRow)
     })
     download(arrayToCsvContent(outArr),`INVENTORY_${branchName}_${dateformat(params.startDate,'yyyy-mm-dd')}_${dateformat(params.endDate,'yyyy-mm-dd')}.csv`,)

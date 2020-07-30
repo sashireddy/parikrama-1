@@ -18,8 +18,6 @@ const mapStateToProps = state => ({
     }
 });
 
-console.log(InventoryActions)
-
 const mapActionToProps = {
     getData : InventoryActions.getData,
     addData : InventoryActions.addData,
@@ -131,7 +129,6 @@ class Inventory extends React.Component {
                 </tr>
             )
         }
-        //console.log(this.props)
         const branchOptions = dropDownResponseFromMap(this.props.stateData.state.BRANCHES.allRecords)
         return (
             <div className="inventory_page">

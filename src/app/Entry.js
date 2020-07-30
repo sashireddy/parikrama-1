@@ -11,17 +11,14 @@ const mapStateToProps = state => ({
 });
 
 class Entry extends Component {
-    
+
     componentDidMount() {
-        console.log(Firebase.auth.currentUser)
         Firebase.auth.onAuthStateChanged(user => {
-            console.log(user)
             if(user){
                 user.getIdToken().then(id => {
-                    console.log(id)
                     axios.defaults.headers.common["Authorization"]=`Bearer ${id}`
                     this.props.login()
-                    localStorage.setItem('loggedIn', true)  
+                    localStorage.setItem('loggedIn', true)
                 })
             }else{
                 localStorage.removeItem('loggedIn')
@@ -30,14 +27,13 @@ class Entry extends Component {
         })
     }
     render() {
-        console.log("expectedLoggedIn",this.props.expectedLoggedIn)
         if(this.props.expectedLoggedIn){
             return <Spinner loading/>
         }
         if(this.props.loggedIn){
             return <App />
         }
-        return <Login /> 
+        return <Login />
     }
 }
 

@@ -4,8 +4,6 @@ import {validateCurrentPage, genericFilter} from "./util";
 import {getRole,getBranch} from '../utils/dataUtils'
 import Firebase from "../Firebase";
 
-console.log('Firebase =>', typeof(Firebase));
-
 const apiConfig = config.API.USER;
 
 // Null indicates we need to fetch the data from the source
@@ -30,7 +28,7 @@ export const getUserData = params => {
     return new Promise(async (resolve, reject) => {
         const url = `${apiConfig.GET_USER+"/"+Firebase.auth.currentUser.uid}`;
         // const url = '/data/userData.json';
-        console.log("API calling...", url);
+        // console.log("API calling...", url);
         try {
             const res = await axios.get(url);
             res.flashMessage = {
@@ -54,7 +52,7 @@ export const getData = params => {
         if(cachedData === null){
             // Logic can be applied to generate URL using params
             const url = `${apiConfig.GET_USERS}`;
-            console.log("API calling...", url);
+            // console.log("API calling...", url);
             try {
                 const res = await axios.get(url);
                 res.flashMessage = {
