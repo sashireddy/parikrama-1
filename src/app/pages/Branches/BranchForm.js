@@ -49,6 +49,7 @@ class BranchForm extends React.Component {
         }else {
             event.preventDefault();
             let payload = {...this.state}
+            delete payload.validated;
             payload.address.zipcode = parseInt(payload.address.zipcode);
             this.props.onSubmit(payload);
         }

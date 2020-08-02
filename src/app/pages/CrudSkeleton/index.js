@@ -79,6 +79,7 @@ class CrudSkeleton extends Component {
     handleChange = evt => {
         this.setState({
             search: {
+                ...this.state.search,
                 [evt.target.dataset.field]: evt.target.value
             }
         },this.loadData);
@@ -107,9 +108,9 @@ class CrudSkeleton extends Component {
         if(this.props.addOverride !== undefined ){
             addFlag = this.props.addOverride
         }
-        
+
         return (
-            <div>
+            <div className={this.props.customClass}>
                 <Spinner loading={this.props.loading} />
                 <div className="page-header">
                     <h3 className="page-title"> {this.props.content.pageTitle} </h3>
@@ -186,7 +187,7 @@ class CrudSkeleton extends Component {
                                         </tbody>
                                     </table>
                                 </div>
-                                {this.props.data.length && (
+                                {this.props.data.length > 0 && (
                                     <div className="mt-4">
                                         <Pagination
                                             totalRecords={this.props.totalRecords}

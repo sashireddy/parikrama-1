@@ -5,6 +5,7 @@ import Spinner from "../../shared/Spinner";
 import {getBranch, getProduct, getUnit, getOperation, getProductCount, getBranchCount, getCategoryCount} from '../../utils/dataUtils';
 
 import dashboardAction from "../../actions/dashboardActions";
+import { Link } from "react-router-dom";
 
 class Dashboard extends React.PureComponent {
     constructor(){
@@ -58,6 +59,7 @@ class Dashboard extends React.PureComponent {
             dashboardData[key].pendingRequests.forEach(product => {
                 requests.push({
                     product:product.productName,
+                    branch: product.toBranchName ? product.toBranchName : product.fromBranchName,
                     user: product.user,
                     quantity: product.operationalQuantity,
                     date: dateformat(product.date, "yyyy-mm-dd HH:MM")
@@ -172,7 +174,7 @@ class Dashboard extends React.PureComponent {
                     <div className="card card-accent-info">
                         <div className="card-body">
                             <div className="row">
-                                <h5 className="w-100">Inventory Below Threshold</h5>
+                                <h5 className="w-100">Inventory Below Threshold <em className="pull-right small"><Link to="/inventory">Inventory</Link></em></h5>
                                 {branchBelowThreashold && branchBelowThreashold.map(branch => {
                                     return branch.products.length ?
                                         <React.Fragment key={branch.branch}>
@@ -202,7 +204,7 @@ class Dashboard extends React.PureComponent {
                                         </React.Fragment>
                                     : null;
                                 })}
-                                {!this.props.loading && !branchBelowThreashold && <p className="h6 text-center w-100 mb-5 mt-5">Hurrey!! No products below threshold</p>}
+                                {!this.props.loading && !branchBelowThreashold && <p className="h6 text-center w-100 mb-5 mt-5">Hurray!! No products below threshold</p>}
                             </div>
                         </div>
                     </div>
@@ -212,7 +214,7 @@ class Dashboard extends React.PureComponent {
                     <div className="card card-accent-info">
                         <div className="card-body">
                             <div className="row">
-                                <h5 className="w-100">Pending Requests</h5>
+                                <h5 className="w-100">Pending Requests <em className="pull-right small"><Link to="/inventory">Inventory</Link></em></h5>
                                 {pendingRequests && pendingRequests.map(branch => {
                                     return branch.products.length ?
                                         <React.Fragment key={branch.branch}>
@@ -222,6 +224,7 @@ class Dashboard extends React.PureComponent {
                                                     <thead>
                                                         <tr>
                                                             <th>Product</th>
+                                                            <th>Branch</th>
                                                             <th>Quantity</th>
                                                             <th>User</th>
                                                             <th>Date</th>
@@ -231,6 +234,7 @@ class Dashboard extends React.PureComponent {
                                                         {branch.products.map((product, index) => {
                                                             return (<tr key={`${product.branch}-${product.product}`}>
                                                                 <td>{product.product}</td>
+                                                                <td>{product.branch}</td>
                                                                 <td>{product.quantity}</td>
                                                                 <td>{product.user}</td>
                                                                 <td>{product.date}</td>
@@ -242,7 +246,7 @@ class Dashboard extends React.PureComponent {
                                         </React.Fragment>
                                     : null;
                                 })}
-                                {!this.props.loading && !pendingRequests && <p className="h6 text-center w-100 mb-5 mt-5">Hurrey!! No rending requests</p>}
+                                {!this.props.loading && !pendingRequests && <p className="h6 text-center w-100 mb-5 mt-5">Hurray!! No pending requests</p>}
                             </div>
                         </div>
                     </div>
@@ -251,7 +255,7 @@ class Dashboard extends React.PureComponent {
                     {/* Card-3 Begins here */}
                     <div className="card card-accent-info">
                         <div className="card-body">
-                            <h5 className="w-100">Recent Transaction Logs</h5>
+                            <h5 className="w-100">Recent Transaction Logs <em className="pull-right small"><Link to="/transactions">Transaction Logs</Link></em></h5>
                             {recentActivities && recentActivities.map(branch => {
                                 return branch.activities.length ?
                                     <React.Fragment key={branch.branch}>

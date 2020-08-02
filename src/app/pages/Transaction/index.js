@@ -104,7 +104,7 @@ class Transaction extends React.Component {
 
     render(){
         return(
-            <div>
+            <div className="transactions">
                 <Spinner loading={this.props.loading} />
                 <div className="page-header">
                     <h3 className="page-title"> Transactions </h3>

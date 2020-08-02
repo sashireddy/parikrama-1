@@ -96,6 +96,14 @@ class Sidebar extends React.Component {
               <span className="menu-title">Dashboard</span>
             </Link>
           </li>
+          {isAllowed(ACTION_VIEW, MODULE_BRANCH) &&
+          <li className={ this.isPathActive('/branches') ? 'nav-item active' : 'nav-item' }>
+            <Link className="nav-link" to="/branches">
+              <i className="mdi mdi-source-branch menu-icon"></i>
+              <span className="menu-title">Branches</span>
+            </Link>
+          </li>
+          }
           {isAllowed(ACTION_VIEW, MODULE_USER) &&
           <li className={ this.isPathActive('/roles') ? 'nav-item active' : 'nav-item' }>
             <Link className="nav-link" to="/roles">
@@ -112,14 +120,7 @@ class Sidebar extends React.Component {
             </Link>
           </li>
           }
-          {isAllowed(ACTION_VIEW, MODULE_BRANCH) &&
-          <li className={ this.isPathActive('/branches') ? 'nav-item active' : 'nav-item' }>
-            <Link className="nav-link" to="/branches">
-              <i className="mdi mdi-source-branch menu-icon"></i>
-              <span className="menu-title">Branches</span>
-            </Link>
-          </li>
-          }
+
           {isAllowed(ACTION_MANAGE, MODULE_INVENTORY) &&
           <li className={ this.isPathActive('/categories') ? 'nav-item active' : 'nav-item' }>
             <Link className="nav-link" to="/categories">
@@ -155,7 +156,7 @@ class Sidebar extends React.Component {
             <li className={ this.isPathActive('/inventoryreports') ? 'nav-item active' : 'nav-item' }>
               <Link className="nav-link" to="/inventoryreports">
                 <i className="mdi mdi-attachment menu-icon"></i>
-                <span className="menu-title">Inventory Summary Report</span>
+                <span className="menu-title">Reports</span>
               </Link>
             </li>
           }

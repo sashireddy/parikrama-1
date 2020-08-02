@@ -34,7 +34,7 @@ export const getData = () => {
     return new Promise(async (resolve, reject) => {
         try{
             const url = `${apiConfig.GET_METADATA}`;
-            console.log("GET ALL Metadata ", url);
+            // console.log("GET ALL Metadata ", url);
             const res = await axios.get(url);
             loadBranches(res.data.branches);
             loadRoles(res.data.roles);

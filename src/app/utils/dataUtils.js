@@ -73,3 +73,15 @@ export const transformInventoryRow = data => {
     data.unitName = getUnit(product.unit).name
     return data
 }
+
+export const getName = (module, id) => {
+    switch(module) {
+        case "THRESHOLDS":
+        case "BRANCH" :
+            return getBranch(id).name;
+        case "CATEGORY" :
+            return getCategory(id).name;
+        default:
+            return id;
+    }
+}

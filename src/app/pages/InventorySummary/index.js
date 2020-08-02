@@ -120,36 +120,35 @@ class InventorySummary extends React.Component {
                     value : 'Unit',
                     key : 'Unit'
                 }
-            ]
-        
-        const getQuantityWithUnit = (quantity) => {
-            return quantity
-        }
-        const getQuantityLabel = (quantity,threshold) =>  quantity > threshold ? 
-            <label className="badge badge-success QuantityBadge"> {getQuantityWithUnit(quantity)} </label> :
-            <label className="badge badge-warning QuantityBadge">{getQuantityWithUnit(quantity)}</label>
+            ];
+
+        const getQuantityLabel = (quantity,threshold) =>  quantity > threshold ?
+            <label className="badge badge-success QuantityBadge"> {quantity} </label> :
+            <label className="badge badge-warning QuantityBadge">{quantity}</label>
         const tableRowRenderFunc = (props)=> {
             return (
                 <tr>
                     <td>{props.record.productName}</td>
                     <td>{props.record.categoryName}</td>
                     <td>{props.record.threshold}</td>
-                    <td>{getQuantityLabel(props.record.initialQuantity,props.record.threshold)}</td>
-                    <td>{getQuantityWithUnit(props.record.consumedQuantity)}</td>
-                    <td>{getQuantityWithUnit(props.record.transferredQuantity)}</td>
-                    <td>{getQuantityWithUnit(props.record.addedQuantity)}</td>
-                    <td>{getQuantityLabel(props.record.closingQuantity,props.record.threshold)}</td>  
+                    <td>{getQuantityLabel(props.record.initialQuantity, props.record.threshold)}</td>
+                    <td>{props.record.consumedQuantity}</td>
+                    <td>{props.record.transferredQuantity}</td>
+                    <td>{props.record.addedQuantity}</td>
+                    <td>{getQuantityLabel(props.record.closingQuantity, props.record.threshold)}</td>
                     <td>{props.record.unitName}</td>
                 </tr>
             )
         }
         return(
-            <Skeleton 
-             content={{pageTitle:'Inventory Summary'}}
+            <Skeleton
+             customClass="inventory_page"
+             content={{pageTitle:'Inventory Summary Report'}}
              tableRowRenderFunc ={tableRowRenderFunc}
              headerArr = {headerArr} getTitle={getTitle}
              getData = {this.getData} {...this.props.stateData}
              module={MODULE_REPORT}
+             pk="id"
             >
                 <Card>
                     <Card.Body>
@@ -198,7 +197,7 @@ class InventorySummary extends React.Component {
                     </Button>
                 </Form>
                 {this.state.error ? <p className="text-warning">Please select both start and end date</p> : null}
-                                        
+
                 </Card.Body>
             </Card>
             </Skeleton>

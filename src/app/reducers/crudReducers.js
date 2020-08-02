@@ -6,7 +6,7 @@ const initialState = {
     currentPage: 1,
     pageLimit: config.PAGINATION.PAGE_LIMIT,
     totalRecords: 0,
-    search: {},
+    search: { "isActive": "true" },
     sort: {},
     loading: false,
     flashMessage: {}

@@ -14,7 +14,6 @@ const mapStateToProps = state => ({
 })
 class RowRender extends React.Component {
   render() {
-    console.log(this.props)
     const threshold = (this.props.record.thresholds && this.props.record.thresholds[this.props.userInfo.branch])|| ''
     return (
       <tr>
@@ -22,6 +21,7 @@ class RowRender extends React.Component {
         <td>{this.props.record.categoryName}</td>
         <td>{threshold}</td>
         <td>{this.props.record.unitName}</td>
+        <td>{this.props.record.isActive ? "Active" : "Inactive"}</td>
         <td>
           <nav>
           {this.props.record.isActive && (<>

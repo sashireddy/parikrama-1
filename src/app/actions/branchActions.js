@@ -14,7 +14,6 @@ const actions = (()=>{
   const defaultSkeletonActions = skeletonActions(pageConstants.pages.branches,
     getData, updateData, addData, deleteData,updateAllRecords)
     const getAllBranches = () =>  async (dispatch) => {
-      console.log("GET ALL BRANCHES CALLED");
       const allData = await loadInitialData();
       dispatch({
         type: GET_ALL_BRANCHES,

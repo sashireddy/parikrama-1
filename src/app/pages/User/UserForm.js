@@ -60,7 +60,7 @@ class UserForm extends React.Component {
                 firstName: this.state.firstName,
                 lastName: this.state.lastName,
                 email: this.state.email,
-                password: this.state.password,
+                password: window.btoa(this.state.password),
                 isActive: this.state.isActive,
                 branch: this.state.branch,
                 role: this.state.role,

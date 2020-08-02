@@ -13,7 +13,7 @@ const mapStateToProps = state => ({
         unit : state["UNITS"],
         user : state["USER"].loggedInUser,
         branches: state["BRANCHES"]
-    } 
+    }
 });
 
 const mapActionToProps = {
@@ -33,7 +33,7 @@ class ProductForm extends React.Component {
     }
 
     componentDidMount(){
-        
+
     }
 
     handleChange = evt => {
@@ -68,13 +68,11 @@ class ProductForm extends React.Component {
             this.props.onSubmit({...this.state});
         }
 
-        
+
     }
 
 
     render() {
-        console.log(this.state)
-        console.log(this.props)
         const categorydropDownArr = dropDownResponseFromMap(this.props.stateData.category.allCategories)
         const unitdropDownArr = dropDownResponseFromMap(this.props.stateData.unit.allRecords)
         const defaultCategory = (this.props.record && this.props.record.category)
@@ -82,7 +80,7 @@ class ProductForm extends React.Component {
         const defaultUnitName = defaultUnit && getUnit(defaultUnit) && getUnit(defaultUnit).name
         const defaulCategoryName =  defaultCategory && getCategory(defaultCategory) && getCategory(defaultCategory).name
         const branchesMap = this.props.stateData.branches.allRecords
-        const branchesArr = Object.keys(branchesMap) 
+        const branchesArr = Object.keys(branchesMap)
         const thresoldValue = this.state.thresholds && this.state.thresholds[this.props.stateData.user.branch]
         return(
             <form className="forms-sample" onSubmit={this.onSubmit} >
@@ -94,13 +92,13 @@ class ProductForm extends React.Component {
                     </Form.Group>
                     <Form.Group>
                         <label htmlFor="exampleInputEmail1">Category</label>
-                        <Select className="basic-single" classNamePrefix="select" defaultValue={getDropdownItem(defaulCategoryName,defaultCategory)} 
+                        <Select className="basic-single" classNamePrefix="select" defaultValue={getDropdownItem(defaulCategoryName,defaultCategory)}
                             isClearable={true} isSearchable={true}  options={categorydropDownArr} onChange={(e)=>{this.handleDropDown('category',e)}}/>
                         <Form.Control.Feedback type="invalid">Please provide the category name</Form.Control.Feedback>
                     </Form.Group>
                     <Form.Group>
                         <label htmlFor="exampleInputEmail1">Unit</label>
-                        <Select className="basic-single" classNamePrefix="select" defaultValue={getDropdownItem(defaultUnitName,defaultUnit)} 
+                        <Select className="basic-single" classNamePrefix="select" defaultValue={getDropdownItem(defaultUnitName,defaultUnit)}
                             isClearable={true} isSearchable={true}  options={unitdropDownArr} onChange={(e)=>{this.handleDropDown('unit',e)}}/>
                         <Form.Control.Feedback type="invalid">Please provide the unit name</Form.Control.Feedback>
                     </Form.Group>
@@ -111,13 +109,18 @@ class ProductForm extends React.Component {
                     </Form.Group>
                     {isAllowed(ACTION_MANAGE, MODULE_INVENTORY)  && (
                         <>
+                            <p className="h6">Other Branch Threshold</p>
                             {branchesArr.map(branchId=> {
                                 if(branchId !== this.props.stateData.user.branch){
-                                    const threshold = (this.state.thresholds && this.state.thresholds[branchId])
+                                    const threshold = (this.state.thresholds && this.state.thresholds[branchId]);
+                                    const branchName = branchesMap[branchId].name;
                                  return (<Form.Group>
-                                    <label htmlFor="exampleInputEmail1">Product Threshold at {branchesMap[branchId].name} branch</label>
-                                    <Form.Control type="number" className="form-control" id="productName" name="name" placeholder="threshold Name" value={threshold} onChange={e=>this.handleThresholdChange(e,branchId)} />
-                                    <Form.Control.Feedback type="invalid">Please provide Product Threshold</Form.Control.Feedback>
+                                     <div className="clearfix">
+                                        <label htmlFor={`threshold-${branchName}`} className="w-50 pull-left mt-3">{branchName}</label>
+                                        <Form.Control type="number" className="form-control w-50 pull-right" id={`threshold-${branchName}`} name={`threshold-${branchName}`} placeholder={`Threshold at ${branchName}`} value={threshold} onChange={e=>this.handleThresholdChange(e,branchId)} />
+                                        <Form.Control.Feedback type="invalid">Please provide Product Threshold</Form.Control.Feedback>
+                                    </div>
+                                    <hr/>
                                 </Form.Group>)
                                 }
                                 return <></>

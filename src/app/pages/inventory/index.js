@@ -18,8 +18,6 @@ const mapStateToProps = state => ({
     }
 });
 
-console.log(InventoryActions)
-
 const mapActionToProps = {
     getData : InventoryActions.getData,
     addData : InventoryActions.addData,
@@ -40,7 +38,7 @@ class Inventory extends React.Component {
         }
     }
 
-    componentDidMount(){ 
+    componentDidMount(){
     }
 
     getData= (crudParams) => {
@@ -60,7 +58,7 @@ class Inventory extends React.Component {
                 ...this.props.stateData
             })
         })
-        
+
     }
 
     render() {
@@ -121,24 +119,23 @@ class Inventory extends React.Component {
                     <td>{props.record.categoryName}</td>
                     <td>{this.state.branchName}</td>
                     <td>{props.record.threshold}</td>
-                    <td> { props.record.availableQuantity > props.record.threshold ? 
+                    <td> { props.record.availableQuantity > props.record.threshold ?
                         <label className="badge badge-success QuantityBadge">{props.record.availableQuantity}  </label> :
                         <label className="badge badge-warning QuantityBadge">{props.record.availableQuantity}  </label>
-                        }   
+                        }
                     </td>
                     <td>{props.record.unitName}</td>
                     <td>{ (this.state.branch === getLoggedInUserInfo().branch||isAdmin) && <Button onClick={() =>{props.openActionMaodal(issueParams(props.record),'view')}}>Disburse</Button>}</td>
                 </tr>
             )
-        }    
-        console.log(this.props)
+        }
         const branchOptions = dropDownResponseFromMap(this.props.stateData.state.BRANCHES.allRecords)
         return (
-            <div>
+            <div className="inventory_page">
                 <InventorySkeleton key="Inventory" content={{
                     pageTitle:'Inventory',
                     addButton : 'Manage Inventory'
-                }} 
+                }}
                     addOverride = {getLoggedInUserInfo().branch === this.state.branch}
                     AddModal={AddInventory}
                     EditModal={()=><></>}
@@ -150,6 +147,7 @@ class Inventory extends React.Component {
                     getData = {this.getData} {...this.props.stateData}
                     addData = {this.props.addData}
                     moduleName = {MODULE_INVENTORY}
+                    pk="id"
               >
                 <PendingTransactions />
                 <Card className="marginBottom">
@@ -166,7 +164,7 @@ class Inventory extends React.Component {
                                     isSearchable={true}  options={branchOptions} onChange={(e)=>{this.handleBranchDropDown(e)}}/>
                                 </Form.Group>
                             )}
-                            
+
                             </Col>
                             <Col className="justify-content-end flex">
                                 <Button className="buttonNormal" onClick={()=>{this.props.download({...this.state})}}>Download</Button>

@@ -1,5 +1,6 @@
 import React from "react";
 import dateFormat from "dateformat";
+import config from "../../constants/config";
 
 const ViewUser = props => {
   const {record} = props;
@@ -20,9 +21,9 @@ const ViewUser = props => {
             <dt>Email</dt>
             <dd>{record.email}</dd>
             <dt>Created on</dt>
-            <dd>{dateFormat(record.createdDate, "yyyy-mm-dd HH:MM:ss")}</dd>
+            <dd>{dateFormat(record.createdDate, config.DATE_FORMAT)}</dd>
             <dt>Updated on</dt>
-            <dd>{dateFormat(record.lastUpdatedDate, "yyyy-mm-dd HH:MM:ss")}</dd>
+            <dd>{dateFormat(record.lastUpdatedDate, config.DATE_FORMAT)}</dd>
           </dl>
       </div>
       <hr className="modal-footer-ruler" />

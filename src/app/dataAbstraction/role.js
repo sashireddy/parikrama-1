@@ -60,7 +60,7 @@ export const getData = params => {
         if(cachedData === null){
             // Logic can be applied to generate URL using params
             const url = `${apiConfig.GET_ROLES}`;
-            console.log("Role API calling...", url);
+            // console.log("Role API calling...", url);
             try {
                 const res = await axios.get(url);
                 res.flashMessage = {

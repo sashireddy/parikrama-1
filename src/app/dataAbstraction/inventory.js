@@ -76,9 +76,10 @@ export const respondToTransferRequest = async params => {
                 fromBranch: entry,
                 fromBranchName : getBranch(entry).name,
                 toBranch: params.toBranch,
-                note : params.transactionNote,
+                note : params.note,
                 toBranchName: params.toBranchName,
-            })
+                user: params.user
+            });
         })
         await Promise.all(list.map(async params=>{
             return await axios.post(pageConfig.TRANSFER_REQUEST,params)
@@ -106,7 +107,7 @@ export const createTransaction = ({type,...otherParams}) => {
                 //raise request from branch to head office
                 queryParams = {
                     "toBranch": otherParams.fromBranch,//always headoffice
-                    "fromBranch": otherParams.toBranch, 
+                    "fromBranch": otherParams.toBranch,
                 	"toBranchName": otherParams.fromBranchName,
 	                "fromBranchName": otherParams.toBranchName,
                     "productName":otherParams.productName,
@@ -249,12 +250,11 @@ const makeEntry = (productId,branchId) => {
 // State params passed which will be used to pass to live api or
 // for static data to get proper data as per the params
 export const getData = params => {
-    console.log(params);
     return new Promise(async (resolve, reject) => {
         if(cache === null){
             // Logic can be applied to generate URL using params
             const url = `${config.API.BASE_URL}${pageConfig.GET_ALL_INVENTORY}`;
-            console.log("API calling...", url);
+            // console.log("API calling...", url);
             try {
                 const res = await axios.get(url);
                 res.flashMessage = {
@@ -361,16 +361,16 @@ export const deleteData = data => {
 
 
 const getCurrentStateData = params => {
-    console.log(params);
     // Need to implement search and sort functionality here
     // After search total records may vary, reset pagination to 1st page.
     // let records = filterData(params);
     let records = cache[params.branch] || cache[0]
     records.map(entry => {
-        const product = getProduct(entry.product)
-        entry.productName = product.name
-        entry.categoryName = getCategory(product.category).name
-        entry.unitName = getUnit(product.unit).name
+        const product = getProduct(entry.product);
+        entry.productName = product.name;
+        entry.categoryName = getCategory(product.category).name;
+        entry.unitName = getUnit(product.unit).name;
+        entry.id = entry.product;
         return entry
     });
     records = genericFilter(params,records)

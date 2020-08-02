@@ -70,7 +70,7 @@ class Products extends React.Component {
 
         return (
             <ProductSkeleton
-             content={{pageTitle:'Branches'}} AddModal={AddBranch}
+             content={{pageTitle:'Branches', addButton: 'New Branch'}} AddModal={AddBranch}
              EditModal={EditBranch} ViewModal={ViewBranch} DeleteModal={DeleteBranch}
              tableRowRenderFunc ={BranchListItem}
              headerArr = {headerArr} getTitle={getTitle}

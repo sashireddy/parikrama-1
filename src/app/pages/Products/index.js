@@ -23,11 +23,11 @@ class Products extends React.Component {
         const getTitle = (actionType) => {
             switch (actionType) {
                 case "add":
-                    return "Add Product";
+                    return "Create Product";
                 case "view":
                     return "View Product";
                 case "edit":
-                    return "Edit Product";
+                    return "Update Product";
                 case "del":
                     return "Delete Product";
                 default:
@@ -52,14 +52,18 @@ class Products extends React.Component {
                     value : 'Units',
                     key : 'unitName'
                 },{
+                    value : 'Status',
+                    key : 'isActive'
+                },{
                     value : 'Actions',
                     key : 'actions'
                 }
             ]
         return (
             <ProductSkeleton
+             customClass="products_page"
              content={{
-                 pageTitle:'Product',
+                 pageTitle:'Products',
                  addButton: 'New Product'
                 }} AddModal={AddProduct}
              EditModal={EditProduct} ViewModal={ViewProduct} DeleteModal={DeleteProduct}
