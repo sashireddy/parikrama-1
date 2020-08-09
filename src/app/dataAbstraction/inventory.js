@@ -5,6 +5,7 @@ import {handleResponse} from './util'
 import {getUnit,getCategory,getProduct,getBranch,getThreshold} from '../utils/dataUtils'
 import {arrayToCsvContent,download} from '../utils/csvUtils'
 import {genericFilter,validateCurrentPage} from './util'
+import dateFormat from "dateformat";
 // import { updateCategoryData } from "./category";
 const pageConfig = config.API.INVENTORY;
 
@@ -82,7 +83,7 @@ export const respondToTransferRequest = async params => {
             });
         })
         await Promise.all(list.map(async params=>{
-            return await axios.post(pageConfig.TRANSFER_REQUEST,params)
+            return axios.post(pageConfig.TRANSFER_REQUEST,params)
         }))
         let sum =0
         Object.keys(params.quantityMap).forEach(entry => {
@@ -102,9 +103,22 @@ export const createTransaction = ({type,...otherParams}) => {
     return new Promise(async (resolve, reject) => {
         try {
             let url = pageConfig[type]
-            let queryParams = {}
+            let queryParams = {};
+            const queryList = [];
             if(type === "RAISE_REQUEST"){
                 //raise request from branch to head office
+                otherParams.rowsArr.forEach(row => {
+                    queryList.push({
+                        "toBranch": otherParams.fromBranch,//always headoffice
+                        "fromBranch": otherParams.toBranch,
+                    	"toBranchName": otherParams.fromBranchName,
+	                    "fromBranchName": otherParams.toBranchName,
+                        "productName":row.productName,
+                        "product": row.product,
+                        "operationalQuantity": parseInt(row.operationalQuantity),
+                        "note": otherParams.note    
+                    })
+                })
                 queryParams = {
                     "toBranch": otherParams.fromBranch,//always headoffice
                     "fromBranch": otherParams.toBranch,
@@ -127,7 +141,30 @@ export const createTransaction = ({type,...otherParams}) => {
                     "operationalQuantity": parseInt(otherParams.operationalQuantity),
                     "note": otherParams.note
                 }
-            }else{
+            }else if(type === "ADJUSTMENT"){
+
+                queryParams = {
+                    "branch": otherParams.fromBranch,
+                    "productName":otherParams.rowsArr[0].productName,
+                    "product": otherParams.rowsArr[0].product,
+                    "operationalQuantity": parseInt(otherParams.rowsArr[0].operationalQuantity),
+                    "note": otherParams.note
+                }
+
+            }else if(type === "ADD_PRODUCT"){
+                otherParams.rowsArr.forEach(row => {
+                    queryList.push({
+                        "toBranch": otherParams.fromBranch,//always headoffice
+                        "fromBranch": otherParams.toBranch,
+                    	"toBranchName": otherParams.fromBranchName,
+	                    "fromBranchName": otherParams.toBranchName,
+                        "productName":row.productName,
+                        "product": row.product,
+                        "operationalQuantity": parseInt(row.operationalQuantity),
+                        "note": otherParams.note    
+                    })
+                })
+            }else {
                 // add locally or disburse locally or adjustment
                 queryParams = {
                     "branch": otherParams.fromBranch,
@@ -137,8 +174,20 @@ export const createTransaction = ({type,...otherParams}) => {
                     "note": otherParams.note
                 }
             }
-            const [resp,err]= handleResponse(await axios.post(url,queryParams))
-            if(err){ return reject(err)}
+            let resp
+            try{
+                if(type === "ADD_PRODUCT" || type === "RAISE_REQUEST"){
+                    resp = await Promise.all(queryList.map(row => {
+                        return axios.post(url,row)
+                    }));
+                }else{
+                    resp = await axios.post(url,queryParams)
+                }
+            }catch (err){
+                return reject(err);
+            }
+            // const [resp,err]= handleResponse()
+            // if(err){ return reject(err)}
             if(pageConfig.CACHING){
                 if(type==="ISSUE_PRODUCT"){
                     updateQuantity(parseInt(otherParams.operationalQuantity),otherParams.fromBranch,otherParams.product,"sub")
@@ -150,7 +199,7 @@ export const createTransaction = ({type,...otherParams}) => {
                 }else if (type === "RAISE_REQUEST"){
                     pendingTransactions.push(makePendingTransaction(otherParams,resp))
                 }else if( type === "ADJUSTMENT") {
-                    adjustQuantity(parseInt(otherParams.operationalQuantity,otherParams.fromBranch,otherParams.product))
+                    adjustQuantity(parseInt(otherParams.operationalQuantity),otherParams.fromBranch,otherParams.product)
                 }
             }
             const resParams = {
@@ -359,12 +408,50 @@ export const deleteData = data => {
     });
 }
 
+const getAllBranchRecords = () => {
+    const records = []
+    const productKeys = Object.keys(summaryCache)
+        productKeys.forEach(key => {
+            let entry =  {}
+            entry.product = key
+            entry.quantityBranch=[]
+            Object.keys(summaryCache[key]).forEach(branch => {
+                let branchEntry = {}
+                branchEntry.name  = getBranch(branch).name;
+                branchEntry.id  = branch;
+                branchEntry.quantity = summaryCache[key][branch]
+                entry.quantityBranch.push(branchEntry)
+            })
+            records.push(entry)
+    })
+    return records;
+}
 
 const getCurrentStateData = params => {
     // Need to implement search and sort functionality here
     // After search total records may vary, reset pagination to 1st page.
     // let records = filterData(params);
-    let records = cache[params.branch] || cache[0]
+    let records = []
+    if(params.branch === "ALL_BRANCHES"){
+        // const productKeys = Object.keys(summaryCache)
+        // productKeys.forEach(key => {
+        //     let entry =  {}
+        //     entry.product = key
+        //     entry.quantityBranch=[]
+        //     Object.keys(summaryCache[key]).forEach(branch => {
+        //         let branchEntry = {}
+        //         branchEntry.name  = getBranch(branch).name;
+        //         branchEntry.id  = branch;
+        //         branchEntry.quantity = summaryCache[key][branch]
+        //         entry.quantityBranch.push(branchEntry)
+        //     })
+        //     records.push(entry)
+        // })
+        records =  getAllBranchRecords()
+    }else{
+        records = cache[params.branch] || cache[0]    
+    }
+    
     records.map(entry => {
         const product = getProduct(entry.product);
         entry.productName = product.name;
@@ -385,12 +472,35 @@ const getCurrentStateData = params => {
 }
 
 export const generateCsv = (params) => {
-    const branchName = getBranch(params.branch).name
+    let branchName = getBranch(params.branch).name
+    branchName = getBranch(params.branch).name
+    if(params.branch === "ALL_BRANCHES"){
+        branchName = "ALL_BRANCHES"
+    }
     const headerArr = ['Product','Category','Branch','Threshold','Available Quantity','Unit']
-    const arr = cache[params.branch] || []
+    let arr = cache[params.branch] || []
+    if(params.branch  === "ALL_BRANCHES"){
+        arr = getAllBranchRecords()
+    }
     const outArr = []
     outArr.push(headerArr)
-    arr.forEach(row=> {
+    if(branchName === "ALL_BRANCHES"){
+        arr.forEach(row=> {
+            row.quantityBranch.forEach(rowBranch =>  {
+                const tempRow = []
+                const product = getProduct(row.product);
+                tempRow.push(product.name)
+                tempRow.push(getCategory(product.category).name)
+                tempRow.push(rowBranch.name)
+                tempRow.push(rowBranch.quantity.threshold)
+                tempRow.push(rowBranch.quantity.availableQuantity)
+                tempRow.push(getUnit(product.unit).name)
+                outArr.push(tempRow)
+            })
+            
+        })
+    }else{
+        arr.forEach(row=> {
         const tempRow = []
         tempRow.push(row.productName)
         tempRow.push(row.categoryName)
@@ -399,6 +509,8 @@ export const generateCsv = (params) => {
         tempRow.push(row.availableQuantity)
         tempRow.push(row.unitName)
         outArr.push(tempRow)
-    })
-    download(arrayToCsvContent(outArr),`AvailableQuantity${branchName}.csv`,)
+        })
+    }
+
+    download(arrayToCsvContent(outArr),`AvailableQuantity_${branchName}_${dateFormat(new Date(), "yyyy-mm-dd")}.csv`,)
 }

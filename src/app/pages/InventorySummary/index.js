@@ -5,7 +5,7 @@ import {Form,Button} from 'react-bootstrap'
 import DatePicker from "react-datepicker"
 import Select from 'react-select';
 import { Card } from 'react-bootstrap'
-import {getSelectedItem, dropDownResponseFromMap} from '../../utils/dropDownUtils';
+import {getSelectedItem, dropDownResponseFromMap,getDropdownItem} from '../../utils/dropDownUtils';
 import InventorySummaryAction from '../../actions/InventoryView'
 import {getLoggedInUserInfo} from '../../utils/dataUtils'
 import dateFormat from "dateformat";
@@ -50,7 +50,7 @@ class InventorySummary extends React.Component {
     }
 
     handleDropDown = (e) => {
-        this.state({
+        this.setState({
             ...this.state,
             branch : e.value
         })
@@ -63,6 +63,7 @@ class InventorySummary extends React.Component {
         if((startDate && endDate) || (!startDate && !endDate)){
             this.setState({error: false});
             this.getData({
+
                 currentPage : this.props.stateData.currentPage,
                 pageLimit : this.props.stateData.pageLimit,
                 search : this.props.stateData.search,
@@ -102,6 +103,9 @@ class InventorySummary extends React.Component {
                     value : 'Threshold',
                     key : 'threshold'
                 },{
+                    value: 'Branch',
+                    key: 'branch'
+                },{
                     value : 'Initial Quantity',
                     key : 'Initial Quantity'
                 },{
@@ -131,6 +135,7 @@ class InventorySummary extends React.Component {
                     <td>{props.record.productName}</td>
                     <td>{props.record.categoryName}</td>
                     <td>{props.record.threshold}</td>
+                    <td>{props.record.branchName}</td>
                     <td>{getQuantityLabel(props.record.initialQuantity, props.record.threshold)}</td>
                     <td>{props.record.consumedQuantity}</td>
                     <td>{props.record.transferredQuantity}</td>
@@ -140,6 +145,8 @@ class InventorySummary extends React.Component {
                 </tr>
             )
         }
+        const branchOptions = this.props.branchDropDownArr
+        branchOptions.push(getDropdownItem("All Branches","ALL_BRANCHES"))
         return(
             <Skeleton
              customClass="inventory_page"
@@ -183,7 +190,7 @@ class InventorySummary extends React.Component {
                         <Form.Group className="select-box-fix">
                             <Form.Label>Branch</Form.Label>
                             <Select className="basic-single" classNamePrefix="select" value={getSelectedItem(this.props.branchDropDownArr, this.state.branch)}
-                            options={this.props.branchDropDownArr} onChange={(e)=>{this.handleDropDown('branch', e)}}
+                            options={branchOptions} onChange={(e)=>{this.handleDropDown(e)}}
                             isSearchable placeholder="Select Branch" styles={customStyles}/>
                         </Form.Group>
                         )}

@@ -112,24 +112,51 @@ class Inventory extends React.Component {
                 fromBranchName : this.state.branchName,
             }
         }
+        const QuantityTag =  (availableQuantity,threshold) =>{
+            return availableQuantity > threshold ?
+                <label className="badge badge-success QuantityBadge">{availableQuantity}  </label> :
+                <label className="badge badge-warning QuantityBadge">{availableQuantity}  </label>
+        }
         const RowRender = (props) => {
             return (
                 <tr>
                     <td>{props.record.productName}</td>
                     <td>{props.record.categoryName}</td>
-                    <td>{this.state.branchName}</td>
-                    <td>{props.record.threshold}</td>
-                    <td> { props.record.availableQuantity > props.record.threshold ?
-                        <label className="badge badge-success QuantityBadge">{props.record.availableQuantity}  </label> :
-                        <label className="badge badge-warning QuantityBadge">{props.record.availableQuantity}  </label>
-                        }
-                    </td>
+                    {this.state.branch !== "ALL_BRANCHES" && (
+                        <>
+                        <td>{this.state.branchName}</td>
+                        <td>{props.record.threshold}</td>
+                        <td>{QuantityTag(props.record.availableQuantity,props.record.threshold)}</td>
+                        </>
+                    )}
+                    {this.state.branch === "ALL_BRANCHES" &&
+                        (
+                            <>
+                                <td>{props.record.quantityBranch &&
+                                    props.record.quantityBranch.map((entry,idx) => {
+                                    return <div key={idx} className="tableRow">{entry.name}</div>})}
+                                </td>
+                                <td>
+                                    {props.record.quantityBranch &&
+                                    props.record.quantityBranch.map((entry,idx) => {
+                                        return <div key={idx} className="tableRow">{entry.quantity.threshold}</div>
+                                    })}
+                                </td>
+                                <td>
+                                    {props.record.quantityBranch &&
+                                    props.record.quantityBranch.map((entry,idx) => {
+                                        return <div key={idx} className="tableRow">{QuantityTag(entry.quantity.availableQuantity,entry.quantity.threshold)}</div>
+                                    })}
+                                </td>
+                            </>
+                    )}
                     <td>{props.record.unitName}</td>
-                    <td>{ (this.state.branch === getLoggedInUserInfo().branch||isAdmin) && <Button onClick={() =>{props.openActionMaodal(issueParams(props.record),'view')}}>Disburse</Button>}</td>
+                    <td>{ (this.state.branch === getLoggedInUserInfo().branch||isAdmin)&& this.state.branch !== "ALL_BRANCHES" && <Button onClick={() =>{props.openActionMaodal(issueParams(props.record),'view')}}>Disburse</Button>}</td>
                 </tr>
             )
         }
         const branchOptions = dropDownResponseFromMap(this.props.stateData.state.BRANCHES.allRecords)
+        branchOptions.push(getDropdownItem("All Branches","ALL_BRANCHES"))
         return (
             <div className="inventory_page">
                 <InventorySkeleton key="Inventory" content={{

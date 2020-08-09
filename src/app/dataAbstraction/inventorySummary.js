@@ -22,7 +22,9 @@ const apiResponse = { // pMapping => Parameter Mapping
     currentPage: 1,
     data: null,
     search: {},
-    sort: {}
+    sort: {
+
+    }
 };
 
 // All the method will return promise, which will hold good for doing
@@ -35,7 +37,12 @@ export const getData = params => {
             cachedParams =params
             // Logic can be applied to generate URL using params
             // http://localhost:5001/local-parikrama/us-central1/api/api/reports/nmnpHFEB45FtMLQzqEBj?fromDate=2020-05-05&toDate=2020-07-15
-            let url = `${apiConfig.GET_REPORT_SUMMARY}${params.branch}?fromDate=${params.startDate}&toDate=${params.endDate}`;
+            let url
+            if(params.branch !== "ALL_BRANCHES"){
+                url = `${apiConfig.GET_REPORT_SUMMARY}${params.branch}?fromDate=${params.startDate}&toDate=${params.endDate}`;
+            }else{
+                url = `${apiConfig.GET_ALL_REPORT_SUMMARY}?fromDate=${params.startDate}&toDate=${params.endDate}`;
+            }
             // console.log("API calling...", url);
             try {
                 const res = await axios.get(url,);
@@ -44,7 +51,11 @@ export const getData = params => {
                     "message": "Data Loaded Successfully!"
                 };
                 if(apiConfig.CACHING){
-                    cachedData = res.data.report;
+                    if(params.branch === "ALL_BRANCHES"){
+                        cachedData = transformResp(res.data)
+                    }else{
+                        cachedData = res.data.report;
+                    }
                 }
             } catch(err){
                 reject(err);
@@ -53,6 +64,30 @@ export const getData = params => {
         getCurrentStateData(params);
         resolve(apiResponse);
     });
+}
+
+const transformResp = (resp)  => {
+    const results = []
+    const keys = Object.keys(resp)
+
+    keys.forEach(key => {
+        const reports =resp[key].report
+        reports.forEach(report => {
+            results.push({
+                "branch" : key,
+                "branchName" : resp[key].name,
+                "threshold": report.threshold,
+                "product": report.product,
+                "initialQuantity": report.initialQuantity,
+                "addedQuantity": report.addedQuantity,
+                "consumedQuantity": report.consumedQuantity,
+                "transferredQuantity": report.transferredQuantity,
+                "closingQuantity": report.closingQuantity
+        })
+    })
+    
+    })
+    return results
 }
 
 const validateParams = (params1,params2) => {
@@ -65,9 +100,11 @@ const getCurrentStateData = params => {
     // Need to implement search and sort functionality here
     // After search total records may vary, reset pagination to 1st page.
     let records = cachedData || []
-    records.map(entry => {
+    records.map((entry,idx) => {
         const product = getProduct(entry.product)
-        entry.id = entry.product
+        entry.id = idx
+        entry.branch = params.branch
+        entry.branchName = entry.branchName || getBranch(params.branch).name
         entry.productName = product.name
         entry.categoryName = getCategory(product.category).name
         entry.unitName = getUnit(product.unit).name
@@ -83,23 +120,24 @@ const getCurrentStateData = params => {
     apiResponse.currentPage = currentPage;
 }
 export const downloadReport = async params => {
-    const branchName = getBranch(params.branch).name
-    const headerArr = ['Product','Category','Branch','Threshold','Initial Quantity','Consumed Quantity','Transfered Quantity','Added Quantity','Closing Quantity',]
+    const branchName = params.branch || getBranch(params.branch).name 
+    const headerArr = ['Product','Category','Branch','Threshold','Initial Quantity','Consumed Quantity','Transfered Quantity','Added Quantity','Closing Quantity','unitt']
     const arr = genericFilter(params,cachedData || [])
     const outArr = []
     outArr.push(headerArr)
     arr.forEach(row=> {
         const tempRow = []
+        const brName = row.branchName || getBranch(params.branch).name
         tempRow.push(row.productName)
         tempRow.push(row.categoryName)
-        tempRow.push(branchName)
+        tempRow.push(brName)
         tempRow.push(row.threshold)
-
-        tempRow.push(`${row.initialQuantity} `+row.unitName)
-        tempRow.push(`${row.consumedQuantity} `+row.unitName)
-        tempRow.push(`${row.transferredQuantity} `+row.unitName)
-        tempRow.push(`${row.addedQuantity} `+row.unitName)
-        tempRow.push(`${row.closingQuantity} `+row.unitName)
+        tempRow.push(`${row.initialQuantity}`)
+        tempRow.push(`${row.consumedQuantity}`)
+        tempRow.push(`${row.transferredQuantity}`)
+        tempRow.push(`${row.addedQuantity}`)
+        tempRow.push(`${row.closingQuantity}`)
+        tempRow.push(`${row.unitName}`)
         outArr.push(tempRow)
     })
     download(arrayToCsvContent(outArr),`INVENTORY_${branchName}_${dateformat(params.startDate,'yyyy-mm-dd')}_${dateformat(params.endDate,'yyyy-mm-dd')}.csv`,)
