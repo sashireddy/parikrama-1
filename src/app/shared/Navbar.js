@@ -4,6 +4,7 @@ import Firebase from '../Firebase/firebase';
 import {connect} from "react-redux";
 import Modal from "./Modal";
 import ChangePassword from "../pages/User/ChangePassword";
+import { Link, withRouter } from 'react-router-dom';
 
 class Navbar extends Component {
 
@@ -29,10 +30,16 @@ class Navbar extends Component {
   toggleOffcanvas() {
     document.querySelector('.sidebar-offcanvas').classList.toggle('active');
   }
+
   logout = async () => {
     await Firebase.auth.signOut()
     window.location.href="/";
   }
+
+  isPathActive(path) {
+    return this.props.location.pathname === path
+  }
+
   render () {
     const user = this.props.loggedInUser ? this.props.loggedInUser : null;
     return (
@@ -42,6 +49,20 @@ class Navbar extends Component {
           <button className="navbar-toggler navbar-toggler align-self-center" type="button" onClick={ () => document.body.classList.toggle('sidebar-icon-only') }>
             <i className="mdi mdi-menu"></i>
           </button>
+          <ul className="navbar-nav navbar-nav-left header-links">
+          <li className={this.isPathActive('/inventory') ? "nav-item d-none d-lg-flex active" : "nav-item d-none d-lg-flex"}>
+              <Link className="nav-link" to="/inventory">
+                <i className="mdi mdi-barley"></i>
+                <span>Inventory</span>
+              </Link>
+            </li>
+            <li className={this.isPathActive('/inventoryreports') ? "nav-item d-none d-lg-flex active" : "nav-item d-none d-lg-flex"}>
+              <Link className="nav-link" to="/inventoryreports">
+                <i className="mdi mdi-attachment"></i>
+                <span>Reports</span>
+              </Link>
+            </li>
+          </ul>
           <ul className="navbar-nav navbar-nav-right ml-lg-auto">
             <li className="nav-item  nav-profile border-0">
               <Dropdown alignRight>
@@ -80,4 +101,4 @@ const mapStateToProps = state => {
   }
 };
 
-export default connect(mapStateToProps)(Navbar);
+export default connect(mapStateToProps)(withRouter(Navbar));

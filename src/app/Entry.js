@@ -24,7 +24,7 @@ class Entry extends Component {
                 localStorage.removeItem('loggedIn')
                 this.props.logout()
             }
-        })
+        });
     }
     render() {
         if(this.props.expectedLoggedIn){

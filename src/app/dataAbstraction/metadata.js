@@ -6,6 +6,7 @@ import {setCachedData as loadProducts} from "./products";
 import {setCachedData as loadRoles} from "./role";
 import {setCachedData as loadUnits} from "./unit";
 import {setCachedData as loadOperations} from "./operations";
+import {setCachedData as loadUsers} from "./user";
 
 axios.defaults.headers.common['Authorization'] = "Bearer TOKEN";
 
@@ -42,6 +43,7 @@ export const getData = () => {
             loadCategories(res.data.categories);
             loadProducts(res.data.products);
             loadOperations(res.data.operations);
+            loadUsers(res.data.users);
             resolve(res);
         } catch(err){
             reject(err);

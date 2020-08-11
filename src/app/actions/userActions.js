@@ -1,7 +1,7 @@
-import { getData, updateData, addData, deleteData,getUserData } from '../dataAbstraction/user';
+import { getData, updateData, addData, deleteData, getUserData, loadInitialData } from '../dataAbstraction/user';
 import skeletonActions from './crudActions';
 import pageConstants from '../constants/pages';
-import {GET_LOGGEDIN_USER} from './types'
+import {GET_LOGGEDIN_USER, GET_ALL_USERS} from './types'
 const actions = (()=>{
     const defaultSkeletonActions = skeletonActions(
         pageConstants.pages.user,
@@ -23,9 +23,18 @@ const actions = (()=>{
         }
     }
 
+    const getAllUsers = () => async (dispatch) => {
+        const allData = await loadInitialData();
+          dispatch({
+            type: GET_ALL_USERS,
+            payload: allData,
+          });
+    }
+
     return {
         ...defaultSkeletonActions,
-        getUserInfo
+        getUserInfo,
+        getAllUsers
     }
 })()
 export default actions

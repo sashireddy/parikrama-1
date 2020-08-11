@@ -33,7 +33,7 @@ export const loadInitialData = () => {
         } else {
             let res;
             try{
-                const url = `${config.API.BASE_URL}${apiConfig.GET_CTEGORIES}`;
+                const url = `${apiConfig.GET_CTEGORIES}`;
                 console.log(url)
                 res = await axios.get(url);
                 console.log(res);
@@ -47,6 +47,7 @@ export const loadInitialData = () => {
         }
     });
 }
+
 export const updateData = () => {
     return new Promise((resolve, reject) => {
         if(cachedData)
@@ -64,7 +65,7 @@ export const getCategoriesData = params => {
     return new Promise(async (resolve, reject) => {
         if(cachedData === null){
             // Logic can be applied to generate URL using params
-            const url = `${config.API.BASE_URL}${apiConfig.GET_CTEGORIES}`;
+            const url = `${apiConfig.GET_CTEGORIES}`;
             // console.log("API calling...", url);
             try {
                 const res = await axios.get(url);

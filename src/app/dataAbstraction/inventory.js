@@ -304,7 +304,7 @@ export const getData = params => {
     return new Promise(async (resolve, reject) => {
         if(cache === null){
             // Logic can be applied to generate URL using params
-            const url = `${config.API.BASE_URL}${pageConfig.GET_ALL_INVENTORY}`;
+            const url = `${pageConfig.GET_ALL_INVENTORY}`;
             // console.log("API calling...", url);
             try {
                 const res = await axios.get(url);

@@ -1,6 +1,6 @@
 import axios from 'axios';
 import config from "../constants/config";
-import {validateCurrentPage, genericFilter} from "./util";
+import {validateCurrentPage, arrayToMapWithId, genericFilter} from "./util";
 import {getRole,getBranch} from '../utils/dataUtils'
 import Firebase from "../Firebase";
 
@@ -24,7 +24,34 @@ const apiResponse = { // pMapping => Parameter Mapping
     sort: {}
 };
 
-export const getUserData = params => {
+export const setCachedData = data => {
+    cachedData = data;
+}
+
+// Function to load all the data as part for the initial load
+export const loadInitialData = () => {
+    return new Promise(async (resolve, reject) => {
+        if(cachedData !== null){
+            resolve(arrayToMapWithId(cachedData));
+        } else {
+            let res;
+            try{
+                const url = `${apiConfig.GET_USER}`;
+                console.log(url)
+                res = await axios.get(url);
+                console.log(res);
+            } catch (err){
+                reject()
+            }
+            if(apiConfig.CACHING){
+                cachedData = res.data.categories;
+            }
+            resolve(arrayToMapWithId(res.data.categories));
+        }
+    });
+}
+
+export const getUserData = () => {
     return new Promise(async (resolve, reject) => {
         const url = `${apiConfig.GET_USER+"/"+Firebase.auth.currentUser.uid}`;
         // const url = '/data/userData.json';

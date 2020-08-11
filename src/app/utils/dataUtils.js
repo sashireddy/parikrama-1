@@ -8,7 +8,13 @@ export const getCategory = categoryId => {
 }
 
 export const getCategoryCount = () => {
-    return Object.keys(store.getState()["CATEGORY"].allCategories).length;
+    let allCategories = store.getState()["CATEGORY"].allCategories;
+    return Object.keys(allCategories).filter(rec => allCategories[rec].isActive).length;
+}
+
+export const getUserCount = () => {
+    let allUsers = store.getState()["USER"].allRecords;
+    return Object.keys(allUsers).filter(rec => allUsers[rec].isActive).length;
 }
 
 export const getUnit = unitId => {
@@ -20,11 +26,13 @@ export const getProduct = productId => {
 }
 
 export const getProductCount = () => {
-    return Object.keys(store.getState()["PRODUCTS"].allRecords).length;
+    let allProducts = store.getState()["PRODUCTS"].allRecords;
+    return Object.keys(allProducts).filter(rec => allProducts[rec].isActive).length;
 }
 
 export const getBranchCount = () => {
-    return Object.keys(store.getState()["BRANCHES"].allRecords).length;
+    let allBranches = store.getState()["BRANCHES"].allRecords;
+    return Object.keys(allBranches).filter(rec => allBranches[rec].isActive).length;
 }
 
 export const getLoggedInUserInfo = () => {

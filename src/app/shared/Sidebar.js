@@ -1,9 +1,7 @@
 import React from 'react';
 import { Link, withRouter } from 'react-router-dom';
-// import { Collapse } from 'react-bootstrap';
-import { Dropdown } from 'react-bootstrap';
 import {connect} from "react-redux";
-import {getRole} from '../utils/dataUtils';
+import {getRole, getBranch} from '../utils/dataUtils';
 import isAllowed, { ACTION_GENERATE,ACTION_MANAGE,MODULE_REPORT } from "../utils/accessControl";
 import {ACTION_VIEW } from "../utils/accessControl";
 import {
@@ -61,6 +59,7 @@ class Sidebar extends React.Component {
   render () {
     const user = this.props.loggedInUser ? this.props.loggedInUser : null;
     const role = user && getRole(user.role) ? getRole(user.role).name : "";
+    const branch = user && getBranch(user.branch) ? getBranch(user.branch).name : "";
     this.menuItemHover()
     return (
       <nav className="sidebar sidebar-offcanvas" id="sidebar">
@@ -71,8 +70,7 @@ class Sidebar extends React.Component {
         <ul className="nav">
           <li className="nav-item nav-profile not-navigation-link">
             <div className="nav-link">
-              <Dropdown>
-                <Dropdown.Toggle className="nav-link user-switch-dropdown-toggler p-0 toggle-arrow-hide bg-transparent border-0 w-100">
+
                   <div className="d-flex justify-content-between align-items-start mb-0">
                     <div className="profile-image">
                       <img src={ require("../../assets/images/faces/face8.png")} alt="profile" />
@@ -81,13 +79,13 @@ class Sidebar extends React.Component {
                       {user && (
                         <React.Fragment>
                         <p className="profile-name">{`${user.firstName} ${user.lastName}`}</p>
-                        <small className="designation text-muted text-small">{role}</small>
+                        <small className="designation text-muted text-small d-block">{role}</small>
+                        <small className="designation text-muted text-small d-block">{branch && branch.toUpperCase()}</small>
                         </React.Fragment>
                       )}
                     </div>
                   </div>
-                </Dropdown.Toggle>
-              </Dropdown>
+
             </div>
           </li>
           <li className={ this.isPathActive('/dashboard') ? 'nav-item active' : 'nav-item' }>
@@ -213,7 +211,7 @@ class Sidebar extends React.Component {
 const mapStateToProps = state => {
   return {
       loggedInUser: state.USER.loggedInUser,
-      roles: state.ROLE
+      roles: state.ROLE,
   }
 };
 

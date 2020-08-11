@@ -16,6 +16,7 @@ export const GET_LOGGEDIN_USER = "GET_LOGGEDIN_USER"
 export const GET_USER = "GET_USER";
 export const USER_LOADING = "USER_LOADING";
 export const FILTER_USERS = "FILTER_USERS";
+export const GET_ALL_USERS = "GET_ALL_USERS";
 // export const
 
 

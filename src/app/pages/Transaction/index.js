@@ -172,7 +172,7 @@ class Transaction extends React.Component {
                                 {this.state.errorMsg.trim() ? <p className="text-warning">{this.state.errorMsg}</p> : null}
                                 {this.props.data.length ?
                                     <ul className="timeline">
-                                        {this.props.data.map(txn => <TransactionListItem txn={txn} key={txn.id} />)}
+                                        {this.props.data.map(txn => <TransactionListItem txn={txn} key={txn.id} branch={this.state.branch} />)}
                                     </ul>
                                 : <p className="text-center text-info">No Transactions logs found, try changing the filter.</p> }
                                 <div className="text-center">
