@@ -1,5 +1,5 @@
 import React from "react"
-import {Form} from 'react-bootstrap'
+import {Form,Button} from 'react-bootstrap'
 import Select from 'react-select'
 import {connect} from 'react-redux'
 import {dropDownResponseFromMap,getHeadOfficeDropDown} from '../../utils/dropDownUtils'
@@ -15,6 +15,8 @@ const mapStateToProps = state => ({
 const LocalRequest = "ADD_PRODUCT"
 const TransferRequest = "RAISE_REQUEST"
 const Adjustment = "ADJUSTMENT"
+
+// const 
 class AddCategory extends React.Component {
 
     constructor(){
@@ -24,8 +26,10 @@ class AddCategory extends React.Component {
         this.state = {
             fromBranch: userInfo.branch,
             fromBranchName: branchInfo.name,
-           type:"ADD_PRODUCT",
-           operationalQuantity : 0,
+            type:"ADD_PRODUCT",
+            rowsArr :[{
+                operationalQuantity :0,
+            }]
         }
     }
 
@@ -33,11 +37,13 @@ class AddCategory extends React.Component {
         this.setState({...this.props.category});
     }
 
-    handleChange = evt => {
-        this.setState({
-            ...this.state,
+    handleChange =(evt,idx) => {
+        const newState = Object.assign({},this.state)
+        newState.rowsArr[idx] = {
+            ...this.state.rowsArr[idx],
             operationalQuantity : evt.target.value
-        })
+        }
+        this.setState(newState)
 
     }
     handleNote = evt => {
@@ -47,12 +53,19 @@ class AddCategory extends React.Component {
         })
     }
 
-    handleProductDropDown = (evt) => {
-        this.setState({
-            ...this.state,
+    handleProductDropDown = (evt,idx) => {
+        const newState = Object.assign({},this.state)
+        newState.rowsArr[idx] = {
+            ...this.state.rowsArr[idx],
             product: evt && evt.value,
             productName: evt && evt.label
-        })
+        }
+        this.setState(newState)
+        // this.setState({
+        //     ...this.state,
+        //     product: evt && evt.value,
+        //     productName: evt && evt.label
+        // })
 }
 
     handleBranchDropDown =evt => {
@@ -62,40 +75,51 @@ class AddCategory extends React.Component {
         toBranchName: evt && evt.label
         })
     }
-    validateParams = () => {
-        const operationalQuantity = parseInteger(this.state.operationalQuantity)
-        if(!this.state.product){
+    validateParamsRow = (row,type,idx) => {
+        const operationalQuantity = parseInteger(row.operationalQuantity)
+        if(!row.product){
             addNotification({
                 title : "Please Select Product Field",
-                message : "Prooduct field can't be empty",
+                message : "Prooduct field can't be empty in row"+idx,
                 type : "warning"
             })
             return false
         }
-        if( (this.state.type === Adjustment && operationalQuantity >= 0 )||
-            (this.state.type !== Adjustment && operationalQuantity > 0)){
+        if( (type === Adjustment && operationalQuantity >= 0 )||
+            (type !== Adjustment && operationalQuantity > 0)){
             return true
-        }else if(operationalQuantity === 0 && this.state.type !== Adjustment){
+        }else if(operationalQuantity === 0 && type !== Adjustment){
             addNotification({
                 title : "Please Check Quantity Parameter",
-                message: "Quantity can't be 0",
+                message: "Quantity can't be 0 in row"+idx,
                 type : "warning"
 
             })
-        }if(this.state.type !== Adjustment && operationalQuantity < 0){
+        }if(type !== Adjustment && operationalQuantity < 0){
             addNotification({
                 title : "Please Check Quantity Parameter",
-                message: "Quantity can't be negative",
+                message: "Quantity can't be negative in row"+idx,
                 type : "warning"
 
             })
         }
         return false
     }
-    transformParamas = () => {
+    validateParams = () => {
+       let resp = true
+       this.state.rowsArr.forEach((row,idx)=>{
+           resp = resp && this.validateParamsRow(row,this.state.type,idx)
+       })
+    }
+    transformParams = () => {
+        const newArr = [...this.state.rowsArr]
+        newArr.map(row => ({
+            ...row,
+            operationalQuantity : parseInteger(row.operationalQuantity)
+        }))
         return {
             ...this.state,
-            operationalQuantity : parseInteger(this.state.operationalQuantity)
+            rowsArr : newArr
         }
     }
 
@@ -106,10 +130,27 @@ class AddCategory extends React.Component {
             event.stopPropagation();
         }else {
             event.preventDefault();
-            this.props.createTransaction(this.transformParamas());
+            this.props.createTransaction(this.transformParams());
             this.props.closeModal();
         }
 
+    }
+    removeRow =  idx => {
+        const newArr = [...this.state.rowsArr]
+        newArr.pop()
+        // const arr = this.state.rowsArr.splice(idx,1)
+        this.setState({
+            ...this.state,
+            rowsArr : newArr
+        })
+    }
+    addRow =  ()=>{
+        this.setState({
+            ...this.state,
+            rowsArr: [...this.state.rowsArr,{
+                operationalQuantity : 0
+            }]
+        })
     }
 
     onStatusChange = label => {
@@ -139,21 +180,62 @@ class AddCategory extends React.Component {
                             label="Add Adjustment transaction" checked={this.state.type===Adjustment}
                             onChange={e=>this.onStatusChange(Adjustment)} />
                     </Form.Group>
-                    <Form.Group>
+                    {/* <Form.Group>
                         <label htmlFor="exampleInputEmail1">Product</label>
                         <Select className="basic-single" classNamePrefix="select"
                             isClearable={true} isSearchable={true}  options={productDropdownArr} onChange={(e)=>{this.handleProductDropDown(e)}}/>
-                    </Form.Group>
+                    </Form.Group> */}
                     {this.state.type === TransferRequest &&<Form.Group>
                         <label htmlFor="exampleInputEmail1">From Branch(Head Offices)</label>
                         <Select className="basic-single" classNamePrefix="select"
                             isClearable={true} isSearchable={true}  options={branchDropdownArr} onChange={(e)=>{this.handleBranchDropDown(e)}}/>
                     </Form.Group>}
-                    {   this.state.currentProduct && (<>
-                        <dt>Category</dt>
-                        <dd>{this.state.currentProduct.category}</dd>
-                        </>)
-                    }
+                    <table className="table table-striped table-hover">
+                        <thead>
+                        <tr>
+                            <th className="tableProduct">Product</th>
+                            <th className="tableQuantityForm">Quantity</th>
+                            {/* <th className="tableRemoveButton"></th> */}
+                        </tr>
+                        </thead>
+                        <tbody>
+                            {this.state.rowsArr.map((row,idx)=>(
+                                <tr key={idx}>
+                                    <td className="tableProduct">
+                                    <Select className="basic-single" classNamePrefix="select"
+                                        isClearable={true} isSearchable={true}  options={productDropdownArr} onChange={(e)=>{this.handleProductDropDown(e,idx)}}/>
+                                    </td>
+                                    <td className="tableQuantityForm">
+                                        <Form.Group className="tableQuantity">
+                                            <Form.Control required type="number" className="form-control" id="operationalQuantity" name="operationalQuantity" 
+                                                placeholder="" value={row.operationalQuantity} onChange={e=>this.handleChange(e,idx)} />
+                                            <Form.Control.Feedback type="invalid">Please enter a valid quantity</Form.Control.Feedback>
+                                        </Form.Group>
+                                    </td>
+                                    {/* <td className="tableRemoveButton">
+                                        {this.state.rowsArr.length >1 &&<Button onClick={()=>this.removeRow(idx)}>-</Button>}
+                                    </td> */}
+                                </tr>
+                            ))}
+                        <tr>
+                            {/* <td className="tableProduct">
+                                <Select className="basic-single" classNamePrefix="select"
+                                isClearable={true} isSearchable={true}  options={productDropdownArr} onChange={(e)=>{this.handleProductDropDown(e)}}/>
+                            </td>
+                            <td className="tableQuantityForm">
+                                <Form.Group>
+                                    <Form.Control required type="number" className="form-control" id="operationalQuantity" name="operationalQuantity" placeholder="" value={this.state.operationalQuantity} onChange={this.handleChange} />
+                                    <Form.Control.Feedback type="invalid">Please enter a valid quantity</Form.Control.Feedback>
+                                </Form.Group>
+                            </td>
+                            <td className="tableRemoveButton"><Button>-</Button></td> */}
+                        </tr>
+                        </tbody>
+                    </table>
+                    <div className="addRemove">
+                        <Button className="addButton" onClick={this.addRow}>Add</Button>
+                        <Button className="removeButton" onClick={this.removeRow}>Remove</Button>
+                    </div>
                     <Form.Group>
                         <label htmlFor="exampleInputEmail1">Quantity</label>
                         <Form.Control required type="number" className="form-control" id="operationalQuantity" name="operationalQuantity" placeholder="" value={this.state.operationalQuantity} onChange={this.handleChange} />

@@ -32,7 +32,8 @@ export default {
         },
         "INVENTORY_SUMMARY":{
             "GET_REPORT_SUMMARY": `${BASE_URL}/api/reports/`,
-            "PAGE_LIMIT": 25,
+            "GET_ALL_REPORT_SUMMARY": `${BASE_URL}/api/reports/all/branches/`,
+            "PAGE_LIMIT": 10,
             "CACHING": true
         },
         "ROLE": {

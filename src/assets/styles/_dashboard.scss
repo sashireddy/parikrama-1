@@ -6,6 +6,29 @@
     padding: 0.25rem;
   }
 }
+.tableRow{
+  padding: 7.5px 0;
+}
+.tableProduct{
+  width: 70%;
+}
+.tableQuantityForm{
+  width:15%;
+}
+.tableQuantity{
+  margin: 0px !important;
+}
+.addRemove{
+  display: flex;
+  justify-content: space-evenly;
+  margin: 20px;
+}
+.tableRemoveButton{
+ color: red($color: #000000); 
+}
+.addButton{
+
+}
 .flex{
   display: flex;
 }
