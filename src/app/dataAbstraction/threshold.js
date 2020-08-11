@@ -25,7 +25,7 @@ const apiResponse = { // pMapping => Parameter Mapping
 // Function to load all the data as part for the initial load
 export const loadInitialData = () => {
     return new Promise(async (resolve, reject) => {
-        const url = `${config.API.BASE_URL}${apiConfig.GET_THRESHOLD}`;
+        const url = `${apiConfig.GET_THRESHOLD}`;
         console.log('calling url', url);
         const res = await axios.get(url);
         if(apiConfig.CACHING){
@@ -45,7 +45,7 @@ export const getData = params => {
     return new Promise(async (resolve, reject) => {
         if(cachedData === null){
             // Logic can be applied to generate URL using params
-            const url = `${config.API.BASE_URL}${apiConfig.GET_THRESHOLD}`;
+            const url = `${apiConfig.GET_THRESHOLD}`;
             // console.log("API calling...", url);
             try {
                 const res = await axios.get(url);

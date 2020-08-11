@@ -55,7 +55,7 @@ export const getData = params => {
     return new Promise(async (resolve, reject) => {
         if(cachedData === null){
             // Logic can be applied to generate URL using params
-            const url = `${config.API.BASE_URL}${apiConfig.GET_ALL_UNITS}`;
+            const url = `${apiConfig.GET_ALL_UNITS}`;
             // console.log("API calling...", url);
             try {
                 const res = await axios.get(url);

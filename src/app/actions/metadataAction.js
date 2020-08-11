@@ -5,6 +5,7 @@ import operationActions from "./operationsActions";
 import unitActions from "./unitActions";
 import categoryActions from "./categoryActions";
 import productActions from "./productActions";
+import userActions from "./userActions";
 import {addNotification} from "./notification";
 
 const getAllMetadata = () => async (dispatch) => {
@@ -16,6 +17,7 @@ const getAllMetadata = () => async (dispatch) => {
         dispatch(categoryActions.getAllCategories());
         dispatch(productActions.getAllProducts());
         dispatch(operationActions.getAllOperations());
+        dispatch(userActions.getAllUsers());
 
         addNotification({
             title: "APPLICATION BOOT",

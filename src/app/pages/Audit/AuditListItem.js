@@ -7,22 +7,22 @@ import {getName} from "../../utils/dataUtils";
 
 export default props => {
     const [open, setOpen] = useState(false);
-    const txn = props.txn;
-    const changes = txn.before && txn.after ? ObjectDiff(txn.before, txn.after) : false;
+    const audit = props.txn;
+    const changes = audit.before && audit.after ? ObjectDiff(audit.before, audit.after) : false;
     return (
         <li className="bg-icon audit-list-item">
-            <p className="text-info"><i className="fa fa-clock-o mr-2" /><em>{dateFormat(txn.date, config.DATE_FORMAT)}</em> {txn.email && <span><i className="fa fa-user-o mr-2 ml-2" />{txn.email}</span>}</p>
-            <div><em>Event:</em> {txn.event}
+            <p className="text-info"><i className="fa fa-clock-o mr-2" /><em>{dateFormat(audit.date, config.DATE_FORMAT)}</em> {audit.email && <span><i className="fa fa-user-o mr-2 ml-2" />{audit.email}</span>}</p>
+            <div><em>Event:</em> {audit.event}
             {changes && (
                 <React.Fragment>
                     <Button
                         onClick={() => setOpen(!open)}
-                        aria-controls={txn.id}
+                        aria-controls={audit.id}
                         aria-expanded={open} className="ml-4"
                     >{open ? "Hide" : "View"} Difference</Button>
                     <Collapse in={open}>
-                        <div id={txn.id}>
-                            <DiffView obj={changes} id={txn.id}/>
+                        <div id={audit.id}>
+                            <DiffView obj={changes} id={audit.id}/>
                         </div>
                     </Collapse>
                 </React.Fragment>

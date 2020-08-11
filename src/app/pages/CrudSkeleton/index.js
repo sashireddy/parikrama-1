@@ -154,7 +154,7 @@ class CrudSkeleton extends Component {
                                             })}
                                         </Form.Group>
                                         <Form.Group>
-                                            <select name="search" className="ml-2 form-control" id="status-filter" data-field="isActive"
+                                            <select name="search" className="ml-2 mr-1 form-control" id="status-filter" data-field="isActive"
                                                 value={this.state.search.isActive || ""} onChange={this.handleChange} >
                                                 <option value="">All</option>
                                                 <option value={true}>Active</option>

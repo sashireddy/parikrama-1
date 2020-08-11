@@ -2,7 +2,7 @@ import React from "react";
 import {connect} from "react-redux";
 import dateformat from "dateformat";
 import Spinner from "../../shared/Spinner";
-import {getBranch, getProduct, getUnit, getOperation, getProductCount, getBranchCount, getCategoryCount} from '../../utils/dataUtils';
+import {getBranch, getProduct, getUnit, getOperation, getProductCount, getBranchCount, getCategoryCount, getUserCount} from '../../utils/dataUtils';
 
 import dashboardAction from "../../actions/dashboardActions";
 import { Link } from "react-router-dom";
@@ -27,21 +27,25 @@ class Dashboard extends React.PureComponent {
         let branchBelowThreashold = [];
         let hasProductsBelowThreashold = false;
         Object.keys(this.props.dashboardData).forEach(key => {
-            let products = [];
-            dashboardData[key].productsBelowThreshold.forEach(product => {
-                products.push({
-                    branch: getBranch(key).name,
-                    product: getProduct(product.product).name,
-                    unit: getUnit(product.unit).name,
-                    threshold: product.threshold,
-                    availableQuantity: product.availableQuantity
+            if(dashboardData[key].productsBelowThreshold){
+                let products = [];
+                dashboardData[key].productsBelowThreshold.forEach(product => {
+                    products.push({
+                        branch: getBranch(key).name,
+                        product: getProduct(product.product).name,
+                        unit: getUnit(product.unit).name,
+                        threshold: product.threshold,
+                        availableQuantity: product.availableQuantity
+                    });
+                    hasProductsBelowThreashold = true;
                 });
-                hasProductsBelowThreashold = true;
-            });
-            branchBelowThreashold.push({
-                "branch": getBranch(key).name,
-                "products": products
-            });
+                branchBelowThreashold.push({
+                    "branch": getBranch(key).name,
+                    "products": products,
+                    "totalProductsInInventory": dashboardData[key].totalProductsInInventory,
+                    "totalProductsBelowThreshold": dashboardData[key].totalProductsBelowThreshold
+                });
+            }
         });
         if(hasProductsBelowThreashold){
             return branchBelowThreashold.sort((b1,b2) => b2.products.length - b1.products.length);
@@ -55,21 +59,23 @@ class Dashboard extends React.PureComponent {
         let pendingRequests = [];
         let hasPendingRequests = false;
         Object.keys(this.props.dashboardData).forEach(key => {
-            let requests = [];
-            dashboardData[key].pendingRequests.forEach(product => {
-                requests.push({
-                    product:product.productName,
-                    branch: product.toBranchName ? product.toBranchName : product.fromBranchName,
-                    user: product.user,
-                    quantity: product.operationalQuantity,
-                    date: dateformat(product.date, "yyyy-mm-dd HH:MM")
+            if(dashboardData[key].pendingRequests){
+                let requests = [];
+                dashboardData[key].pendingRequests.forEach(product => {
+                    requests.push({
+                        product:product.productName,
+                        branch: product.toBranchName ? product.toBranchName : product.fromBranchName,
+                        user: product.user,
+                        quantity: product.operationalQuantity,
+                        date: dateformat(product.date, "yyyy-mm-dd HH:MM")
+                    });
+                    hasPendingRequests = true;
                 });
-                hasPendingRequests = true;
-            });
-            pendingRequests.push({
-                "branch": getBranch(key).name,
-                "products": requests.sort((p1, p2) => p2.date - p1.date)
-            });
+                pendingRequests.push({
+                    "branch": getBranch(key).name,
+                    "products": requests.sort((p1, p2) => p2.date - p1.date)
+                });
+            }
         });
         if(hasPendingRequests){
             return pendingRequests.sort((b1,b2) => b2.products.length - b1.products.length);
@@ -83,9 +89,9 @@ class Dashboard extends React.PureComponent {
         let recentActivities = [];
         let hasActivity = false;
         Object.keys(this.props.dashboardData).forEach(key => {
-            let activities = [];
-            dashboardData[key].recentActivity.forEach((activity, index) => {
-                if(index < 5){
+            if(dashboardData[key].recentTransactions){
+                let activities = [];
+                dashboardData[key].recentTransactions.forEach((activity, index) => {
                     activities.push({
                         product:activity.productName,
                         user: activity.user,
@@ -94,14 +100,13 @@ class Dashboard extends React.PureComponent {
                         date: dateformat(activity.date, "yyyy-mm-dd HH:MM")
                     });
                     hasActivity = true;
-                }
-            });
-            recentActivities.push({
-                "branch": getBranch(key).name,
-                "activities": activities.sort((p1, p2) => p2.date - p1.date)
-            });
+                });
+                recentActivities.push({
+                    "branch": getBranch(key).name,
+                    "activities": activities.sort((p1, p2) => p2.date - p1.date)
+                });
+            }
         });
-        console.log(recentActivities);
         if(hasActivity){
             return recentActivities.sort((b1,b2) => b2.activities.length - b1.activities.length);
         } else {
@@ -120,51 +125,76 @@ class Dashboard extends React.PureComponent {
                     <div className="col-lg-3 col-sm-4 grid-margin stretch-card">
                         <div className="card card-statistics">
                             <div className="card-body">
-                                <div className="clearfix">
-                                    <div className="float-left">
-                                        <i className="mdi mdi-flower text-danger icon-lg"></i>
-                                    </div>
-                                    <div className="float-right">
-                                        <p className="mb-0 text-right text-dark">Total Produts</p>
-                                        <div className="fluid-container">
-                                        <h3 className="font-weight-medium text-right mb-0 text-dark">{getProductCount()}</h3>
+                                <Link to="/products">
+                                    <div className="clearfix">
+                                        <div className="float-left">
+                                            <i className="mdi mdi-flower text-danger icon-lg"></i>
+                                        </div>
+                                        <div className="float-right">
+                                            <p className="mb-0 text-right text-dark">Total Produts</p>
+                                            <div className="fluid-container">
+                                            <h3 className="font-weight-medium text-right mb-0 text-dark">{getProductCount()}</h3>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
+                                </Link>
                             </div>
                         </div>
                     </div>
                     <div className="col-lg-3 col-sm-4 grid-margin stretch-card">
                         <div className="card card-statistics">
                             <div className="card-body">
-                                <div className="clearfix">
-                                    <div className="float-left">
-                                        <i className="mdi mdi-source-branch text-warning icon-lg"></i>
-                                    </div>
-                                    <div className="float-right">
-                                        <p className="mb-0 text-right text-dark">Total Branches</p>
-                                        <div className="fluid-container">
-                                            <h3 className="font-weight-medium text-right mb-0 text-dark">{getBranchCount()}</h3>
+                                <Link to="/categories">
+                                    <div className="clearfix">
+                                        <div className="float-left">
+                                            <i className="mdi mdi-shape-plus text-info icon-lg"></i>
+                                        </div>
+                                        <div className="float-right">
+                                            <p className="mb-0 text-right text-dark">Total Categories</p>
+                                            <div className="fluid-container">
+                                                <h3 className="font-weight-medium text-right mb-0 text-dark">{getCategoryCount()}</h3>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
+                                </Link>
                             </div>
                         </div>
                     </div>
                     <div className="col-lg-3 col-sm-4 grid-margin stretch-card">
                         <div className="card card-statistics">
                             <div className="card-body">
-                                <div className="clearfix">
-                                    <div className="float-left">
-                                        <i className="mdi mdi-shape-plus text-info icon-lg"></i>
-                                    </div>
-                                    <div className="float-right">
-                                        <p className="mb-0 text-right text-dark">Total Categories</p>
-                                        <div className="fluid-container">
-                                            <h3 className="font-weight-medium text-right mb-0 text-dark">{getCategoryCount()}</h3>
+                                <Link to="/branches">
+                                    <div className="clearfix">
+                                        <div className="float-left">
+                                            <i className="mdi mdi-source-branch text-warning icon-lg"></i>
+                                        </div>
+                                        <div className="float-right">
+                                            <p className="mb-0 text-right text-dark">Total Branches</p>
+                                            <div className="fluid-container">
+                                                <h3 className="font-weight-medium text-right mb-0 text-dark">{getBranchCount()}</h3>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
+                                </Link>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="col-lg-3 col-sm-4 grid-margin stretch-card">
+                        <div className="card card-statistics">
+                            <div className="card-body">
+                                <Link to="/users">
+                                    <div className="clearfix">
+                                        <div className="float-left">
+                                            <i className="mdi mdi-account-multiple text-success icon-lg"></i>
+                                        </div>
+                                        <div className="float-right">
+                                            <p className="mb-0 text-right text-dark">Total Users</p>
+                                            <div className="fluid-container">
+                                                <h3 className="font-weight-medium text-right mb-0 text-dark">{getUserCount()}</h3>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </Link>
                             </div>
                         </div>
                     </div>
@@ -178,7 +208,7 @@ class Dashboard extends React.PureComponent {
                                 {branchBelowThreashold && branchBelowThreashold.map(branch => {
                                     return branch.products.length ?
                                         <React.Fragment key={branch.branch}>
-                                            <h6 className="mt-3">Branch : {branch.branch}</h6>
+                                            <h6 className="mt-3">Branch : {branch.branch} <small>{branch.totalProductsBelowThreshold} out of {branch.totalProductsInInventory} inventory below threshold</small></h6>
                                             <div className="table-responsive">
                                                 <table className="table table-striped table-hover">
                                                     <thead>

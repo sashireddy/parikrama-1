@@ -34,7 +34,7 @@ export const loadInitialData = () => {
             resolve(arrayToMapWithId(cachedData));
         } else {
             try{
-                const url = `${config.API.BASE_URL}${apiConfig.GET_PRODUCTS}`;
+                const url = `${apiConfig.GET_PRODUCTS}`;
                 const res = await axios.get(url);
                 if(apiConfig.CACHING){
                     cachedData = res.data.products;
@@ -66,7 +66,7 @@ export const getData = params => {
     return new Promise(async (resolve, reject) => {
         if(cachedData === null){
             // Logic can be applied to generate URL using params
-            const url = `${config.API.BASE_URL}${apiConfig.GET_PRODUCTS}`;
+            const url = `${apiConfig.GET_PRODUCTS}`;
             // console.log("API calling...", url);
             try {
                 const res = await axios.get(url);
