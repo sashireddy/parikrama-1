@@ -75,6 +75,16 @@ class AddCategory extends React.Component {
         toBranchName: evt && evt.label
         })
     }
+
+    isAddButtonValid = () => {
+        const count  = this.state.rowsArr.length
+        if(this.state.type === LocalRequest && count < 10){
+            return true
+        }else if(this.state.type ===  TransferRequest && count <5){
+            return true
+        }
+        return false
+    }
     validateParamsRow = (row,type,idx) => {
         const operationalQuantity = parseInteger(row.operationalQuantity)
         if(!row.product){
@@ -110,6 +120,7 @@ class AddCategory extends React.Component {
        this.state.rowsArr.forEach((row,idx)=>{
            resp = resp && this.validateParamsRow(row,this.state.type,idx)
        })
+       return resp
     }
     transformParams = () => {
         const newArr = [...this.state.rowsArr]
@@ -233,15 +244,15 @@ class AddCategory extends React.Component {
                         </tbody>
                     </table>
                     <div className="addRemove">
-                        <Button className="addButton" onClick={this.addRow}>Add</Button>
-                        <Button className="removeButton" onClick={this.removeRow}>Remove</Button>
+                        {this.isAddButtonValid() && <Button className="addButton" onClick={this.addRow}>Add</Button> }
+                        {this.state.rowsArr.length > 1 && <Button className="removeButton" onClick={this.removeRow}>Remove</Button>}
                     </div>
-                    <Form.Group>
+                    {/* <Form.Group>
                         <label htmlFor="exampleInputEmail1">Quantity</label>
                         <Form.Control required type="number" className="form-control" id="operationalQuantity" name="operationalQuantity" placeholder="" value={this.state.operationalQuantity} onChange={this.handleChange} />
                         <dd>{this.state.currentProduct && this.state.currentProduct.unit}</dd>
                         <Form.Control.Feedback type="invalid">Please enter a valid quantity</Form.Control.Feedback>
-                    </Form.Group>
+                    </Form.Group> */}
                     <Form.Group>
                         <label htmlFor="">Note</label>
                         <Form.Control required type="text" id="Note" className="form-control"

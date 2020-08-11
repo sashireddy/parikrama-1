@@ -154,10 +154,7 @@ export const createTransaction = ({type,...otherParams}) => {
             }else if(type === "ADD_PRODUCT"){
                 otherParams.rowsArr.forEach(row => {
                     queryList.push({
-                        "toBranch": otherParams.fromBranch,//always headoffice
-                        "fromBranch": otherParams.toBranch,
-                    	"toBranchName": otherParams.fromBranchName,
-	                    "fromBranchName": otherParams.toBranchName,
+                        "branch": otherParams.fromBranch,
                         "productName":row.productName,
                         "product": row.product,
                         "operationalQuantity": parseInt(row.operationalQuantity),
@@ -192,12 +189,17 @@ export const createTransaction = ({type,...otherParams}) => {
                 if(type==="ISSUE_PRODUCT"){
                     updateQuantity(parseInt(otherParams.operationalQuantity),otherParams.fromBranch,otherParams.product,"sub")
                 }else if(type === "ADD_PRODUCT"){
-                    updateQuantity(parseInt(otherParams.operationalQuantity),otherParams.fromBranch,otherParams.product,"add")
+                    queryList.forEach(entry => {
+                        updateQuantity(parseInt(entry.operationalQuantity),entry.branch,entry.product,"add")
+                    })
                 }else if ( type === "TransferOperation") {
                     updateQuantity(parseInt(otherParams.operationalQuantity),otherParams.toBranch,otherParams.product,"add")
                     updateQuantity(parseInt(otherParams.operationalQuantity),otherParams.fromBranch,otherParams.product,"sub")
                 }else if (type === "RAISE_REQUEST"){
-                    pendingTransactions.push(makePendingTransaction(otherParams,resp))
+                    queryList.forEach((entry,idx)=> {
+                        pendingTransactions.push(makePendingTransaction(entry,resp[idx]))
+                    })
+                    
                 }else if( type === "ADJUSTMENT") {
                     adjustQuantity(parseInt(otherParams.operationalQuantity),otherParams.fromBranch,otherParams.product)
                 }
