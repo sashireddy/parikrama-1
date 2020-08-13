@@ -3,6 +3,11 @@ import store from '../store'
 export const validateIntialLoad = state =>{
     return state.initialLoad
 }
+
+export const validateLogginUserLoad  = state => {
+    return state.loggedInUserLoad
+}
+
 export const getCategory = categoryId => {
     return store.getState()["CATEGORY"].allCategories[categoryId];
 }

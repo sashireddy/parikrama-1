@@ -12,7 +12,7 @@ import store from './store';
 import userActions from './actions/userActions';
 import {connect} from 'react-redux'
 import {addNotification} from './actions/notification'
-import {validateIntialLoad} from './utils/dataUtils'
+import {validateIntialLoad,validateLogginUserLoad} from './utils/dataUtils'
 import metadataAction from './actions/metadataAction';
 const mapStateToProps = state => ({
   auth : state['AUTH'],
@@ -45,7 +45,7 @@ class App extends Component {
   render () {
 
     const loading = validateIntialLoad(this.props.state.BRANCHES) && validateIntialLoad(this.props.state.CATEGORY)
-                       && validateIntialLoad(this.props.state.USER) /* && validateIntialLoad(this.props.state.PERMISSION) */
+                       && validateIntialLoad(this.props.state.USER) && validateLogginUserLoad(this.props.state.USER)
                        && validateIntialLoad(this.props.state.PRODUCTS) && validateIntialLoad(this.props.state.UNITS)
     let navbarComponent = !this.state.isFullPageLayout ? <Navbar/> : '';
     let sidebarComponent = !this.state.isFullPageLayout ? <Sidebar/> : '';

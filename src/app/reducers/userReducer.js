@@ -13,7 +13,7 @@ export default function(state = initialState, action) {
         case GET_LOGGEDIN_USER: {
             return {
                 ...state,
-                initialLoad : true,
+                loggedInUserLoad : true,
                 loggedInUser: {
                     ...action.payload
                 }
