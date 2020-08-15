@@ -5,7 +5,7 @@ import {handleResponse} from './util'
 import {getUnit,getCategory,getProduct,getBranch,getThreshold} from '../utils/dataUtils'
 import {arrayToCsvContent,download} from '../utils/csvUtils'
 import {genericFilter,validateCurrentPage} from './util'
-import dateFormat from "dateformat";
+// import dateFormat from "dateformat";
 // import { updateCategoryData } from "./category";
 const pageConfig = config.API.INVENTORY;
 
@@ -201,7 +201,7 @@ export const createTransaction = ({type,...otherParams}) => {
                     })
                     
                 }else if( type === "ADJUSTMENT") {
-                    adjustQuantity(parseInt(otherParams.operationalQuantity),otherParams.fromBranch,otherParams.product)
+                    adjustQuantity(parseInt(queryParams.operationalQuantity),queryParams.branch,queryParams.product)
                 }
             }
             const resParams = {
@@ -514,5 +514,5 @@ export const generateCsv = (params) => {
         })
     }
 
-    download(arrayToCsvContent(outArr),`AvailableQuantity_${branchName}_${dateFormat(new Date(), "yyyy-mm-dd")}.csv`,)
+    download(arrayToCsvContent(outArr),`AvailableQuantity_${branchName}_${Date.now()}.csv`,)
 }

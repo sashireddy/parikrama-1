@@ -157,7 +157,7 @@ class InventorySummary extends React.Component {
              module={MODULE_REPORT}
              pk="id"
             >
-                <Card>
+                <Card className="paddedCard">
                     <Card.Body>
                     <Form className="custom-page-filter" onSubmit={this.onSubmit}>
                     <Form.Group>

@@ -1,4 +1,5 @@
 import store from '../store'
+import {addNotification} from '../actions/notification'
 
 export const validateIntialLoad = state =>{
     return state.initialLoad
@@ -97,4 +98,40 @@ export const getName = (module, id) => {
         default:
             return id;
     }
+}
+
+export const validateName = (module, name) => {
+    let resp = true
+    let records;
+    switch (module) {
+        case "BRANCH" :
+            records = store.getState()["BRANCHES"].allRecords
+            break;
+        case "CATEGORY" :
+            records =store.getState()["CATEGORY"].allRecords
+            break;
+        case "PRODUCT":
+            records = store.getState()["PRODUCTS"].allRecords
+            break;
+        case "UNIT":
+            records = store.getState()["UNITS"].allRecords
+            break;
+        default:
+            break;
+    }
+    if(records){
+        const keys = Object.keys(records)
+        keys.forEach(entry => {
+            if(records[entry].name.toUpperCase().trim() === name.toUpperCase().trim()){
+                addNotification({
+                    title : "Please Check the Parameters",
+                    message: `${module} with name ${name} already exists`,
+                    type : "warning"
+    
+                })
+                resp = false
+            }
+        })
+    }
+    return resp;
 }

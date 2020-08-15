@@ -1,6 +1,6 @@
 import config from "../constants/config";
 import axios from 'axios';
-import {validateCurrentPage, arrayToMapWithId, genericFilter} from "./util";
+import {validateCurrentPage, arrayToMapWithId, genericFilter,handleResponse} from "./util";
 const apiConfig = config.API.CATEGORY;
 
 // Null indicates we need to fetch the data from the source
@@ -96,16 +96,12 @@ export const getCategoriesData = params => {
 // Add category implementaion
 export const addCategoryData = data => {
     return new Promise(async (resolve, reject) => {
-        let res;
-        try{
-            res = await axios.post(config.API.CATEGORY.GET_CTEGORIES,data)
-        } catch (err) {
-
-        }
+        const [response, err]=handleResponse (await axios.post(config.API.CATEGORY.GET_CTEGORIES,data))
+        if(err) return reject(err);
         if(apiConfig.CACHING){
             cachedData = [
                 ...cachedData,
-                res.data
+                response.data
             ];
             const params = {
                 currentPage: apiResponse.currentPage,
@@ -184,11 +180,10 @@ export const updateCategoryData = data => {
 // Delete category implementation
 export const deleteCategoryData = data => {
     return new Promise(async (resolve, reject) => {
-        let response;
-        try {
-            response = await axios.delete(apiConfig.DELETE_CATEGORIES+data.id);
-        }catch(err) {
-
+        
+        const [response, err]=handleResponse (await axios.delete(apiConfig.DELETE_CATEGORIES+data.id));
+        if(err){
+            return reject(err)
         }
         if(apiConfig.CACHING && response.status === 200){
             cachedData = cachedData.filter(item => {
