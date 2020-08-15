@@ -30,11 +30,6 @@ class App extends Component {
   componentDidMount() {
     store.dispatch(userActions.getUserInfo());
     store.dispatch(metadataAction.getAllMetadata());
-    // store.dispatch(roleActions.getAllRoles());
-    // store.dispatch(UnitActions.initialData());
-    // store.dispatch(categoryActions.getAllCategories());
-    // store.dispatch(productActions.getAllProducts());
-    // store.dispatch(branchesActions.getAllBranches());
     addNotification({
       title:'Welcome',
       message : 'Welcome to parikrama Inventory Management ',
@@ -45,8 +40,8 @@ class App extends Component {
   render () {
 
     const loading = validateIntialLoad(this.props.state.BRANCHES) && validateIntialLoad(this.props.state.CATEGORY)
-                       && validateIntialLoad(this.props.state.USER) /* && validateIntialLoad(this.props.state.PERMISSION) */
-                       && validateIntialLoad(this.props.state.PRODUCTS) && validateIntialLoad(this.props.state.UNITS)
+                    && validateIntialLoad(this.props.state.USER) && validateIntialLoad(this.props.state.PRODUCTS)
+                    && validateIntialLoad(this.props.state.UNITS)
     let navbarComponent = !this.state.isFullPageLayout ? <Navbar/> : '';
     let sidebarComponent = !this.state.isFullPageLayout ? <Sidebar/> : '';
     let footerComponent = !this.state.isFullPageLayout ? <Footer/> : '';

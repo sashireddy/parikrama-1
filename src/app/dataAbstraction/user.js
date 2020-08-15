@@ -24,8 +24,20 @@ const apiResponse = { // pMapping => Parameter Mapping
     sort: {}
 };
 
+let fieldMappingDone = false;
+
 export const setCachedData = data => {
     cachedData = data;
+}
+
+const mapField = () => {
+    let records = cachedData.map(entry => {
+        entry.roleName = getRole(entry.role).name;
+        entry.branchName = getBranch(entry.branch).name;
+        return entry
+    });
+    fieldMappingDone = true;
+    cachedData = records;
 }
 
 // Function to load all the data as part for the initial load
@@ -100,6 +112,9 @@ export const getData = params => {
             }
         }
         if(apiConfig.CACHING){
+            if(!fieldMappingDone){
+                mapField();
+            }
             getCurrentStateData(params);
         } else {
             // Need to resolve all params using the API respose e.g

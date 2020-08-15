@@ -26,7 +26,6 @@ export default function(state = initialState, action){
                 loading : false
             }
         case GET_UNITS:
-            console.log(GET_UNITS, action.payload);
                 return {
                     ...state,
                     ...action.payload,
