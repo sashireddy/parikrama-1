@@ -15,7 +15,8 @@ export default function(state = initialState, action){
             return {
                 ...state,
                 initialLoad : true,
-                'allCategories': action.payload
+                'allCategories': action.payload,
+                allRecords : action.payload
             }
         }
         default:

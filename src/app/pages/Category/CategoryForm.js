@@ -45,7 +45,7 @@ class CategoryForm extends React.Component {
                     </Form.Group>
                     <Form.Group>
                         <label htmlFor="description">Category Description</label>
-                        <Form.Control type="text" className="form-control" id="categoryDesc" name="description" placeholder="Category Description" value={this.state.description} onChange={this.handleChange} />
+                        <Form.Control required type="text" className="form-control" id="categoryDesc" name="description" placeholder="Category Description" value={this.state.description} onChange={this.handleChange} />
                         <Form.Control.Feedback type="invalid">Provide description of the category</Form.Control.Feedback>
                     </Form.Group>
                 </div>
