@@ -70,13 +70,13 @@ class PendingTransactions extends React.Component {
                         <Col><Button onClick={()=>this.rejectCall(request)}>Reject</Button></Col>
                     </Row>
                 </td>}
-                {!isHeadOffice && 
+                {!isHeadOffice && <td>
                     <Row>
                         <Button onClick={()=>this.cancelCall(request)}>Cancel</Button>
                     </Row>
-                }
+                </td>}
             </tr>)}
-       let requests = this.props.inventory.pendingTransactions || []       
+       let requests = this.props.inventory.pendingTransactions || []
         return (
             <>
             <Spinner loading={this.props.inventory.pendingTransactionsLoading} />
@@ -113,15 +113,15 @@ class PendingTransactions extends React.Component {
             </div>
             </Row>
             <Row>
-                {this.state.showModal && <Accept 
-                    products={this.props.products} branches={this.props.branches} 
+                {this.state.showModal && <Accept
+                    products={this.props.products} branches={this.props.branches}
                     inventory = {this.props.inventory}
                     acceptOrRejectTransaction = {this.props.acceptOrRejectTransaction}
                     closeModal={()=>this.setState({showModal:false})}
                     record = {this.state.selectedRecord}
                     />}
             </Row>
-            
+
         </>
         )
 }

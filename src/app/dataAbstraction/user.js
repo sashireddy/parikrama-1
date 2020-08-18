@@ -51,7 +51,6 @@ export const loadInitialData = () => {
                 const url = `${apiConfig.GET_USER}`;
                 console.log(url)
                 res = await axios.get(url);
-                console.log(res);
             } catch (err){
                 reject()
             }

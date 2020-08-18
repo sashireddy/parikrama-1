@@ -73,7 +73,6 @@ class BranchForm extends React.Component {
     }
 
     render() {
-        console.log(this.state)
         return(
             <Form className="forms-sample" noValidate validated={this.state.validated} onSubmit={this.onSubmit} >
                 <div className="pl-3 pr-3">

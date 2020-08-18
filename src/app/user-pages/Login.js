@@ -90,7 +90,6 @@ export class Login extends Component {
       loading:true
     });
     this.props.firebase.auth.sendPasswordResetEmail(this.state.username).then(() => {
-      console.log("Reset password has been sent to your mail.");
       this.setState({
         loading:false,
         forgotPasswordSuccess: true,

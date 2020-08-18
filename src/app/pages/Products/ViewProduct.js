@@ -2,7 +2,6 @@ import React from "react";
 import {getCategory,getUnit,getLoggedInUserInfo} from '../../utils/dataUtils'
 
 function ViewProduct(props) {
-  console.log(props)
     return (
       <React.Fragment>
         <div className="pl-3 pr-3">

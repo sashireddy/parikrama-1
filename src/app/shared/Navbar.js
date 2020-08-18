@@ -32,7 +32,7 @@ class Navbar extends Component {
   }
 
   logout = async () => {
-    await Firebase.auth.signOut()
+    await Firebase.auth.signOut();
     window.location.href="/";
   }
 

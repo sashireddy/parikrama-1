@@ -34,7 +34,6 @@ class InventorySummary extends React.Component {
         }
     }
     getData = (crudParams) => {
-        console.log(crudParams)
         this.props.loadData({
             ...crudParams,
             startDate: dateFormat(this.state.startDate, "yyyy-mm-dd"),

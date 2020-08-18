@@ -51,7 +51,6 @@ class ChangePassword extends React.PureComponent{
                 this.state.currentPassword
             );
 
-            console.log(credentials, user);
             user.reauthenticateWithCredential(credentials).then(() => {
                 user.updatePassword(this.state.password).then(() => {
                     this.setState({
