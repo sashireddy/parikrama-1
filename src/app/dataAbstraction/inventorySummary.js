@@ -120,7 +120,7 @@ const getCurrentStateData = params => {
     apiResponse.currentPage = currentPage;
 }
 export const downloadReport = async params => {
-    const branchName = params.branch || getBranch(params.branch).name 
+    const branchName = getBranch(params.branch).name 
     const headerArr = ['Product','Category','Branch','Threshold','Initial Quantity','Consumed Quantity','Transfered Quantity','Added Quantity','Closing Quantity','unitt']
     const arr = genericFilter(params,cachedData || [])
     const outArr = []
