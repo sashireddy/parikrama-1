@@ -108,6 +108,7 @@ export const getData = params => {
                 }
             } catch(err){
                 reject(err);
+                return;
             }
         }
         if(apiConfig.CACHING){

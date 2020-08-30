@@ -26,6 +26,7 @@ export default {
             "GET_ALL_INVENTORY": `${BASE_URL}/api/inventories/`,
             "REJECT_REQUEST" :   `${BASE_URL}/api/actions/rejectRequest`,
             "TransferOperation" : `${BASE_URL}/api/actions/moveProduct`,
+            "INVENTORY_HISTORY": `${BASE_URL}/api/transferRequests/branches`,
             // "GET_ALL_INVENTORY":"/data/inventory.json",
             "CACHING": true,
             "PAGE_LIMIT": 10
