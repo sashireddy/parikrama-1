@@ -4,7 +4,10 @@ import {getBranch, getRole} from '../../utils/dataUtils';
 class DeleteUser extends React.Component {
     disableUser = () => {
       const {record} = this.props;
-      this.props.updateData({...record, isActive:false});
+      let payload = {...record, isActive:false};
+      delete payload.branchName;
+      delete payload.roleName;
+      this.props.updateData(payload);
       this.props.closeModal();
     }
 

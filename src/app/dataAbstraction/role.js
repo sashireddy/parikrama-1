@@ -41,7 +41,6 @@ export const loadInitialData = () => {
                 if(apiConfig.CACHING){
                     cachedData = res.data.roles;
                 }
-                console.log(res.data, arrayToMapWithId(res.data.roles));
                 resolve(arrayToMapWithId(res.data.roles));
             } catch(err){
                 console.log(err);

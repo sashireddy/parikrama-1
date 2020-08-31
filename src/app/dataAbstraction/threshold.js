@@ -41,7 +41,6 @@ export const loadInitialData = () => {
 // State params passed which will be used to pass to live api or
 // for static data to get proper data as per the params
 export const getData = params => {
-    console.log(params);
     return new Promise(async (resolve, reject) => {
         if(cachedData === null){
             // Logic can be applied to generate URL using params
@@ -183,7 +182,6 @@ export const deleteData = data => {
 
 
 const getCurrentStateData = params => {
-    console.log(params);
     // Need to implement search and sort functionality here
     // After search total records may vary, reset pagination to 1st page.
     let records = filterData(params, cachedData);

@@ -3,7 +3,6 @@ import {connect} from "react-redux";
 
 class ViewRole extends React.Component {
   render() {
-    console.log('View Role Props: ' ,this.props);
     const {record} = this.props;
     return (
       <React.Fragment>

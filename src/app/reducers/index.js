@@ -13,6 +13,7 @@ import transactionReducer from './transactionReducer';
 import dashboardReducer from './dashboardReducer';
 import auditReducer from './auditReducer';
 import InventorySummary from './InventorySummary';
+import inventoryHistory from './inventoryHistoryReducer';
 
 export default combineReducers({
     CATEGORY: categoryReducer,
@@ -28,5 +29,6 @@ export default combineReducers({
     TRANSACTION: transactionReducer,
     DASHBOARD: dashboardReducer,
     AUDIT: auditReducer,
-    INVENTORYSUMMARY: InventorySummary
+    INVENTORYSUMMARY: InventorySummary,
+    INVENTORYHISTORY: inventoryHistory
 });

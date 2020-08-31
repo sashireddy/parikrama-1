@@ -116,7 +116,7 @@ export const createTransaction = ({type,...otherParams}) => {
                         "productName":row.productName,
                         "product": row.product,
                         "operationalQuantity": parseInt(row.operationalQuantity),
-                        "note": otherParams.note    
+                        "note": otherParams.note
                     })
                 })
                 queryParams = {
@@ -158,7 +158,7 @@ export const createTransaction = ({type,...otherParams}) => {
                         "productName":row.productName,
                         "product": row.product,
                         "operationalQuantity": parseInt(row.operationalQuantity),
-                        "note": otherParams.note    
+                        "note": otherParams.note
                     })
                 })
             }else {
@@ -199,7 +199,7 @@ export const createTransaction = ({type,...otherParams}) => {
                     queryList.forEach((entry,idx)=> {
                         pendingTransactions.push(makePendingTransaction(entry,resp[idx]))
                     })
-                    
+
                 }else if( type === "ADJUSTMENT") {
                     adjustQuantity(parseInt(queryParams.operationalQuantity),queryParams.branch,queryParams.product)
                 }
@@ -451,9 +451,9 @@ const getCurrentStateData = params => {
         // })
         records =  getAllBranchRecords()
     }else{
-        records = cache[params.branch] || cache[0]    
+        records = cache[params.branch] || cache[0]
     }
-    
+
     records.map(entry => {
         const product = getProduct(entry.product);
         entry.productName = product.name;
@@ -499,7 +499,7 @@ export const generateCsv = (params) => {
                 tempRow.push(getUnit(product.unit).name)
                 outArr.push(tempRow)
             })
-            
+
         })
     }else{
         arr.forEach(row=> {

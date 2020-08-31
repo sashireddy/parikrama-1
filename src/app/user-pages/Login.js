@@ -18,7 +18,10 @@ export class Login extends Component {
       password : '',
       loading : false,
       authError: false,
-      validated: false
+      validated: false,
+      loginView: true,
+      validatedForgotPassword: false,
+      errorMsg: ""
     }
   }
 
@@ -64,6 +67,44 @@ export class Login extends Component {
     })
   }
 
+  toggleView = e => {
+    e.preventDefault();
+    this.setState({loginView: !this.state.loginView});
+  }
+
+  forgotPassword = e =>{
+    const form = e.currentTarget;
+    e.preventDefault();
+    this.setState({
+      validatedForgotPassword: true,
+      forgotPasswordErr: false,
+      forgotPasswordSuccess: false
+    });
+    if (form.checkValidity() === false) {
+      e.preventDefault();
+      e.stopPropagation();
+      return;
+    }
+
+    this.setState({
+      loading:true
+    });
+    this.props.firebase.auth.sendPasswordResetEmail(this.state.username).then(() => {
+      this.setState({
+        loading:false,
+        forgotPasswordSuccess: true,
+        forgotPasswordErr: false
+      });
+    }).catch(error => {
+      this.setState({
+        errorMsg: error.message,
+        loading:false,
+        forgotPasswordErr: true,
+        forgotPasswordSuccess: false,
+      });
+    });
+  }
+
   render() {
     return (
       <div>
@@ -76,21 +117,42 @@ export class Login extends Component {
                   <img src={require("../../assets/images/parikrama-logo.png")} alt="Parikrama Logo" />
                 </div>
                 <h4>Inventory Management</h4>
-                <h6 className="font-weight-light">Sign in to continue.</h6>
-                {this.state.authError && <Alert variant="danger">Invalid username or password</Alert>}
-                <Form className="pt-3" noValidate validated={this.state.validated} onSubmit={this.submit}>
-                  <Form.Group className="search-field">
-                    <Form.Control required pattern="[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}" name="username" type="text" placeholder="Username" size="lg" className="h-auto" onChange={this.handleChange}/>
-                    <Form.Control.Feedback type="invalid">Please enter valid email id</Form.Control.Feedback>
-                  </Form.Group>
-                  <Form.Group className="search-field">
-                    <Form.Control required minLength="1" name="password" type="password" placeholder="Password" size="lg" className="h-auto" onChange={this.handleChange}/>
-                    <Form.Control.Feedback type="invalid">Please enter password</Form.Control.Feedback>
-                  </Form.Group>
-                  <div className="mt-3">
-                    <Button className="btn btn-block btn-primary btn-lg font-weight-medium auth-form-btn" type="submit" >Sign In</Button>
-                  </div>
-                </Form>
+                {this.state.loginView ?
+                  <React.Fragment>
+                    <h6 className="font-weight-light">Sign in to continue.</h6>
+                    {this.state.authError && <Alert variant="danger">Invalid username or password</Alert>}
+                    <Form className="pt-3" noValidate validated={this.state.validated} onSubmit={this.submit}>
+                      <Form.Group className="search-field">
+                        <Form.Control required pattern="[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}" name="username" type="text" placeholder="Email-ID" size="lg" className="h-auto" onChange={this.handleChange}/>
+                        <Form.Control.Feedback type="invalid">Please enter valid email id</Form.Control.Feedback>
+                      </Form.Group>
+                      <Form.Group className="search-field">
+                        <Form.Control required minLength="1" name="password" type="password" placeholder="Password" size="lg" className="h-auto" onChange={this.handleChange}/>
+                        <Form.Control.Feedback type="invalid">Please enter password</Form.Control.Feedback>
+                      </Form.Group>
+                      <div className="mt-3">
+                        <Button className="btn btn-block btn-primary btn-lg font-weight-bold auth-form-btn" type="submit" >Sign In</Button>
+                      </div>
+                      <p className="pull-right"><button type="button" className="btn btn-link pr-0 mt-2" onClick={this.toggleView}>Forgot Password?</button></p>
+                    </Form>
+                  </React.Fragment>
+                  :
+                  <React.Fragment>
+                    <h6 className="font-weight-light">Forgot Password</h6>
+                    {this.state.forgotPasswordSuccess && <Alert variant="success">Reset password link has been sent to your email address please check your mail.</Alert>}
+                    {this.state.forgotPasswordErr && <Alert variant="danger">{this.state.errorMsg}</Alert>}
+                    <Form className="pt-3" noValidate validated={this.state.validatedForgotPassword} onSubmit={this.forgotPassword}>
+                      <Form.Group className="search-field">
+                        <Form.Control required pattern="[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}" name="username" type="text" placeholder="Email-ID" size="lg" className="h-auto" onChange={this.handleChange}/>
+                        <Form.Control.Feedback type="invalid">Please enter valid email id</Form.Control.Feedback>
+                      </Form.Group>
+                      <div className="mt-3">
+                        <Button className="btn btn-block btn-primary btn-lg font-weight-bold auth-form-btn" type="submit" >Submit</Button>
+                      </div>
+                      <p className="pull-right"><button type="button" className="btn btn-link pr-0 mt-2" onClick={this.toggleView}>Back to Login</button></p>
+                    </Form>
+                  </React.Fragment>
+                }
               </div>
             </div>
           </div>

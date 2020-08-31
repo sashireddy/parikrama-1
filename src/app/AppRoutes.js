@@ -48,6 +48,7 @@ const Transaction = lazy(()=> import ('./pages/Transaction'));
 const Dashboard = lazy(()=> import ('./pages/Dashboard'));
 const Audit = lazy(()=> import ('./pages/Audit'));
 const InventoryReports = lazy(()=> import('./pages/InventorySummary'));
+const InventoryHistory = lazy(()=> import('./pages/InventoryHistory'));
 
 class AppRoutes extends Component {
   render () {
@@ -67,6 +68,9 @@ class AppRoutes extends Component {
           {isAllowed(ACTION_VIEW, MODULE_BRANCH) && <Route path="/branches/" component={ Branch } />}
           <Route path="/audits" component={ Audit } />
           <Route path="/inventory" component={Inventory} />
+          <Route path="/inventory-history" component={InventoryHistory} />
+
+
           <Route path="/basic-ui/buttons" component={ Buttons } />
           <Route path="/basic-ui/dropdowns" component={ Dropdowns } />
           <Route path="/basic-ui/typography" component={ Typography } />
