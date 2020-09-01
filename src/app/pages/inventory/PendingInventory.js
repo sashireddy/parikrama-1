@@ -16,7 +16,7 @@ class PendingTransactions extends React.Component {
         }
     }
     componentDidMount(){
-        this.props.loadPendingTransactions({branch:getLoggedInUserInfo().branch})
+        this.props.loadPendingTransactions(this.paramsForPendingTransactions())
     }
     updateRecordAndOpenModal = (record)=> {
         this.setState({
@@ -32,7 +32,7 @@ class PendingTransactions extends React.Component {
 	        "toBranchName": record.toBranchName,
 	        "product": record.product,
 	        "productName": record.productName,
-	        "pendingRequestsId": record.id
+	        "transferRequestsId": record.id
         })
     }
     cancelCall = (record) => {
@@ -43,7 +43,7 @@ class PendingTransactions extends React.Component {
 	        "toBranchName":getBranch(getLoggedInUserInfo().branch).name ,
 	        "product": record.product,
 	        "productName": record.productName,
-	        "pendingRequestsId": record.id
+	        "transferRequestsId": record.id
         })
     }
     closeModalAndDeleteRecord = () => {
@@ -52,7 +52,15 @@ class PendingTransactions extends React.Component {
             selectedRecord : null
         })
     }
-   render(){
+    paramsForPendingTransactions = (type) => {
+        return {
+            nextPageToken : this.props.inventory.nextPageToken,
+            prevPageToken :  this.props.inventory.prevPageToken,
+            type,
+            branch : getLoggedInUserInfo().branch
+        }
+    }
+    render(){
         const isHeadOffice = getBranch(getLoggedInUserInfo().branch).isHeadOffice
         const rowRender = (request,idx)=>{
            return (
@@ -108,6 +116,10 @@ class PendingTransactions extends React.Component {
                                 }
                             </tbody>
                         </Table>
+                        {(this.props.inventory.nextPageToken || this.props.inventory.prevPageToken) && <Row>
+                            {this.props.inventory.prevPageToken && <Button onClick={()=>this.props.loadPendingTransactions(this.paramsForPendingTransactions("prev"))}>Previous</Button>}
+                            {this.props.inventory.nextPageToken && <Button onClick={()=>this.props.loadPendingTransactions(this.paramsForPendingTransactions("next"))}>Next</Button>}
+                        </Row>}
                     </div>
                 </div>
             </div>

@@ -17,7 +17,9 @@ export default function(state = inventoryInitialState, action){
                 ...state,
                 loading : false,
                 pendingTransactionsLoading : false,
-                pendingTransactions : action.payload,
+                pendingTransactions : action.payload.pendingTransactions,
+                nextPageToken:action.payload.nextPageToken,
+                prevPageToken:action.payload.prevPageToken,
             }
         default:
             return categoryCrudReducers(state,action)

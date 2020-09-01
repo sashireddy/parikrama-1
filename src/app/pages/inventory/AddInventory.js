@@ -78,7 +78,7 @@ class AddCategory extends React.Component {
 
     isAddButtonValid = () => {
         const count  = this.state.rowsArr.length
-        if(this.state.type === LocalRequest && count < 10){
+        if(this.state.type === LocalRequest && count < 5){
             return true
         }else if(this.state.type ===  TransferRequest && count <5){
             return true

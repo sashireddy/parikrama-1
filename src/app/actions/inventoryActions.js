@@ -1,5 +1,6 @@
 import { addData,deleteData,getData,updateData,createTransaction,getPendingTransactions,generateCsv,respondToTransferRequest,rejectRequest } from '../dataAbstraction/inventory'
 import { getInventoryHistoryRecords } from '../dataAbstraction/inventoryRequest'
+import { getLoggedInUserInfo } from '../utils/dataUtils'
 import skeletonActions from './crudActions'
 import pageConstants from '../constants/pages'
 import {GET_PENDING_TRANSACTIONS, GET_INVENTORY_HISTORY} from './types'
@@ -66,6 +67,11 @@ const actions = (()=>{
       try{
         dispatch(defaultSkeletonActions.setLoading())
         const resp = await createTransaction(params)
+        if(params.type=== "RAISE_REQUEST" ){
+          loadPendingTransactions({
+            branch:getLoggedInUserInfo().branch
+          })(dispatch)
+        } 
         dispatch({
           type: "GET_INVENTORY",
           payload: resp,

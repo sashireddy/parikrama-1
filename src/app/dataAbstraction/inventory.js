@@ -33,7 +33,7 @@ const output = {
     pageLimit: pageConfig.PAGE_LIMIT,
     totalRecords: 1,
     currentPage: 1,
-    data: null,
+    data: [],
     search: {},
     sort: {}
 };
@@ -42,25 +42,50 @@ const output = {
 export const getPendingTransactions = (params) => {
     return new Promise(async (resolve, reject) => {
         try {
-            if(!pendingTransactions){
                 // const [response,err]= handleResponse(await axios.get(pageConfig.PENDING_TRANSACTIONS+'R1vTnxSLWByLa7NocDDX'))
-                const [response,err]= handleResponse(await axios.get(pageConfig.PENDING_TRANSACTIONS+params.branch))
-                pendingTransactions = response.data.pendingRequests
-                if(err){return reject(err)}
-            }
-            resolve(pendingTransactions)
+            const [response,err]= handleResponse(await axios.get(formInventoryHistoryUrl(params)))
+            pendingTransactions = response.data
+            if(err){return reject(err)}
+            resolve({
+                pendingTransactions:pendingTransactions.transferRequests,
+                nextPageToken : pendingTransactions.nextPageToken,
+                prevPageToken : pendingTransactions.prevPageToken
+            })
         }catch(err){
             reject(err)
         }
     })
 }
+
+const formInventoryHistoryUrl = params => {
+    let url = `${pageConfig.INVENTORY_HISTORY}/${params.branch}`;
+    let urlParams = {};
+    console.log(params);
+
+    if(params.type){
+        params.type === 'next'
+            ? urlParams.nextPageToken = params.nextPageToken
+            : urlParams.prevPageToken = params.prevPageToken
+    }
+
+    let queryParams = "?";
+    for(let [key, value] of Object.entries(urlParams)){
+        queryParams += `${key}=${value}&`;
+    }
+    return `${url}${queryParams.slice(0, -1)}`;
+}
+
 export const rejectRequest = async params => {
     try {
         const [,err]=handleResponse(await axios.post(pageConfig.REJECT_REQUEST,params));
         console.log(err)
         // if(err) throw new Error(err)
-        pendingTransactions = pendingTransactions.filter(entry => entry.id !== params.pendingRequestsId)
-        return pendingTransactions
+        pendingTransactions.transferRequests = pendingTransactions.transferRequests.filter(entry => entry.id !== params.transferRequestsId)
+        return {
+            pendingTransactions:pendingTransactions.transferRequests,
+            nextPageToken : pendingTransactions.nextPageToken,
+            prevPageToken : pendingTransactions.prevPageToken
+        }
     }catch(err){
         throw new Error(err)
     }
@@ -73,7 +98,7 @@ export const respondToTransferRequest = async params => {
                 operationalQuantity : params.quantityMap[entry],
                 product: params.product,
                 productName: params.productName,
-                pendingRequestsId : params.id,
+                transferRequestsId : params.id,
                 fromBranch: entry,
                 fromBranchName : getBranch(entry).name,
                 toBranch: params.toBranch,
@@ -92,8 +117,12 @@ export const respondToTransferRequest = async params => {
             updateQuantity(quantity,entry,params.product,"sub")
         })
         updateQuantity(sum,params.toBranch,params.product,"add")
-        pendingTransactions = pendingTransactions.filter(entry => entry.id !== params.id)
-        return pendingTransactions
+        pendingTransactions.transferRequests = pendingTransactions.transferRequests.filter(entry => entry.id !== params.id)
+        return {
+            pendingTransactions:pendingTransactions.transferRequests,
+            nextPageToken : pendingTransactions.nextPageToken,
+            prevPageToken : pendingTransactions.prevPageToken
+        }
     }catch (err) {
         throw new Error(err)
     }
@@ -197,9 +226,9 @@ export const createTransaction = ({type,...otherParams}) => {
                     updateQuantity(parseInt(otherParams.operationalQuantity),otherParams.fromBranch,otherParams.product,"sub")
                 }else if (type === "RAISE_REQUEST"){
                     queryList.forEach((entry,idx)=> {
-                        pendingTransactions.push(makePendingTransaction(entry,resp[idx]))
+                        pendingTransactions && pendingTransactions.push(makePendingTransaction(entry,resp[idx]))
                     })
-
+                    
                 }else if( type === "ADJUSTMENT") {
                     adjustQuantity(parseInt(queryParams.operationalQuantity),queryParams.branch,queryParams.product)
                 }
@@ -312,22 +341,12 @@ export const getData = params => {
                     "type": "success",
                     "message": "Data Loaded Successfully!"
                 };
-                if(pageConfig.CACHING){
-                    parseInventoryResp(res.data)
-                }
+                parseInventoryResp(res.data)
             } catch(err){
                 reject(err);
             }
         }
-        if(pageConfig.CACHING){
-            getCurrentStateData(params);
-        } else {
-            // Need to resolve all params using the API respose e.g
-            // categories.totalRecords = res.totalRecords;
-            // categories.data = res.data;
-            // categories.search = res.search;
-            // categories.currentPage = res.currentPage;
-        }
+        getCurrentStateData(params);
         resolve(output);
     });
 }
