@@ -1,6 +1,6 @@
 let BASE_URL = "";
 if(window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1"){
-    BASE_URL = "https://local-parikrama.web.app";
+    BASE_URL = "https://inventory-2-471f1.firebaseapp.com";
 }
 
 export default {

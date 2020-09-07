@@ -32,7 +32,7 @@ class App extends Component {
     store.dispatch(metadataAction.getAllMetadata());
     addNotification({
       title:'Welcome',
-      message : 'Welcome to parikrama Inventory Management ',
+      message : 'Welcome to Parikrma Inventory Management ',
       type:'success'
     })
     this.onRouteChanged();

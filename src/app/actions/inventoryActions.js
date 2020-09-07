@@ -7,13 +7,18 @@ import {GET_PENDING_TRANSACTIONS, GET_INVENTORY_HISTORY} from './types'
 import {addNotification} from "./notification";
 
 const sendNotification = (params,error) => {
+  let notificationArr = []
   let message = ""
   let tittle = ""
   let type = error ? "danger" : "success"
   switch(params.type){
     case "RAISE_REQUEST":
+      let str = ""
+      params.rowsArr.forEach( row => {
+        str = str + row.productName
+      })
       tittle = "Request Raised"
-      message = `Inventory request Raised successfully ${params.productName}`
+      message = `Inventory request Raised successfully ${str}`
       break
     case "TransferOperation":
       tittle = "Inventory Transfered"
@@ -24,8 +29,13 @@ const sendNotification = (params,error) => {
       message = `${params.operationalQuantity}  ${params.productName} issued sucessfully`
       break
     case "ADD_PRODUCT":
-      tittle = "Add Product"
-      message = `${params.operationalQuantity} ${params.productName} added sucessfully `
+      params.rowsArr.forEach(row => {
+        notificationArr.push({
+          tittle : "Add Product",
+          message : `${row.operationalQuantity} ${row.productName} added sucessfully `
+        })
+      })
+      
       break
     case "ACCEPTED_REJECTED_TRANSACTIONS":
       tittle = "LOAD TRANSACTIONS";
@@ -39,6 +49,15 @@ const sendNotification = (params,error) => {
       title: tittle,
       type: type,
       message,
+    })
+  }
+  if(notificationArr.length > 0 && !error)  {
+    notificationArr.forEach(msg =>  {
+      addNotification({
+        title: msg.tittle,
+        type: type,
+        message : msg.message,
+      })
     })
   }
 
